@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{2C444143-A902-4323-AA53-B53F73C81E48}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="..\Server\LDEServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Client\LDESistemas.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="LDEServer">
+        <MSBuild Projects="..\Server\LDEServer.dproj"/>
+    </Target>
+    <Target Name="LDEServer:Clean">
+        <MSBuild Projects="..\Server\LDEServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LDEServer:Make">
+        <MSBuild Projects="..\Server\LDEServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LDESistemas">
+        <MSBuild Projects="..\Client\LDESistemas.dproj"/>
+    </Target>
+    <Target Name="LDESistemas:Clean">
+        <MSBuild Projects="..\Client\LDESistemas.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LDESistemas:Make">
+        <MSBuild Projects="..\Client\LDESistemas.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="LDEServer;LDESistemas"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -1,0 +1,89 @@
+CREATE GENERATOR GEN_CAIXA;
+CREATE GENERATOR GEN_CAIXA_ABERT_FECH;
+CREATE GENERATOR GEN_CAIXA_ENT_SAI;
+
+CREATE TABLE CAIXA
+(
+id integer not null,
+aberto_fechado char(1),
+/*ent_dinheiro numeric(10,2),
+ent_cheque numeric(10,2),
+ent_cart_credito numeric(10,2),
+ent_cart_debito numeric(10,2),
+ent_parcelado numeric(10,2),
+sai_dinheiro numeric(10,2),
+sai_cheque numeric(10,2),*/
+constraint PK_CAIXA primary key (ID)
+);
+
+SET TERM ^ ;
+CREATE TRIGGER TRI_BI_CAIXA FOR CAIXA ACTIVE
+BEFORE insert POSITION 0
+AS
+BEGIN
+    if((new.ID = 0) or (new.id is null)) then
+    begin
+      new.ID = gen_id(GEN_CAIXA,1);
+    end
+END^
+SET TERM ; ^
+
+CREATE TABLE caixa_abert_fech
+(
+id integer not null,
+id_caixa integer not null,
+dt_hora_abertura timestamp,
+dt_hora_fechamento timestamp,
+usuario_abertura varchar(30),
+usuario_fechamento varchar(30),
+saldo_final numeric(10,2),
+constraint PK_CAIXA_ABERT_FECH primary key (id)
+);
+
+ALTER TABLE caixa_abert_fech ADD CONSTRAINT FK_caixa_abert_fech_CAIXA
+  FOREIGN KEY (ID_caixa) REFERENCES CAIXA (ID) ON UPDATE CASCADE ON DELETE CASCADE;
+  
+SET TERM ^ ;
+CREATE TRIGGER TRI_BI_CAIXA_ABERT_FECH FOR CAIXA_ABERT_FECH ACTIVE
+BEFORE insert POSITION 0
+AS
+BEGIN
+    if((new.ID = 0) or (new.id is null)) then
+    begin
+      new.ID = gen_id(GEN_CAIXA_ABERT_FECH,1);
+    end
+END^
+SET TERM ; ^
+
+
+CREATE TABLE caixa_ent_sai
+(
+id integer not null,
+id_caixa integer not null,
+tipo char(2) not null,/*(01=Saida-Sangria,02=Saida Pag despesas,03= Entrada - Acrescimo)*/
+Forma_pagto varchar(15), /*(Dinheiro-Cheque)*/
+Valor numeric(10,2) not null,
+Obs blob sub_type 1,
+data_hora timestamp,
+usuario varchar(30),
+constraint PK_CAIXA_ENT_SAI primary key(id)
+);
+
+ALTER TABLE caixa_ent_sai ADD CONSTRAINT FK_caixa_ent_sai_CAIXA
+  FOREIGN KEY (ID_caixa) REFERENCES CAIXA (ID) ON UPDATE CASCADE ON DELETE CASCADE;
+
+SET TERM ^ ;
+CREATE TRIGGER TRI_BI_CAIXA_ENT_SAI FOR CAIXA_ENT_SAI ACTIVE
+BEFORE insert POSITION 0
+AS
+BEGIN
+    if((new.ID = 0) or (new.id is null)) then
+    begin
+      new.ID = gen_id(GEN_CAIXA_ENT_SAI,1);
+    end
+END^
+SET TERM ; ^
+
+CREATE GENERATOR GEN_CAIXA;
+CREATE GENERATOR GEN_CAIXA_ABERT_FECH;
+CREATE GENERATOR GEN_CAIXA_ENT_SAI;

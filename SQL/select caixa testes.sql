@@ -1,0 +1,31 @@
+SELECT a.*
+FROM PDV_MASTER a
+where a.ID_CAIXA = 16;
+
+SELECT a.*
+FROM PDV_RECEBER a
+where a.BAIXA_ID_CAIXA = 16;
+
+SELECT a.*
+FROM PDV_RECEBER_PARCIAL a
+where a.ID_CAIXA = 16;
+
+SELECT a.*
+FROM CAIXA_ABERT_FECH a
+where cast(a.DT_HORA_ABERT_FECH as date) = 'today'
+
+SELECT a.*
+FROM CAIXA a
+where a.ID = 16;
+
+
+SELECT a.*
+FROM CAIXA_ENT_SAI a
+where a.ID_CAIXA = 16;
+
+
+select a.* from CAIXA_APURACAO_VALORES a
+where a.ID_CAIXA = 16;
+
+
+
