@@ -39,7 +39,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           Left = 1
           Top = 1
           Width = 545
-          Height = 193
+          Height = 220
           Align = alTop
           TabOrder = 0
           object Label1: TLabel
@@ -71,7 +71,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object Label4: TLabel
             Left = 102
-            Top = 132
+            Top = 164
             Width = 49
             Height = 15
             Caption = 'ESTOQUE'
@@ -84,7 +84,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object Label9: TLabel
             Left = 267
-            Top = 132
+            Top = 164
             Width = 98
             Height = 15
             Caption = 'ESTOQUE M'#205'NIMO'
@@ -97,7 +97,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object Label5: TLabel
             Left = 84
-            Top = 165
+            Top = 197
             Width = 67
             Height = 15
             Caption = 'PESO BRUTO'
@@ -110,7 +110,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object Label7: TLabel
             Left = 257
-            Top = 165
+            Top = 197
             Width = 108
             Height = 15
             Caption = 'C'#211'DIGO DE BARRAS'
@@ -192,6 +192,19 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             ParentFont = False
             OnClick = actTrilharExecute
           end
+          object Label3: TLabel
+            Left = 51
+            Top = 98
+            Width = 98
+            Height = 15
+            Caption = 'PRE'#199'O DE CUSTO*'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+          end
           object DBEdit1: TDBEdit
             Left = 154
             Top = 30
@@ -226,7 +239,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object DBPesquisa1: TDBPesquisa
             Left = 37
-            Top = 96
+            Top = 128
             Width = 454
             Height = 22
             Titulo.Left = 0
@@ -273,7 +286,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object DBEdit9: TDBEdit
             Left = 154
-            Top = 128
+            Top = 160
             Width = 94
             Height = 23
             DataField = 'QTDE_ESTOQUE'
@@ -289,7 +302,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object DBEdit10: TDBEdit
             Left = 369
-            Top = 128
+            Top = 160
             Width = 57
             Height = 23
             DataField = 'QTDE_MINIMA'
@@ -304,7 +317,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object DBEdit5: TDBEdit
             Left = 154
-            Top = 161
+            Top = 193
             Width = 95
             Height = 23
             DataField = 'PESO_BRUTO'
@@ -319,7 +332,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           end
           object DBEdit7: TDBEdit
             Left = 369
-            Top = 161
+            Top = 193
             Width = 122
             Height = 23
             DataField = 'EAN_CODBARRA'
@@ -364,12 +377,29 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             ReadOnly = True
             TabOrder = 0
           end
+          object DBEdit8: TDBEdit
+            Left = 154
+            Top = 95
+            Width = 134
+            Height = 23
+            TabStop = False
+            DataField = 'PRECO_CUSTO'
+            DataSource = ds
+            Enabled = False
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ParentFont = False
+            TabOrder = 9
+          end
         end
         object PageControl1: TPageControl
           Left = 1
-          Top = 194
+          Top = 221
           Width = 545
-          Height = 275
+          Height = 248
           ActivePage = TabSheet2
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -383,16 +413,17 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object TabSheet2: TTabSheet
             Caption = 'Fornecedores'
             ImageIndex = 1
+            ExplicitHeight = 247
             object pnlFornecedores: TPanel
               Left = 0
               Top = 0
               Width = 537
-              Height = 247
+              Height = 220
               Align = alClient
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitTop = -1
+              ExplicitHeight = 247
               object PngAddProduto: TPngSpeedButton
                 Left = 141
                 Top = 4
@@ -450,7 +481,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Left = 1
                 Top = 38
                 Width = 535
-                Height = 208
+                Height = 181
                 TabStop = False
                 Align = alBottom
                 DataSource = dsProdutoFornecedor
@@ -489,13 +520,15 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object tsConversao: TTabSheet
             Caption = 'Fator de Convers'#227'o'
             ImageIndex = 1
+            ExplicitHeight = 247
             object pnlFundoTab: TPanel
               Left = 0
               Top = 0
               Width = 537
-              Height = 247
+              Height = 220
               Align = alClient
               TabOrder = 0
+              ExplicitHeight = 247
               object lblTitConversao: TLabel
                 Left = 1
                 Top = 1
@@ -522,13 +555,13 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Left = 1
                 Top = 31
                 Width = 535
-                Height = 215
+                Height = 188
                 Align = alClient
                 BevelOuter = bvNone
                 Color = 14803681
                 ParentBackground = False
                 TabOrder = 0
-                ExplicitHeight = 97
+                ExplicitHeight = 215
                 object Label10: TLabel
                   Left = 67
                   Top = 52
@@ -674,8 +707,8 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     end
   end
   inherited ds: TDataSource
-    Left = 144
-    Top = 16
+    Left = 296
+    Top = 400
   end
   inherited cds: TClientDataSet
     CommandText = 
@@ -691,8 +724,8 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsAfterInsert
-    Left = 48
-    Top = 15
+    Left = 296
+    Top = 351
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -808,10 +841,13 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
       FieldName = 'CONV_PRECO'
       DisplayFormat = '#,##0.00'
     end
+    object cdsDT_CADASTRO: TDateField
+      FieldName = 'DT_CADASTRO'
+    end
   end
   inherited actMaster: TActionList
-    Left = 16
-    Top = 16
+    Left = 192
+    Top = 328
     object actTrilhar: TAction
       Caption = 'actTrilhar'
       OnExecute = actTrilharExecute
@@ -819,8 +855,8 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
   end
   object dsProdutoFornecedor: TDataSource
     DataSet = cdsProdutoFornecedor
-    Left = 112
-    Top = 16
+    Left = 376
+    Top = 408
   end
   object cdsProdutoFornecedor: TClientDataSet
     Aggregates = <>
@@ -830,8 +866,8 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
-    Left = 80
-    Top = 16
+    Left = 376
+    Top = 352
     object cdsProdutoFornecedorID: TIntegerField
       FieldName = 'ID'
       Required = True

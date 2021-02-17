@@ -227,6 +227,7 @@ type
     cdsReceberJUROS: TFMTBCDField;
     cdsReceberDESCONTO: TFMTBCDField;
     cdsMasterID_HISTORICO: TIntegerField;
+    cdsMasterSTATUS: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1218,6 +1219,7 @@ begin
   if UsuarioAutorizou <> '' then
     cdsMaster.FieldByName('user_autorizacao').AsString := UsuarioAutorizou ;
   cdsMaster.FieldByName('ID_HISTORICO').AsInteger := 58;
+  cdsMaster.FieldByName('STATUS').AsString := 'EFETUADA';
   cdsMaster.Post;
 
   {chamar Set Gravacao}

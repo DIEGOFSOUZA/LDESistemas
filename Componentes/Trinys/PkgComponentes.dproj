@@ -142,12 +142,12 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <DCC_BplOutput>C:\Projetos\Takano\Componentes\$(Platform)\$(Config)</DCC_BplOutput>
-        <DCC_DcuOutput>C:\Projetos\Takano\Componentes\$(Platform)\$(Config)</DCC_DcuOutput>
+        <DCC_BplOutput>C:\apagar\$(Platform)\$(Config)</DCC_BplOutput>
+        <DCC_DcuOutput>C:\apagar\DCUs\</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_DcpOutput>C:\Projetos\Takano\Componentes\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_DcpOutput>C:\apagar\$(Platform)\$(Config)</DCC_DcpOutput>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
-        <DCC_UnitSearchPath>C:\Projetos\Takano\Componentes\Win32;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>C:\apagar\$(Platform)\$(Config);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_MapFile>3</DCC_MapFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
@@ -247,6 +247,7 @@
                     <VersionInfoKeys Name="theme"/>
                 </VersionInfoKeys>
                 <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Projetos\Takano\Componentes\Win32\Debug\PkgComponentes.bpl">File C:\Projetos\Takano\Componentes\Win32\Debug\PkgComponentes.bpl not found</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k260.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp260.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
                 </Excluded_Packages>

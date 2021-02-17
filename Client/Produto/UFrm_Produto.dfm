@@ -15,8 +15,6 @@ inherited Frm_Produto: TFrm_Produto
     ExplicitWidth = 700
     inherited pnlFundo1: TPanel
       Width = 617
-      ExplicitLeft = 82
-      ExplicitTop = 1
       ExplicitWidth = 617
       inherited Panel4: TPanel
         Width = 615
@@ -449,7 +447,7 @@ inherited Frm_Produto: TFrm_Produto
           Top = 209
           Width = 613
           Height = 281
-          ActivePage = tsConversao
+          ActivePage = TabSheet1
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -473,7 +471,7 @@ inherited Frm_Produto: TFrm_Produto
               TabOrder = 0
               object PngAddProduto: TPngSpeedButton
                 Left = 209
-                Top = 9
+                Top = 8
                 Width = 86
                 Height = 28
                 Caption = 'Adicionar'
@@ -502,7 +500,7 @@ inherited Frm_Produto: TFrm_Produto
               end
               object PngSpeedButton1: TPngSpeedButton
                 Left = 310
-                Top = 9
+                Top = 8
                 Width = 86
                 Height = 28
                 Caption = 'Excluir'
@@ -683,6 +681,63 @@ inherited Frm_Produto: TFrm_Produto
                 TabOrder = 2
                 TabStop = True
               end
+              object pnlDesc: TPanel
+                Left = 422
+                Top = 15
+                Width = 176
+                Height = 73
+                BevelOuter = bvNone
+                Caption = 'pnlDesc'
+                ShowCaption = False
+                TabOrder = 3
+                OnClick = pnlDescClick
+                object pnlDescMaximo: TPanel
+                  Left = -1
+                  Top = 0
+                  Width = 177
+                  Height = 73
+                  Caption = 'pnlDescMaximo'
+                  Enabled = False
+                  ShowCaption = False
+                  TabOrder = 0
+                  object lblTitDesc: TLabel
+                    Left = 1
+                    Top = 1
+                    Width = 175
+                    Height = 20
+                    Align = alTop
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = '% M'#225'ximo de Desconto em Venda'
+                    Color = 10114859
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWhite
+                    Font.Height = -9
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentColor = False
+                    ParentFont = False
+                    Transparent = False
+                    Layout = tlCenter
+                    OnMouseMove = lblTituloMouseMove
+                  end
+                  object DBEdit11: TDBEdit
+                    Left = 53
+                    Top = 34
+                    Width = 70
+                    Height = 23
+                    DataField = 'DESC_MAXIMO'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -12
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    ParentFont = False
+                    TabOrder = 0
+                  end
+                end
+              end
             end
           end
           object tsConversao: TTabSheet
@@ -835,13 +890,95 @@ inherited Frm_Produto: TFrm_Produto
               end
             end
           end
+          object tsHistPrecoVenda: TTabSheet
+            Caption = 'Hist'#243'rico - Pre'#231'o de Venda'
+            ImageIndex = 3
+            object pnlHistorico: TPanel
+              Left = 0
+              Top = 0
+              Width = 605
+              Height = 253
+              Align = alClient
+              BevelOuter = bvNone
+              TabOrder = 0
+              object Label14: TLabel
+                Left = 0
+                Top = 0
+                Width = 605
+                Height = 30
+                Align = alTop
+                AutoSize = False
+                Caption = '  HIST'#211'RICO'
+                Color = 10114859
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Segoe UI Semibold'
+                Font.Style = [fsBold]
+                ParentColor = False
+                ParentFont = False
+                Transparent = False
+                Layout = tlCenter
+                OnMouseMove = lblTituloMouseMove
+                ExplicitTop = 8
+              end
+              object dbgrdItens: TDBGrid
+                Left = 0
+                Top = 30
+                Width = 605
+                Height = 223
+                Align = alClient
+                DataSource = dsHistPreco
+                DrawingStyle = gdsGradient
+                GradientEndColor = 13864803
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Style = []
+                Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                ParentFont = False
+                TabOrder = 0
+                TitleFont.Charset = ANSI_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'Segoe UI'
+                TitleFont.Style = []
+                Columns = <
+                  item
+                    Alignment = taCenter
+                    Expanded = False
+                    FieldName = 'INICIO'
+                    Visible = True
+                  end
+                  item
+                    Alignment = taCenter
+                    Expanded = False
+                    FieldName = 'FIM'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'PRECO'
+                    Width = 90
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'USUARIO'
+                    Width = 280
+                    Visible = True
+                  end>
+              end
+            end
+          end
         end
       end
     end
   end
   inherited ds: TDataSource
-    Left = 144
-    Top = 16
+    Left = 160
+    Top = 432
   end
   inherited cds: TClientDataSet
     CommandText = 
@@ -855,8 +992,8 @@ inherited Frm_Produto: TFrm_Produto
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsAfterInsert
-    Left = 80
-    Top = 15
+    Left = 160
+    Top = 375
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Required = True
@@ -968,10 +1105,19 @@ inherited Frm_Produto: TFrm_Produto
       Precision = 18
       Size = 3
     end
+    object cdsDT_CADASTRO: TDateField
+      FieldName = 'DT_CADASTRO'
+    end
+    object cdsDESC_MAXIMO: TFMTBCDField
+      FieldName = 'DESC_MAXIMO'
+      DisplayFormat = '#,##0.000 %'
+      Precision = 18
+      Size = 3
+    end
   end
   inherited actMaster: TActionList
-    Left = 16
-    Top = 13
+    Left = 104
+    Top = 373
     object actTrilhar: TAction
       Caption = 'actTrilhar'
       OnExecute = actTrilharExecute
@@ -985,8 +1131,8 @@ inherited Frm_Produto: TFrm_Produto
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
-    Left = 48
-    Top = 16
+    Left = 264
+    Top = 368
     object cdsComposicaoProdutoID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -1012,7 +1158,56 @@ inherited Frm_Produto: TFrm_Produto
   end
   object dsComposicaoProduto: TDataSource
     DataSet = cdsComposicaoProduto
-    Left = 112
-    Top = 16
+    Left = 264
+    Top = 432
+  end
+  object dsHistPreco: TDataSource
+    DataSet = cdsHisPreco
+    Left = 456
+    Top = 385
+  end
+  object cdsHisPreco: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'INICIO'
+        DataType = ftDate
+      end
+      item
+        Name = 'FIM'
+        DataType = ftDate
+      end
+      item
+        Name = 'PRECO'
+        DataType = ftCurrency
+      end
+      item
+        Name = 'USUARIO'
+        DataType = ftString
+        Size = 100
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 456
+    Top = 337
+    object cdsHisPrecoINICIO: TDateField
+      DisplayLabel = 'INICIO DA VIG'#202'NCIA'
+      FieldName = 'INICIO'
+    end
+    object cdsHisPrecoFIM: TDateField
+      DisplayLabel = 'FINAL DA VIG'#202'NCIA'
+      FieldName = 'FIM'
+    end
+    object cdsHisPrecoPRECO: TCurrencyField
+      DisplayLabel = 'PRE'#199'O(R$)'
+      FieldName = 'PRECO'
+      DisplayFormat = 'R$ #,##0.00'
+    end
+    object cdsHisPrecoUSUARIO: TStringField
+      DisplayLabel = 'USU'#193'RIO'
+      FieldName = 'USUARIO'
+      Size = 100
+    end
   end
 end

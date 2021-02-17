@@ -81,6 +81,9 @@ type
     cdsCONV_QTDE: TFMTBCDField;
     cdsCONV_PRECO: TCurrencyField;
     cdsProdutoFornecedorPRECO: TFMTBCDField;
+    Label3: TLabel;
+    DBEdit8: TDBEdit;
+    cdsDT_CADASTRO: TDateField;
     procedure EdPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
@@ -156,6 +159,7 @@ begin
   cdsCONV_PRECO.AsCurrency  := 0 ;
   cdsQTDE_MINIMA.AsFloat    := 0 ;
   cdsTIPO_PRODUTO.AsString  := 'MP' ;
+  cdsDT_CADASTRO.AsDateTime := Date;
 end;
 
 procedure TFrm_MateriaPrima.DBEdit2KeyPress(Sender: TObject; var Key: Char);

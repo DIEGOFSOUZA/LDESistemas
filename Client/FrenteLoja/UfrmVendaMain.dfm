@@ -1661,6 +1661,9 @@ object frmVendaMain: TfrmVendaMain
       FieldName = 'ID_HISTORICO'
       Required = True
     end
+    object cdsMasterSTATUS: TStringField
+      FieldName = 'STATUS'
+    end
   end
   object cdsDetail: TClientDataSet
     Aggregates = <>

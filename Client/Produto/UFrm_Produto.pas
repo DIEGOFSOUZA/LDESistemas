@@ -90,6 +90,22 @@ type
     DBMemo1: TDBMemo;
     DBPesquisa5: TDBPesquisa;
     DBPesquisa6: TDBPesquisa;
+    tsHistPrecoVenda: TTabSheet;
+    pnlHistorico: TPanel;
+    Label14: TLabel;
+    dbgrdItens: TDBGrid;
+    dsHistPreco: TDataSource;
+    cdsHisPreco: TClientDataSet;
+    cdsDT_CADASTRO: TDateField;
+    cdsHisPrecoINICIO: TDateField;
+    cdsHisPrecoFIM: TDateField;
+    cdsHisPrecoPRECO: TCurrencyField;
+    cdsHisPrecoUSUARIO: TStringField;
+    cdsDESC_MAXIMO: TFMTBCDField;
+    pnlDesc: TPanel;
+    pnlDescMaximo: TPanel;
+    lblTitDesc: TLabel;
+    DBEdit11: TDBEdit;
     procedure FormCreate(Sender: TObject);
     procedure DBPesquisa3Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
@@ -102,6 +118,7 @@ type
     procedure actTrilharExecute(Sender: TObject);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
+    procedure pnlDescClick(Sender: TObject);
 
   private
     procedure MontaSql(pCodigo : Integer) ;
@@ -109,8 +126,10 @@ type
 
     procedure ResetaCDS() ;
     procedure ReadWrite() ;
-    procedure GeraHistoricoPreco();
+    procedure GeraHistoricoPreco(aState:TDataSetState);
     procedure MargemLucro();
+    procedure LoadHistPreco();
+
   public
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
@@ -127,14 +146,14 @@ implementation
 
 {$R *.dfm}
 
-uses UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha, UFuncoes;
+uses UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha, UFuncoes, u_Mensagem;
 
 procedure TFrm_Produto.actTrilharExecute(Sender: TObject);
 begin
   inherited;
   if cdsCODIGO.AsInteger < 1 then
   begin
-    MessageDlg('Informe o Produto', mtInformation, [mbAbort], 0);
+    TMensagem.Informacao('Informe o produto.');
     Exit;
   end;
 
@@ -172,6 +191,7 @@ begin
   cdsCONV_PRECO.AsCurrency  := 0 ;
   cdsQTDE_MINIMA.AsFloat    := 0 ;
   cdsTIPO_PRODUTO.AsString  := 'PA' ;
+  cdsDT_CADASTRO.AsDateTime := Date;
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;
@@ -250,7 +270,7 @@ begin
   ReadWrite ;
 
   PageControl1.TabIndex := 0 ;
-//  TabSheet2.TabVisible:=false ;
+  pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
 procedure TFrm_Produto.FormKeyDown(Sender: TObject; var Key: Word;
@@ -265,22 +285,29 @@ begin
     end;
 end;
 
-procedure TFrm_Produto.GeraHistoricoPreco;
+procedure TFrm_Produto.GeraHistoricoPreco(aState:TDataSetState);
+const SQLUp = 'update PRECOVENDA_HISTORICO a '+
+              'set a.DT_FIM = dateadd(-1 day to current_date) '+
+              'where a.ID = (select max(b.ID) from PRECOVENDA_HISTORICO b where b.ID_PROD = %s)';
 var
   lSQL : string;
 begin
-  if (cds.FieldByName('preco_venda').NewValue <> cds.FieldByName('preco_venda').OldValue) then
-  begin
-    lSQL := 'INSERT INTO PRECOVENDA_HISTORICO (ID, ID_PROD, USUARIO, PRECO_NOVO, DATA) '+
-            'VALUES ( '+
-            '0'+
-            ','+cds.FieldByName('codigo').AsString+
-            ','+QuotedStr(DM.User)+
-            ','+ValorFormatadoFirebird(cds.FieldByName('preco_venda').AsString)+
-            ','+QuotedStr(FormatDateTime('dd.mm.yyy',Date))+
-            ')';
-    DM.ExecutarSQL(DM.BancoDados,lSQL);
-  end;
+  if aState in [dsEdit] then
+    if (cds.FieldByName('preco_venda').NewValue = cds.FieldByName('preco_venda').OldValue) then
+      Exit;
+
+  DM.ExecutarSQL(DM.BancoDados,Format(SQLUp,[cds.FieldByName('codigo').AsString]));
+
+  lSQL := 'INSERT INTO PRECOVENDA_HISTORICO (ID, ID_PROD, USUARIO, PRECO_NOVO, DATA) '+
+          'VALUES ( '+
+          '0'+
+          ','+cds.FieldByName('codigo').AsString+
+          ','+QuotedStr(DM.User)+
+          ','+ValorFormatadoFirebird(cds.FieldByName('preco_venda').AsString)+
+          ','+QuotedStr(FormatDateTime('dd.mm.yyy',Date))+
+          ')';
+  DM.ExecutarSQL(DM.BancoDados,lSQL);
+  LoadHistPreco;
 end;
 
 procedure TFrm_Produto.Gravar;
@@ -299,14 +326,14 @@ begin
   if cds.ChangeCount > 0 then
   begin
     aProduto := cds.Delta;
-    if lEstado in [dsEdit] then
-      GeraHistoricoPreco();
+//    if lEstado in [dsEdit,dsInsert] then
   end;
 
   if cdsComposicaoProduto.ChangeCount > 0 then
     aProdComposicao := cdsComposicaoProduto.Delta;
 
   aRetorno := Dm.SMCadastroClient.setProduto(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([aProduto, aProdComposicao]));
+  GeraHistoricoPreco(lEstado);
 
   cds.Close;
   cds.Data := aRetorno[0];
@@ -319,6 +346,20 @@ begin
     MargemLucro()
   else
     pnlLucro.Visible := False;
+end;
+
+procedure TFrm_Produto.LoadHistPreco;
+const SQL = 'select a.DATA inicio,a.DT_FIM FIM,cast(a.PRECO_NOVO as double precision)PRECO,a.USUARIO '+
+            'from PRECOVENDA_HISTORICO a '+
+            'where a.ID_PROD = %s';
+var
+  lCDS: TClientDataSet;
+begin
+  if (cds.FieldByName('CODIGO').AsInteger < 1) then
+    Exit;
+
+  cdsHisPreco.Close;
+  cdsHisPreco.Data := DM.LerDataSet(Format(SQL,[cds.FieldByName('codigo').AsString]));
 end;
 
 procedure TFrm_Produto.localizar;
@@ -362,6 +403,8 @@ begin
   cdsComposicaoProduto.Data := tmp[1];
 
   ReadWrite;
+  LoadHistPreco;
+
 end;
 
 procedure TFrm_Produto.Novo;
@@ -369,6 +412,7 @@ begin
   inherited;
   cdsComposicaoProduto.Close;
   cdsComposicaoProduto.CreateDataSet ;
+  cdsHisPreco.Close;
   DBEdit1.SetFocus ;
 end;
 
@@ -419,18 +463,27 @@ begin
   inherited;
   if cdsComposicaoProduto.IsEmpty then
   begin
-    MessageDlg('Não há registro para ser excluso.',mtInformation,[mbAbort],0) ;
+    TMensagem.Informacao('Não há registro para ser excluso.') ;
     Exit ;
   end;
 
-  if MessageDlg('Confirma a exclusão da Matéria-Prima: ' + cdsComposicaoProdutoMATERIAPRIMA.AsString + ' ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+  if TMensagem.Pergunta('Confirma a exclusão da Matéria-Prima: ' + cdsComposicaoProdutoMATERIAPRIMA.AsString + ' ?') then
   begin
     if DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(cdsComposicaoProdutoID.AsInteger)])) > 0 then
     begin
       cdsComposicaoProduto.Delete;
-      MessageDlg('Exclusão efetuada com sucesso.', mtInformation, [mbOK], 0);
+      TMensagem.Informacao('Exclusão efetuada com sucesso.');
     end;
     MontaSql(cdsCODIGO.AsInteger);
+  end;
+end;
+
+procedure TFrm_Produto.pnlDescClick(Sender: TObject);
+begin
+  inherited;
+  if (pnlDescMaximo.Enabled = False) then
+  begin
+    TMensagem.Informacao('Edição permitida para o perfil Administrador.');
   end;
 end;
 
@@ -451,6 +504,8 @@ begin
 
   cdsComposicaoProduto.Close;
   cdsComposicaoProduto.CreateDataSet ;
+
+  cdsHisPreco.Close;
 end;
 
 function TFrm_Produto.Validar: Boolean;
@@ -458,7 +513,7 @@ begin
   Result := True ;
   if Trim(DBEdit1.Text) = '' then
   begin
-    MessageDlg('Informar o Nome do produto',mtError,[mbOK],0) ;
+    TMensagem.Atencao('Informar o nome do produto.') ;
     DBEdit1.SetFocus ;
     Result := False ;
     Exit ;
@@ -466,7 +521,7 @@ begin
 
   if Trim(DBEdit2.Text) = '' then
   begin
-    MessageDlg('Informar preço de venda',mtError,[mbOK],0) ;
+    TMensagem.Atencao('Informar preço de venda.') ;
     DBEdit2.SetFocus ;
     Result := False ;
     Exit ;
@@ -474,7 +529,7 @@ begin
 
    if Trim(DBEdit8.Text) = '' then
   begin
-    MessageDlg('Informar preço de custo',mtError,[mbOK],0) ;
+    TMensagem.Atencao('Informar preço de custo.') ;
     DBEdit8.SetFocus ;
     Result := False ;
     Exit ;
@@ -482,7 +537,7 @@ begin
 
    if Trim(DBPesquisa1.Campo.Text) = '' then
   begin
-    MessageDlg('Informar a Unidade de Medida.',mtError,[mbOK],0) ;
+    TMensagem.Atencao('Informar a Unidade de Medida.') ;
     DBPesquisa1.Campo.SetFocus ;
     Result := False ;
     Exit ;
@@ -492,7 +547,7 @@ begin
   begin
     if ((DBEdit4.Text = EmptyStr) or (StrToFloat(DBEdit4.Text) < 0)) then
     begin
-      MessageDlg('Informar a Quantidade da Conversão.', mtError, [mbOK], 0);
+      TMensagem.Atencao('Informar a Quantidade da Conversão.');
       DBEdit4.SetFocus;
       Result := False;
       Exit;
@@ -500,7 +555,7 @@ begin
 
     if StrToCurrDef(DBEdit6.Text, 0) < 0.01 then
     begin
-      MessageDlg('Informar o Preço da Conversão.', mtError, [mbOK], 0);
+      TMensagem.Atencao('Informar o Preço da Conversão.');
       DBEdit6.SetFocus;
       Result := False;
       Exit;

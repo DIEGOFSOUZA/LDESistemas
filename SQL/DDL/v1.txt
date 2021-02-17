@@ -1,0 +1,8 @@
+alter table PRODUTO 
+add dt_cadastro date;
+
+alter table PRECOVENDA_HISTORICO 
+add dt_fim date;
+
+alter table PRODUTO
+add DESC_MAXIMO numeric(18,3);
