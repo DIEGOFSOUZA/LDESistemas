@@ -85,6 +85,7 @@ type
     NOTAFISCALENTRADA1: TMenuItem;
     SANGRIAMOVIMENTAS1: TMenuItem;
     ACERTODEESTOQUE1: TMenuItem;
+    AUTORIZARORAMENTO1: TMenuItem;
     procedure Clientes1Click(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure Funcionario1Click(Sender: TObject);
@@ -134,6 +135,7 @@ type
     procedure NOTAFISCALENTRADA1Click(Sender: TObject);
     procedure SANGRIAMOVIMENTAS1Click(Sender: TObject);
     procedure ACERTODEESTOQUE1Click(Sender: TObject);
+    procedure AUTORIZARORAMENTO1Click(Sender: TObject);
   private
     { Private declarations }
     Ativar: Boolean;
@@ -162,7 +164,7 @@ uses
   UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque, UFrm_GrupoHistorico, UFrm_Usuario,
   uFrm_CadUnidade, UFrm_CondicoesPagto, UFrm_Pedido, uRel_VendaFormaPagto,
   uRel_VendaPeriodo, uRel_VendaPorVendedor, uRel_VendaPorItem,
-  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia;
+  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento;
 
 function Saudacao: string;
 begin
@@ -182,6 +184,11 @@ end;
 procedure TFrm_Inicial.ACERTODEESTOQUE1Click(Sender: TObject);
 begin
   TFrm_AcertoEstoque.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.AUTORIZARORAMENTO1Click(Sender: TObject);
+begin
+  TFrm_GerenciaOrcamento.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.Cadastro2Click(Sender: TObject);

@@ -108,7 +108,9 @@ uses
   uFrm_NFEnt_AltDupl in 'Nota\uFrm_NFEnt_AltDupl.pas' {Frm_NFEnt_AltDupl},
   uFrm_Item in 'Nota\uFrm_Item.pas' {Frm_Item},
   uRel_Sangria in 'Financeiro\Caixa\Relatorio\uRel_Sangria.pas' {Rel_Sangria},
-  UFrm_AcertoEstoque in 'Producao\UFrm_AcertoEstoque.pas' {Frm_AcertoEstoque};
+  UFrm_AcertoEstoque in 'Producao\UFrm_AcertoEstoque.pas' {Frm_AcertoEstoque},
+  UPdr_Child2 in 'Heranca\UPdr_Child2.pas' {Pdr_Child2},
+  UFrm_GerenciaOrcamento in 'FrenteLoja\UFrm_GerenciaOrcamento.pas' {Frm_GerenciaOrcamento};
 
 {$R *.res}
 

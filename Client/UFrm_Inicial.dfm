@@ -4516,6 +4516,10 @@ object Frm_Inicial: TFrm_Inicial
           Caption = 'FECHAMENTO DE CAIXA'
           OnClick = FechamentodeCaixa1Click
         end
+        object AUTORIZARORAMENTO1: TMenuItem
+          Caption = 'AUTORIZAR OR'#199'AMENTO'
+          OnClick = AUTORIZARORAMENTO1Click
+        end
       end
       object Pedidos1: TMenuItem
         Caption = 'PEDIDOS'
