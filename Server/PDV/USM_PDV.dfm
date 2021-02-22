@@ -49,6 +49,27 @@ object smPDV: TsmPDV
       FieldName = 'DT_VALIDADE'
       Origin = 'DT_VALIDADE'
     end
+    object fdqryOrcamentoSOLICITACAO: TMemoField
+      FieldName = 'SOLICITACAO'
+      Origin = 'SOLICITACAO'
+      BlobType = ftMemo
+    end
+    object fdqryOrcamentoLIBERADO: TStringField
+      FieldName = 'LIBERADO'
+      Origin = 'LIBERADO'
+      FixedChar = True
+      Size = 3
+    end
+    object fdqryOrcamentoTIPO_LIBERACAO: TStringField
+      FieldName = 'TIPO_LIBERACAO'
+      Origin = 'TIPO_LIBERACAO'
+      Size = 50
+    end
+    object fdqryOrcamentoUSU_LIBEROU: TStringField
+      FieldName = 'USU_LIBEROU'
+      Origin = 'USU_LIBEROU'
+      Size = 100
+    end
   end
   object fdqryOrItem: TFDQuery
     MasterSource = sOrcamento

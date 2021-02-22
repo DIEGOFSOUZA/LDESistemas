@@ -110,7 +110,8 @@ uses
   uRel_Sangria in 'Financeiro\Caixa\Relatorio\uRel_Sangria.pas' {Rel_Sangria},
   UFrm_AcertoEstoque in 'Producao\UFrm_AcertoEstoque.pas' {Frm_AcertoEstoque},
   UPdr_Child2 in 'Heranca\UPdr_Child2.pas' {Pdr_Child2},
-  UFrm_GerenciaOrcamento in 'FrenteLoja\UFrm_GerenciaOrcamento.pas' {Frm_GerenciaOrcamento};
+  UFrm_GerenciaOrcamento in 'FrenteLoja\UFrm_GerenciaOrcamento.pas' {Frm_GerenciaOrcamento},
+  UFrm_GeraOrcamento in 'FrenteLoja\UFrm_GeraOrcamento.pas' {Frm_GeraOrcamento};
 
 {$R *.res}
 

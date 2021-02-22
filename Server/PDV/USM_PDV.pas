@@ -38,6 +38,10 @@ type
     fdqryOrcamentoDT_VALIDADE: TDateField;
     fdqryOrItemUNID: TStringField;
     fdqryOrItemQTDE_BAIXA: TFMTBCDField;
+    fdqryOrcamentoSOLICITACAO: TMemoField;
+    fdqryOrcamentoLIBERADO: TStringField;
+    fdqryOrcamentoTIPO_LIBERACAO: TStringField;
+    fdqryOrcamentoUSU_LIBEROU: TStringField;
   private
     { Private declarations }
   public

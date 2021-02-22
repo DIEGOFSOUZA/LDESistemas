@@ -228,6 +228,10 @@ type
     cdsReceberDESCONTO: TFMTBCDField;
     cdsMasterID_HISTORICO: TIntegerField;
     cdsMasterSTATUS: TStringField;
+    dsOrcamentoSOLICITACAO: TMemoField;
+    dsOrcamentoLIBERADO: TStringField;
+    dsOrcamentoTIPO_LIBERACAO: TStringField;
+    dsOrcamentoUSU_LIBEROU: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -287,6 +291,7 @@ type
     procedure ListaVendedores();
 
     {orçamento}
+    procedure AppendOrcamento();
     procedure GeraOrcamento(pCondPagto : integer);
     procedure CarregaOrcamento();
     procedure SetOrcamentoId(const Value: integer);
@@ -721,6 +726,46 @@ begin
     end;
   finally
     FreeAndNil(Frm_PDV_Vendedor);
+  end;
+end;
+
+procedure TfrmVendaMain.AppendOrcamento;
+var
+  lTot: Currency;
+begin
+  if cdsItens.IsEmpty then
+    Exit;
+
+  dsOrcamento.Close;
+  dsOrcamento.Data := DM.SMOrcamento.getOrcamento(DM.BancoDados,-1);
+
+  dsOrcamento.Append;
+  dsOrcamento.FieldByName('id').AsInteger := 0;
+  dsOrcamento.FieldByName('emissao').AsDateTime := Date;
+  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date,30);
+  dsOrcamento.FieldByName('id_cliente').AsInteger := IdCliente;
+  dsOrcamento.FieldByName('usuario').AsString := DM.UsuarioDataHora;
+  dsOrcamento.FieldByName('status').AsString := 'EM ABERTO'; //EM ABERTO|VENDIDO|CANCELADO
+//  if (pCondPagto > 0) then
+//    dsOrcamento.FieldByName('id_formapagto').AsInteger := pCondPagto;
+  dsOrcamento.Post;
+
+  lTot := 0;
+  cdsItens.First;
+  while not cdsItens.Eof do
+  begin
+    dsOrItem.Append;
+    dsOrItem.FieldByName('id_orcamento').AsInteger := 0;
+    dsOrItem.FieldByName('ordem').AsInteger := cdsItens.FieldByName('ordem').AsInteger;
+    dsOrItem.FieldByName('id_prod').AsInteger := cdsItens.FieldByName('codigo').AsInteger;
+    dsOrItem.FieldByName('qtde').AsFloat := cdsItens.FieldByName('qtde').AsFloat;
+    dsOrItem.FieldByName('vunit').AsCurrency := cdsItens.FieldByName('preco_venda').AsCurrency;
+    dsOrItem.FieldByName('vdesc').AsCurrency := cdsItens.FieldByName('vl_desconto').AsCurrency;
+    dsOrItem.FieldByName('unid').AsString := cdsItens.FieldByName('unidade').AsString;
+    dsOrItem.FieldByName('qtde_baixa').AsFloat := cdsItens.FieldByName('qtde_baixa').AsFloat;
+    dsOrItem.Post;
+    lTot := lTot+((cdsItens.FieldByName('qtde').AsFloat*cdsItens.FieldByName('preco_venda').AsCurrency)-cdsItens.FieldByName('vl_desconto').AsCurrency);
+    cdsItens.Next;
   end;
 end;
 

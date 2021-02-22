@@ -1579,7 +1579,6 @@ object frmVendaMain: TfrmVendaMain
     CommandText = 'select a.* from PDV_MASTER a where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 184
     Top = 205
     object cdsMasterID: TIntegerField
@@ -1670,7 +1669,6 @@ object frmVendaMain: TfrmVendaMain
     CommandText = 'select a.* from PDV_ITENS a where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 184
     Top = 255
     object cdsDetailID: TIntegerField
@@ -1755,7 +1753,6 @@ object frmVendaMain: TfrmVendaMain
     CommandText = 'select a.* from PDV_RECEBER a where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 184
     Top = 304
     object cdsReceberID: TIntegerField
@@ -1827,6 +1824,7 @@ object frmVendaMain: TfrmVendaMain
     Aggregates = <>
     Params = <>
     ProviderName = 'dspOrcamento'
+    RemoteServer = DM.dspROrcamento
     Left = 34
     Top = 201
     object dsOrcamentoID: TIntegerField
@@ -1861,11 +1859,28 @@ object frmVendaMain: TfrmVendaMain
       FieldName = 'DT_VALIDADE'
       Origin = 'DT_VALIDADE'
     end
-    object dsOrcamentofdqryOrItem: TDataSetField
-      FieldName = 'fdqryOrItem'
+    object dsOrcamentoSOLICITACAO: TMemoField
+      FieldName = 'SOLICITACAO'
+      BlobType = ftMemo
+    end
+    object dsOrcamentoLIBERADO: TStringField
+      FieldName = 'LIBERADO'
+      FixedChar = True
+      Size = 3
+    end
+    object dsOrcamentoTIPO_LIBERACAO: TStringField
+      FieldName = 'TIPO_LIBERACAO'
+      Size = 50
+    end
+    object dsOrcamentoUSU_LIBEROU: TStringField
+      FieldName = 'USU_LIBEROU'
+      Size = 100
     end
     object dsOrcamentofdqryOrPagar: TDataSetField
       FieldName = 'fdqryOrPagar'
+    end
+    object dsOrcamentofdqryOrItem: TDataSetField
+      FieldName = 'fdqryOrItem'
     end
   end
   object dsOrItem: TClientDataSet
