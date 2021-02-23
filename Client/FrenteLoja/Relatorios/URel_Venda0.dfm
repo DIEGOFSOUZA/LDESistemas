@@ -1,7 +1,7 @@
 inherited Rel_Venda0: TRel_Venda0
   Width = 734
   Height = 461
-  HorzScrollBar.Position = 778
+  HorzScrollBar.Position = 120
   VertScrollBar.Position = 179
   AutoScroll = True
   Caption = 'Rel_Venda0'
@@ -11,11 +11,11 @@ inherited Rel_Venda0: TRel_Venda0
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    Left = 56
+    Left = 714
     Top = -117
     DataSource = dsItens
     ShowProgress = False
-    ExplicitLeft = 56
+    ExplicitLeft = 714
     ExplicitTop = -117
     object RLBand1: TRLBand
       Left = 38
@@ -1078,7 +1078,7 @@ inherited Rel_Venda0: TRel_Venda0
     end
   end
   object Rel_Orcamento: TRLReport
-    Left = -770
+    Left = -112
     Top = -117
     Width = 794
     Height = 1123
@@ -1200,8 +1200,9 @@ inherited Rel_Venda0: TRel_Venda0
       object RLLabel16: TRLLabel
         Left = 8
         Top = 34
-        Width = 74
+        Width = 80
         Height = 20
+        Alignment = taRightJustify
         Caption = 'Or'#231'amento:'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
@@ -1211,7 +1212,7 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlblNum: TRLLabel
-        Left = 88
+        Left = 89
         Top = 34
         Width = 24
         Height = 20
@@ -1224,10 +1225,11 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlbl1: TRLLabel
-        Left = 36
-        Top = 62
-        Width = 46
+        Left = 8
+        Top = 58
+        Width = 80
         Height = 20
+        Alignment = taRightJustify
         Caption = 'Cliente'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
@@ -1237,8 +1239,8 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlblCliente: TRLLabel
-        Left = 88
-        Top = 62
+        Left = 89
+        Top = 58
         Width = 86
         Height = 20
         Caption = 'Fulano de Tal'
@@ -1250,10 +1252,11 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlbl2: TRLLabel
-        Left = 23
-        Top = 90
-        Width = 59
+        Left = 8
+        Top = 82
+        Width = 80
         Height = 20
+        Alignment = taRightJustify
         Caption = 'Emiss'#227'o:'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlack
@@ -1263,8 +1266,8 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlblEmissao: TRLLabel
-        Left = 86
-        Top = 90
+        Left = 89
+        Top = 82
         Width = 65
         Height = 20
         Caption = '21/09/2020'
@@ -1277,8 +1280,8 @@ inherited Rel_Venda0: TRel_Venda0
       end
       object rlbl3: TRLLabel
         Left = 219
-        Top = 90
-        Width = 107
+        Top = 82
+        Width = 126
         Height = 20
         Caption = 'Data de validade:'
         Font.Charset = ANSI_CHARSET
@@ -1289,9 +1292,9 @@ inherited Rel_Venda0: TRel_Venda0
         ParentFont = False
       end
       object rlblValidade: TRLLabel
-        Left = 332
-        Top = 90
-        Width = 65
+        Left = 345
+        Top = 82
+        Width = 80
         Height = 20
         Caption = '21/09/2020'
         Font.Charset = ANSI_CHARSET
@@ -1437,15 +1440,15 @@ inherited Rel_Venda0: TRel_Venda0
         BandType = btSummary
         BeforePrint = RLBand12BeforePrint
         object RLPanel1: TRLPanel
-          Left = 322
+          Left = 256
           Top = 4
-          Width = 390
+          Width = 456
           Height = 30
           Borders.Sides = sdAll
           object rlbl4: TRLLabel
             Left = 6
             Top = 7
-            Width = 113
+            Width = 136
             Height = 16
             AutoSize = False
             Caption = 'Quantidade de itens:'
@@ -1457,7 +1460,7 @@ inherited Rel_Venda0: TRel_Venda0
             ParentFont = False
           end
           object rlblTotItens: TRLLabel
-            Left = 123
+            Left = 142
             Top = 7
             Width = 65
             Height = 16
@@ -1471,9 +1474,9 @@ inherited Rel_Venda0: TRel_Venda0
             ParentFont = False
           end
           object rlbl6: TRLLabel
-            Left = 192
+            Left = 236
             Top = 7
-            Width = 111
+            Width = 134
             Height = 16
             AutoSize = False
             Caption = 'Valor total dos itens:'
@@ -1485,7 +1488,7 @@ inherited Rel_Venda0: TRel_Venda0
             ParentFont = False
           end
           object rlblVlTotItens: TRLLabel
-            Left = 307
+            Left = 370
             Top = 7
             Width = 75
             Height = 16
@@ -1673,7 +1676,7 @@ inherited Rel_Venda0: TRel_Venda0
           ParentFont = False
         end
         object RLLabel27: TRLLabel
-          Left = 196
+          Left = 276
           Top = 33
           Width = 92
           Height = 16
@@ -1688,7 +1691,7 @@ inherited Rel_Venda0: TRel_Venda0
           ParentFont = False
         end
         object RLLabel28: TRLLabel
-          Left = 298
+          Left = 378
           Top = 33
           Width = 85
           Height = 16
@@ -1709,9 +1712,9 @@ inherited Rel_Venda0: TRel_Venda0
         Height = 25
         object RLDBText31: TRLDBText
           Left = 8
-          Top = 1
-          Width = 177
-          Height = 16
+          Top = 3
+          Width = 262
+          Height = 14
           AutoSize = False
           DataField = 'DESCRICAO'
           DataSource = sOrPagar
@@ -1724,7 +1727,7 @@ inherited Rel_Venda0: TRel_Venda0
           Text = ''
         end
         object RLDBText32: TRLDBText
-          Left = 196
+          Left = 276
           Top = 1
           Width = 92
           Height = 16
@@ -1741,7 +1744,7 @@ inherited Rel_Venda0: TRel_Venda0
           Text = ''
         end
         object RLDBText33: TRLDBText
-          Left = 298
+          Left = 378
           Top = 1
           Width = 108
           Height = 16
@@ -1808,7 +1811,6 @@ inherited Rel_Venda0: TRel_Venda0
       ' 2'#13#10
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     OnCalcFields = cdsItensCalcFields
     Left = 576
     Top = 32
@@ -1964,7 +1966,6 @@ inherited Rel_Venda0: TRel_Venda0
       'ECEBER a'#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 640
     Top = 32
     object cdsReceberDT_VENC: TDateField
@@ -1995,7 +1996,6 @@ inherited Rel_Venda0: TRel_Venda0
       #13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 430
     Top = 63
     object dsOrItemID: TIntegerField
@@ -2067,7 +2067,6 @@ inherited Rel_Venda0: TRel_Venda0
       'umeric(10,2)) valor'#13#10'from CONDPAGTO a where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 486
     Top = 63
     object dsOrPagarDESCRICAO: TStringField

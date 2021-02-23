@@ -2,18 +2,22 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
   Caption = 'Frm_GerenciaOrcamento'
   ClientHeight = 535
   ClientWidth = 783
+  OnActivate = FormActivate
   ExplicitWidth = 783
   ExplicitHeight = 535
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 783
+    ExplicitWidth = 783
     inherited lblTitulo: TLabel
       Width = 758
       Caption = '   AUTORIZA'#199#195'O DE OR'#199'AMENTO'
+      ExplicitWidth = 758
     end
     inherited pnlBotaoSair: TPanel
       Left = 758
+      ExplicitLeft = 758
     end
   end
   object pnlFundo: TPanel [1]
@@ -26,10 +30,6 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     Color = 14803681
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 176
-    ExplicitTop = 208
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pnlOrcamentos: TPanel
       Left = 0
       Top = 0
@@ -124,6 +124,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         ParentFont = False
         TabOrder = 1
         Text = 'Or'#231'amentos n'#227'o Autorizados'
+        OnChange = actLocalizarExecute
         Items.Strings = (
           'Or'#231'amentos n'#227'o Autorizados'
           'Or'#231'amentos Autorizados')
@@ -137,6 +138,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         Color = 7024384
         ParentBackground = False
         TabOrder = 2
+        Visible = False
         object btnLocalizar: TSpeedButton
           Left = 0
           Top = 0
@@ -167,10 +169,6 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 1
-      ExplicitLeft = 224
-      ExplicitTop = 184
-      ExplicitWidth = 185
-      ExplicitHeight = 41
       object pnlAcoes: TPanel
         Left = 680
         Top = 0
@@ -180,7 +178,6 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         BorderStyle = bsSingle
         ParentColor = True
         TabOrder = 0
-        ExplicitHeight = 283
         object pnlAutorizar: TPanel
           Left = 2
           Top = 5
@@ -220,9 +217,6 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         ParentBackground = False
         ParentColor = True
         TabOrder = 1
-        ExplicitLeft = -6
-        ExplicitTop = 3
-        ExplicitHeight = 283
         object lbl2: TLabel
           Left = 0
           Top = 0
@@ -308,6 +302,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
+          ReadOnly = True
           TabOrder = 0
         end
         object DBEdit2: TDBEdit
@@ -323,6 +318,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
+          ReadOnly = True
           TabOrder = 1
         end
         object DBEdit3: TDBEdit
@@ -338,6 +334,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
+          ReadOnly = True
           TabOrder = 2
         end
         object DBMemo1: TDBMemo
@@ -347,6 +344,13 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
           Height = 89
           DataField = 'JUSTIFICATIVA'
           DataSource = dsOrcamentos
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+          ReadOnly = True
           TabOrder = 3
         end
       end
@@ -369,11 +373,11 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     CommandText = 
       'SELECT a.EMISSAO,a.LIBERADO,a.SOLICITACAO justificativa,a.TIPO_L' +
       'IBERACAO motivo,'#13#10'a.USUARIO,a.USU_LIBEROU,'#13#10'b.NOME_RAZAO cliente' +
-      ',c.DESCRICAO formapagto,sum(d.VTOTAL) valor'#13#10'FROM ORCAMENTO a'#13#10'l' +
-      'eft outer join CLIENTE b on (b.CODIGO=a.ID_CLIENTE)'#13#10'left outer ' +
-      'join CONDPAGTO c on (c.CODIGO=a.ID_FORMAPAGTO)'#13#10'left outer join ' +
-      'ORCAMENTO_ITEM d on (d.ID_ORCAMENTO=a.ID)'#13#10'where 1=2'#13#10'group by 1' +
-      ',2,3,4,5,6,7,8;'
+      ',c.DESCRICAO formapagto,a.ID,'#13#10'sum(d.VTOTAL) valor'#13#10'FROM ORCAMEN' +
+      'TO a'#13#10'left outer join CLIENTE b on (b.CODIGO=a.ID_CLIENTE)'#13#10'left' +
+      ' outer join CONDPAGTO c on (c.CODIGO=a.ID_FORMAPAGTO)'#13#10'left oute' +
+      'r join ORCAMENTO_ITEM d on (d.ID_ORCAMENTO=a.ID)'#13#10'where 1=2'#13#10'gro' +
+      'up by 1,2,3,4,5,6,7,8,9;'
     FieldDefs = <
       item
         Name = 'EMISSAO'
@@ -416,6 +420,11 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         Attributes = [faReadonly]
         DataType = ftString
         Size = 100
+      end
+      item
+        Name = 'ID'
+        Attributes = [faRequired]
+        DataType = ftInteger
       end
       item
         Name = 'VALOR'
@@ -481,6 +490,10 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
       DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 5
+    end
+    object cdsOrcamentosID: TIntegerField
+      FieldName = 'ID'
+      Required = True
     end
   end
   object dsOrcamentos: TDataSource

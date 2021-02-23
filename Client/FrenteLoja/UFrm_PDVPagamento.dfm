@@ -26,7 +26,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Height = 30
       Align = alTop
       TabOrder = 0
-      ExplicitTop = 32
       object lblTitTotPagar: TLabel
         Left = 1
         Top = 1

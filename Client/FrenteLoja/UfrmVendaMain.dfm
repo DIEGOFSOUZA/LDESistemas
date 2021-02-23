@@ -1420,8 +1420,8 @@ object frmVendaMain: TfrmVendaMain
     end
   end
   object actlst1: TActionList
-    Left = 813
-    Top = 158
+    Left = 29
+    Top = 350
     object actCancelItem: TAction
       Caption = 'actCancelItem'
       ShortCut = 112
@@ -1818,119 +1818,6 @@ object frmVendaMain: TfrmVendaMain
       FieldName = 'DESCONTO'
       Precision = 18
       Size = 2
-    end
-  end
-  object dsOrcamento: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspOrcamento'
-    RemoteServer = DM.dspROrcamento
-    Left = 34
-    Top = 201
-    object dsOrcamentoID: TIntegerField
-      FieldName = 'ID'
-      Origin = 'ID'
-      Required = True
-    end
-    object dsOrcamentoEMISSAO: TDateField
-      FieldName = 'EMISSAO'
-      Origin = 'EMISSAO'
-      Required = True
-    end
-    object dsOrcamentoID_CLIENTE: TIntegerField
-      FieldName = 'ID_CLIENTE'
-      Origin = 'ID_CLIENTE'
-      Required = True
-    end
-    object dsOrcamentoID_FORMAPAGTO: TIntegerField
-      FieldName = 'ID_FORMAPAGTO'
-      Origin = 'ID_FORMAPAGTO'
-    end
-    object dsOrcamentoUSUARIO: TStringField
-      FieldName = 'USUARIO'
-      Origin = 'USUARIO'
-      Size = 50
-    end
-    object dsOrcamentoSTATUS: TStringField
-      FieldName = 'STATUS'
-      Origin = 'STATUS'
-    end
-    object dsOrcamentoDT_VALIDADE: TDateField
-      FieldName = 'DT_VALIDADE'
-      Origin = 'DT_VALIDADE'
-    end
-    object dsOrcamentoSOLICITACAO: TMemoField
-      FieldName = 'SOLICITACAO'
-      BlobType = ftMemo
-    end
-    object dsOrcamentoLIBERADO: TStringField
-      FieldName = 'LIBERADO'
-      FixedChar = True
-      Size = 3
-    end
-    object dsOrcamentoTIPO_LIBERACAO: TStringField
-      FieldName = 'TIPO_LIBERACAO'
-      Size = 50
-    end
-    object dsOrcamentoUSU_LIBEROU: TStringField
-      FieldName = 'USU_LIBEROU'
-      Size = 100
-    end
-    object dsOrcamentofdqryOrPagar: TDataSetField
-      FieldName = 'fdqryOrPagar'
-    end
-    object dsOrcamentofdqryOrItem: TDataSetField
-      FieldName = 'fdqryOrItem'
-    end
-  end
-  object dsOrItem: TClientDataSet
-    Aggregates = <>
-    DataSetField = dsOrcamentofdqryOrItem
-    Params = <>
-    Left = 33
-    Top = 249
-    object dsOrItemID_ORCAMENTO: TIntegerField
-      FieldName = 'ID_ORCAMENTO'
-      Origin = 'ID_ORCAMENTO'
-      Required = True
-    end
-    object dsOrItemORDEM: TIntegerField
-      FieldName = 'ORDEM'
-      Origin = 'ORDEM'
-      Required = True
-    end
-    object dsOrItemID_PROD: TIntegerField
-      FieldName = 'ID_PROD'
-      Origin = 'ID_PROD'
-      Required = True
-    end
-    object dsOrItemQTDE: TFMTBCDField
-      FieldName = 'QTDE'
-      Origin = 'QTDE'
-      Precision = 18
-      Size = 3
-    end
-    object dsOrItemVUNIT: TFMTBCDField
-      FieldName = 'VUNIT'
-      Origin = 'VUNIT'
-      Precision = 18
-      Size = 2
-    end
-    object dsOrItemVDESC: TFMTBCDField
-      FieldName = 'VDESC'
-      Origin = 'VDESC'
-      Precision = 18
-      Size = 2
-    end
-    object dsOrItemUNID: TStringField
-      FieldName = 'UNID'
-      Origin = 'UNID'
-      Size = 10
-    end
-    object dsOrItemQTDE_BAIXA: TFMTBCDField
-      FieldName = 'QTDE_BAIXA'
-      Precision = 18
-      Size = 3
     end
   end
 end

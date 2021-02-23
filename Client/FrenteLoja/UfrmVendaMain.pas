@@ -185,25 +185,6 @@ type
     SpeedButton1: TSpeedButton;
     actGeraOrcamento: TAction;
     cdsReceberBAIXA_ID_CAIXA: TIntegerField;
-    dsOrcamento: TClientDataSet;
-    dsOrItem: TClientDataSet;
-    dsOrcamentoID: TIntegerField;
-    dsOrcamentoEMISSAO: TDateField;
-    dsOrcamentoID_CLIENTE: TIntegerField;
-    dsOrcamentoID_FORMAPAGTO: TIntegerField;
-    dsOrcamentoUSUARIO: TStringField;
-    dsOrcamentoSTATUS: TStringField;
-    dsOrcamentofdqryOrPagar: TDataSetField;
-    dsOrcamentofdqryOrItem: TDataSetField;
-    dsOrItemID_ORCAMENTO: TIntegerField;
-    dsOrItemORDEM: TIntegerField;
-    dsOrItemID_PROD: TIntegerField;
-    dsOrItemQTDE: TFMTBCDField;
-    dsOrItemVUNIT: TFMTBCDField;
-    dsOrItemVDESC: TFMTBCDField;
-    dsOrcamentoDT_VALIDADE: TDateField;
-    dsOrItemUNID: TStringField;
-    dsOrItemQTDE_BAIXA: TFMTBCDField;
     pnlCaixaAberto: TPanel;
     pnlLeft: TPanel;
     pnlRight: TPanel;
@@ -228,10 +209,6 @@ type
     cdsReceberDESCONTO: TFMTBCDField;
     cdsMasterID_HISTORICO: TIntegerField;
     cdsMasterSTATUS: TStringField;
-    dsOrcamentoSOLICITACAO: TMemoField;
-    dsOrcamentoLIBERADO: TStringField;
-    dsOrcamentoTIPO_LIBERACAO: TStringField;
-    dsOrcamentoUSU_LIBEROU: TStringField;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -291,8 +268,6 @@ type
     procedure ListaVendedores();
 
     {orçamento}
-    procedure AppendOrcamento();
-    procedure GeraOrcamento(pCondPagto : integer);
     procedure CarregaOrcamento();
     procedure SetOrcamentoId(const Value: integer);
     procedure AtualizaOrcamento();
@@ -316,7 +291,7 @@ uses
   UFrm_PDVPagamento, UFuncoes, UFrm_PDVCrediario, URel_Venda0,
   UFrm_EscolhaUM, UFrm_Desconto, u_Mensagem, UFrm_VoltaSenha,
   UFrm_PagtoOrcamento, UFrmOrcamentoConsulta, UConsulta,
-  UFrm_PDV_Vendedor;
+  UFrm_PDV_Vendedor, UFrm_GeraOrcamento;
 
 {$R *.dfm}
 
@@ -453,8 +428,10 @@ begin
 end;
 
 procedure TfrmVendaMain.actGeraOrcamentoExecute(Sender: TObject);
+var
+  lRet: string;
 begin
-//  ImprimirOrcamento(1,197);
+//  ImprimirOrcamento(54);
   try
     if cdsItens.IsEmpty then
     begin
@@ -468,30 +445,25 @@ begin
         Abort;
       end;
 
-      if not Assigned(Frm_PagtoOrcamento) then
-        Frm_PagtoOrcamento := TFrm_PagtoOrcamento.Create(Self);
+      if not Assigned(Frm_GeraOrcamento) then
+        Frm_GeraOrcamento := TFrm_GeraOrcamento.Create(Self);
       try
-        Frm_PagtoOrcamento.Label2.Caption := FormatCurr('#,##0.00', cdsItenstotal.Value);
-        Frm_PagtoOrcamento.EdPesquisa1.Enabled := False;
-        Frm_PagtoOrcamento.ShowModal;
-        if Frm_PagtoOrcamento.Retorno = 'ok' then
+        Frm_GeraOrcamento.Executa(cdsItens, IdCliente);
+        lRet := Frm_GeraOrcamento.Retorno;
+        if (lRet = 'sucesso') then
         begin
-          GeraOrcamento(Frm_PagtoOrcamento.CondPagto);
-          if DM.SMOrcamento.setOrcamento(DM.BancoDados, 0, dsOrcamento.Delta) then
-          begin
-            ImprimirOrcamento(DM.GetInteger('select max(ID) id from ORCAMENTO', 'id'));
-            ZerarCDS;
-            LimpaEdtsLbls;
-            AtualizaTotais;
-            ListaVendedores();
-          end
-          else
-          begin
-            TMensagem.Erro('Não foi possivel gerar o orçamento.');
-          end;
+//          ImprimirOrcamento(DM.GetInteger('select max(ID) id from ORCAMENTO', 'id'));
+          ZerarCDS;
+          LimpaEdtsLbls;
+          AtualizaTotais;
+          ListaVendedores();
+        end
+        else if (lRet = 'erro') then
+        begin
+          TMensagem.Erro('Não foi possível gerar o orçamento. Tente novamente.');
         end;
       finally
-        FreeAndNil(Frm_PagtoOrcamento);
+        FreeAndNil(Frm_GeraOrcamento);
       end;
     end;
   finally
@@ -559,6 +531,10 @@ begin
         FormaPagto := EmptyStr;
         aIDCondPagto := 0;
         gIdCliente := IdCliente.ToString;
+        aCliemDebito := False;
+
+        if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
+         aCliemDebito := True;
 
         cdsPagamentos.Close;
         cdsPagamentos.CreateDataSet;
@@ -569,22 +545,20 @@ begin
 
         if (aRetorno = 'sucesso') then
         begin
-          if cdsPagamentos.Locate('FORMAPAGTO', 'CREDIARIO', []) then
-          begin
-
-            if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
-            begin
-//            TMensagem.Atencao('Cliente com duplicata(s) vencida(s) a mais de 5 dias corridos.' + #13 + #10 + 'Informe a senha para efetuar a venda.');
-              lSenha := VoltaSenha('Liberar a venda');
-              if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
-              begin
-                TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
-                Exit
-              end
-              else
-                fUsuarioAutorizou := lSenha;
-            end;
-          end;
+//          if cdsPagamentos.Locate('FORMAPAGTO', 'CREDIARIO', []) then
+//          begin
+//            if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
+//            begin
+//              lSenha := VoltaSenha('Liberar a venda');
+//              if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
+//              begin
+//                TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
+//                Exit
+//              end
+//              else
+//                fUsuarioAutorizou := lSenha;
+//            end;
+//          end;
 
           cdsPagamentos.First;
           while not cdsPagamentos.Eof do
@@ -726,46 +700,6 @@ begin
     end;
   finally
     FreeAndNil(Frm_PDV_Vendedor);
-  end;
-end;
-
-procedure TfrmVendaMain.AppendOrcamento;
-var
-  lTot: Currency;
-begin
-  if cdsItens.IsEmpty then
-    Exit;
-
-  dsOrcamento.Close;
-  dsOrcamento.Data := DM.SMOrcamento.getOrcamento(DM.BancoDados,-1);
-
-  dsOrcamento.Append;
-  dsOrcamento.FieldByName('id').AsInteger := 0;
-  dsOrcamento.FieldByName('emissao').AsDateTime := Date;
-  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date,30);
-  dsOrcamento.FieldByName('id_cliente').AsInteger := IdCliente;
-  dsOrcamento.FieldByName('usuario').AsString := DM.UsuarioDataHora;
-  dsOrcamento.FieldByName('status').AsString := 'EM ABERTO'; //EM ABERTO|VENDIDO|CANCELADO
-//  if (pCondPagto > 0) then
-//    dsOrcamento.FieldByName('id_formapagto').AsInteger := pCondPagto;
-  dsOrcamento.Post;
-
-  lTot := 0;
-  cdsItens.First;
-  while not cdsItens.Eof do
-  begin
-    dsOrItem.Append;
-    dsOrItem.FieldByName('id_orcamento').AsInteger := 0;
-    dsOrItem.FieldByName('ordem').AsInteger := cdsItens.FieldByName('ordem').AsInteger;
-    dsOrItem.FieldByName('id_prod').AsInteger := cdsItens.FieldByName('codigo').AsInteger;
-    dsOrItem.FieldByName('qtde').AsFloat := cdsItens.FieldByName('qtde').AsFloat;
-    dsOrItem.FieldByName('vunit').AsCurrency := cdsItens.FieldByName('preco_venda').AsCurrency;
-    dsOrItem.FieldByName('vdesc').AsCurrency := cdsItens.FieldByName('vl_desconto').AsCurrency;
-    dsOrItem.FieldByName('unid').AsString := cdsItens.FieldByName('unidade').AsString;
-    dsOrItem.FieldByName('qtde_baixa').AsFloat := cdsItens.FieldByName('qtde_baixa').AsFloat;
-    dsOrItem.Post;
-    lTot := lTot+((cdsItens.FieldByName('qtde').AsFloat*cdsItens.FieldByName('preco_venda').AsCurrency)-cdsItens.FieldByName('vl_desconto').AsCurrency);
-    cdsItens.Next;
   end;
 end;
 
@@ -1344,57 +1278,6 @@ begin
 //  dbgrdItens.Font.Color       := clBlack; //Cor do texto dos dados do grid
 end;
 
-procedure TfrmVendaMain.GeraOrcamento(pCondPagto : integer);
-var
-  lTot: Currency;
-begin
-  lTot := 0;
-  dsOrcamento.Close;
-  dsOrcamento.Data := DM.SMOrcamento.getOrcamento(DM.BancoDados,-1);
-
-  dsOrcamento.Append;
-  dsOrcamento.FieldByName('id').AsInteger := 0;
-  dsOrcamento.FieldByName('emissao').AsDateTime := Date;
-  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date,30);
-  dsOrcamento.FieldByName('id_cliente').AsInteger := IdCliente;
-  dsOrcamento.FieldByName('usuario').AsString := DM.UsuarioDataHora;
-  dsOrcamento.FieldByName('status').AsString := 'EM ABERTO'; //EM ABERTO|VENDIDO|CANCELADO
-  if (pCondPagto > 0) then
-    dsOrcamento.FieldByName('id_formapagto').AsInteger := pCondPagto;
-  dsOrcamento.Post;
-
-  cdsItens.First;
-  while not cdsItens.Eof do
-  begin
-    dsOrItem.Append;
-    dsOrItem.FieldByName('id_orcamento').AsInteger := 0;
-    dsOrItem.FieldByName('ordem').AsInteger := cdsItens.FieldByName('ordem').AsInteger;
-    dsOrItem.FieldByName('id_prod').AsInteger := cdsItens.FieldByName('codigo').AsInteger;
-    dsOrItem.FieldByName('qtde').AsFloat := cdsItens.FieldByName('qtde').AsFloat;
-    dsOrItem.FieldByName('vunit').AsCurrency := cdsItens.FieldByName('preco_venda').AsCurrency;
-    dsOrItem.FieldByName('vdesc').AsCurrency := cdsItens.FieldByName('vl_desconto').AsCurrency;
-    dsOrItem.FieldByName('unid').AsString := cdsItens.FieldByName('unidade').AsString;
-    dsOrItem.FieldByName('qtde_baixa').AsFloat := cdsItens.FieldByName('qtde_baixa').AsFloat;
-    dsOrItem.Post;
-    lTot := lTot+((cdsItens.FieldByName('qtde').AsFloat*cdsItens.FieldByName('preco_venda').AsCurrency)-cdsItens.FieldByName('vl_desconto').AsCurrency);
-    cdsItens.Next;
-  end;
-
-//  if pCondPagto = -1 then
-//  begin
-//    dsOrPagar.Append;
-//    dsOrPagar.FieldByName('id_orcamento').AsInteger := 0;
-//    dsOrPagar.FieldByName('parcela').AsString := '01/01';
-//    dsOrPagar.FieldByName('valor').AsCurrency := lTot;
-//    dsOrPagar.FieldByName('vencto').AsDateTime := Date;
-//    dsOrPagar.Post;
-//  end
-//  else
-//  begin
-//
-//  end;
-end;
-
 procedure TfrmVendaMain.imgFecharClick(Sender: TObject);
 begin
   Close();
@@ -1681,15 +1564,22 @@ begin
   begin
     if (ValidaDebitoCliente(IdCliente) > 5) then
     begin
-      lSenha := VoltaSenha('Liberar a venda');
-      if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
+      TMensagem.Atencao('Foi localizado débito deste cliente. Necessário gerar orçamento para liberação.');
       begin
-        TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
+        actGeraOrcamento.Execute;
         Result := False;
-        Exit
-      end
-      else
-        fUsuarioAutorizou := lSenha;
+        Exit;
+      end;
+
+//      lSenha := VoltaSenha('Liberar a venda');
+//      if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
+//      begin
+//        TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
+//        Result := False;
+//        Exit
+//      end
+//      else
+//        fUsuarioAutorizou := lSenha;
     end;
   end;
 

@@ -166,6 +166,7 @@ type
     bImprimir : Boolean ;
     aTotVenda : Currency ;
     gIdCliente : string ;
+    aCliemDebito : Boolean;
 
     procedure IniciaComDesconto(Valor : Extended) ;
 
@@ -296,6 +297,11 @@ end;
 procedure TFrm_PDVPagamento.actPagarCrediarioExecute(Sender: TObject);
 begin
   inherited;
+  if aCliemDebito then
+  begin
+    TMensagem.Atencao('Forma de pagamento não pode ser inserida. Cliente em débito.');
+    Exit;
+  end;
   setPanel(pnlCrediario,'CREDIARIO');
 end;
 

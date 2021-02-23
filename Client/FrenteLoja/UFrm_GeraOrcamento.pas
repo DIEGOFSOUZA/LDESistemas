@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
   Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, UEDPesquisa, Vcl.Imaging.pngimage,
-  Vcl.Buttons,Datasnap.DBClient, Data.DB;
+  Vcl.Buttons,Datasnap.DBClient, Data.DB, System.DateUtils;
 
 type
   TFrm_GeraOrcamento = class(TPdr_Child2)
@@ -14,9 +14,6 @@ type
     pnlTopo: TPanel;
     pnlDetalhe: TPanel;
     pnlRodape: TPanel;
-    pnlTotPagar: TPanel;
-    Label1: TLabel;
-    lblTotal: TLabel;
     pnlPagamento: TPanel;
     lbl2: TLabel;
     Label2: TLabel;
@@ -68,12 +65,12 @@ type
     FGetRetorno: string;
     procedure GeraOrcamento();
   public
-    constructor Create(aItens : TClientDataSet; aCliente:integer);
-    destructor Destroy; override;
-    property Retorno : string  read FGetRetorno;
     var
       cdsItens: TClientDataSet;
-      IdCli:Integer;
+      IdCli: Integer;
+      property
+      Retorno: string read FGetRetorno;
+    procedure Executa(aItens: TClientDataSet; aIdCli: integer);
   end;
 
 var
@@ -89,34 +86,38 @@ uses
 procedure TFrm_GeraOrcamento.actCancelarExecute(Sender: TObject);
 begin
   inherited;
-//
+  FGetRetorno := 'cancel';
+  Close;
 end;
 
 procedure TFrm_GeraOrcamento.actSalvarExecute(Sender: TObject);
 begin
   inherited;
   GeraOrcamento;
+  if DM.SMOrcamento.setOrcamento(DM.BancoDados, 0, dsOrcamento.Delta) then
+  begin
+    FGetRetorno := 'sucesso';
+  end
+  else
+  begin
+    FGetRetorno := 'erro';
+  end;
+  Close;
 end;
 
 procedure TFrm_GeraOrcamento.chkSolicClick(Sender: TObject);
 begin
   inherited;
-  pnlDetalhe.Visible := chkSolic.Checked;
-end;
-
-constructor TFrm_GeraOrcamento.Create(aItens: TClientDataSet;
-  aCliente: integer);
-begin
-  cdsItens := TClientDataSet.Create(nil);
-  cdsItens.Data := aItens.Data;
-
-  IdCli := aCliente;
-end;
-
-destructor TFrm_GeraOrcamento.Destroy;
-begin
-  FreeAndNil(cdsItens);
-  inherited;
+  if chkSolic.Checked then
+  begin
+    pnlDetalhe.Visible := True;
+    Self.Height := Self.Height+150;
+  end
+  else
+  begin
+    pnlDetalhe.Visible := False;
+    Self.Height := Self.Height-150;
+  end;
 end;
 
 procedure TFrm_GeraOrcamento.edpesParcPesquisa(Sender: TObject;
@@ -126,32 +127,41 @@ begin
   Retorno := Consulta.CondPagto.ToString;
 end;
 
-procedure TFrm_GeraOrcamento.GeraOrcamento;
-var
-  lTot: Currency;
+procedure TFrm_GeraOrcamento.Executa(aItens: TClientDataSet;
+  aIdCli: integer);
 begin
-  lTot := 0;
+  IdCli := aIdCli;
+  if not Assigned(cdsItens) then
+    cdsItens := TClientDataSet.Create(nil);
+
+  cdsItens.Data := aItens.Data;
+  Self.Height := Self.Height-150;
+//  Self.Left := Self.Left-200;
+//  Self.Top := Self.Top-500;
+  ShowModal;
+
+end;
+
+procedure TFrm_GeraOrcamento.GeraOrcamento;
+begin
   dsOrcamento.Close;
-  dsOrcamento.Data := DM.SMOrcamento.getOrcamento(DM.BancoDados,-1);
+  dsOrcamento.Data := DM.SMOrcamento.getOrcamento(DM.BancoDados, -1);
 
   dsOrcamento.Append;
   dsOrcamento.FieldByName('id').AsInteger := 0;
   dsOrcamento.FieldByName('emissao').AsDateTime := Date;
-  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date,30);
   dsOrcamento.FieldByName('id_cliente').AsInteger := IdCli;
+  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date, 30);
   dsOrcamento.FieldByName('usuario').AsString := DM.UsuarioDataHora;
   dsOrcamento.FieldByName('status').AsString := 'EM ABERTO'; //EM ABERTO|VENDIDO|CANCELADO
   if (edpesParc.Campo.Text <> '') then
     dsOrcamento.FieldByName('id_formapagto').AsInteger := StrToInt(edpesParc.Campo.Text);
-
   if (chkSolic.Checked) then
   begin
     dsOrcamento.FieldByName('liberado').AsString := 'NAO'; //SIM|NAO
     dsOrcamento.FieldByName('tipo_liberacao').AsString := cbbTipoLib.Text; //CLIENTE INADIMPLENTE|DESCONTO|OUTROS
     dsOrcamento.FieldByName('solicitacao').AsString := mmo1.Lines.Text;
   end;
-
-
   dsOrcamento.Post;
 
   cdsItens.First;
@@ -167,11 +177,8 @@ begin
     dsOrItem.FieldByName('unid').AsString := cdsItens.FieldByName('unidade').AsString;
     dsOrItem.FieldByName('qtde_baixa').AsFloat := cdsItens.FieldByName('qtde_baixa').AsFloat;
     dsOrItem.Post;
-    lTot := lTot+((cdsItens.FieldByName('qtde').AsFloat*cdsItens.FieldByName('preco_venda').AsCurrency)-cdsItens.FieldByName('vl_desconto').AsCurrency);
     cdsItens.Next;
   end;
-
-
 end;
 
 end.

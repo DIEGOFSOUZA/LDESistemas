@@ -180,25 +180,24 @@ begin
           'sum(b.VTOTAL) total '+
           'from ORCAMENTO a '+
           'left outer join ORCAMENTO_ITEM b on (b.ID_ORCAMENTO = a.ID) '+
-          'left outer join CLIENTE c on (c.CODIGO = a.ID_CLIENTE) ';
+          'left outer join CLIENTE c on (c.CODIGO = a.ID_CLIENTE) '+
+          'where ((A.LIBERADO is null) or (a.liberado = ''SIM'')) ';
   case pIndex of
     0:
-      lSQL := lSQL + 'where a.ID = '+pValor;
+      lSQL := lSQL + 'and a.ID = '+pValor;
     1:
-      lSQL := lSQL + 'where a.STATUS = '+QuotedStr(pValor);
+      lSQL := lSQL + 'and a.STATUS = '+QuotedStr(pValor);
     2:
-      lSQL := lSQL + 'where a.ID_CLIENTE = '+pValor;
+      lSQL := lSQL + 'and a.ID_CLIENTE = '+pValor;
     3:
-      lSQL := lSQL + 'where a.EMISSAO between '+QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date))+' and '+
-                                                QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+      lSQL := lSQL + 'and a.EMISSAO between '+QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date))+' and '+
+                                              QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
   end;
 
   lSQL := lSQL+' group by 1,2,3,4,5,a.ID_FORMAPAGTO '+
                'order by 1 desc';
-
   dsGrid.Close;
   dsGrid.Data := DM.LerDataSet(lSQL);
-
 end;
 
 procedure TfrmOrcamentoConsulta.SetIdCliente(const Value: Integer);

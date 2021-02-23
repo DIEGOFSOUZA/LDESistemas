@@ -17,10 +17,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
     Height = 266
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 120
-    ExplicitTop = 56
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object dbgrd1: TDBGrid
       Left = 1
       Top = 71
@@ -95,7 +91,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
       Height = 72
       Align = alTop
       TabOrder = 1
-      ExplicitWidth = 833
       object Label1: TLabel
         Left = 16
         Top = 14
@@ -142,8 +137,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
           Left = 0
           Top = 0
           Caption = 'id'
-          ExplicitWidth = 150
-          ExplicitHeight = 150
           object edtId: TEdit
             Left = 3
             Top = 9
@@ -164,8 +157,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
           Left = 0
           Top = 0
           Caption = 'status'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object cbbStatus: TComboBox
             Left = 3
             Top = 11
@@ -191,8 +182,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
           Left = 0
           Top = 0
           Caption = 'cliente'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object EdPesquisa1: TEdPesquisa
             Left = 3
             Top = 11
@@ -242,8 +231,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
           Left = 0
           Top = 0
           Caption = 'emissao'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label4: TLabel
             Left = 3
             Top = 13
@@ -303,7 +290,6 @@ inherited frmOrcamentoConsulta: TfrmOrcamentoConsulta
       'y 1,2,3,4,5,a.ID_FORMAPAGTO'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 176
     Top = 112
     object dsGridID: TIntegerField

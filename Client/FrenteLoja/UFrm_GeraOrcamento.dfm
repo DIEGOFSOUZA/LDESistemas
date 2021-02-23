@@ -1,9 +1,10 @@
 inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
   Caption = 'Frm_GeraOrcamento'
-  ClientHeight = 424
+  ClientHeight = 350
   ClientWidth = 548
+  Visible = False
   ExplicitWidth = 548
-  ExplicitHeight = 424
+  ExplicitHeight = 350
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
@@ -26,7 +27,7 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
     Left = 0
     Top = 30
     Width = 548
-    Height = 394
+    Height = 320
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -34,15 +35,14 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
       Left = 0
       Top = 0
       Width = 548
-      Height = 204
-      Align = alClient
-      BorderStyle = bsSingle
+      Height = 130
+      Align = alTop
       Caption = 'pnlTopo'
       ShowCaption = False
       TabOrder = 0
       object Label4: TLabel
         Left = 13
-        Top = 176
+        Top = 104
         Width = 222
         Height = 17
         Caption = 'Solicitar libera'#231#227'o do Administrador?'
@@ -53,54 +53,18 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object pnlTotPagar: TPanel
-        Left = 5
-        Top = 5
-        Width = 130
-        Height = 49
-        Color = 14803681
-        ParentBackground = False
-        TabOrder = 0
-        object Label1: TLabel
-          Left = 9
-          Top = 5
-          Width = 118
-          Height = 17
-          Alignment = taRightJustify
-          Caption = 'TOTAL A PAGAR(R$)'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Segoe UI Semibold'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblTotal: TLabel
-          Left = 24
-          Top = 24
-          Width = 103
-          Height = 21
-          Margins.Right = 9
-          Alignment = taRightJustify
-          Caption = '1.235.756,20'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Segoe UI Black'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-      end
       object pnlPagamento: TPanel
-        Left = 5
-        Top = 60
-        Width = 532
-        Height = 105
-        TabOrder = 1
+        Left = 1
+        Top = 1
+        Width = 546
+        Height = 96
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 0
         object lbl2: TLabel
-          Left = 1
-          Top = 1
-          Width = 530
+          Left = 0
+          Top = 0
+          Width = 546
           Height = 20
           Align = alTop
           AutoSize = False
@@ -115,7 +79,6 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
           ParentFont = False
           Transparent = False
           Layout = tlCenter
-          ExplicitLeft = 0
           ExplicitTop = 8
           ExplicitWidth = 680
         end
@@ -173,6 +136,7 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
           ConsultaTabela.Tabela = 'CONDPAGTO'
           ConsultaTabela.Pesquisa = 'codigo'
           ConsultaTabela.Mostrar = 'descricao'
+          ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
           OnPesquisa = edpesParcPesquisa
           Titulo.Left = 0
           Titulo.Top = 3
@@ -204,8 +168,8 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
       end
       object chkSolic: TCheckBox
         Left = 241
-        Top = 176
-        Width = 20
+        Top = 104
+        Width = 16
         Height = 17
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -213,16 +177,16 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
         OnClick = chkSolicClick
       end
     end
     object pnlDetalhe: TPanel
       Left = 0
-      Top = 204
+      Top = 130
       Width = 548
       Height = 150
-      Align = alBottom
+      Align = alClient
       BevelOuter = bvNone
       Caption = 'pnlDetalhe'
       ShowCaption = False
@@ -244,9 +208,9 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
       object Label6: TLabel
         Left = 166
         Top = 5
-        Width = 188
+        Width = 200
         Height = 17
-        Caption = 'Observa'#231#227'o para Administrador'
+        Caption = 'Observa'#231#227'o para o Administrador'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -290,12 +254,10 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
     end
     object pnlRodape: TPanel
       Left = 0
-      Top = 354
+      Top = 280
       Width = 548
       Height = 40
       Align = alBottom
-      BevelOuter = bvNone
-      BorderStyle = bsSingle
       Caption = 'pnlRodape'
       ShowCaption = False
       TabOrder = 2
@@ -313,8 +275,8 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
           Top = 0
           Width = 80
           Height = 30
+          Action = actSalvar
           Align = alClient
-          Caption = '     Salvar'
           Flat = True
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite
@@ -351,6 +313,7 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
             9CF04C4630007760162E3AFF4890EC1CE615E428BDF0B201642334827C2733D0
             C50BFCCEE86F05A17CCC2D99122857FA0A5E86671045402E32F517550F357138
             BAB60D0000000049454E44AE426082}
+          OnClick = actSalvarExecute
         end
       end
       object pnlBtnCancel: TPanel
@@ -367,8 +330,8 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
           Top = 0
           Width = 80
           Height = 30
+          Action = actCancelar
           Align = alClient
-          Caption = '     Cancelar'
           Flat = True
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite
@@ -431,19 +394,20 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
             ABD749A1703CADAD9A10C8A3FD0336BC474F86F49B260000000049454E44AE42
             6082}
           Stretch = True
+          OnClick = actCancelarExecute
         end
       end
     end
   end
   inherited actlst1: TActionList
-    Left = 424
-    Top = 320
+    Left = 152
+    Top = 240
     object actSalvar: TAction
-      Caption = 'OK'
+      Caption = '     OK '
       OnExecute = actSalvarExecute
     end
     object actCancelar: TAction
-      Caption = 'Cancelar'
+      Caption = '      Cancelar'
       OnExecute = actCancelarExecute
     end
   end
@@ -451,8 +415,8 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
     Aggregates = <>
     Params = <>
     ProviderName = 'dspOrcamento'
-    Left = 34
-    Top = 201
+    Left = 82
+    Top = 233
     object dsOrcamentoID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -513,8 +477,8 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
     Aggregates = <>
     DataSetField = dsOrcamentofdqryOrItem
     Params = <>
-    Left = 33
-    Top = 249
+    Left = 81
+    Top = 289
     object dsOrItemID_ORCAMENTO: TIntegerField
       FieldName = 'ID_ORCAMENTO'
       Origin = 'ID_ORCAMENTO'
