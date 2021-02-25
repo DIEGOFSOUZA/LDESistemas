@@ -18,6 +18,8 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     inherited pnlBotaoSair: TPanel
       Left = 758
       ExplicitLeft = 758
+      ExplicitTop = 0
+      ExplicitHeight = 30
     end
   end
   object pnlFundo: TPanel [1]
@@ -74,6 +76,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         TitleFont.Height = -11
         TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
+        OnDblClick = actVisualizaItensExecute
         Columns = <
           item
             Alignment = taCenter
@@ -367,6 +370,10 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
       Caption = 'Pesquisar'
       OnExecute = actLocalizarExecute
     end
+    object actVisualizaItens: TAction
+      Caption = 'actVisualizaItens'
+      OnExecute = actVisualizaItensExecute
+    end
   end
   object cdsOrcamentos: TClientDataSet
     Aggregates = <>
@@ -442,7 +449,6 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     IndexName = 'EMISSAO'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 512
     Top = 326

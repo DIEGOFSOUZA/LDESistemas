@@ -45,9 +45,11 @@ type
     btnLocalizar: TSpeedButton;
     actLocalizar: TAction;
     cdsOrcamentosID: TIntegerField;
+    actVisualizaItens: TAction;
     procedure actAutorizarExecute(Sender: TObject);
     procedure actLocalizarExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure actVisualizaItensExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -60,7 +62,7 @@ var
 implementation
 
 uses
-  UDM, u_Mensagem;
+  UDM, u_Mensagem, UFrm_GerOrcItens;
 
 {$R *.dfm}
 
@@ -112,6 +114,20 @@ begin
   cdsOrcamentos.Data := DM.LerDataSet(lSQL);
 
   dbgrdOrcamentos.SetFocus;
+end;
+
+procedure TFrm_GerenciaOrcamento.actVisualizaItensExecute(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(Frm_GerOrcItens) then
+    Frm_GerOrcItens := TFrm_GerOrcItens.Create(Self);
+  try
+    Frm_GerOrcItens.Executar(cdsOrcamentos.FieldByName('ID').AsString);
+    Frm_GerOrcItens.ShowModal;
+
+  finally
+
+  end;
 end;
 
 procedure TFrm_GerenciaOrcamento.FormActivate(Sender: TObject);
