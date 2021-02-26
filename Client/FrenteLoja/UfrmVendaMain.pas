@@ -48,6 +48,12 @@ type
   end;
 
 type
+  TRetDescMax = record
+    Percentual : string;
+    Valor  : string ;
+  end;
+
+type
   TfrmVendaMain = class(TForm)
     pnlFundo0: TPanel;
     pnlTopo0: TPanel;
@@ -209,6 +215,7 @@ type
     cdsReceberDESCONTO: TFMTBCDField;
     cdsMasterID_HISTORICO: TIntegerField;
     cdsMasterSTATUS: TStringField;
+    cdsItensDESC_MAXIMO: TFMTBCDField;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -266,7 +273,8 @@ type
     function VoltaHistorico(pFPagto: string): Integer;
     procedure setIdVendedor(const Value: integer);
     procedure ListaVendedores();
-
+    function DescMaximo(aId: string): TRetDescMax;
+    function ValidaDescMaximo():Boolean;
     {orçamento}
     procedure CarregaOrcamento();
     procedure SetOrcamentoId(const Value: integer);
@@ -402,18 +410,37 @@ begin
       TMensagem.Atencao('Não há Item para conceder Desconto.')
     else
     begin
-      if not Assigned(Frm_Desconto) then // verifica se o formulário não existe na memória
+      if (not Assigned(Frm_Desconto)) then // verifica se o formulário não existe na memória
         Frm_Desconto := TFrm_Desconto.Create(Self); // cria o formúlário em run-time
       try
         Frm_Desconto.ValSemDesc := cdsItenssubtotal.AsFloat;
         Frm_Desconto.lblSemDesc.Caption := FormatFloat('#,##0.00', cdsItenssubtotal.AsFloat);
+        with DescMaximo(cdsItens.FieldByName('codigo').AsString) do
+        begin
+          if Valor = '0' then
+          begin
+            Frm_Desconto.pnlDireita1.Visible := False;
+            Frm_Desconto.Width := 303;
+          end
+          else
+          begin
+            Frm_Desconto.pnlDireita1.Visible := True;;
+            Frm_Desconto.lblPercMax.Caption := Percentual;
+            Frm_Desconto.lblVlMax.Caption := Valor;
+            Frm_Desconto.Width := 380;
+          end;
+        end;
         Frm_Desconto.ShowModal;
 
-        if Frm_Desconto.Retorno = 'sucesso' then
+        if (Frm_Desconto.Retorno = 'sucesso') then
         begin
           cdsItens.Edit;
           cdsItensVL_DESCONTO.AsFloat := Frm_Desconto.ValDesc;
           cdsItensQTDE_UNIT.AsString := cdsItensQTDE_UNIT.AsString + ' - R$ ' + FormatFloat('#,##0.00', cdsItensVL_DESCONTO.AsFloat);
+          with DescMaximo(cdsItens.FieldByName('codigo').AsString) do
+          begin
+            cdsItens.FieldByName('DESC_MAXIMO').AsCurrency := StrToCurr(Valor);
+          end;
           cdsItens.Post;
           AtualizaTotais();
         end;
@@ -890,6 +917,29 @@ begin
   end;
 end;
 
+function TfrmVendaMain.ValidaDescMaximo: Boolean;
+begin
+  Result := True;
+  if cdsItens.IsEmpty then
+    Exit;
+  cdsItens.DisableControls;
+  try
+    cdsItens.First;
+    while (not cdsItens.Eof) do
+    begin
+      if (cdsItens.FieldByName('DESC_MAXIMO').AsCurrency > 0) then
+        if (cdsItens.FieldByName('VL_DESCONTO').AsCurrency > cdsItens.FieldByName('DESC_MAXIMO').AsCurrency) then
+        begin
+          Result := False;
+          Break;
+        end;
+      cdsItens.Next;
+    end;
+  finally
+    cdsItens.EnableControls;
+  end;
+end;
+
 function TfrmVendaMain.ValidaEstoqueItem(): integer;
 begin
   Result := 0;
@@ -995,6 +1045,7 @@ begin
       cdsItensORDEM.AsInteger := iOrdem;                                            //tmp.FieldByName('unidade').AsString
       cdsItensQTDE_UNIT.AsString := FormatFloat('#,##0.000 ',cdsItensQTDE.AsFloat)+ aUnidade + ' x R$ ' + FormatCurr('#,##0.00', aVlUn); //tmp.FieldByName('preco_venda').AsCurrency
       cdsItensVL_DESCONTO.AsFloat := 0 ;
+      cdsItens.FieldByName('DESC_MAXIMO').AsFloat := 0;
     end
     else
     begin                                                                   //StrToFloat(edtQtde.Text)
@@ -1045,6 +1096,25 @@ constructor TfrmVendaMain.CreateChild(AOwner: TComponent);
 begin
   inherited Create(AOwner) ;
   self.FormStyle := fsMDIForm ;
+end;
+
+function TfrmVendaMain.DescMaximo(aId: string): TRetDescMax;
+const
+  SQL = 'select coalesce(a.desc_maximo,0) perc,cast(iif(coalesce(a.desc_maximo,0)>0,(%s*(a.desc_maximo/100)),0)as numeric(10,2))vl '+
+        'from produto a '+
+        'where a.codigo = %s';
+begin
+  Result.Percentual := '0';
+  Result.Valor := '0';
+
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[cdsItens.FieldByName('subtotal').AsString,
+                                                  cdsItens.FieldByName('codigo').AsString]));
+  if ((not DM.dsConsulta.IsEmpty) and (DM.dsConsulta.FieldByName('perc').AsFloat > 0))then
+  begin
+    Result.Percentual := FormatFloatBr(DM.dsConsulta.FieldByName('perc').AsFloat)+' %';
+    Result.Valor := 'R$ '+FormatFloatBr(DM.dsConsulta.FieldByName('vl').AsFloat);
+  end;
 end;
 
 procedure TfrmVendaMain.edtProdutoKeyPress(Sender: TObject; var Key: Char);
@@ -1582,6 +1652,14 @@ begin
 //        fUsuarioAutorizou := lSenha;
     end;
   end;
+
+  if not ValidaDescMaximo then
+  begin
+    Result := False;
+    TMensagem.Atencao('Venda contém item com Desconto acima do permitido. Necessário gerar orçamento de liberação.');
+    Exit;
+  end;
+
 
     //validar se tem estoque caso seja orcamento
     if (OrcamentoID > 0) then

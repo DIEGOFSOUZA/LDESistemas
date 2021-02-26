@@ -5,22 +5,32 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Primeiro, Vcl.StdCtrls, System.Math,
-  Vcl.ExtCtrls;
+  Vcl.ExtCtrls,UDM;
 
 type
   TFrm_Desconto = class(TPdr_Primeiro)
     lblTitulo: TLabel;
     pnl1: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    lblSemDesc: TLabel;
-    lblComDesc: TLabel;
-    edtPerc: TEdit;
-    edtVal: TEdit;
-    btnok: TButton;
+    pnlDireita: TPanel;
     btnCancel: TButton;
+    btnok: TButton;
+    pnlCentro: TPanel;
+    pnlCentro1: TPanel;
+    pnlDireita1: TPanel;
+    lblPercMax: TLabel;
+    lblVlMax: TLabel;
+    lblTitDesMax: TLabel;
+    pnlEdits: TPanel;
+    Label4: TLabel;
+    edtVal: TEdit;
+    Label3: TLabel;
+    edtPerc: TEdit;
+    pnlTopo: TPanel;
+    Label1: TLabel;
+    lblSemDesc: TLabel;
+    pnlRodape: TPanel;
+    Label2: TLabel;
+    lblComDesc: TLabel;
     procedure edtPercKeyPress(Sender: TObject; var Key: Char);
     procedure btnCancelClick(Sender: TObject);
     procedure btnokClick(Sender: TObject);
@@ -69,16 +79,17 @@ end;
 procedure TFrm_Desconto.edtPercKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
-  if not (key in ['0'..'9',',',#8,#13]) then key := #0 ;
-  edtVal.Text := '0,00' ;
+  if not (Key in ['0'..'9', ',', #8, #13]) then
+    Key := #0;
+  edtVal.Text := '0,00';
 
   if Key = #13 then
   begin
     if StrToFloat(edtPerc.Text) > 0 then
     begin
-      ValComDesc         := Roundto( Resultado('P'), -1 ) ;
-      ValDesc            := ValSemDesc - ValComDesc ;
-      lblComDesc.Caption := FormatFloat('#,##0.00',ValComDesc) ;
+      ValComDesc := Roundto(Resultado('P'), -1);
+      ValDesc := ValSemDesc - ValComDesc;
+      lblComDesc.Caption := FormatFloat('#,##0.00', ValComDesc);
     end;
   end;
 end;
@@ -86,16 +97,17 @@ end;
 procedure TFrm_Desconto.edtValKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
-  if not (key in ['0'..'9',',',#8,#13]) then key := #0 ;
-  edtPerc.Text := '0,00' ;
+  if not (Key in ['0'..'9', ',', #8, #13]) then
+    Key := #0;
+  edtPerc.Text := '0,00';
 
   if Key = #13 then
   begin
     if StrToFloat(edtVal.Text) > 0 then
     begin
-      ValComDesc         := Resultado('V') ;
-      ValDesc            := ValSemDesc - ValComDesc ;
-      lblComDesc.Caption := FormatFloat('#,##0.00',ValComDesc) ;
+      ValComDesc := Resultado('V');
+      ValDesc := ValSemDesc - ValComDesc;
+      lblComDesc.Caption := FormatFloat('#,##0.00', ValComDesc);
     end;
   end;
 end;

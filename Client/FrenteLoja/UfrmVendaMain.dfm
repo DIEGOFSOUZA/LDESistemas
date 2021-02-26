@@ -1494,11 +1494,12 @@ object frmVendaMain: TfrmVendaMain
       'select cast(0 as integer) ordem, a.CODIGO,a.NOME DESCRICAO,a.PRE' +
       'CO_VENDA,'#13#10'b.SIGLA unidade,a.QTDE_ESTOQUE,'#13#10'cast(0 as numeric(8,' +
       '3)) QTDE, cast(0 as numeric(8,3)) QTDE_BAIXA,'#13#10'cast('#39#39' as varcha' +
-      'r(100)) qtde_unit,cast(0 as numeric(10,2)) vl_desconto'#13#10'from PRO' +
-      'DUTO a'#13#10'left outer join UNIDADE b on (b.CODIGO = a.COD_UNIDADE)'#13 +
-      #10'where 1 = 2'
+      'r(100)) qtde_unit,cast(0 as numeric(10,2)) vl_desconto,'#13#10'cast(0 ' +
+      'as numeric(10,2))desc_maximo'#13#10'from PRODUTO a'#13#10'left outer join UN' +
+      'IDADE b on (b.CODIGO = a.COD_UNIDADE)'#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
+    RemoteServer = DM.DSProviderConnection1
     OnCalcFields = cdsItensCalcFields
     Left = 184
     Top = 95
@@ -1545,6 +1546,11 @@ object frmVendaMain: TfrmVendaMain
       FieldKind = fkInternalCalc
       FieldName = 'subtotal'
     end
+    object cdsItensDESC_MAXIMO: TFMTBCDField
+      FieldName = 'DESC_MAXIMO'
+      Precision = 18
+      Size = 2
+    end
     object cdsItenstotal: TAggregateField
       FieldName = 'total'
       Active = True
@@ -1560,8 +1566,8 @@ object frmVendaMain: TfrmVendaMain
   end
   object dsItens: TDataSource
     DataSet = cdsItens
-    Left = 48
-    Top = 120
+    Left = 232
+    Top = 96
   end
   object cdsTemp: TClientDataSet
     Aggregates = <>
