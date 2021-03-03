@@ -363,6 +363,11 @@ object SMNota: TSMNota
       Origin = 'FORNECEDOR'
       Size = 60
     end
+    object fdqryEntradaHISTORICO: TStringField
+      FieldName = 'HISTORICO'
+      Origin = 'HISTORICO'
+      Size = 60
+    end
   end
   object dsEntrada: TClientDataSet
     Aggregates = <>

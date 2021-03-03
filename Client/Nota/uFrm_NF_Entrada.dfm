@@ -1,9 +1,9 @@
 inherited Frm_NF_Entrada: TFrm_NF_Entrada
   Caption = 'Frm_NF_Entrada'
-  ClientHeight = 600
+  ClientHeight = 640
   ClientWidth = 803
   ExplicitWidth = 803
-  ExplicitHeight = 600
+  ExplicitHeight = 640
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblTitulo: TLabel
@@ -13,22 +13,48 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
   end
   inherited pnlFundo0: TPanel
     Width = 803
-    Height = 570
+    Height = 610
     ExplicitWidth = 803
     ExplicitHeight = 570
     inherited Panel1: TPanel
-      Height = 568
+      Height = 608
       ExplicitHeight = 568
+      inherited pnlSair: TPanel
+        Top = 529
+        ExplicitTop = 529
+      end
+      inherited pnlGravar: TPanel
+        Top = 444
+        ExplicitTop = 444
+      end
+      inherited pnlCancelar: TPanel
+        Top = 359
+        ExplicitTop = 359
+      end
+      inherited pnlLocalizar: TPanel
+        Top = 274
+        ExplicitTop = 274
+      end
+      inherited pnlExcluir: TPanel
+        Top = 189
+        ExplicitTop = 189
+      end
+      inherited pnlEditar: TPanel
+        Top = 104
+        ExplicitTop = 104
+      end
+      inherited pnlAdicionar: TPanel
+        Top = 19
+        ExplicitTop = 19
+      end
     end
     inherited pnlFundo1: TPanel
       Width = 720
-      Height = 568
-      ExplicitLeft = 82
-      ExplicitTop = 1
+      Height = 608
       ExplicitWidth = 720
       ExplicitHeight = 568
       inherited Panel4: TPanel
-        Top = 547
+        Top = 587
         Width = 718
         TabOrder = 3
         ExplicitTop = 547
@@ -38,11 +64,13 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         Left = 1
         Top = 1
         Width = 718
-        Height = 119
+        Height = 159
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
         TabStop = True
+        ExplicitLeft = 6
+        ExplicitTop = -5
         object Label1: TLabel
           Left = 92
           Top = 24
@@ -120,9 +148,9 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         object Label18: TLabel
           Left = 298
           Top = 68
-          Width = 117
+          Width = 142
           Height = 15
-          Caption = 'Natureza de Opera'#231#227'o'
+          Caption = 'NATUREZA DA OPERA'#199#195'O'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -149,6 +177,19 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           Width = 85
           Height = 15
           Caption = 'CHAVE DA NF-E'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label2: TLabel
+          Left = 90
+          Top = 114
+          Width = 87
+          Height = 15
+          Caption = 'CLASSIFICA'#199#195'O'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -12
@@ -205,6 +246,16 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           ParentBackground = False
           ParentFont = False
           TabOrder = 0
+          object lblNumNF: TLabel
+            Left = 2
+            Top = 19
+            Width = 90
+            Height = 50
+            Alignment = taCenter
+            AutoSize = False
+            Layout = tlCenter
+            WordWrap = True
+          end
         end
         object DBEdit2: TDBEdit
           Left = 92
@@ -292,16 +343,70 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           TabOrder = 3
           OnChange = DBEdit2Change
         end
+        object dbpsqsClass: TDBPesquisa
+          Left = 85
+          Top = 131
+          Width = 339
+          Height = 25
+          Titulo.Left = 0
+          Titulo.Top = 3
+          Titulo.Width = 4
+          Titulo.Height = 17
+          Titulo.Caption = ' '
+          Titulo.Font.Charset = ANSI_CHARSET
+          Titulo.Font.Color = clWindowText
+          Titulo.Font.Height = -13
+          Titulo.Font.Name = 'Segoe UI'
+          Titulo.Font.Style = []
+          Titulo.ParentFont = False
+          ConsultaTabela.Tabela = 'HISTORICO'
+          ConsultaTabela.Pesquisa = 'id'
+          ConsultaTabela.Mostrar = 'descricao'
+          ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+          Mostrar.Left = 88
+          Mostrar.Top = 0
+          Mostrar.Width = 250
+          Mostrar.Height = 25
+          Mostrar.TabStop = False
+          Mostrar.DataField = 'HISTORICO'
+          Mostrar.DataSource = ds
+          Mostrar.Font.Charset = ANSI_CHARSET
+          Mostrar.Font.Color = clBlue
+          Mostrar.Font.Height = -13
+          Mostrar.Font.Name = 'Segoe UI'
+          Mostrar.Font.Style = []
+          Mostrar.ParentFont = False
+          Mostrar.ReadOnly = True
+          Mostrar.TabOrder = 1
+          Campo.Left = 6
+          Campo.Top = 0
+          Campo.Width = 57
+          Campo.Height = 25
+          Campo.CharCase = ecUpperCase
+          Campo.DataField = 'ID_HISTORICO'
+          Campo.DataSource = ds
+          Campo.Font.Charset = ANSI_CHARSET
+          Campo.Font.Color = clWindowText
+          Campo.Font.Height = -13
+          Campo.Font.Name = 'Segoe UI'
+          Campo.Font.Style = []
+          Campo.ParentFont = False
+          Campo.TabOrder = 0
+          OnPesquisa = dbpsqsClassPesquisa
+          TabOrder = 8
+          TabStop = True
+        end
       end
       object pnlFornecedor: TPanel
         Left = 1
-        Top = 120
+        Top = 160
         Width = 718
         Height = 180
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
         TabStop = True
+        ExplicitTop = 120
         object Label6: TLabel
           Left = 34
           Top = 57
@@ -472,7 +577,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           ConsultaTabela.Tabela = 'FABRICANTE'
           ConsultaTabela.Pesquisa = 'codigo'
           ConsultaTabela.Mostrar = 'razao_nome'
-          ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
           Mostrar.Left = 151
           Mostrar.Top = 0
           Mostrar.Width = 250
@@ -720,7 +824,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
       end
       object pnlPages: TPanel
         Left = 1
-        Top = 300
+        Top = 340
         Width = 718
         Height = 247
         Align = alClient
@@ -730,14 +834,17 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         ShowCaption = False
         TabOrder = 2
         TabStop = True
+        ExplicitTop = 300
         object pgc1: TPageControl
           Left = 1
           Top = 1
           Width = 716
           Height = 245
-          ActivePage = tsProdutoServico
+          ActivePage = tsAnotacao
           Align = alClient
           TabOrder = 0
+          ExplicitLeft = 5
+          ExplicitTop = -1
           object tsProdutoServico: TTabSheet
             Caption = 'PRODUTOS/SERVI'#199'OS'
             object pnlItens: TPanel
@@ -1042,7 +1149,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     ConsultaTabela.Tabela = 'PRODUTO'
                     ConsultaTabela.Pesquisa = 'codigo'
                     ConsultaTabela.Mostrar = 'nome'
-                    ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
                     OnPesquisa = edpsqsProdutoPesquisa
                     Titulo.Left = 0
                     Titulo.Top = 3
@@ -1252,6 +1358,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
+                    ExplicitLeft = -1
                     object Label4: TLabel
                       Left = 460
                       Top = 0
@@ -2493,9 +2600,9 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     end
                     object dbgrdPagto: TDBGrid
                       Left = 0
-                      Top = 42
+                      Top = 0
                       Width = 407
-                      Height = 137
+                      Height = 171
                       DataSource = sGridDup
                       DrawingStyle = gdsGradient
                       GradientEndColor = 13864803
@@ -2572,7 +2679,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Left = 0
                 Top = 24
                 Width = 700
-                Height = 89
+                Height = 177
                 DataField = 'OBS'
                 DataSource = ds
                 TabOrder = 0
@@ -2932,6 +3039,11 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         Size = 60
       end
       item
+        Name = 'HISTORICO'
+        DataType = ftString
+        Size = 60
+      end
+      item
         Name = 'fdqryEntrada_Pagar'
         DataType = ftDataSet
       end
@@ -2945,7 +3057,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
     AfterInsert = cdsAfterInsert
     AfterCancel = cdsAfterCancel
     Left = 656
-    Top = 176
+    Top = 180
     object cdsID: TIntegerField
       FieldName = 'ID'
       Origin = 'ID'
@@ -3322,6 +3434,10 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
     object cdsFORNECEDOR: TStringField
       FieldName = 'FORNECEDOR'
       Origin = 'FORNECEDOR'
+      Size = 60
+    end
+    object cdsHISTORICO: TStringField
+      FieldName = 'HISTORICO'
       Size = 60
     end
   end

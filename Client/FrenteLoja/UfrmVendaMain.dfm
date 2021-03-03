@@ -979,7 +979,7 @@ object frmVendaMain: TfrmVendaMain
             Left = 797
             Top = 1
             Width = 174
-            Height = 58
+            Height = 45
             Align = alRight
             Caption = 'R$ 1025,45 '
             Font.Charset = ANSI_CHARSET
@@ -988,7 +988,6 @@ object frmVendaMain: TfrmVendaMain
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
             ParentFont = False
-            ExplicitHeight = 45
           end
           object lbl2: TLabel
             Left = 122
@@ -1499,7 +1498,6 @@ object frmVendaMain: TfrmVendaMain
       'IDADE b on (b.CODIGO = a.COD_UNIDADE)'#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     OnCalcFields = cdsItensCalcFields
     Left = 184
     Top = 95

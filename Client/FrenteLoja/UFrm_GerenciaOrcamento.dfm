@@ -68,7 +68,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = []
-        Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         ParentFont = False
         TabOrder = 0
         TitleFont.Charset = ANSI_CHARSET
@@ -93,8 +93,14 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
           end
           item
             Alignment = taCenter
+            Color = clRed
             Expanded = False
             FieldName = 'MOTIVO'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
+            Font.Style = [fsBold]
             Title.Alignment = taCenter
             Width = 100
             Visible = True

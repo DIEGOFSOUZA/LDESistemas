@@ -14,3 +14,7 @@ add tipo_liberacao varchar(50);
 
 alter table ORCAMENTO
 add USU_LIBEROU varchar(100);
+
+alter table nota_entrada
+add historico varchar(60);
+

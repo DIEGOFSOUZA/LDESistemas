@@ -49,8 +49,8 @@ type
 
 type
   TRetDescMax = record
-    Percentual : string;
-    Valor  : string ;
+    Percentual : Extended;
+    Valor  : Currency ;
   end;
 
 type
@@ -417,7 +417,7 @@ begin
         Frm_Desconto.lblSemDesc.Caption := FormatFloat('#,##0.00', cdsItenssubtotal.AsFloat);
         with DescMaximo(cdsItens.FieldByName('codigo').AsString) do
         begin
-          if Valor = '0' then
+          if Valor = 0 then
           begin
             Frm_Desconto.pnlDireita1.Visible := False;
             Frm_Desconto.Width := 303;
@@ -425,8 +425,8 @@ begin
           else
           begin
             Frm_Desconto.pnlDireita1.Visible := True;;
-            Frm_Desconto.lblPercMax.Caption := Percentual;
-            Frm_Desconto.lblVlMax.Caption := Valor;
+            Frm_Desconto.lblPercMax.Caption := FormatFloatBr(Percentual)+' %';
+            Frm_Desconto.lblVlMax.Caption := 'R$ '+FormatFloatBr(Valor);
             Frm_Desconto.Width := 380;
           end;
         end;
@@ -439,7 +439,7 @@ begin
           cdsItensQTDE_UNIT.AsString := cdsItensQTDE_UNIT.AsString + ' - R$ ' + FormatFloat('#,##0.00', cdsItensVL_DESCONTO.AsFloat);
           with DescMaximo(cdsItens.FieldByName('codigo').AsString) do
           begin
-            cdsItens.FieldByName('DESC_MAXIMO').AsCurrency := StrToCurr(Valor);
+            cdsItens.FieldByName('DESC_MAXIMO').AsCurrency := Valor;
           end;
           cdsItens.Post;
           AtualizaTotais();
@@ -1104,16 +1104,18 @@ const
         'from produto a '+
         'where a.codigo = %s';
 begin
-  Result.Percentual := '0';
-  Result.Valor := '0';
+  Result.Percentual := 0;
+  Result.Valor := 0;
 
   DM.dsConsulta.Close;
-  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[cdsItens.FieldByName('subtotal').AsString,
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[StringReplace(cdsItens.FieldByName('subtotal').AsString,',','.',[rfReplaceAll]),
                                                   cdsItens.FieldByName('codigo').AsString]));
   if ((not DM.dsConsulta.IsEmpty) and (DM.dsConsulta.FieldByName('perc').AsFloat > 0))then
   begin
-    Result.Percentual := FormatFloatBr(DM.dsConsulta.FieldByName('perc').AsFloat)+' %';
-    Result.Valor := 'R$ '+FormatFloatBr(DM.dsConsulta.FieldByName('vl').AsFloat);
+  Result.Percentual := DM.dsConsulta.FieldByName('perc').AsFloat;
+  Result.Valor := DM.dsConsulta.FieldByName('vl').AsCurrency;
+//    Result.Percentual := FormatFloatBr(DM.dsConsulta.FieldByName('perc').AsFloat)+' %';
+//    Result.Valor := 'R$ '+FormatFloatBr(DM.dsConsulta.FieldByName('vl').AsFloat);
   end;
 end;
 

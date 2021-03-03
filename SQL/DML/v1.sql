@@ -1,6 +1,17 @@
 update PRODUTO a
 set a.DT_CADASTRO = '14.10.2019';
 
+update PDV_MASTER a set a.status = 'EFETUADA' where a.status is null;
+
+update nota_entrada a
+set a.historico = (select b.descricao from historico b where a.id_historico=b.id)
+where a.id_historico is not null;
+
+update nota_entrada a
+set a.id_historico = 9,
+a.historico = 'MATÉRIA PRIMA'
+where a.id_historico is null;
+
 SET GENERATOR GEN_PRECOHISTORICO TO 0;
 
 delete from PRECOVENDA_HISTORICO;
@@ -307,8 +318,4 @@ insert into PRECOVENDA_HISTORICO(ID,ID_PROD,USUARIO,PRECO_NOVO,DATA)
        VALUES (0,199,'SISTEMA',10.90,'14.10.2019');
 insert into PRECOVENDA_HISTORICO(ID,ID_PROD,USUARIO,PRECO_NOVO,DATA)
        VALUES (0,200,'SISTEMA',23.90,'14.10.2019');
-insert into PRECOVENDA_HISTORICO(ID,ID_PROD,USUARIO,PRECO_NOVO,DATA)
-       VALUES (0,203,'SISTEMA',3.05,'14.10.2019');
-insert into PRECOVENDA_HISTORICO(ID,ID_PROD,USUARIO,PRECO_NOVO,DATA)
-       VALUES (0,204,'SISTEMA',4.00,'14.10.2019');
 

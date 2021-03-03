@@ -227,6 +227,7 @@ type
     fdqryEntrada_ItemUNITARIO: TFMTBCDField;
     fdqryEntrada_ItemPRECO_CUSTO: TFMTBCDField;
     fdqryEntrada_ItemQTDE: TBCDField;
+    fdqryEntradaHISTORICO: TStringField;
   private
 
   public

@@ -402,6 +402,10 @@ type
     dsItemUNITARIO: TFMTBCDField;
     dsItemPRECO_CUSTO: TFMTBCDField;
     dsItemQTDE: TBCDField;
+    Label2: TLabel;
+    lblNumNF: TLabel;
+    cdsHISTORICO: TStringField;
+    dbpsqsClass: TDBPesquisa;
     procedure actAddItemExecute(Sender: TObject);
     procedure actExcluirDuplicatasExecute(Sender: TObject);
     procedure actGerarDuplicatasExecute(Sender: TObject);
@@ -438,6 +442,7 @@ type
     procedure btnUMClick(Sender: TObject);
     procedure cbbUMClick(Sender: TObject);
     procedure actGravarExecute(Sender: TObject);
+    procedure dbpsqsClassPesquisa(Sender: TObject; var Retorno: string);
   private
     FvUnitario: Double;
     FQtde: Double;
@@ -1024,6 +1029,13 @@ procedure TFrm_NF_Entrada.DBPesquisa2Pesquisa(Sender: TObject;
 begin
   inherited;
   Retorno := Consulta.Fornecedor.ToString;
+end;
+
+procedure TFrm_NF_Entrada.dbpsqsClassPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.Historico().ToString;
 end;
 
 procedure TFrm_NF_Entrada.dsItemBeforeDelete(DataSet: TDataSet);

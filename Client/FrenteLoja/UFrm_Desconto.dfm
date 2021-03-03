@@ -213,7 +213,7 @@ inherited Frm_Desconto: TFrm_Desconto
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
-            TabOrder = 0
+            TabOrder = 1
             Text = '0,00'
             OnKeyPress = edtValKeyPress
           end
@@ -228,7 +228,7 @@ inherited Frm_Desconto: TFrm_Desconto
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
-            TabOrder = 1
+            TabOrder = 0
             Text = '0,00'
             OnKeyPress = edtPercKeyPress
           end
