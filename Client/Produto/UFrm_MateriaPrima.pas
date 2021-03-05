@@ -84,6 +84,15 @@ type
     Label3: TLabel;
     DBEdit8: TDBEdit;
     cdsDT_CADASTRO: TDateField;
+    tsInfAd: TTabSheet;
+    pnl2: TPanel;
+    Label8: TLabel;
+    DBMemo1: TDBMemo;
+    pnlDesc: TPanel;
+    pnlDescMaximo: TPanel;
+    lblTitDesc: TLabel;
+    DBEdit11: TDBEdit;
+    cdsDESC_MAXIMO: TFMTBCDField;
     procedure EdPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
@@ -93,6 +102,7 @@ type
     procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
     procedure actTrilharExecute(Sender: TObject);
     procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
+    procedure pnlDescClick(Sender: TObject);
   private
     { Private declarations }
     procedure MontaSql(pCodigo : Integer) ;
@@ -224,6 +234,7 @@ begin
   inherited;
   ResetaCDS ;
   PageControl1.TabIndex := 0 ;
+  pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
 procedure TFrm_MateriaPrima.Gravar;
@@ -351,6 +362,15 @@ begin
       cdsProdutoFornecedor.Delete;
       TMensagem.Informacao('Exclusão efetuada com sucesso.');
     end;
+end;
+
+procedure TFrm_MateriaPrima.pnlDescClick(Sender: TObject);
+begin
+  inherited;
+  if (pnlDescMaximo.Enabled = False) then
+  begin
+    TMensagem.Informacao('Edição permitida para o perfil Administrador.');
+  end;
 end;
 
 procedure TFrm_MateriaPrima.ReadWrite;

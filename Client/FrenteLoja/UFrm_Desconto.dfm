@@ -176,50 +176,9 @@ inherited Frm_Desconto: TFrm_Desconto
           Caption = 'pnlEdits'
           ShowCaption = False
           TabOrder = 1
-          object Label4: TLabel
-            Left = 74
-            Top = 62
-            Width = 56
-            Height = 17
-            Caption = 'Valor R$: '
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Segoe UI Semibold'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label3: TLabel
-            Left = 44
-            Top = 33
-            Width = 86
-            Height = 17
-            Caption = 'Percentual %: '
-            Font.Charset = ANSI_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Segoe UI Semibold'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object edtVal: TEdit
-            Left = 134
-            Top = 60
-            Width = 60
-            Height = 24
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -13
-            Font.Name = 'Tahoma'
-            Font.Style = []
-            ParentFont = False
-            TabOrder = 1
-            Text = '0,00'
-            OnKeyPress = edtValKeyPress
-          end
           object edtPerc: TEdit
-            Left = 134
-            Top = 31
+            Left = 90
+            Top = 58
             Width = 60
             Height = 24
             Font.Charset = DEFAULT_CHARSET
@@ -228,7 +187,7 @@ inherited Frm_Desconto: TFrm_Desconto
             Font.Name = 'Tahoma'
             Font.Style = []
             ParentFont = False
-            TabOrder = 0
+            TabOrder = 2
             Text = '0,00'
             OnKeyPress = edtPercKeyPress
           end
@@ -241,7 +200,7 @@ inherited Frm_Desconto: TFrm_Desconto
             BevelOuter = bvNone
             Caption = 'pnlTopo'
             ShowCaption = False
-            TabOrder = 2
+            TabOrder = 0
             object Label1: TLabel
               Left = 21
               Top = -1
@@ -305,6 +264,25 @@ inherited Frm_Desconto: TFrm_Desconto
               Font.Style = [fsBold]
               ParentFont = False
             end
+          end
+          object cbbTipoDesc: TComboBox
+            Left = 46
+            Top = 29
+            Width = 104
+            Height = 25
+            Style = csDropDownList
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI'
+            Font.Style = []
+            ItemIndex = 0
+            ParentFont = False
+            TabOrder = 1
+            Text = 'Percentual %'
+            Items.Strings = (
+              'Percentual %'
+              'Valor R$')
           end
         end
       end

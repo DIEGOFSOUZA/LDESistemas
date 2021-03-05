@@ -400,7 +400,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           Top = 221
           Width = 545
           Height = 248
-          ActivePage = TabSheet2
+          ActivePage = tsInfAd
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -413,7 +413,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object TabSheet2: TTabSheet
             Caption = 'Fornecedores'
             ImageIndex = 1
-            ExplicitHeight = 247
             object pnlFornecedores: TPanel
               Left = 0
               Top = 0
@@ -423,7 +422,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitHeight = 247
               object PngAddProduto: TPngSpeedButton
                 Left = 141
                 Top = 4
@@ -520,7 +518,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object tsConversao: TTabSheet
             Caption = 'Fator de Convers'#227'o'
             ImageIndex = 1
-            ExplicitHeight = 247
             object pnlFundoTab: TPanel
               Left = 0
               Top = 0
@@ -528,7 +525,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Height = 220
               Align = alClient
               TabOrder = 0
-              ExplicitHeight = 247
               object lblTitConversao: TLabel
                 Left = 1
                 Top = 1
@@ -561,7 +557,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Color = 14803681
                 ParentBackground = False
                 TabOrder = 0
-                ExplicitHeight = 215
                 object Label10: TLabel
                   Left = 67
                   Top = 52
@@ -666,6 +661,105 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   Font.Style = []
                   ParentFont = False
                   TabOrder = 2
+                end
+              end
+            end
+          end
+          object tsInfAd: TTabSheet
+            Caption = 'Informa'#231'oes adicionais'
+            ImageIndex = 2
+            object pnl2: TPanel
+              Left = 0
+              Top = 0
+              Width = 537
+              Height = 220
+              Align = alClient
+              Color = 14803681
+              ParentBackground = False
+              TabOrder = 0
+              ExplicitWidth = 605
+              ExplicitHeight = 253
+              object Label8: TLabel
+                Left = 0
+                Top = 13
+                Width = 67
+                Height = 13
+                Caption = 'Observa'#231#227'o'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object DBMemo1: TDBMemo
+                Left = 0
+                Top = 34
+                Width = 376
+                Height = 71
+                DataField = 'DESCRICAO'
+                DataSource = ds
+                TabOrder = 0
+              end
+              object pnlDesc: TPanel
+                Left = 391
+                Top = 32
+                Width = 140
+                Height = 73
+                BevelOuter = bvNone
+                Caption = 'pnlDesc'
+                ShowCaption = False
+                TabOrder = 1
+                OnClick = pnlDescClick
+                object pnlDescMaximo: TPanel
+                  Left = 0
+                  Top = 0
+                  Width = 140
+                  Height = 73
+                  Align = alClient
+                  Caption = 'pnlDescMaximo'
+                  Enabled = False
+                  ShowCaption = False
+                  TabOrder = 0
+                  ExplicitLeft = -7
+                  ExplicitTop = 2
+                  object lblTitDesc: TLabel
+                    Left = 1
+                    Top = 1
+                    Width = 138
+                    Height = 28
+                    Align = alTop
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = '% M'#225'ximo de '#13#10'Desconto na Venda'
+                    Color = 10114859
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWhite
+                    Font.Height = -11
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    ParentColor = False
+                    ParentFont = False
+                    Transparent = False
+                    WordWrap = True
+                    OnMouseMove = lblTituloMouseMove
+                    ExplicitWidth = 175
+                  end
+                  object DBEdit11: TDBEdit
+                    Left = 40
+                    Top = 38
+                    Width = 70
+                    Height = 23
+                    DataField = 'DESC_MAXIMO'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -12
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    ParentFont = False
+                    TabOrder = 0
+                  end
                 end
               end
             end
@@ -843,6 +937,12 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     end
     object cdsDT_CADASTRO: TDateField
       FieldName = 'DT_CADASTRO'
+    end
+    object cdsDESC_MAXIMO: TFMTBCDField
+      FieldName = 'DESC_MAXIMO'
+      DisplayFormat = '#,##0.000 %'
+      Precision = 18
+      Size = 3
     end
   end
   inherited actMaster: TActionList

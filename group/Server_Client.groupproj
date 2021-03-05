@@ -9,6 +9,9 @@
         <Projects Include="..\Client\LDESistemas.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="C:\ACBr\Exemplos\ACBrSAT\Delphi\Fortes ESCPOS\SATTeste.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="LDESistemas:Make">
         <MSBuild Projects="..\Client\LDESistemas.dproj" Targets="Make"/>
     </Target>
+    <Target Name="SATTeste">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrSAT\Delphi\Fortes ESCPOS\SATTeste.dproj"/>
+    </Target>
+    <Target Name="SATTeste:Clean">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrSAT\Delphi\Fortes ESCPOS\SATTeste.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SATTeste:Make">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrSAT\Delphi\Fortes ESCPOS\SATTeste.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LDEServer;LDESistemas"/>
+        <CallTarget Targets="LDEServer;LDESistemas;SATTeste"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean"/>
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;SATTeste:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LDEServer:Make;LDESistemas:Make"/>
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;SATTeste:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

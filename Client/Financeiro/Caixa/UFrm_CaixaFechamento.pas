@@ -371,7 +371,7 @@ end;
 procedure TFrm_CaixaFechamento.ImpressaoCaixa;
 begin
   if not Validar() then
-   Exit ;
+    Exit;
 
   if not Assigned(Rel_FechamentoCaixa) then
     Rel_FechamentoCaixa := TRel_FechamentoCaixa.Create(Self);
@@ -439,7 +439,8 @@ const
   SQLTotCred = 'SELECT coalesce(sum(r.VALOR),0) tot_cred FROM PDV_RECEBER r '+
                'left outer join PDV_MASTER a on (a.ID = r.ID and a.TIPO = a.TIPO) '+
                'where a.EMISSAO = %s '+
-               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
+               'and r.forma_pagto = ''CREDIARIO''';
+//               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
 
 var mIDCaixa : string ;
     SQL3 : string;

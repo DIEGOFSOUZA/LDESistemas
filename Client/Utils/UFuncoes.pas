@@ -1087,7 +1087,8 @@ const
         'where a.ABERTO_FECHADO = ''A'' '+
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
-  Result.Fechado := False ;
+{$REGION 'Trecho Producao'}
+  {Result.Fechado := False ;
   Result.ID := 0;
 
   DM.dsConsulta.Close ;
@@ -1104,7 +1105,13 @@ begin
     Exit ;
   end;
 
-  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;}
+{$ENDREGION}
+
+{$REGION 'Trecho teste'}
+  Result.Fechado := False;
+  Result.ID := 230;
+{$ENDREGION}
 end;
 
 function ValorFormatadoFirebird(pValor:string) : string;

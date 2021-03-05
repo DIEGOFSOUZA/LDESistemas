@@ -2,6 +2,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
   Caption = 'Frm_NF_Entrada'
   ClientHeight = 640
   ClientWidth = 803
+  ExplicitTop = -136
   ExplicitWidth = 803
   ExplicitHeight = 640
   PixelsPerInch = 96
@@ -15,10 +16,10 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
     Width = 803
     Height = 610
     ExplicitWidth = 803
-    ExplicitHeight = 570
+    ExplicitHeight = 610
     inherited Panel1: TPanel
       Height = 608
-      ExplicitHeight = 568
+      ExplicitHeight = 608
       inherited pnlSair: TPanel
         Top = 529
         ExplicitTop = 529
@@ -52,12 +53,12 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
       Width = 720
       Height = 608
       ExplicitWidth = 720
-      ExplicitHeight = 568
+      ExplicitHeight = 608
       inherited Panel4: TPanel
         Top = 587
         Width = 718
         TabOrder = 3
-        ExplicitTop = 547
+        ExplicitTop = 587
         ExplicitWidth = 718
       end
       object pnlDados: TPanel
@@ -69,8 +70,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         BevelOuter = bvNone
         TabOrder = 0
         TabStop = True
-        ExplicitLeft = 6
-        ExplicitTop = -5
         object Label1: TLabel
           Left = 92
           Top = 24
@@ -406,7 +405,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         BevelOuter = bvNone
         TabOrder = 1
         TabStop = True
-        ExplicitTop = 120
         object Label6: TLabel
           Left = 34
           Top = 57
@@ -577,6 +575,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           ConsultaTabela.Tabela = 'FABRICANTE'
           ConsultaTabela.Pesquisa = 'codigo'
           ConsultaTabela.Mostrar = 'razao_nome'
+          ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
           Mostrar.Left = 151
           Mostrar.Top = 0
           Mostrar.Width = 250
@@ -834,17 +833,14 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         ShowCaption = False
         TabOrder = 2
         TabStop = True
-        ExplicitTop = 300
         object pgc1: TPageControl
           Left = 1
           Top = 1
           Width = 716
           Height = 245
-          ActivePage = tsAnotacao
+          ActivePage = tsProdutoServico
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 5
-          ExplicitTop = -1
           object tsProdutoServico: TTabSheet
             Caption = 'PRODUTOS/SERVI'#199'OS'
             object pnlItens: TPanel
@@ -1149,6 +1145,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     ConsultaTabela.Tabela = 'PRODUTO'
                     ConsultaTabela.Pesquisa = 'codigo'
                     ConsultaTabela.Mostrar = 'nome'
+                    ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
                     OnPesquisa = edpsqsProdutoPesquisa
                     Titulo.Left = 0
                     Titulo.Top = 3
@@ -1358,7 +1355,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     Align = alBottom
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitLeft = -1
                     object Label4: TLabel
                       Left = 460
                       Top = 0

@@ -21,9 +21,6 @@ type
     lblVlMax: TLabel;
     lblTitDesMax: TLabel;
     pnlEdits: TPanel;
-    Label4: TLabel;
-    edtVal: TEdit;
-    Label3: TLabel;
     edtPerc: TEdit;
     pnlTopo: TPanel;
     Label1: TLabel;
@@ -31,11 +28,12 @@ type
     pnlRodape: TPanel;
     Label2: TLabel;
     lblComDesc: TLabel;
+    cbbTipoDesc: TComboBox;
     procedure edtPercKeyPress(Sender: TObject; var Key: Char);
     procedure btnCancelClick(Sender: TObject);
     procedure btnokClick(Sender: TObject);
-    procedure edtValKeyPress(Sender: TObject; var Key: Char);
   private
+    procedure AplicaDesc;
     { Private declarations }
   public
     { Public declarations }
@@ -63,9 +61,9 @@ end;
 procedure TFrm_Desconto.btnokClick(Sender: TObject);
 begin
   inherited;
-  if (StrToFloat(edtPerc.Text) > 0 ) or
-     (StrToFloat(edtVal.Text) > 0 ) then
+  if (StrToFloat(edtPerc.Text) > 0) then
   begin
+    AplicaDesc;
     Retorno := 'sucesso' ;
     Close ;
   end
@@ -81,34 +79,10 @@ begin
   inherited;
   if not (Key in ['0'..'9', ',', #8, #13]) then
     Key := #0;
-  edtVal.Text := '0,00';
 
   if Key = #13 then
   begin
-    if StrToFloat(edtPerc.Text) > 0 then
-    begin
-      ValComDesc := Roundto(Resultado('P'), -1);
-      ValDesc := ValSemDesc - ValComDesc;
-      lblComDesc.Caption := FormatFloat('#,##0.00', ValComDesc);
-    end;
-  end;
-end;
-
-procedure TFrm_Desconto.edtValKeyPress(Sender: TObject; var Key: Char);
-begin
-  inherited;
-  if not (Key in ['0'..'9', ',', #8, #13]) then
-    Key := #0;
-  edtPerc.Text := '0,00';
-
-  if Key = #13 then
-  begin
-    if StrToFloat(edtVal.Text) > 0 then
-    begin
-      ValComDesc := Resultado('V');
-      ValDesc := ValSemDesc - ValComDesc;
-      lblComDesc.Caption := FormatFloat('#,##0.00', ValComDesc);
-    end;
+    AplicaDesc;
   end;
 end;
 
@@ -120,7 +94,20 @@ begin
   end
   else
   begin
-    Result := ValSemDesc - StrToFloat(edtVal.Text) ;
+    Result := ValSemDesc - StrToFloat(edtPerc.Text) ;
+  end;
+end;
+
+procedure TFrm_Desconto.AplicaDesc;
+begin
+  if StrToFloat(edtPerc.Text) > 0 then
+  begin
+    if cbbTipoDesc.ItemIndex = 0 then
+      ValComDesc := Roundto(Resultado('P'), -1)
+    else
+      ValComDesc := Resultado('V');
+    ValDesc := ValSemDesc - ValComDesc;
+    lblComDesc.Caption := FormatFloat('#,##0.00', ValComDesc);
   end;
 end;
 

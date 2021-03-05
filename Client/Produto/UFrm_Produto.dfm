@@ -682,9 +682,9 @@ inherited Frm_Produto: TFrm_Produto
                 TabStop = True
               end
               object pnlDesc: TPanel
-                Left = 422
+                Left = 439
                 Top = 15
-                Width = 176
+                Width = 140
                 Height = 73
                 BevelOuter = bvNone
                 Caption = 'pnlDesc'
@@ -692,10 +692,11 @@ inherited Frm_Produto: TFrm_Produto
                 TabOrder = 3
                 OnClick = pnlDescClick
                 object pnlDescMaximo: TPanel
-                  Left = -1
+                  Left = 0
                   Top = 0
-                  Width = 177
+                  Width = 140
                   Height = 73
+                  Align = alClient
                   Caption = 'pnlDescMaximo'
                   Enabled = False
                   ShowCaption = False
@@ -703,27 +704,28 @@ inherited Frm_Produto: TFrm_Produto
                   object lblTitDesc: TLabel
                     Left = 1
                     Top = 1
-                    Width = 175
-                    Height = 20
+                    Width = 138
+                    Height = 28
                     Align = alTop
                     Alignment = taCenter
                     AutoSize = False
-                    Caption = '% M'#225'ximo de Desconto em Venda'
+                    Caption = '% M'#225'ximo de '#13#10'Desconto na Venda'
                     Color = 10114859
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clWhite
-                    Font.Height = -9
-                    Font.Name = 'Segoe UI Semibold'
-                    Font.Style = [fsBold]
+                    Font.Height = -11
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
                     ParentColor = False
                     ParentFont = False
                     Transparent = False
-                    Layout = tlCenter
+                    WordWrap = True
                     OnMouseMove = lblTituloMouseMove
+                    ExplicitWidth = 175
                   end
                   object DBEdit11: TDBEdit
-                    Left = 53
-                    Top = 34
+                    Left = 40
+                    Top = 38
                     Width = 70
                     Height = 23
                     DataField = 'DESC_MAXIMO'

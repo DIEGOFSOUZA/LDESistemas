@@ -338,7 +338,8 @@ const
   SQLTotCred = 'SELECT coalesce(sum(r.VALOR),0) tot_cred FROM PDV_RECEBER r ' +
                'left outer join PDV_MASTER a on (a.ID = r.ID and a.TIPO = a.TIPO) ' +
                'where a.EMISSAO = %s '+
-               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
+               'and r.forma_pagto = ''CREDIARIO''';
+//               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
   pagto: array  [0..3] of string = ('1','4','3','2');
 var
   I: Integer;

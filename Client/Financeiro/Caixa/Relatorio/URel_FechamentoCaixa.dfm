@@ -1,17 +1,17 @@
 inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
   BorderStyle = bsNone
   Caption = 'Rel_FechamentoCaixa'
-  ClientHeight = 363
-  ClientWidth = 542
+  ClientHeight = 360
+  ClientWidth = 541
   Visible = False
-  ExplicitWidth = 542
-  ExplicitHeight = 363
+  ExplicitWidth = 541
+  ExplicitHeight = 360
   PixelsPerInch = 96
   TextHeight = 13
   object lblTitulo: TLabel [0]
     Left = 0
     Top = 0
-    Width = 542
+    Width = 541
     Height = 30
     Align = alTop
     AutoSize = False
@@ -868,12 +868,12 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     Left = 0
     Top = 30
     Width = 422
-    Height = 333
+    Height = 330
     Align = alLeft
     Color = clWhite
     ParentBackground = False
     TabOrder = 1
-    ExplicitHeight = 1129
+    ExplicitHeight = 333
     object Label1: TLabel
       Left = 32
       Top = 10
@@ -921,7 +921,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     end
     object dbgrd1: TDBGrid
       Left = 1
-      Top = 75
+      Top = 72
       Width = 420
       Height = 257
       Align = alBottom
@@ -993,16 +993,16 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     end
   end
   object pnlAcoes: TPanel [4]
-    Left = 424
+    Left = 423
     Top = 30
     Width = 118
-    Height = 333
+    Height = 330
     Align = alRight
     Color = clWhite
     ParentBackground = False
     TabOrder = 2
-    ExplicitLeft = 811
-    ExplicitHeight = 1129
+    ExplicitLeft = 424
+    ExplicitHeight = 333
     object imgFiltrar: TImage
       Left = 6
       Top = 96

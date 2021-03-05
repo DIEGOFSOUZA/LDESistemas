@@ -39,7 +39,7 @@ Uninstallable=no
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
 [Files]
-Source: "..\..\..\Executaveis\DIEGO FERNANDES\Sistema\Cliente\Win32\Release\LDESistemas.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\..\Executaveis\LDE\Client\Win32\Release\LDESistemas.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Run]
