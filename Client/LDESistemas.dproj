@@ -3,7 +3,7 @@
         <ProjectGuid>{A6BA2BE4-1CE8-4748-B6AA-8F703253641B}</ProjectGuid>
         <MainSource>LDESistemas.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>38017</TargetedPlatforms>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>

@@ -24,6 +24,8 @@ type
     dbpsqsGrupo: TDBPesquisa;
     cdsID_GRUPO: TIntegerField;
     cdsGRUPO: TStringField;
+    Label4: TLabel;
+    DBEdit3: TDBEdit;
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure FormCreate(Sender: TObject);
     procedure actExcluirExecute(Sender: TObject);

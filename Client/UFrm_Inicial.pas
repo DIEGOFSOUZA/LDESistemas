@@ -385,7 +385,6 @@ begin
   AUTORIZARORAMENTO1.Visible := (DM.UserPerfil='Administrador');
 
   Cheque1.Visible := DM.User = 'ADMIN';
-  IPOSDEPAGAMENTO1.Visible := DM.User = 'ADMIN';
   Pedidos1.Visible := DM.User = 'ADMIN';
   CONTASARECEBER21.Visible := DM.User = 'ADMIN';
 

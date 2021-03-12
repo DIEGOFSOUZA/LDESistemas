@@ -3,9 +3,11 @@ unit UFrmBaixaContaPagar; {H366/W446}
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child, Vcl.ExtCtrls, Vcl.StdCtrls,
-  Vcl.Mask, Vcl.DBCtrls, Data.DB, UEDPesquisa, Vcl.Imaging.pngimage, Vcl.Buttons;
+  Vcl.Mask, Vcl.DBCtrls, Data.DB, UEDPesquisa, Vcl.Imaging.pngimage, Vcl.Buttons,
+  Datasnap.DBClient, System.Actions, Vcl.ActnList;
 
 const
   senha = '2020';
@@ -17,33 +19,23 @@ type
     pnlBotao: TPanel;
     lbl1: TLabel;
     Label2: TLabel;
-    DBEdit1: TDBEdit;
-    DBEdit2: TDBEdit;
     Label3: TLabel;
     Label4: TLabel;
-    DBEdit3: TDBEdit;
     Label5: TLabel;
-    DBEdit4: TDBEdit;
     Label6: TLabel;
-    DBEdit5: TDBEdit;
     Label7: TLabel;
-    DBEdit6: TDBEdit;
     pnlCancelar: TPanel;
     btnCancelar: TSpeedButton;
-    imgCancelar: TImage;
     pnlBtnBaixar: TPanel;
     btnBaixar: TSpeedButton;
-    imgBaixar: TImage;
     pnlBaixa: TPanel;
     Label1: TLabel;
     pnlDadosBaixa: TPanel;
     Label8: TLabel;
     Label9: TLabel;
-    Label10: TLabel;
     Label12: TLabel;
     Label13: TLabel;
     edtValBaixa: TEdit;
-    edtusuario: TEdit;
     edtVlDesconto: TEdit;
     edtVlJuros: TEdit;
     pnlCheque: TPanel;
@@ -55,8 +47,16 @@ type
     edpsqsConta: TEdPesquisa;
     edtDtBaixa: TMaskEdit;
     s1: TDataSource;
-    procedure btnBaixarClick(Sender: TObject);
-    procedure btnCancelarClick(Sender: TObject);
+    edtFornecedor: TEdit;
+    edtDtEmissao: TEdit;
+    edtDtVenc: TEdit;
+    edtNF: TEdit;
+    edtDupl: TEdit;
+    edtValor: TEdit;
+    actlst1: TActionList;
+    actBaixar: TAction;
+    actRestaurar: TAction;
+    actCancelar: TAction;
     procedure edpsqsContaPesquisa(Sender: TObject; var Retorno: string);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
@@ -66,6 +66,9 @@ type
     procedure edtValBaixaExit(Sender: TObject);
     procedure edpsqsHistoricoPesquisa(Sender: TObject; var Retorno: string);
     procedure edtDtBaixaExit(Sender: TObject);
+    procedure actBaixarExecute(Sender: TObject);
+    procedure actRestaurarExecute(Sender: TObject);
+    procedure actCancelarExecute(Sender: TObject);
   private
     fVlPago: Currency;
     { Private declarations }
@@ -83,6 +86,8 @@ type
     VlDuplicata : Currency;
 
     property VlPago : Currency read fVlPago write setVlPago;
+
+    procedure CarregarDupl(aIDNota,aDup : Integer);
   end;
 
 var
@@ -95,29 +100,100 @@ uses
 
 {$R *.dfm}
 
-procedure TFrmBaixaContaPagar.btnCancelarClick(Sender: TObject);
+procedure TFrmBaixaContaPagar.CarregarDupl(aIDNota,aDup: Integer);
+const
+  SQL = 'select c.razao_nome,b.n_nf,b.emissao,a.dvenc,a.ndup,a.vdup,'+
+        'a.baixa_data,a.baixa_valor,a.baixa_usuario,a.id_historico,'+
+        'd.descricao,a.id_conta,e.bco_nome,coalesce(a.vdesc,0)vdesc,coalesce(a.vjuros,0)vjuros,'+
+        'coalesce(a.cheque_numero,0)cheque_numero '+
+        'from nota_entrada_pagar a '+
+        'left join nota_entrada b on (b.id=a.id_notaentrada) '+
+        'left join fabricante c on (c.codigo=b.codfor) '+
+        'left join historico d on (d.id=a.id_historico) '+
+        'left join conta_bancaria e on (e.id=a.id_conta) '+
+        'where a.id_notaentrada=%s and a.ndup=%s';
+var
+  lcds: TClientDataSet;
+begin
+  lcds := TClientDataSet.Create(nil);
+  try
+    lcds.Close;
+    lcds.Data := DM.LerDataSet(Format(SQL,[aIDNota.ToString,aDup.ToString]));
+    if lcds.IsEmpty then
+    begin
+
+    end
+    else
+    begin
+      edtFornecedor.Text := lcds.FieldByName('RAZAO_NOME').AsString;
+      edtNF.Text := lcds.FieldByName('N_NF').AsString;
+      edtDtEmissao.Text := FormatDateTime('dd/mm/yyyy',lcds.FieldByName('EMISSAO').AsDateTime);
+      edtDtVenc.Text := FormatDateTime('dd/mm/yyyy',lcds.FieldByName('DVENC').AsDateTime);
+      edtDupl.Text := FormatFloat('000',lcds.FieldByName('NDUP').AsInteger);
+      edtValor.Text := FormatCurr('R$ #,##0.00',lcds.FieldByName('VDUP').AsCurrency);
+
+
+
+      if lcds.FieldByName('BAIXA_DATA').IsNull then
+      begin
+        btnBaixar.Action := actBaixar;
+        pnlDadosBaixa.Enabled := True;
+        pnlCheque.Enabled := True;
+        edtDtBaixa.Text := DateToStr(Date);
+        edtValBaixa.Text := FormatCurr('##0.00', lcds.FieldByName('VDUP').AsCurrency);
+        edtVlDesconto.Text := FormatCurr('##0.00', 0);
+        edtVlJuros.Text := FormatCurr('##0.00', 0);
+      end
+      else
+      begin
+        btnBaixar.Action := actRestaurar;
+        pnlDadosBaixa.Enabled := False;
+        pnlCheque.Enabled := False;
+        edtDtBaixa.Text := FormatDateTime('dd/mm/yyyy',lcds.FieldByName('BAIXA_DATA').AsDateTime);
+        edtValBaixa.Text := FormatCurr('##0.00', lcds.FieldByName('BAIXA_VALOR').AsCurrency);
+        edpsqsHistorico.Campo.Text := lcds.FieldByName('ID_HISTORICO').AsString;
+        edpsqsHistorico.Mostrar.Text := lcds.FieldByName('DESCRICAO').AsString;
+        edpsqsConta.Campo.Text := lcds.FieldByName('ID_CONTA').AsString;
+        edpsqsConta.Mostrar.Text := lcds.FieldByName('BCO_NOME').AsString;
+        edtVlDesconto.Text := FormatCurr('##0.00', lcds.FieldByName('VDESC').AsCurrency);
+        edtVlJuros.Text := FormatCurr('##0.00', lcds.FieldByName('VJUROS').AsCurrency);
+        edtNumCheque.Text := lcds.FieldByName('CHEQUE_NUMERO').AsString;
+      end;
+
+      IDNota := aIDNota.ToString;
+      Duplicata := aDup.ToString;
+      VlDuplicata := lcds.FieldByName('VDUP').AsCurrency;
+    end;
+
+  finally
+    FreeAndNil(lcds);
+  end;
+end;
+
+procedure TFrmBaixaContaPagar.actBaixarExecute(Sender: TObject);
+begin
+  inherited;
+  Executar('baixa')
+end;
+
+procedure TFrmBaixaContaPagar.actCancelarExecute(Sender: TObject);
 begin
   inherited;
   Retorno := 'cancelar';
   Close;
 end;
 
-procedure TFrmBaixaContaPagar.btnBaixarClick(Sender: TObject);
+procedure TFrmBaixaContaPagar.actRestaurarExecute(Sender: TObject);
 begin
   inherited;
-  if btnBaixar.Caption = '     Baixar' then
-    Executar('baixa')
-  else if btnBaixar.Caption = '     Restaurar' then
+  if VoltaSenha() <> senha then
   begin
-    if VoltaSenha() <> senha then
-    begin
-      TMensagem.Informacao('Senha incorreta.');
-      Exit;
-    end
-    else
-    begin
-      Executar('restaurar');
-    end;
+    TMensagem.Informacao('Senha incorreta.');
+    Exit;
+  end
+  else
+  begin
+    Executar('restaurar');
   end;
 end;
 
@@ -168,7 +244,7 @@ procedure TFrmBaixaContaPagar.edtVlDescontoKeyPress(Sender: TObject;
   var Key: Char);
 begin
   inherited;
-  if not (Key in ['0'..'9', ',', '.', #8, #13]) then
+  if not (Key in ['0'..'9', ',', #8, #13]) then
     Key := #0;
 end;
 
@@ -256,7 +332,7 @@ begin
 
   lNumCheque := 'null';
   {Com cheque}
-  if (edtNumCheque.Text <> '') then
+  if ((edtNumCheque.Text <> '') and (edtNumCheque.Text <> '0')) then
   begin
     if ((Trim(edpsqsConta.Campo.Text) = '') or
     (Trim(StringReplace(edtCompensa.Text,'/','',[rfReplaceAll])) = '')) then
@@ -369,7 +445,10 @@ end;
 procedure TFrmBaixaContaPagar.FormShow(Sender: TObject);
 begin
   inherited;
-  if Baixada then
+  if btnBaixar.Action = actBaixar then
+    edtDtBaixa.SetFocus;
+
+  {if Baixada then
   begin
     btnBaixar.Caption := '     Restaurar';
     if IdConta <> '' then
@@ -391,14 +470,14 @@ begin
   else
   begin
     btnBaixar.Caption := '     Baixar';
-  end;
+  end;}
 end;
 
 function TFrmBaixaContaPagar.GerarCheque(): Boolean;
 var
   lSQL: string;
 begin
-  lSQL := 'INSERT INTO CHEQUE (ID_BANCO, NUM_CHEQUE, DT_EMISSAO, DT_COMPENSA, VALOR,'+
+{  lSQL := 'INSERT INTO CHEQUE (ID_BANCO, NUM_CHEQUE, DT_EMISSAO, DT_COMPENSA, VALOR,'+
           'NOMINAL, OBS) '+
           'VALUES ( '+
               QuotedStr(edpsqsConta.Campo.Text)+
@@ -414,7 +493,7 @@ begin
     Result := True;
   except
     Result := False;
-  end;
+  end;  }
 end;
 
 procedure TFrmBaixaContaPagar.setVlPago(const Value: Currency);

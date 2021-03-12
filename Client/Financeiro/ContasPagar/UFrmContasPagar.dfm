@@ -126,7 +126,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 0
+        TabOrder = 4
         OnClick = actPesquisarExecute
         object imgConsDup: TImage
           Left = 3
@@ -186,7 +186,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 118
         Color = 13337441
         ParentBackground = False
-        TabOrder = 1
+        TabOrder = 0
         object lblPeriodo: TLabel
           Left = 22
           Top = 1
@@ -280,7 +280,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 64
         Color = 13337441
         ParentBackground = False
-        TabOrder = 2
+        TabOrder = 1
         object lblFornecedor: TLabel
           Left = 22
           Top = 1
@@ -369,7 +369,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 64
         Color = 13337441
         ParentBackground = False
-        TabOrder = 3
+        TabOrder = 2
         object lblNF: TLabel
           Left = 22
           Top = 1
@@ -438,7 +438,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 125
         Color = 13337441
         ParentBackground = False
-        TabOrder = 4
+        TabOrder = 3
         object lblTipo: TLabel
           Left = 22
           Top = 1
@@ -479,7 +479,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
       Height = 486
       Align = alRight
       BorderStyle = bsSingle
-      TabOrder = 1
+      TabOrder = 2
       object pnl0: TPanel
         Left = 1
         Top = 1
@@ -620,6 +620,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           ParentBackground = False
           ShowCaption = False
           TabOrder = 2
+          Visible = False
           OnClick = actIncluirSimplesExecute
           object imglAddDoc: TImage
             Left = 2
@@ -850,7 +851,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
       Width = 768
       Height = 486
       Align = alClient
-      TabOrder = 2
+      TabOrder = 1
       object pnlRodape: TPanel
         Left = 1
         Top = 456
@@ -858,7 +859,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 29
         Align = alBottom
         BorderStyle = bsSingle
-        TabOrder = 0
+        TabOrder = 1
       end
       object pnlRegistros: TPanel
         Left = 1
@@ -867,7 +868,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 455
         Align = alClient
         BorderStyle = bsSingle
-        TabOrder = 1
+        TabOrder = 0
         object dbgrdParcela: TDBGrid
           Left = 1
           Top = 49

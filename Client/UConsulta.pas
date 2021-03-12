@@ -1333,41 +1333,40 @@ begin
 
   SetLength(mCampos,4);
 
-  mCampos[0].Descricao := 'ID' ;
-  mCampos[0].Mascara   := '' ;
-  mCampos[0].Mostrar   := False ;
-  mCampos[0].Nome      := 'id' ;
-  mCampos[0].NomeSQL   := 'id' ;
-  mCampos[0].Pesquisa  := False ;
-  mCampos[0].Retorno   := True ;
+  mCampos[0].Descricao := 'Código';
+  mCampos[0].Mascara := '';
+  mCampos[0].Mostrar := True;
+  mCampos[0].Nome := 'id';
+  mCampos[0].NomeSQL := 'id';
+  mCampos[0].Pesquisa := True;
+  mCampos[0].Retorno := True;
 
-  mCampos[1].Descricao := 'Identificação' ;
-  mCampos[1].Mascara   := '' ;
-  mCampos[1].Mostrar   := True ;
-  mCampos[1].Nome      := 'chave' ;
-  mCampos[1].NomeSQL   := 'chave' ;
-  mCampos[1].Pesquisa  := True ;
-  mCampos[1].Retorno   := False ;
+  mCampos[1].Descricao := 'Identificação';
+  mCampos[1].Mascara := '';
+  mCampos[1].Mostrar := True;
+  mCampos[1].Nome := 'chave';
+  mCampos[1].NomeSQL := 'chave';
+  mCampos[1].Pesquisa := True;
+  mCampos[1].Retorno := False;
 
-  mCampos[2].Descricao := 'Descrição' ;
-  mCampos[2].Mascara   := '' ;
-  mCampos[2].Mostrar   := True ;
-  mCampos[2].Nome      := 'descricao' ;
-  mCampos[2].NomeSQL   := 'descricao' ;
-  mCampos[2].Pesquisa  := True ;
-  mCampos[2].Retorno   := False ;
+  mCampos[2].Descricao := 'Descrição';
+  mCampos[2].Mascara := '';
+  mCampos[2].Mostrar := True;
+  mCampos[2].Nome := 'descricao';
+  mCampos[2].NomeSQL := 'descricao';
+  mCampos[2].Pesquisa := True;
+  mCampos[2].Retorno := False;
 
-  mCampos[3].Descricao := 'Débito/Crédito' ;
-  mCampos[3].Mascara   := '' ;
-  mCampos[3].Mostrar   := True ;
-  mCampos[3].Nome      := 'debito_credito' ;
-  mCampos[3].NomeSQL   := 'debito_credito' ;
-  mCampos[3].Pesquisa  := False ;
-  mCampos[3].Retorno   := False ;
-
+  mCampos[3].Descricao := 'Débito/Crédito';
+  mCampos[3].Mascara := '';
+  mCampos[3].Mostrar := True;
+  mCampos[3].Nome := 'debito_credito';
+  mCampos[3].NomeSQL := 'debito_credito';
+  mCampos[3].Pesquisa := False;
+  mCampos[3].Retorno := False;
 
   Aux := TPdr_Consulta.Create(nil, 'Consulta de Histórico', InstrucaoSQL, 'descricao',
-                                   mCampos, DM.LerDataSet, 1);
+                                 mCampos, DM.LerDataSet, 2);
   try
     Aux.ShowModal;
     Result := StrToIntDef(Aux.Retorno.Values['id'], 0);

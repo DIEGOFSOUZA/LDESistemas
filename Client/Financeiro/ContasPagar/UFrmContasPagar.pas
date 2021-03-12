@@ -148,9 +148,11 @@ begin
   if not Assigned(FrmBaixaContaPagar) then
     FrmBaixaContaPagar := TFrmBaixaContaPagar.Create(Self);
   try
+    FrmBaixaContaPagar.CarregarDupl(dsPagar.FieldByName('ID_NOTA').AsInteger,dsPagar.FieldByName('NDUP').AsInteger);
+    {
     FrmBaixaContaPagar.Duplicata := IntToStr(dsPagar.FieldByName('ndup').AsInteger);
     if (dsPagar.FieldByName('baixa_data').IsNull) then
-    {duplicata não baixada}
+    //duplicata não baixada
     begin
       FrmBaixaContaPagar.Baixada := False;
       FrmBaixaContaPagar.edtDtBaixa.Text := FormatDateTime('dd/mm/yyyy', Date);
@@ -179,7 +181,7 @@ begin
     FrmBaixaContaPagar.edtVlDesconto.Text := FormatFloat('#,##0.00', dsPagar.FieldByName('vdesc').AsFloat);
     FrmBaixaContaPagar.edtVlJuros.Text := FormatFloat('#,##0.00', dsPagar.FieldByName('vjuros').AsFloat);
     FrmBaixaContaPagar.IDNota := dsPagar.FieldByName('id_nota').AsString;
-
+    }
     FrmBaixaContaPagar.ShowModal;
     if FrmBaixaContaPagar.Retorno = 'sucesso' then
       actPesquisar.Execute;
@@ -192,6 +194,7 @@ end;
 procedure TFrm_ContasPagar.actEditarNotaExecute(Sender: TObject);
 begin
   inherited;
+  actBaixar.Execute;
   //**tela precisa ser refatorada(com bug)**
 //  if not Assigned(Frm_EntradaSimples) then
 //    Frm_EntradaSimples := TFrm_EntradaSimples.Create(Self);

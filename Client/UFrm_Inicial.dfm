@@ -41,7 +41,7 @@ object Frm_Inicial: TFrm_Inicial
       Align = alBottom
       Color = 10114859
       ParentBackground = False
-      TabOrder = 0
+      TabOrder = 2
       object lblSaudacao: TLabel
         Left = 497
         Top = 1
@@ -65,9 +65,9 @@ object Frm_Inicial: TFrm_Inicial
       object lblConexao: TLabel
         Left = 21
         Top = 1
-        Width = 215
+        Width = 131
         Height = 17
-        Caption = 'BASE: (192.0.0.1:C:\BD\SISTEMA.FDB)'
+        Caption = 'BASE: (127.0.0.1:banco)'
         Color = clTeal
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
@@ -92,7 +92,7 @@ object Frm_Inicial: TFrm_Inicial
       Color = clWhite
       ParentBackground = False
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 0
       object imgLogoEmpresa: TImage
         Left = 0
         Top = 0
@@ -4240,7 +4240,7 @@ object Frm_Inicial: TFrm_Inicial
       Caption = 'pnlLogoEmpresa'
       ParentBackground = False
       ShowCaption = False
-      TabOrder = 2
+      TabOrder = 1
       object imgLogoSistema: TImage
         Left = 0
         Top = 0
@@ -4535,11 +4535,11 @@ object Frm_Inicial: TFrm_Inicial
       end
       object IPOSDEPAGAMENTO1: TMenuItem
         Caption = 'TIPOS DE PAGAMENTOS'
-        Visible = False
         OnClick = IPOSDEPAGAMENTO1Click
       end
       object FormasPagamento2: TMenuItem
         Caption = 'FORMA DE PAGAMENTO'
+        Visible = False
         OnClick = FormasPagamento2Click
       end
       object Cidades1: TMenuItem

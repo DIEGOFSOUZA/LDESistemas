@@ -1088,7 +1088,7 @@ const
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
 {$REGION 'Trecho Producao'}
-  {Result.Fechado := False ;
+  Result.Fechado := False ;
   Result.ID := 0;
 
   DM.dsConsulta.Close ;
@@ -1105,12 +1105,12 @@ begin
     Exit ;
   end;
 
-  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;}
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
 {$ENDREGION}
 
 {$REGION 'Trecho teste'}
-  Result.Fechado := False;
-  Result.ID := 230;
+//  Result.Fechado := False;
+//  Result.ID := 230;
 {$ENDREGION}
 end;
 

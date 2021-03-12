@@ -468,6 +468,7 @@ type
     function VNF(): Currency;
     function Validar(): Boolean;
     function PrCustoAtual(aIDProd: integer): Currency;
+    procedure OrdenaItens();
   public
     var
       Pagamento, Parcelamento, Temp: TClientDataSet;
@@ -586,6 +587,7 @@ begin
   else
     dsItem.FieldByName('PRECO_CUSTO').AsCurrency := 0;
 
+//  dsItem.SaveToFile('c:\temp\item.cds',dfBinary);
   dsItem.Post;
   AjustaColGridItens;
   SubTotal := FSubTotal+dsItem.FieldByName('TOTAL').AsCurrency;
@@ -639,6 +641,7 @@ begin
   cds.FieldByName('TOTNOTA').AsCurrency := VNF;
 
   fExibirMens := False;
+  OrdenaItens;
   Gravar;
 end;
 
@@ -1299,6 +1302,31 @@ begin
   inherited;
   LimpaForm();
   dtpEmissao.SetFocus;
+end;
+
+procedure TFrm_NF_Entrada.OrdenaItens;
+var
+  lOrdem: Integer;
+begin
+  if dsItem.IsEmpty then
+    Exit;
+
+  dsItem.DisableControls;
+  try
+    dsItem.Last;
+    lOrdem := 1;
+    while not dsItem.Bof do
+    begin
+      dsItem.Edit;
+      dsItem.FieldByName('ORDEM').AsInteger := lOrdem;
+      dsItem.Post;
+      Inc(lOrdem);
+      dsItem.Prior;
+    end;
+  finally
+    dsItem.EnableControls;
+    dsItem.First;
+  end;
 end;
 
 function TFrm_NF_Entrada.PrCustoAtual(aIDProd: integer): Currency;

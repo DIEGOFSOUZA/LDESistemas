@@ -2,7 +2,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
   Caption = 'Frm_NF_Entrada'
   ClientHeight = 640
   ClientWidth = 803
-  ExplicitTop = -136
   ExplicitWidth = 803
   ExplicitHeight = 640
   PixelsPerInch = 96
@@ -3048,7 +3047,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         DataType = ftDataSet
       end>
     ProviderName = 'dspEntrada'
-    RemoteServer = DM.dspRemotoNotaEntrada
     StoreDefs = True
     AfterInsert = cdsAfterInsert
     AfterCancel = cdsAfterCancel
