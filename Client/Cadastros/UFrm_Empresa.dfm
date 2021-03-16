@@ -2,7 +2,6 @@ inherited Frm_Empresa: TFrm_Empresa
   Caption = 'Cadastro de Empresa'
   ClientWidth = 771
   OnShow = FormShow
-  ExplicitTop = -24
   ExplicitWidth = 771
   PixelsPerInch = 96
   TextHeight = 13
@@ -259,7 +258,7 @@ inherited Frm_Empresa: TFrm_Empresa
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 4
+            TabOrder = 5
           end
           object DBEdit22: TDBEdit
             Left = 176
@@ -274,7 +273,7 @@ inherited Frm_Empresa: TFrm_Empresa
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 5
+            TabOrder = 6
           end
           object DBEdit23: TDBEdit
             Left = 8
@@ -289,7 +288,7 @@ inherited Frm_Empresa: TFrm_Empresa
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 6
+            TabOrder = 7
           end
           object pnlLogo: TPanel
             Left = 344
@@ -299,7 +298,7 @@ inherited Frm_Empresa: TFrm_Empresa
             BevelOuter = bvLowered
             Caption = 'pnlLogo'
             ShowCaption = False
-            TabOrder = 7
+            TabOrder = 4
             object imgLogoTipo: TImage
               Left = 1
               Top = 1
@@ -327,7 +326,7 @@ inherited Frm_Empresa: TFrm_Empresa
           BevelOuter = bvLowered
           Caption = 'pnlLogo'
           ShowCaption = False
-          TabOrder = 1
+          TabOrder = 2
           object Image1: TImage
             Left = 1
             Top = 1
@@ -449,7 +448,7 @@ inherited Frm_Empresa: TFrm_Empresa
           Height = 90
           Caption = 'pnlCNPJ'
           ShowCaption = False
-          TabOrder = 2
+          TabOrder = 1
           object lblSituacao: TLabel
             Left = 1
             Top = 76
@@ -474,7 +473,7 @@ inherited Frm_Empresa: TFrm_Empresa
             Left = 1
             Top = 1
             Width = 158
-            Height = 24
+            Height = 25
             Align = alTop
             DataField = 'CNPJ'
             DataSource = ds
@@ -488,9 +487,9 @@ inherited Frm_Empresa: TFrm_Empresa
           end
           object pnlImgStatus: TPanel
             Left = 1
-            Top = 25
+            Top = 26
             Width = 158
-            Height = 51
+            Height = 50
             Align = alClient
             BevelOuter = bvNone
             Caption = 'pnlImgStatus'
@@ -498,9 +497,6 @@ inherited Frm_Empresa: TFrm_Empresa
             ParentBackground = False
             ShowCaption = False
             TabOrder = 1
-            ExplicitLeft = 2
-            ExplicitTop = 19
-            ExplicitHeight = 46
             object imgStatusCNPJ: TImage
               Left = 56
               Top = 0
@@ -643,8 +639,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 1
-              ExplicitTop = -2
               object Label2: TLabel
                 Left = 8
                 Top = 5
@@ -887,8 +881,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 1
-              ExplicitTop = -2
               object Label9: TLabel
                 Left = 8
                 Top = 5
@@ -1131,8 +1123,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 1
-              ExplicitTop = -2
               object Label16: TLabel
                 Left = 8
                 Top = 5
@@ -1554,6 +1544,7 @@ inherited Frm_Empresa: TFrm_Empresa
     end
   end
   object Dialog: TOpenPictureDialog
+    Filter = 'Imagens PNG(*.PNG)|*.PNG'
     Left = 520
     Top = 440
   end

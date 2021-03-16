@@ -1150,13 +1150,13 @@ begin
   if TryStrToFloat(s, f) then
   begin
     Result.Retorno := 'sucesso';
-    Result.VlString := FormatFloat('#,##0.00', f);
+    Result.VlString := FormatFloat('##0.00', f);
     Result.vlFloat := f;
   end
   else
   begin
     Result.Retorno := 'erro';
-    Result.VlString := FormatFloat('#,##0.00', 0);
+    Result.VlString := FormatFloat('##0.00', 0);
     Result.vlFloat := 0;
     TMensagem.Erro('Valor inválido');
   end;

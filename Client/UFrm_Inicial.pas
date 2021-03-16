@@ -228,7 +228,7 @@ begin
 
     if lStream.Size > 0 then
     begin
-      pnlLogoEmpresa.Color := clWhite;
+//      pnlLogoEmpresa.Color := clWhite;
       imgLogoEmpresa.Picture.LoadFromStream(lStream);
     end;
   finally

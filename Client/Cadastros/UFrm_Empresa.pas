@@ -155,6 +155,9 @@ type
     function ExisteCadEmpresa(): Boolean;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar() : Boolean ;
+
+    //imagem
+    procedure RefreshImage(Field: TField; Img: TImage);
   public
     { Public declarations }
     procedure Novo() ; override ;
@@ -183,7 +186,9 @@ end;
 procedure TFrm_Empresa.actExcLogoMarcaExecute(Sender: TObject);
 begin
   inherited;
-//
+  Editar;
+  cds.FieldByName('LOGOMARCA').Clear;
+  Image1.Picture := nil;
 end;
 
 procedure TFrm_Empresa.actLiberarSistemaExecute(Sender: TObject);
@@ -219,7 +224,9 @@ begin
     // Pega extensão da imagem.
 //    cdsImagemTIPO.AsString := ExtractFileExt(Dialog.FileName);
     // Atribui imagem ao campo blob da tabela.
-    cdsLOGOMARCA.LoadFromFile(Dialog.FileName);
+//    cdsLOGOMARCA.LoadFromFile(Dialog.FileName);
+     TBlobField(cds.FieldByName('LOGOMARCA')).LoadFromFile(
+          Dialog.FileName);
   end;
 end;
 
@@ -376,6 +383,7 @@ begin
     pnlAdicionar.Visible := False;
     pnlExcluir.Visible := False;
     pnlLocalizar.Visible := False;
+    RefreshImage(cds.FieldByName('LOGOMARCA'),Image1);
   end;
   //  PageControl1.TabIndex := 0 ;
 end;
@@ -384,6 +392,38 @@ procedure TFrm_Empresa.Novo;
 begin
   inherited;
   DBEdit8.SetFocus ;
+end;
+
+procedure TFrm_Empresa.RefreshImage(Field: TField; Img: TImage);
+var
+  vPNG   : TPNGImage;
+  vStream : TMemoryStream;
+begin
+  { Verifica se o campo esta vázio. }
+  if not Field.IsNull then
+  begin
+
+    { Cria objeto do tipo TJPEG, e objeto do tipo MemoryStream}
+    vPNG   := TPngImage.Create;
+    vStream := TMemoryStream.Create;
+
+    { Trata o campo como do tipo BLOB e salva o seu conteudo na memória. }
+    TBlobField(Field).SaveToStream(vStream);
+
+    { Ajusta a posicao inicial de leitura da memória }
+    vStream.Position := 0;
+
+    { Carrega da memoria os dados, para uma estrutura do tipo TJPEG
+      (A partir da posicao 0)}
+    vPNG.LoadFromStream(vStream);
+
+    { Exibe o jpg no Timage. }
+    Img.Picture.Assign(vPNG);
+
+    { Libera a memoria utilizada pelos componentes de conversão }
+    vPNG.Free;
+    vStream.Free;
+  end;
 end;
 
 procedure TFrm_Empresa.SpeedButton1Click(Sender: TObject);

@@ -89,8 +89,8 @@ object Frm_Inicial: TFrm_Inicial
       AutoSize = True
       BevelOuter = bvNone
       Caption = 'pnlLogoEmpresa'
-      Color = clWhite
       ParentBackground = False
+      ParentColor = True
       ShowCaption = False
       TabOrder = 0
       object imgLogoEmpresa: TImage
