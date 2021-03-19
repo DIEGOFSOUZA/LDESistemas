@@ -116,8 +116,8 @@
         <DCC_DcuOutput>c:\apagar\DCUs</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.33;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
-        <VerInfo_Build>33</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.34;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Build>34</VerInfo_Build>
         <VerInfo_Release>1</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -176,7 +176,6 @@
             <Form>Frm_Inicial</Form>
         </DCCReference>
         <DCCReference Include="UClassIniciar.pas"/>
-        <DCCReference Include="UClassDataSnap.pas"/>
         <DCCReference Include="Utils\u_Mensagem.pas"/>
         <DCCReference Include="Conexao\UFrm_AtualizacaoSistema.pas">
             <Form>Frm_AtualizacaoSistema</Form>
@@ -453,6 +452,7 @@
             <Form>Frm_GerOrcItens</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UClassDataSnap.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -1320,6 +1320,9 @@
                 <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Android64" Name="$(PROJECTNAME)"/>
             </Deployment>
+            <DataSnapProxyLookup>
+                <UClassDataSnap>{0AB9AE97-D7F3-4B8A-951A-B589D0441070}</UClassDataSnap>
+            </DataSnapProxyLookup>
         </BorlandProject>
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>

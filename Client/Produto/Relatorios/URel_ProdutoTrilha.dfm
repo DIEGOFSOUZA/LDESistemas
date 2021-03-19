@@ -645,7 +645,6 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
     IndexName = 'DTMOVTO_DECRESCENTE'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 32
     Top = 7

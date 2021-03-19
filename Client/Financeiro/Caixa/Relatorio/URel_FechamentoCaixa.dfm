@@ -872,8 +872,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     Align = alLeft
     Color = clWhite
     ParentBackground = False
-    TabOrder = 1
-    ExplicitHeight = 333
+    TabOrder = 0
     object Label1: TLabel
       Left = 32
       Top = 10
@@ -1000,9 +999,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     Align = alRight
     Color = clWhite
     ParentBackground = False
-    TabOrder = 2
-    ExplicitLeft = 424
-    ExplicitHeight = 333
+    TabOrder = 1
     object imgFiltrar: TImage
       Left = 6
       Top = 96

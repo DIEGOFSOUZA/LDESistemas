@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/01/2021 15:05:37
+// 18/03/2021 15:38:42
 //
 
 unit UClassDataSnap;
@@ -226,12 +226,14 @@ type
   private
     FsetProducaoCommand: TDBXCommand;
     FgetProducaoCommand: TDBXCommand;
+    FsetMovimentoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setProducao(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProducao(BD: string; pID: Integer): OleVariant;
+    function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
   end;
 
 implementation
@@ -1725,6 +1727,26 @@ begin
   Result := FgetProducaoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSMProducaoClient.setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+begin
+  if FsetMovimentoCommand = nil then
+  begin
+    FsetMovimentoCommand := FDBXConnection.CreateCommand;
+    FsetMovimentoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetMovimentoCommand.Text := 'TSMProducao.setMovimento';
+    FsetMovimentoCommand.Prepare;
+  end;
+  FsetMovimentoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetMovimentoCommand.Parameters[1].Value.SetWideString(aUsuario);
+  FsetMovimentoCommand.Parameters[2].Value.SetInt32(aCodPro);
+  FsetMovimentoCommand.Parameters[3].Value.SetDouble(aQtde);
+  FsetMovimentoCommand.Parameters[4].Value.SetInt32(aCodUND);
+  FsetMovimentoCommand.Parameters[5].Value.SetWideString(aEntSai);
+  FsetMovimentoCommand.Parameters[6].Value.SetWideString(aDescriProd);
+  FsetMovimentoCommand.ExecuteUpdate;
+  Result := FsetMovimentoCommand.Parameters[7].Value.GetBoolean;
+end;
+
 constructor TSMProducaoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1739,6 +1761,7 @@ destructor TSMProducaoClient.Destroy;
 begin
   FsetProducaoCommand.DisposeOf;
   FgetProducaoCommand.DisposeOf;
+  FsetMovimentoCommand.DisposeOf;
   inherited;
 end;
 

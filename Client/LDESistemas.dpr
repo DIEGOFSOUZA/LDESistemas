@@ -13,7 +13,6 @@ uses
   UFrm_Login in 'UFrm_Login.pas' {Frm_Login},
   UFrm_Inicial in 'UFrm_Inicial.pas' {Frm_Inicial},
   UClassIniciar in 'UClassIniciar.pas',
-  UClassDataSnap in 'UClassDataSnap.pas',
   u_Mensagem in 'Utils\u_Mensagem.pas',
   UFrm_AtualizacaoSistema in 'Conexao\UFrm_AtualizacaoSistema.pas' {Frm_AtualizacaoSistema},
   UPdr_Configuracao in 'Conexao\UPdr_Configuracao.pas' {Pdr_Configuracao},
@@ -112,7 +111,8 @@ uses
   UPdr_Child2 in 'Heranca\UPdr_Child2.pas' {Pdr_Child2},
   UFrm_GerenciaOrcamento in 'FrenteLoja\UFrm_GerenciaOrcamento.pas' {Frm_GerenciaOrcamento},
   UFrm_GeraOrcamento in 'FrenteLoja\UFrm_GeraOrcamento.pas' {Frm_GeraOrcamento},
-  UFrm_GerOrcItens in 'FrenteLoja\UFrm_GerOrcItens.pas' {Frm_GerOrcItens};
+  UFrm_GerOrcItens in 'FrenteLoja\UFrm_GerOrcItens.pas' {Frm_GerOrcItens},
+  UClassDataSnap in 'UClassDataSnap.pas';
 
 {$R *.res}
 

@@ -499,7 +499,7 @@ end;
 procedure TFrmBaixaContaPagar.setVlPago(const Value: Currency);
 begin
   fVlPago := Value;
-  edtValBaixa.Text := FormatCurr('#,##0.00',Value);
+  edtValBaixa.Text := FormatCurr('##0.00',Value);
 end;
 
 end.

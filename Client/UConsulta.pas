@@ -75,10 +75,11 @@ type
    class function Produto(pTipo : string = ''; pTituloConsulta : string = '') : TRetornoProduto;
    class function Unidade : TRetornoUnidade;
    class function Fabricante: TRetornoFabricante;
-   class function NCM : string ;
+   class function NCM : integer;
+   class function CEST : integer;
    class function Grupo_Produto : integer;
    class function SubGrupo_Produto : integer;
-    class function Lote(aTipoLote: string = ''): TRetornoLote;
+   class function Lote(aTipoLote: string = ''): TRetornoLote;
 
 
    {*****Serviços Prestados*******}
@@ -810,34 +811,85 @@ begin
 
 end;
 
-class function Consulta.NCM: string;
+class function Consulta.NCM: integer;
 var Aux : TPdr_Consulta ;
     InstrucaoSQL : string ;
     Campos : TArrayCampoConsulta ;
 begin
-  InstrucaoSQL := 'select ncm,descricao from NCM' ;
-  SetLength(Campos,2);
-  Campos[0].Descricao := 'NCM' ;
+  InstrucaoSQL := 'select a.id, a.ncm, a.descricao from NCM a' ;
+  SetLength(Campos,3);
+
+  Campos[0].Descricao := 'ID' ;
   Campos[0].Mascara   := '' ;
   Campos[0].Mostrar   := True ;
-  Campos[0].Nome      := 'ncm' ;
-  Campos[0].NomeSQL   := 'ncm' ;
-  Campos[0].Pesquisa  := True ;
+  Campos[0].Nome      := 'ID' ;
+  Campos[0].NomeSQL   := 'ID' ;
+  Campos[0].Pesquisa  := False ;
   Campos[0].Retorno   := True ;
 
-  Campos[1].Descricao := 'Descrição' ;
+  Campos[1].Descricao := 'N.C.M' ;
   Campos[1].Mascara   := '' ;
   Campos[1].Mostrar   := True ;
-  Campos[1].Nome      := 'descricao' ;
-  Campos[1].NomeSQL   := 'descricao' ;
+  Campos[1].Nome      := 'ncm' ;
+  Campos[1].NomeSQL   := 'ncm' ;
   Campos[1].Pesquisa  := True ;
   Campos[1].Retorno   := False ;
 
+  Campos[2].Descricao := 'Descrição' ;
+  Campos[2].Mascara   := '' ;
+  Campos[2].Mostrar   := True ;
+  Campos[2].Nome      := 'descricao' ;
+  Campos[2].NomeSQL   := 'descricao' ;
+  Campos[2].Pesquisa  := True ;
+  Campos[2].Retorno   := False ;
+
   Aux := TPdr_Consulta.Create(nil,'Consulta de NCM',InstrucaoSQL,'',
-          Campos,DM.LerDataSet,1);
+          Campos,DM.LerDataSet,0);
   try
     Aux.ShowModal ;
-    Result := Aux.Retorno.Values['ncm'] ;
+    Result := StrToIntDef( Aux.Retorno.Values['ID'], 0) ;
+  finally
+    FreeAndNil(Aux);
+  end;
+end;
+
+class function Consulta.CEST: integer;
+var Aux : TPdr_Consulta ;
+    InstrucaoSQL : string ;
+    Campos : TArrayCampoConsulta ;
+begin
+  InstrucaoSQL := 'select a.id, a.cest, a.descricao from cest a' ;
+  SetLength(Campos,3);
+
+  Campos[0].Descricao := 'ID' ;
+  Campos[0].Mascara   := '' ;
+  Campos[0].Mostrar   := True ;
+  Campos[0].Nome      := 'ID' ;
+  Campos[0].NomeSQL   := 'ID' ;
+  Campos[0].Pesquisa  := False ;
+  Campos[0].Retorno   := True ;
+
+  Campos[1].Descricao := 'CEST' ;
+  Campos[1].Mascara   := '' ;
+  Campos[1].Mostrar   := True ;
+  Campos[1].Nome      := 'cest' ;
+  Campos[1].NomeSQL   := 'cest' ;
+  Campos[1].Pesquisa  := True ;
+  Campos[1].Retorno   := False ;
+
+  Campos[2].Descricao := 'Descrição' ;
+  Campos[2].Mascara   := '' ;
+  Campos[2].Mostrar   := True ;
+  Campos[2].Nome      := 'descricao' ;
+  Campos[2].NomeSQL   := 'descricao' ;
+  Campos[2].Pesquisa  := True ;
+  Campos[2].Retorno   := False ;
+
+  Aux := TPdr_Consulta.Create(nil,'Consulta de CEST',InstrucaoSQL,'',
+          Campos,DM.LerDataSet,0);
+  try
+    Aux.ShowModal ;
+    Result := StrToIntDef( Aux.Retorno.Values['ID'], 0) ;
   finally
     FreeAndNil(Aux);
   end;

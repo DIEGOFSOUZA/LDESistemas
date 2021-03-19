@@ -20,7 +20,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 389
     object pnlTitulo: TPanel
       Left = 1
       Top = 1
@@ -226,7 +225,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitTop = 355
       object pnlCancelar: TPanel
         Left = 244
         Top = 2
@@ -543,7 +541,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
         Height = 39
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 151
         object Label15: TLabel
           Left = 14
           Top = 13

@@ -18,26 +18,7 @@ type
     cdsComposicaoProdutoID_MATPRIMA: TIntegerField;
     cdsComposicaoProdutoQTDE: TFMTBCDField;
     cdsComposicaoProdutoMATERIAPRIMA: TStringField;
-    Panel2: TPanel;
-    Panel3: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label9: TLabel;
-    Label5: TLabel;
-    Label7: TLabel;
-    DBEdit1: TDBEdit;
-    DBEdit2: TDBEdit;
-    DBPesquisa1: TDBPesquisa;
-    DBEdit8: TDBEdit;
-    DBEdit9: TDBEdit;
-    DBEdit10: TDBEdit;
-    DBEdit5: TDBEdit;
-    DBEdit7: TDBEdit;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
+    pnlFundo2: TPanel;
     cdsCODIGO: TIntegerField;
     cdsNOME: TStringField;
     cdsCOD_UNIDADE: TIntegerField;
@@ -46,28 +27,13 @@ type
     cdsCOD_GRUPO: TIntegerField;
     cdsCOD_SUBGRUPO: TIntegerField;
     cdsDESCRICAO: TStringField;
-    cdsCOD_NCM: TStringField;
     cdsTIPO_PRODUTO: TStringField;
     cdsDESCRI_UNIDADE: TStringField;
     cdsGRUPO: TStringField;
     cdsSUBGRUPO: TStringField;
-    cdsDESCRI_NCM: TStringField;
-    imgTrilha: TImage;
-    lblTrilhar: TLabel;
-    Label6: TLabel;
-    DBEdit3: TDBEdit;
     actTrilhar: TAction;
     cdsCONV_UNIDADE: TIntegerField;
-    tsConversao: TTabSheet;
-    pnlFundoTab: TPanel;
-    lblTitConversao: TLabel;
-    pnlTopTab: TPanel;
-    DBPesquisa2: TDBPesquisa;
-    Label10: TLabel;
-    DBEdit4: TDBEdit;
     cdsCONV_DESCRIUNIDADE: TStringField;
-    Label11: TLabel;
-    DBEdit6: TDBEdit;
     cdsPRECO_VENDA: TCurrencyField;
     cdsQTDE_ESTOQUE: TFMTBCDField;
     cdsPRECO_CUSTO: TCurrencyField;
@@ -77,23 +43,6 @@ type
     cdsCONV_QTDE: TFMTBCDField;
     cdsCONV_PRECO: TCurrencyField;
     cdsESTIMA_PRODUCAO: TFMTBCDField;
-    pnlLucro: TPanel;
-    lblLucro: TLabel;
-    Label12: TLabel;
-    Label13: TLabel;
-    pnl1: TPanel;
-    PngAddProduto: TPngSpeedButton;
-    PngSpeedButton1: TPngSpeedButton;
-    DBGrid1: TDBGrid;
-    pnl2: TPanel;
-    Label8: TLabel;
-    DBMemo1: TDBMemo;
-    DBPesquisa5: TDBPesquisa;
-    DBPesquisa6: TDBPesquisa;
-    tsHistPrecoVenda: TTabSheet;
-    pnlHistorico: TPanel;
-    Label14: TLabel;
-    dbgrdItens: TDBGrid;
     dsHistPreco: TDataSource;
     cdsHisPreco: TClientDataSet;
     cdsDT_CADASTRO: TDateField;
@@ -102,12 +51,107 @@ type
     cdsHisPrecoPRECO: TCurrencyField;
     cdsHisPrecoUSUARIO: TStringField;
     cdsDESC_MAXIMO: TFMTBCDField;
-    pnlDesc: TPanel;
+    cdsPRECO_ATACADO: TFMTBCDField;
+    cdsQTDE_MIN_ATACADO: TFMTBCDField;
+    Panel3: TPanel;
+    pnlPreco: TPanel;
+    lblTitPreco: TLabel;
+    pnlPrecoCusto: TPanel;
+    Label3: TLabel;
+    Label17: TLabel;
+    dbedtPRECO_CUSTO: TDBEdit;
+    pnlPrecoCenter: TPanel;
+    pnlPVenda: TPanel;
+    Label15: TLabel;
+    dbedtPRECO_VENDA: TDBEdit;
+    pnlLucro: TPanel;
+    lblLucro: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
     pnlDescMaximo: TPanel;
     lblTitDesc: TLabel;
     DBEdit11: TDBEdit;
+    pnlPAtac: TPanel;
+    Label16: TLabel;
+    dbedtPRECO_ATACADO: TDBEdit;
+    pnlLucroAtacado: TPanel;
+    lblLucroAtacado: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    pnlQtdeMinAtac: TPanel;
+    Label2: TLabel;
+    dbedtQTDE_MIN_ATACADO: TDBEdit;
+    pnlTopo: TPanel;
+    Label1: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    imgTrilha: TImage;
+    lblTrilhar: TLabel;
+    DBEdit1: TDBEdit;
+    DBPesquisa1: TDBPesquisa;
+    DBEdit5: TDBEdit;
+    DBEdit7: TDBEdit;
+    DBPesquisa5: TDBPesquisa;
+    DBPesquisa6: TDBPesquisa;
+    pnlTopLeft: TPanel;
+    Label6: TLabel;
+    dbtxtCODIGO: TDBText;
+    pnlPages: TPanel;
+    PageControl1: TPageControl;
+    tsEstoque: TTabSheet;
+    pnl2: TPanel;
+    tsComposicao: TTabSheet;
+    pnl1: TPanel;
+    PngAddProduto: TPngSpeedButton;
+    PngSpeedButton1: TPngSpeedButton;
+    DBGrid1: TDBGrid;
+    tsConversao: TTabSheet;
+    pnlFundoTab: TPanel;
+    lblTitConversao: TLabel;
+    pnlTopTab: TPanel;
+    Label10: TLabel;
+    Label11: TLabel;
+    DBPesquisa2: TDBPesquisa;
+    DBEdit4: TDBEdit;
+    DBEdit6: TDBEdit;
+    tsHistPrecoVenda: TTabSheet;
+    pnlHistorico: TPanel;
+    Label14: TLabel;
+    dbgrdItens: TDBGrid;
+    Label20: TLabel;
+    dbcbbSITUACAO: TDBComboBox;
+    cdsSITUACAO: TStringField;
+    Label8: TLabel;
+    DBMemo1: TDBMemo;
+    pnlMovimentar: TPanel;
+    Label21: TLabel;
+    cbbTpMov: TComboBox;
+    Label22: TLabel;
+    edtQtdeMov: TEdit;
+    lblTitMov: TLabel;
+    btnMovimentar: TSpeedButton;
+    actMovimentar: TAction;
+    Panel2: TPanel;
+    Label26: TLabel;
+    Label9: TLabel;
+    DBEdit10: TDBEdit;
+    Label4: TLabel;
+    dbtxtQTDE_ESTOQUE: TDBText;
+    tsFiscal: TTabSheet;
+    pnlFundoFiscal: TPanel;
+    Label24: TLabel;
+    dbcbbFISCAL_TIPO: TDBComboBox;
+    dbcbbFISCAL_ORIGEM: TDBComboBox;
+    Label25: TLabel;
+    dbpsqsNCM: TDBPesquisa;
+    dbpsqsCEST: TDBPesquisa;
+    cdsFISCAL_TIPO: TStringField;
+    cdsFISCAL_ORIGEM: TStringField;
+    cdsFISCAL_NCM: TIntegerField;
+    cdsFISCAL_CEST: TIntegerField;
+    cdsNCM: TStringField;
+    cdsCEST: TStringField;
     procedure FormCreate(Sender: TObject);
-    procedure DBPesquisa3Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa6Pesquisa(Sender: TObject; var Retorno: string);
@@ -119,15 +163,22 @@ type
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
     procedure pnlDescClick(Sender: TObject);
+    procedure cdsPRECO_ATACADOChange(Sender: TField);
+    procedure actMovimentarExecute(Sender: TObject);
+    procedure edtQtdeMovKeyPress(Sender: TObject; var Key: Char);
+    procedure cdsBeforePost(DataSet: TDataSet);
+    procedure dbpsqsNCMPesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
 
   private
     procedure MontaSql(pCodigo : Integer) ;
     function Validar() : Boolean ;
+    function ValidarMovimentacao() : Boolean;
 
     procedure ResetaCDS() ;
     procedure ReadWrite() ;
     procedure GeraHistoricoPreco(aState:TDataSetState);
-    procedure MargemLucro();
+    procedure MargemLucro(aTipo:integer);
     procedure LoadHistPreco();
 
   public
@@ -147,6 +198,22 @@ implementation
 {$R *.dfm}
 
 uses UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha, UFuncoes, u_Mensagem;
+
+procedure TFrm_Produto.actMovimentarExecute(Sender: TObject);
+begin
+  inherited;
+  if ValidarMovimentacao then
+    if DM.SMProducao.setMovimento(DM.BancoDados,DM.User,cds.FieldByName('codigo').AsInteger,
+         StrToFloat(edtQtdeMov.Text),cds.FieldByName('COD_UNIDADE').AsInteger,cbbTpMov.Text,
+         cds.FieldByName('NOME').AsString) then
+    begin
+      MontaSql(cds.FieldByName('codigo').AsInteger);
+      cbbTpMov.ItemIndex := 0;
+      edtQtdeMov.Text:= '0';
+    end
+    else
+      TMensagem.Erro('Não foi possivel gerar a movimentação. Tente novamente.');
+end;
 
 procedure TFrm_Produto.actTrilharExecute(Sender: TObject);
 begin
@@ -192,6 +259,29 @@ begin
   cdsQTDE_MINIMA.AsFloat    := 0 ;
   cdsTIPO_PRODUTO.AsString  := 'PA' ;
   cdsDT_CADASTRO.AsDateTime := Date;
+  cdsPRECO_ATACADO.AsCurrency := 0;
+  cdsQTDE_MIN_ATACADO.AsFloat := 0;
+  dbcbbFISCAL_TIPO.ItemIndex := 0;  //Selecione
+  dbcbbFISCAL_ORIGEM.ItemIndex := 0; //Selecione
+
+end;
+
+procedure TFrm_Produto.cdsBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  if (cds.FieldByName('FISCAL_TIPO').AsString = 'Selecione') then
+    cds.FieldByName('FISCAL_TIPO').Clear;
+  if (cds.FieldByName('FISCAL_ORIGEM').AsString = 'Selecione') then
+    cds.FieldByName('FISCAL_ORIGEM').Clear;
+end;
+
+procedure TFrm_Produto.cdsPRECO_ATACADOChange(Sender: TField);
+begin
+  inherited;
+  pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
+  if pnlQtdeMinAtac.Visible then
+    dbedtQTDE_MIN_ATACADO.SetFocus;
+
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;
@@ -216,13 +306,6 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
-procedure TFrm_Produto.DBPesquisa3Pesquisa(Sender: TObject;
-  var Retorno: string);
-begin
-  inherited;
-  Retorno := Consulta.NCM ;
-end;
-
 procedure TFrm_Produto.DBPesquisa5Pesquisa(Sender: TObject;
   var Retorno: string);
 begin
@@ -235,6 +318,18 @@ procedure TFrm_Produto.DBPesquisa6Pesquisa(Sender: TObject;
 begin
   inherited;
   Retorno := IntToStr(Consulta.SubGrupo_Produto) ;
+end;
+
+procedure TFrm_Produto.dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.CEST.ToString;
+end;
+
+procedure TFrm_Produto.dbpsqsNCMPesquisa(Sender: TObject; var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.NCM.ToString ;
 end;
 
 procedure TFrm_Produto.Editar;
@@ -250,6 +345,13 @@ begin
   aRet := Consulta.Produto(QuotedStr('MP'),'Consulta de Matéria-Prima') ;
   if aRet.iCodigo > 0 then
     Retorno := IntToStr(aRet.iCodigo);
+end;
+
+procedure TFrm_Produto.edtQtdeMovKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+  if not (Key in ['0'..'9', ',', #8, #13]) then
+    Key := #0;
 end;
 
 procedure TFrm_Produto.Excluir;
@@ -341,11 +443,16 @@ begin
   cdsComposicaoProduto.Close;
   cdsComposicaoProduto.Data := aRetorno[1];
 
-  if ((cds.FieldByName('preco_venda').AsCurrency>0) and
-      (cds.FieldByName('preco_custo').AsCurrency>0)) then
-    MargemLucro()
-  else
-    pnlLucro.Visible := False;
+  pnlLucro.Visible := False;
+  pnlLucroAtacado.Visible := False;
+
+  if (cds.FieldByName('preco_custo').AsCurrency > 0) then
+  begin
+    if (cds.FieldByName('preco_venda').AsCurrency > 0) then
+      MargemLucro(0);
+    if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
+      MargemLucro(1);
+  end;
 end;
 
 procedure TFrm_Produto.LoadHistPreco;
@@ -370,22 +477,39 @@ begin
   aRetProd := Consulta.Produto(QuotedStr('PA'),'Consulta de Produtos');
 
   MontaSql(aRetProd.iCodigo);
-  if ((cds.FieldByName('preco_venda').AsCurrency>0) and
-      (cds.FieldByName('preco_custo').AsCurrency>0)) then
-    MargemLucro()
-  else
-    pnlLucro.Visible := False;
+  pnlLucro.Visible := False;
+  pnlLucroAtacado.Visible := False;
+
+  if (cds.FieldByName('preco_custo').AsCurrency > 0) then
+  begin
+    if (cds.FieldByName('preco_venda').AsCurrency > 0) then
+      MargemLucro(0);
+    if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
+      MargemLucro(1);
+  end;
 end;
 
-procedure TFrm_Produto.MargemLucro;
+procedure TFrm_Produto.MargemLucro(aTipo:integer);
 var
   lResultado: Currency;
 begin
-  lResultado := ((cds.FieldByName('preco_venda').AsCurrency-
-                  cds.FieldByName('preco_custo').AsCurrency)/cds.FieldByName('preco_custo').AsCurrency)*100;
+  if (aTipo = 0) then //Venda varejo
+  begin
+    lResultado := ((cds.FieldByName('preco_venda').AsCurrency -
+          cds.FieldByName('preco_custo').AsCurrency) / cds.FieldByName('preco_custo').AsCurrency) * 100;
 
-  lblLucro.Caption := FormatCurr('#,##0.00',lResultado)+'%';
-  pnlLucro.Visible := True;
+    lblLucro.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    pnlLucro.Visible := True;
+  end;
+
+  if (aTipo = 1) then //Venda Atacado
+  begin
+    lResultado := ((cds.FieldByName('PRECO_ATACADO').AsCurrency -
+          cds.FieldByName('preco_custo').AsCurrency) / cds.FieldByName('preco_custo').AsCurrency) * 100;
+
+    lblLucroAtacado.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    pnlLucroAtacado.Visible := True;
+  end;
 end;
 
 procedure TFrm_Produto.MontaSql(pCodigo: Integer);
@@ -404,7 +528,7 @@ begin
 
   ReadWrite;
   LoadHistPreco;
-
+  pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
 end;
 
 procedure TFrm_Produto.Novo;
@@ -491,7 +615,8 @@ procedure TFrm_Produto.ReadWrite;
 begin
   MakeReadWrite(cdsDESCRI_UNIDADE);
   MakeReadWrite(cdsCONV_DESCRIUNIDADE);
-  MakeReadWrite(cdsDESCRI_NCM);
+  MakeReadWrite(cdsNCM);
+  MakeReadWrite(cdsCEST);
   MakeReadWrite(cdsGRUPO);
   MakeReadWrite(cdsSUBGRUPO);
   MakeReadWrite(cdsComposicaoProdutoMATERIAPRIMA);
@@ -510,37 +635,37 @@ end;
 
 function TFrm_Produto.Validar: Boolean;
 begin
-  Result := True ;
+  Result := True;
   if Trim(DBEdit1.Text) = '' then
   begin
-    TMensagem.Atencao('Informar o nome do produto.') ;
-    DBEdit1.SetFocus ;
-    Result := False ;
-    Exit ;
+    TMensagem.Atencao('Informar o nome do produto.');
+    DBEdit1.SetFocus;
+    Result := False;
+    Exit;
   end;
 
-  if Trim(DBEdit2.Text) = '' then
+  if Trim(dbedtPRECO_VENDA.Text) = '' then
   begin
-    TMensagem.Atencao('Informar preço de venda.') ;
-    DBEdit2.SetFocus ;
-    Result := False ;
-    Exit ;
+    TMensagem.Atencao('Informar preço de venda.');
+    dbedtPRECO_VENDA.SetFocus;
+    Result := False;
+    Exit;
   end;
 
-   if Trim(DBEdit8.Text) = '' then
+  if Trim(dbedtPRECO_CUSTO.Text) = '' then
   begin
-    TMensagem.Atencao('Informar preço de custo.') ;
-    DBEdit8.SetFocus ;
-    Result := False ;
-    Exit ;
+    TMensagem.Atencao('Informar preço de custo.');
+    dbedtPRECO_CUSTO.SetFocus;
+    Result := False;
+    Exit;
   end;
 
-   if Trim(DBPesquisa1.Campo.Text) = '' then
+  if Trim(DBPesquisa1.Campo.Text) = '' then
   begin
-    TMensagem.Atencao('Informar a Unidade de Medida.') ;
-    DBPesquisa1.Campo.SetFocus ;
-    Result := False ;
-    Exit ;
+    TMensagem.Atencao('Informar a Unidade de Medida.');
+    DBPesquisa1.Campo.SetFocus;
+    Result := False;
+    Exit;
   end;
 
   if DBPesquisa2.Campo.Text <> EmptyStr then
@@ -561,8 +686,40 @@ begin
       Exit;
     end;
   end;
+end;
 
+function TFrm_Produto.ValidarMovimentacao: Boolean;
+begin
+  Result := True;
 
+  if cds.IsEmpty then
+  begin
+    Result := False;
+    Exit;
+  end;
+
+  if ((cds.Active) and (cds.State in [dsEdit, dsInsert])) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Necessário salvar antes de gerar a movimentação.');
+    Exit;
+  end;
+
+  if (cbbTpMov.ItemIndex = 0) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Informe o tipo de movimentação: ENTRADA/SAIDA');
+    cbbTpMov.SetFocus;
+    Exit;
+  end;
+
+  if ((edtQtdeMov.Text = '') or (StrToFloat(edtQtdeMov.Text) < 1)) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Informe a quantidade a ser movimentada.');
+    edtQtdeMov.SetFocus;
+    Exit;
+  end;
 end;
 
 end.

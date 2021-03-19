@@ -375,56 +375,6 @@ begin
          'from JUNCAO '+
          'group by 1,2,3,4 order by 2';
 
-         {$REGION 'sql antiga'}
-         {'with juncao as ( '+
-         'select ''1'' tipo,b.id_historico FORMA_PAGTO,sum(b.VALOR) valor '+
-         'from PDV_MASTER a '+
-         'left outer join PDV_RECEBER b on (b.TIPO = a.TIPO and b.ID = a.ID) '+
-         'where b.FORMA_PAGTO <> ''DESCONTO'' '+
-         'and b.id_conta = 1 '+ //Conta CAIXA PDV
-         'and a.ID_CAIXA = '+lIDCaixa +
-         ' group by 1,2' +
-
-         //Baixa Integral de Parcelas - Contas a Receber
-         ' union all '+
-         'select ''2'' tipo,r.id_historico FORMA_PAGTO,coalesce(r.VL_PAGO,0) valor '+
-         'FROM PDV_MASTER a '+
-         'left outer join PDV_RECEBER r on (r.TIPO = a.TIPO and r.ID = a.ID) '+
-         'where BAIXA_ID_CAIXA = '+lIDCaixa+
-         ' and r.id_conta = 1 '+ //Conta CAIXA PDV
-
-         //Baixa Parcial de Parcelas - Contas a Receber
-         ' union all '+
-         'select ''2'' tipo,t.id_historico FORMA_PAGTO,coalesce(t.VL_PAGO,0) valor '+
-         'FROM PDV_MASTER a '+
-         'left outer join PDV_RECEBER_PARCIAL t on (t.TIPO = a.TIPO and t.ID = a.ID) '+
-         'where t.ID_CAIXA = '+lIDCaixa +
-         ' and t.id_conta = 1 '+ //Conta CAIXA PDV
-
-         //Sangria
-         ' union all '+
-         'SELECT ''3'' tipo,'+
-         'iif(r.FORMA_PAGTO = ''CHEQUE'',''4'',''1'') forma_pagto,'+
-         'cast(sum(r.VALOR) as numeric(10,2)) valor '+
-         'FROM CAIXA_ENT_SAI r '+
-         'where r.ID_CAIXA = '+lIDCaixa+
-         ' group by 1,2 '+
-
-         //Contas a pagar
-         ' union all '+
-         'SELECT ''3'' tipo,np.id_historico FORMA_PAGTO,'+
-         'cast(coalesce(sum(np.BAIXA_VALOR)*-1,0) as numeric(10,2)) valor '+
-         'FROM NOTA_ENTRADA_PAGAR np '+
-         'where np.ID_CAIXA = '+lIDCaixa+
-         ' and np.id_conta = 1 '+ //Conta CAIXA PDV
-         ' group by 1,2 '+
-         ') '+
-
-         'select TIPO,cast(FORMA_PAGTO as integer) forma_pagto,cast(sum(valor)as numeric(10,2)) valor from JUNCAO '+
-         'group by 1,2 '; }
-         {$ENDREGION}
-
-
   {computado}
   DM.dsConsulta.Close ;
   DM.dsConsulta.Data := DM.LerDataSet(SQL) ;

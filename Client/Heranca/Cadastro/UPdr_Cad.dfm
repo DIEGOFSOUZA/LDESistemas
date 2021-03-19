@@ -56,7 +56,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 0
+        TabOrder = 6
         object imgSair: TImage
           Left = 0
           Top = 0
@@ -110,7 +110,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 1
+        TabOrder = 5
         object imgGravar: TImage
           Left = 0
           Top = 0
@@ -162,7 +162,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 2
+        TabOrder = 4
         object imgCancelar: TImage
           Left = 0
           Top = 0
@@ -318,7 +318,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 4
+        TabOrder = 2
         object imgExcluir: TImage
           Left = 0
           Top = 0
@@ -372,7 +372,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 5
+        TabOrder = 1
         object imgEditar: TImage
           Left = 0
           Top = 0
@@ -457,7 +457,7 @@ inherited Pdr_Cad: TPdr_Cad
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 6
+        TabOrder = 0
         object imgAdicionar: TImage
           Left = 0
           Top = 0

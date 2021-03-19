@@ -43,6 +43,8 @@ type
   public
     function setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
     function getProducao(const BD: string; pID: integer): OleVariant;
+    function setMovimento(const BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double;
+        aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
   end;
 
 implementation
@@ -89,6 +91,48 @@ begin
     DM.FecharConexao;
     FreeAndNil(DM);
   end;
+end;
+
+function TSMProducao.setMovimento(const BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double;
+        aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
+var
+  DM: TDM;
+  SQLLote, SQLLoteItem: string;
+  lHora, lDataBD, lData: string;
+  lQtde: Double;
+begin
+  Result := False;
+  DM := TDM.Create(BD);
+  try
+    try
+      FormatSettings.DecimalSeparator := '.';
+      lHora := FormatDateTime('hhmmss', Now);
+      lDataBD := FormatDateTime('dd.mm.yyyy', date);
+      lData := FormatDateTime('dd/mm/yyyy', date);
+      lQtde := aQtde;
+      if (aEntSai = 'SAIDA') then
+        lQtde := lQtde*-1;
+
+
+      SQLLote := 'insert into LOTE (ID, LOTE, EMISSAO, STATUS, GERA_MATPRIMA, USUARIO, LOTE_ACERTO) '+
+                 'values (0, '+QuotedStr('PROD'+lHora)+', '+QuotedStr(lDataBD)+', '+QuotedStr('FINALIZADO')+', '+QuotedStr('N')+', '+
+                        QuotedStr(aUsuario+'|'+lData+'|'+lHora)+', '+QuotedStr('N')+')';
+      DM.Executar(SQLLote);
+
+      SQLLoteItem := 'insert into LOTE_ITENS (ID, ID_LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DESCRI_ITEM) '+
+                     'values (0, '+QuotedStr('PROD'+lHora)+', '+aCodPro.ToString+', '+FormatFloat('##0.000',lQtde)+', '+
+                      FormatFloat('##0.000',lQtde)+', '+aCodUND.ToString+', '+QuotedStr(aEntSai)+', '+
+                      QuotedStr(aDescriProd)+')';
+      DM.Executar(SQLLoteItem);
+      Result := True;
+    except
+      Result := False;
+    end;
+  finally
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+
 end;
 
 function TSMProducao.setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
