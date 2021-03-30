@@ -123,8 +123,6 @@ type
     lblUnitario: TLabel;
     pnlGridComposicao: TPanel;
     pnlAcaoComposicao: TPanel;
-    PngSpeedButton1: TPngSpeedButton;
-    PngAddProduto: TPngSpeedButton;
     pnlExcItem: TPanel;
     imgExcItem: TImage;
     btnEscItem: TSpeedButton;
@@ -164,11 +162,11 @@ type
     cdsfdqryProdutoComposicao: TDataSetField;
     cdsULTIMA_ALTERACAO: TStringField;
     pnlHistVenda: TPanel;
-    dbgrdItens: TDBGrid;
+    dbgrdHistCusto: TDBGrid;
     Label14: TLabel;
     pnlHistCusto: TPanel;
     lblTitHistCusto: TLabel;
-    dbgrdHistCusto: TDBGrid;
+    dbgrdHistVenda: TDBGrid;
     cdsfdqryPrecoVendaHist: TDataSetField;
     cdsHistVendaID_PROD: TIntegerField;
     cdsHistVendaUSUARIO: TStringField;
@@ -197,12 +195,11 @@ type
     cdsSUBGRUPO: TStringField;
     cdsNCM: TStringField;
     cdsCEST: TStringField;
+    actExcItem: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa6Pesquisa(Sender: TObject; var Retorno: string);
-    procedure PngAddProdutoClick(Sender: TObject);
-    procedure PngSpeedButton1Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actTrilharExecute(Sender: TObject);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
@@ -223,19 +220,30 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure chkCustoEstimadoClick(Sender: TObject);
     procedure cdsAfterCancel(DataSet: TDataSet);
+    procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
+    procedure edtQtdeClick(Sender: TObject);
+    procedure edtQtdeExit(Sender: TObject);
+    procedure actExcItemExecute(Sender: TObject);
 
   private
     FCustoEstimado: Currency;
+    FQtde: Double;
+    FvUnitario: Double;
     procedure MontaSql(pCodigo : Integer) ;
-    function Validar() : Boolean ;
-    function ValidarMovimentacao() : Boolean;
+    function Validar(): Boolean;
+    function ValidarMovimentacao(): Boolean;
+    function ValidaInsertItem(): Boolean;
 
     procedure ResetaCDS() ;
     procedure MargemLucro(aTipo:integer);
     procedure SetItem(aIDMatPrima:integer);
     procedure CalcCustoComposicao();
+    procedure SetQtde(const Value: Double);
+    procedure setvUnitario(const Value: Double);
   public
     property CustoEstimado: Currency  read FCustoEstimado;
+    property Qtde: Double read FQtde write SetQtde;
+    property vUnitario: Double read FvUnitario write setvUnitario;
 
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
@@ -253,12 +261,70 @@ implementation
 {$R *.dfm}
 uses
   UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha,
-  UFuncoes, u_Mensagem;
+  UFuncoes, u_Mensagem, ACBrUtil;
 
 procedure TFrm_Produto.actAddItemExecute(Sender: TObject);
 begin
   inherited;
-//
+  if ValidaInsertItem then
+  begin
+    if cdsComposicaoProduto.Locate('ID_MATPRIMA',edpsqsProduto.Campo.Text,[]) then
+    begin
+      cdsComposicaoProduto.Edit;
+      cdsComposicaoProduto.FieldByName('QTDE').AsFloat := cdsComposicaoProduto.FieldByName('QTDE').AsFloat+Qtde;
+      cdsComposicaoProduto.FieldByName('CUSTO_UNIT').AsCurrency := vUnitario;
+      cdsComposicaoProduto.FieldByName('CUSTO_TOTAL').AsCurrency := cdsComposicaoProduto.FieldByName('QTDE').AsFloat*vUnitario;
+    end
+    else
+    begin
+      cdsComposicaoProduto.Append;
+      cdsComposicaoProduto.FieldByName('ID_PRODUTO').AsInteger := cds.FieldByName('CODIGO').AsInteger;
+      cdsComposicaoProduto.FieldByName('ID_MATPRIMA').AsInteger := StrToInt(edpsqsProduto.Campo.Text);
+      cdsComposicaoProduto.FieldByName('QTDE').AsFloat := Qtde;
+      cdsComposicaoProduto.FieldByName('CUSTO_UNIT').AsCurrency := vUnitario;
+      cdsComposicaoProduto.FieldByName('CUSTO_TOTAL').AsCurrency := Qtde*vUnitario;
+      cdsComposicaoProduto.FieldByName('NOME').AsString := edpsqsProduto.Mostrar.Text;
+      cdsComposicaoProduto.FieldByName('SIGLA').AsString := lblUM.Caption;
+    end;
+    cdsComposicaoProduto.Post;
+
+    if (chkCustoEstimado.Checked) then
+    begin
+      CalcCustoComposicao;
+      Editar;
+      cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado;
+    end;
+  end;
+  Qtde := 1;
+  vUnitario := 0;
+  lblUM.Visible := False;
+  edpsqsProduto.Campo.Text := '';
+  edpsqsProduto.Mostrar.Text := '';
+  edpsqsProduto.Campo.SetFocus;
+end;
+
+procedure TFrm_Produto.actExcItemExecute(Sender: TObject);
+begin
+  inherited;
+  if cdsComposicaoProduto.IsEmpty then
+    Exit;
+
+  if not dbgrdComposicao.Columns.Grid.Focused then
+  begin
+    TMensagem.Informacao('Selecione o item a ser excluso.');
+    Exit;
+  end;
+
+  cdsComposicaoProduto.Delete;
+  CalcCustoComposicao;
+
+  if (chkCustoEstimado.Checked) then
+  begin
+    Editar;
+    cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado;
+  end;
+
+  Gravar;
 end;
 
 procedure TFrm_Produto.actMovimentarExecute(Sender: TObject);
@@ -478,6 +544,29 @@ begin
     Retorno := IntToStr(aRet.iCodigo);
 end;
 
+procedure TFrm_Produto.edtQtdeClick(Sender: TObject);
+begin
+  inherited;
+  edtQtde.SelectAll;
+end;
+
+procedure TFrm_Produto.edtQtdeExit(Sender: TObject);
+var
+  lValue: Double;
+begin
+  inherited;
+  if (not TryStrToFloat(StringReplace(edtQtde.Text, '.', '', [rfReplaceAll]), lValue)) then
+    lValue := 1;
+  Qtde := lValue;
+end;
+
+procedure TFrm_Produto.edtQtdeKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+  if not (Key in ['0'..'9', #8, ',', #13]) then
+    Key := #0;
+end;
+
 procedure TFrm_Produto.edtQtdeMovKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
@@ -632,68 +721,6 @@ begin
   DBEdit1.SetFocus ;
 end;
 
-procedure TFrm_Produto.PngAddProdutoClick(Sender: TObject);
-begin
-  inherited;
-  {if cds.IsEmpty then
-    Exit;
-
-  if not Assigned(Frm_ProdutoComposicao) then
-    Frm_ProdutoComposicao := TFrm_ProdutoComposicao.Create(Self);
-  try
-    with Frm_ProdutoComposicao do
-    begin
-      aRetorno := EmptyStr;
-
-      pnlFornecedor.Visible := False;
-      Height := 133;
-
-      edt1.Text := '0';
-      lblUnidade.Caption := EmptyStr;
-
-      ShowModal;
-
-      if (aRetorno = 'sucesso') then
-      begin
-        cdsComposicaoProduto.Append;
-        cdsComposicaoProdutoID.AsInteger := 0;
-        cdsComposicaoProdutoID_PRODUTO.AsInteger := cdsCODIGO.AsInteger;
-        cdsComposicaoProdutoID_MATPRIMA.AsInteger := aCodMatPrima;
-        cdsComposicaoProdutoQTDE.AsFloat := aQtde;
-        cdsComposicaoProdutoMATERIAPRIMA.AsString := edp1.Mostrar.Text;
-        cdsComposicaoProduto.Post;
-        if not (cds.State in [dsInsert, dsEdit]) then
-          Editar;
-      end;
-    end;
-  finally
-    FreeAndNil(Frm_ProdutoComposicao);
-  end;   }
-end;
-
-procedure TFrm_Produto.PngSpeedButton1Click(Sender: TObject);
-const
-    SQL = 'delete FROM PRODUTO_COMPOSICAO a '+
-          'where a.ID = %s' ;
-begin
-  inherited;
-  {if cdsComposicaoProduto.IsEmpty then
-  begin
-    TMensagem.Informacao('Não há registro para ser excluso.') ;
-    Exit ;
-  end;
-
-  if TMensagem.Pergunta('Confirma a exclusão da Matéria-Prima: ' + cdsComposicaoProdutoMATERIAPRIMA.AsString + ' ?') then
-  begin
-    if DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(cdsComposicaoProdutoID.AsInteger)])) > 0 then
-    begin
-      cdsComposicaoProduto.Delete;
-      TMensagem.Informacao('Exclusão efetuada com sucesso.');
-    end;
-    MontaSql(cdsCODIGO.AsInteger);
-  end; }
-end;
-
 procedure TFrm_Produto.pnlDescClick(Sender: TObject);
 begin
   inherited;
@@ -712,11 +739,12 @@ end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
 const
-  SQL = 'select a.preco_custo,b.sigla '+
+  SQL = 'select coalesce(a.preco_custo,0)preco_custo,b.sigla '+
         'from produto a '+
         'left join unidade b on (b.codigo=a.cod_unidade) '+
         'where a.codigo = %s';
 begin
+  vUnitario := 0;
   DM.dsConsulta.Close;
   DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aIDMatPrima.ToString]));
 
@@ -725,8 +753,39 @@ begin
   begin
     lblUM.Caption := DM.dsConsulta.FieldByName('sigla').AsString;
     lblUnitario.Caption := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('preco_custo').AsCurrency);
-// adicionar linha no onchange do Field
-//    lblTotItem.Text := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('preco').AsCurrency);
+    vUnitario := DM.dsConsulta.FieldByName('preco_custo').AsCurrency;
+//    edtQtde.SetFocus;
+  end;
+end;
+
+procedure TFrm_Produto.SetQtde(const Value: Double);
+begin
+  FQtde := Value;
+  edtQtde.Text := FormatFloat('##0.000',Value);
+  lblTotItem.Caption := FormatCurr('##0.00',(Value*vUnitario));
+end;
+
+procedure TFrm_Produto.setvUnitario(const Value: Double);
+begin
+  fvUnitario := RoundABNT(Value,-10);
+  lblTotItem.Caption := FormatCurr('##0.00',(Qtde*fvUnitario));
+end;
+
+function TFrm_Produto.ValidaInsertItem: Boolean;
+begin
+  Result := True;
+  if (cds.FieldByName('CODIGO').AsInteger < 1) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Necessário salvar o Produto antes de inserir a composição.');
+    Exit;
+  end;
+
+  if (edpsqsProduto.Campo.Text = '') then
+  begin
+    Result := False;
+    TMensagem.Atencao('Informe a Matéria-Prima.');
+    Exit;
   end;
 end;
 

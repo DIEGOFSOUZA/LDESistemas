@@ -230,7 +230,7 @@ inherited SMProduto: TSMProduto
     SQL.Strings = (
       'select a.*,b.nome,c.sigla'
       'from produto_composicao a'
-      'left join produto b on (b.codigo=a.id_produto)'
+      'left join produto b on (b.codigo=a.id_matprima)'
       'left join unidade c on (c.codigo=b.cod_unidade)'
       'where a.id_produto = :codigo')
     Left = 56
@@ -245,11 +245,13 @@ inherited SMProduto: TSMProduto
     object fdqryProdutoComposicaoID_PRODUTO: TIntegerField
       FieldName = 'ID_PRODUTO'
       Origin = 'ID_PRODUTO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object fdqryProdutoComposicaoID_MATPRIMA: TIntegerField
       FieldName = 'ID_MATPRIMA'
       Origin = 'ID_MATPRIMA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object fdqryProdutoComposicaoQTDE: TFMTBCDField
@@ -312,11 +314,13 @@ inherited SMProduto: TSMProduto
     object fdqryProdutoFornecedorID_FORNECEDOR: TIntegerField
       FieldName = 'ID_FORNECEDOR'
       Origin = 'ID_FORNECEDOR'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object fdqryProdutoFornecedorID_PRODUTO: TIntegerField
       FieldName = 'ID_PRODUTO'
       Origin = 'ID_PRODUTO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object fdqryProdutoFornecedorPRECO: TFMTBCDField

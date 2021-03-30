@@ -273,7 +273,7 @@ inherited Frm_Produto: TFrm_Produto
                   end
                 end
                 object pnlDescMaximo: TPanel
-                  Left = 368
+                  Left = 422
                   Top = 0
                   Width = 123
                   Height = 67
@@ -874,7 +874,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsFiscal
+            ActivePage = tsComposicao
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -1152,6 +1152,7 @@ inherited Frm_Produto: TFrm_Produto
                         ParentBackground = False
                         ShowCaption = False
                         TabOrder = 4
+                        TabStop = True
                         object btnAddItem: TSpeedButton
                           Left = 0
                           Top = 0
@@ -1217,6 +1218,9 @@ inherited Frm_Produto: TFrm_Produto
                           ParentFont = False
                           TabOrder = 0
                           Text = '1,000'
+                          OnClick = edtQtdeClick
+                          OnExit = edtQtdeExit
+                          OnKeyPress = edtQtdeKeyPress
                         end
                       end
                       object pnlItem: TPanel
@@ -1230,7 +1234,7 @@ inherited Frm_Produto: TFrm_Produto
                         ShowCaption = False
                         TabOrder = 0
                         object edpsqsProduto: TEdPesquisa
-                          Left = -2
+                          Left = 22
                           Top = 14
                           Width = 321
                           Height = 21
@@ -1359,7 +1363,6 @@ inherited Frm_Produto: TFrm_Produto
                           Font.Name = 'Segoe UI Semibold'
                           Font.Style = [fsBold]
                           ParentFont = False
-                          Visible = False
                           ExplicitWidth = 38
                         end
                       end
@@ -1394,59 +1397,6 @@ inherited Frm_Produto: TFrm_Produto
                         Caption = 'pnlAcaoComposicao'
                         ShowCaption = False
                         TabOrder = 1
-                        object PngSpeedButton1: TPngSpeedButton
-                          Left = 6
-                          Top = 69
-                          Width = 86
-                          Height = 28
-                          Caption = 'Excluir'
-                          Font.Charset = DEFAULT_CHARSET
-                          Font.Color = clWindowText
-                          Font.Height = -11
-                          Font.Name = 'Tahoma'
-                          Font.Style = [fsBold]
-                          ParentFont = False
-                          OnClick = PngSpeedButton1Click
-                          PngImage.Data = {
-                            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
-                            610000000473424954080808087C086488000000097048597300000B1300000B
-                            1301009A9C18000000AD4944415478DA6364A01030E29210ABFDEDFF9F81C110
-                            C4FECFF0FF172B13EBACE78D8C6F883640A4EEF7E4374DACB920B650FD3F3EA6
-                            7F7F72DE34B3B5E13540B4F67703928C03D0EA03D8F8FF98180EBC6D643D80D5
-                            05A275BFFFE3F5F47F86C6D7CDAC0D0873711900540894ADC7468F1A30120CF8
-                            F98781818919C83C08C4F6E834305FD4BC69626BC5698048EDEF2EC6FFFF0A19
-                            989858D0E5FE3130DC67FCF7D7FD4D0BC76D9C06900A00F8AE981170C6214400
-                            00000049454E44AE426082}
-                        end
-                        object PngAddProduto: TPngSpeedButton
-                          Left = 6
-                          Top = 38
-                          Width = 86
-                          Height = 28
-                          Caption = 'Adicionar'
-                          Font.Charset = DEFAULT_CHARSET
-                          Font.Color = clWindowText
-                          Font.Height = -11
-                          Font.Name = 'Tahoma'
-                          Font.Style = [fsBold]
-                          ParentFont = False
-                          OnClick = PngAddProdutoClick
-                          PngImage.Data = {
-                            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
-                            610000016A4944415478DA95D23F4BC3401806F0E792D6FE113A48774741B008
-                            0E7E03A5285511058BA88393E0A8B8BAB90B2A38B8140445C14567FD08E250A1
-                            0E8A5AAA31B1964B9334C9F936810A9A8277F07221DCFDEECD73618818B99D8C
-                            F8FDEE76EB8B45AD65DD80CD956D58BE8926D56169571E585FDA80F1E102994F
-                            948E8FE481D5C53568AF1E94AC8EF3935379A0B8B04C800B356BE0EAECB23B10
-                            15587B4CCFCF42AB12D067E0FAE2266A4980B2898361313755A4B078189AC783
-                            6A701BF5BA033F59C7937307DDD48016356153590AC4632204F2FB43A2509881
-                            AEB5828D61F21CDCB260098E075E4643D4828F55DA2DD3AC56E9E92D1E02637B
-                            83627C321F6C0A008F00D7A40E2C94DF2B30590D31E1FF9CDCA4CDBC5D6A0844
-                            65908CA7911EF5F1A237908EB5202A09C027809C60F668162C04BADD021BA18E
-                            9C1EA41C17E23E257F8D2C67C256624818A213981C30D084D3AB22FECC3A81C9
-                            01FDF69FC0A480A89FE6DF80CCF8067BECD811176622860000000049454E44AE
-                            426082}
-                        end
                         object pnlExcItem: TPanel
                           Left = 18
                           Top = 8
@@ -1488,6 +1438,7 @@ inherited Frm_Produto: TFrm_Produto
                             Top = 0
                             Width = 25
                             Height = 25
+                            Action = actExcItem
                             Align = alClient
                             Flat = True
                             ParentShowHint = False
@@ -1806,7 +1757,7 @@ inherited Frm_Produto: TFrm_Produto
                     ExplicitTop = 8
                     ExplicitWidth = 605
                   end
-                  object dbgrdItens: TDBGrid
+                  object dbgrdHistCusto: TDBGrid
                     Left = 0
                     Top = 20
                     Width = 655
@@ -1884,7 +1835,7 @@ inherited Frm_Produto: TFrm_Produto
                     ExplicitTop = 8
                     ExplicitWidth = 605
                   end
-                  object dbgrdHistCusto: TDBGrid
+                  object dbgrdHistVenda: TDBGrid
                     Left = 0
                     Top = 20
                     Width = 655
@@ -2375,6 +2326,9 @@ inherited Frm_Produto: TFrm_Produto
       Caption = 'INCLUIR '#13#10'ITEM'
       OnExecute = actAddItemExecute
     end
+    object actExcItem: TAction
+      OnExecute = actExcItemExecute
+    end
   end
   object cdsComposicaoProduto: TClientDataSet
     Aggregates = <>
@@ -2420,7 +2374,6 @@ inherited Frm_Produto: TFrm_Produto
       FieldName = 'NOME'
       Origin = 'NOME'
       ProviderFlags = []
-      ReadOnly = True
       Size = 100
     end
     object cdsComposicaoProdutoSIGLA: TStringField
@@ -2428,7 +2381,6 @@ inherited Frm_Produto: TFrm_Produto
       FieldName = 'SIGLA'
       Origin = 'SIGLA'
       ProviderFlags = []
-      ReadOnly = True
       Size = 10
     end
   end
@@ -2439,8 +2391,8 @@ inherited Frm_Produto: TFrm_Produto
   end
   object dsHistVenda: TDataSource
     DataSet = cdsHistVenda
-    Left = 560
-    Top = 489
+    Left = 328
+    Top = 545
   end
   object cdsHistVenda: TClientDataSet
     Aggregates = <>
@@ -2482,8 +2434,8 @@ inherited Frm_Produto: TFrm_Produto
     IndexName = 'DATA'
     Params = <>
     StoreDefs = True
-    Left = 560
-    Top = 441
+    Left = 328
+    Top = 497
     object cdsHistVendaID_PROD: TIntegerField
       FieldName = 'ID_PROD'
       Origin = 'ID_PROD'
@@ -2521,8 +2473,8 @@ inherited Frm_Produto: TFrm_Produto
     Aggregates = <>
     DataSetField = cdsfdqryPrecoCustoHist
     Params = <>
-    Left = 632
-    Top = 443
+    Left = 400
+    Top = 499
     object cdsHistCustoID_PROD: TIntegerField
       FieldName = 'ID_PROD'
       Origin = 'ID_PROD'
@@ -2559,7 +2511,7 @@ inherited Frm_Produto: TFrm_Produto
   end
   object dsHistCusto: TDataSource
     DataSet = cdsHistCusto
-    Left = 632
-    Top = 491
+    Left = 400
+    Top = 547
   end
 end
