@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  UDM;
+  uServerDM;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -57,13 +57,13 @@ const
         'FROM PAGTO_PARCELAMENTO r '+
         'where r.ID_PAGTOFORMA = %s';
 var
-  DM: TDM;
+  DM: TServerDM;
   lID: Integer;
   lGrid : OleVariant;
 begin
   lID := pID;
   lGrid := 'null';
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryForma.Connection := DM.Conexao;
     fdqryParcelamento.Connection := DM.Conexao;
@@ -101,9 +101,9 @@ end;
 
 function TSM_Financeiro.setFormaPagto(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryForma.Connection := DM.Conexao;
     fdqryParcelamento.Connection := DM.Conexao;

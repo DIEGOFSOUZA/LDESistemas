@@ -153,7 +153,7 @@ implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses UDM, uSM;
+uses uServerDM, uSM;
 
 {$R *.dfm}
 
@@ -161,9 +161,9 @@ uses UDM, uSM;
 
 function TSMCadastro.Executar(const BD, Txt: string): integer;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Result := DM.Executar(Txt);
   finally
@@ -182,14 +182,14 @@ const
         'left outer join CONTA_BANCARIA a on (a.ID = r.ID_BANCO) '+
         'where r.id_banco = %s and r.num_cheque = %s';
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
   if pIDConta = '' then
   begin
     raise Exception.Create('Servidor Aplicativo: Parâmetro nao informado.');
   end;
 
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet(Format(SQL, [QuotedStr(pIDConta),IntToStr(pNCheque)]));
@@ -207,11 +207,11 @@ function TSMCadastro.setCheque(const BD: string; pIDConta: string;
   pNCheque: Integer; const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo : Array[0..1] of TCampoValor ;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Campo[0].Campo := 'id_banco';
     Campo[0].Valor := pIDConta;
@@ -235,9 +235,9 @@ end;
 
 function TSMCadastro.getCidades(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from CIDADES ' + ' where codigo = ' + IntToStr(pCodigo));
@@ -253,9 +253,9 @@ end;
 
 function TSMCadastro.getCliente(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.*, b.descri ramo,c.nome repnome '+
@@ -274,9 +274,9 @@ end;
 
 function TSMCadastro.getCondPagto(const BD: string; pID: Integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from CONDPAGTO ' + ' where codigo = ' + IntToStr(pID));
@@ -293,11 +293,11 @@ end;
 function TSMCadastro.setCondPagto(const BD: string; pID: Integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
     txt : string ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pID = 0 then
       mCodigo := GetGenerator(BD,'GEN_CONDPAGTO',1)
@@ -323,9 +323,9 @@ end;
 
 function TSMCadastro.getEmpresa(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select e.* from EMPRESA e ' + 'where e.codigo = ' + IntToStr(pCodigo));
@@ -341,9 +341,9 @@ end;
 
 function TSMCadastro.getFornecedor(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.*,b.DESCRI grupo ' + 'from FABRICANTE a ' +
@@ -361,11 +361,11 @@ end;
 
 function TSMCadastro.getFuncionario(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   mFuncionario, mUsuario: OleVariant;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       //***************Tabela Funcionario*********************
@@ -387,9 +387,9 @@ function TSMCadastro.GetGenerator(const BD, pNomeGenerator: string; pIncremento:
 var
   Aux: TClientDataSet;
   txt: string;
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   Aux := TClientDataSet.Create(nil);
   txt := 'select GEN_ID(' + pNomeGenerator + ',' + IntToStr(pIncremento) + ') cd from RDB$DATABASE';
   try
@@ -410,9 +410,9 @@ end;
 
 function TSMCadastro.getGrupoFornecedor(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from GRUPO_FABRICANTE ' + ' where codigo = ' + IntToStr(pCodigo));
@@ -429,9 +429,9 @@ end;
 
 function TSMCadastro.getGrupoProdutos(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from GRUPO_PROD ' + ' where codigo = ' + IntToStr(pCodigo));
@@ -447,9 +447,9 @@ end;
 
 function TSMCadastro.getGrupoServico(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from GRUPO_SERVICO ' + ' where codigo = ' + IntToStr(pCodigo));
@@ -473,12 +473,12 @@ const
         'left outer join FABRICANTE c on (c.CODIGO = r.ID_FORNECEDOR) '+
         'where r.ID = %s';
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
   if pID < 0 then
     Exit;
 
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet(Format(SQL, [IntToStr(pID)]));
@@ -496,11 +496,11 @@ function TSMCadastro.setLancamento(const BD: string; pID: Integer;
   const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pID = 0 then
       mCodigo := GetGenerator(BD, 'GEN_LANCAMENTO', 1)
@@ -528,11 +528,11 @@ end;
 function TSMCadastro.getMateriaPrima(const BD: string;
   pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   mProduto, mProdutoFornecedor: OleVariant;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       //***************Tabela Produto(Mat. Prima)*********************
@@ -570,9 +570,9 @@ end;
 
 function TSMCadastro.getNatOperacao(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from NATOPERACAO ' + ' where codigo = ' + IntToStr(pCodigo));
@@ -588,9 +588,9 @@ end;
 
 function TSMCadastro.getNfeCenario(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
        Result := DM.LerDataSet('select nc.*,c.cfnome cfopEstado,cf.cfnome cfopInterEstadual '+
@@ -610,9 +610,9 @@ end;
 
 function TSMCadastro.getNfeConfigFiscal(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from NFE_CONFIGURACAOFISCAL '+
@@ -628,9 +628,9 @@ end;
 
 function TSMCadastro.getNfeMsgAdicional(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from NFE_MSGADICIONAL ' +
@@ -647,9 +647,9 @@ end;
 function TSMCadastro.getHistorico(const BD: string;
   pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.*,b.descri grupo from HISTORICO a ' +
@@ -668,9 +668,9 @@ end;
 function TSMCadastro.getHistoricoGrupo(const BD: string;
   pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.* from HISTORICO_GRUPO a ' + 'where a.codigo = ' + IntToStr(pCodigo));
@@ -688,11 +688,11 @@ function TSMCadastro.setHistorico(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := GetGenerator(BD, 'GEN_HISTORICO', 1)
@@ -720,11 +720,11 @@ end;
 function TSMCadastro.setHistoricoGrupo(const BD: string; pCodigo: integer; const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := GetGenerator(BD, 'GEN_HISTORICO_GRUPO', 1)
@@ -752,9 +752,9 @@ end;
 function TSMCadastro.getContaBancaria(const BD: string;
   pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.* from CONTA_BANCARIA a ' +
@@ -772,11 +772,11 @@ end;
 function TSMCadastro.setContaBancaria(const BD: string; pCodigo: integer; const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := GetGenerator(BD, 'GEN_CONTABANCARIA', 1)
@@ -814,11 +814,11 @@ const
     SQL_LOTE_MAPRIMA = 'SELECT a.* FROM LOTE_MATPRIMA a '+
                        'where a.ID_LOTE = %s' ;
 var
-  DM: TDM;
+  DM: TServerDM;
   mLote, mLoteItens, mLoteMatPrima : OleVariant;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       mLote := DM.LerDataSet(Format(SQL_LOTE, [IntToStr(pCodigo)]));
@@ -852,13 +852,13 @@ const
                      'group by 1' ;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   CampoLote, CampoLoteItens: TCampoValor;
   txt : string ;
 begin
   try
     try
-      DM := TDM.Create(BD);
+      DM := TServerDM.Create(BD);
 
        {Grava Tabela LOTE}
       if Dados[0] <> Null then
@@ -909,10 +909,10 @@ end;
 function TSMCadastro.setCidades(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select gen_id(gen_cidades_id,1) cd from RDB$DATABASE','cd')
@@ -938,11 +938,11 @@ function TSMCadastro.setCliente(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from CLIENTE','cd') + 1
@@ -984,11 +984,11 @@ function TSMCadastro.setEmpresa(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from EMPRESA', 'cd') + 1
@@ -1015,12 +1015,12 @@ end;
 function TSMCadastro.setFechaVenda(const BD: string; Dados: OleVariant; pID, pTipo : string): Boolean;
 var
   txt: string;
-  DM: TDM;
+  DM: TServerDM;
   CampoID, CampoTipo: TCampoValor;
 begin
   try
     try
-      DM := TDM.Create(BD);
+      DM := TServerDM.Create(BD);
 
       {Tabela Master}
       if Dados[0] <> Null then
@@ -1073,9 +1073,10 @@ var
   txt: string;
   mCodigo : Integer ;
   mDataHora : TDateTime ;
+  DM: TServerDM;
 begin                         {setTipo = ABERTURA|FECHAMENTO|ENT/SAIDA|REABETURA}
   try
-    DM := TDM.Create(BD);
+    DM := TServerDM.Create(BD);
     mDataHora := Now ;
 //    mDataHora := IncDay(Now,-9) ;
     mCodigo := IDCaixa ;
@@ -1205,9 +1206,9 @@ const
                     'where a.TIPO = %s '+
                     'and a.ID = %s' ;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
 
     try
@@ -1235,11 +1236,11 @@ end;
 function TSMCadastro.setFornecedor(const BD: string; pCodigo: integer; const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from FABRICANTE', 'cd') + 1
@@ -1268,11 +1269,11 @@ end;
 function TSMCadastro.setFuncionario(const BD: string; pCodigo: integer; const pDados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   CampoCodFun: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from FUNCIONARIO', 'cd') + 1
@@ -1302,10 +1303,10 @@ end;
 function TSMCadastro.setGrupoFornecedor(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from GRUPO_FABRICANTE','cd') + 1
@@ -1330,10 +1331,10 @@ end;
 function TSMCadastro.setGrupoProdutos(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from GRUPO_PROD','cd') + 1
@@ -1358,10 +1359,10 @@ end;
 function TSMCadastro.setGrupoServico(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from GRUPO_SERVICO','cd') + 1
@@ -1388,12 +1389,12 @@ function TSMCadastro.setMateriaPrima(const BD: string;
 var
   txt: string;
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   CampoID: TCampoValor;
 begin
   try
     try
-      DM := TDM.Create(BD);
+      DM := TServerDM.Create(BD);
 
       if pCodigo = 0 then
         mCodigo := GetGenerator(BD, 'GEN_PRODUTO', 1)
@@ -1437,10 +1438,10 @@ end;
 
 {var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select gen_id(gen_produto,1) cd from RDB$DATABASE', 'cd')
@@ -1473,10 +1474,10 @@ end; }
 function TSMCadastro.setNatOperacao(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from NATOPERACAO','cd') + 1
@@ -1501,11 +1502,11 @@ end;
 function TSMCadastro.setNfeCenario(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
     txt : string ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from NFE_CENARIO','cd') + 1
@@ -1533,11 +1534,11 @@ end;
 function TSMCadastro.setNfeConfigFiscal(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
     txt : string ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from NFE_CONFIGURACAOFISCAL','cd') + 1
@@ -1564,10 +1565,10 @@ end;
 function TSMCadastro.setNfeMsgAdicional(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from NFE_MSGADICIONAL','cd') + 1
@@ -1592,11 +1593,11 @@ end;
 function TSMCadastro.setNotaEntrada(const BD: string; pID: Integer; pNota, pItens, pPagar: OleVariant): Integer;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pID = 0 then
       mCodigo := GetGenerator(BD, 'GEN_NOTAENTRADA', 1)
@@ -1636,13 +1637,13 @@ end;
 function TSMCadastro.setProduto(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   txt : string ;
   CampoProduto,CampoProdComposicao: TCampoValor;
 begin
   try
     try
-      DM := TDM.Create(BD);
+      DM := TServerDM.Create(BD);
 
     {Tabela PRODUTO}
       if Dados[0] <> Null then
@@ -1677,11 +1678,11 @@ end;
 function TSMCadastro.setRamo(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
     txt : string ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from RAMO_ATIVIDADE','cd') + 1
@@ -1707,10 +1708,10 @@ end;
 function TSMCadastro.setServico(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from SERVICO','cd') + 1
@@ -1735,10 +1736,10 @@ end;
 function TSMCadastro.setSubGrupoProdutos(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from SUBGRUPO_PROD','cd') + 1
@@ -1763,11 +1764,11 @@ end;
 function TSMCadastro.setTransportadora(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var mCodigo : integer ;
-    DM : TDM ;
+    DM : TServerDM ;
     Campo : TCampoValor ;
     txt : string ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from TRANSPORTADORA','cd') + 1
@@ -1798,11 +1799,11 @@ end;
 function TSMCadastro.setUnidade(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   mCodigo : Integer ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := GetGenerator(BD,'GEN_UNIDADE',1)
@@ -1827,7 +1828,7 @@ end;
 function TSMCadastro.UpdateorInsert(const BD, Tabela: string; pk: string;
   Dados: OleVariant): Integer;
 var
-  DM: TDM;
+  DM: TServerDM;
   Origem: TClientDataSet;
   txt, campo1, campo2: string;
   x: integer;
@@ -1835,7 +1836,7 @@ begin
   campo1 := '';
   campo2 := '';
   Origem := TClientDataSet.Create(nil);
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Origem.Data := Dados;
     DM.StartTransaction;
@@ -1894,11 +1895,11 @@ end;
 
 function TSMCadastro.getProduto(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   mProduto, mComposicao: OleVariant;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       //***************Tabela Produto*********************
@@ -1944,9 +1945,9 @@ const
         'left outer join PRODUTO b on (b.CODIGO = a.ID_MATPRIMA) ' +
         'where a.ID_PRODUTO = %s ';
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet(Format(SQL, [IntToStr(pCodPro)]));
@@ -1969,9 +1970,9 @@ const
              'LEFT OUTER JOIN fabricante F ON (F.CODIGO = PF.id_fornecedor) '+
              'where pf.ID_PRODUTO = %s ';
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet(Format(SQL, [IntToStr(pCodigo)]));
@@ -1988,10 +1989,10 @@ end;
 
 function TSMCadastro.getProdutoInsumo(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
 
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('SELECT PF.codigo_Produto,PF.codigo_insumo,pf.qtde,P.NOME as descricao_insumo FROM PRODUTO_FABRICADO PF '+
@@ -2008,9 +2009,9 @@ begin
 end;
 
 function TSMCadastro.getRamo(const BD: string; pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from RAMO_ATIVIDADE '+
@@ -2027,9 +2028,9 @@ end;
 function TSMCadastro.getRepresentante(const BD: string;
   pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select r.* '+
@@ -2048,11 +2049,11 @@ function TSMCadastro.setRepresentante(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
   mCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
       mCodigo := DM.LerDataSetInteger('select max(codigo) cd from REPRESENTANTE','cd') + 1
@@ -2077,9 +2078,9 @@ begin
 end;
 
 function TSMCadastro.getServico(const BD: string; pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from SERVICO ' +
@@ -2095,9 +2096,9 @@ end;
 
 function TSMCadastro.GetInteger(const BD, Txt, campoRetorno: string): Integer;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Result := DM.LerDataSetInteger(Txt, campoRetorno);
   finally
@@ -2108,9 +2109,9 @@ end;
 
 function TSMCadastro.GetFloat(const BD, Txt, campoRetorno: string): Double;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Result := DM.LerDataSetFloat(Txt, campoRetorno);
   finally
@@ -2121,9 +2122,9 @@ end;
 
 function TSMCadastro.GetString(const BD, Txt, campoRetorno: string): string;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Result := DM.LerDataSetString(Txt, campoRetorno);
   finally
@@ -2135,9 +2136,9 @@ end;
 
 function TSMCadastro.getSubGrupoProdutos(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from SUBGRUPO_PROD ' +
@@ -2153,9 +2154,9 @@ end;
 
 function TSMCadastro.getTransportadora(const BD: string;
   pCodigo: integer): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select t.*, f.razao_nome fornecedor, e.nome estado, p.nome pais '+
@@ -2174,9 +2175,9 @@ begin
 end;
 
 function TSMCadastro.getUnidade(const BD: string; pCodigo: string): OleVariant;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select * from UNIDADE ' +
@@ -2192,9 +2193,9 @@ end;
 
 function TSMCadastro.getUsuario(const BD: string; pCodigo: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet('select a.* from USUARIO a '+
@@ -2213,11 +2214,11 @@ function TSMCadastro.setUsuario(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;
 var
   lCodigo: integer;
-  DM: TDM;
+  DM: TServerDM;
   Campo: TCampoValor;
   txt: string;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     if pCodigo = 0 then
     begin
@@ -2247,7 +2248,7 @@ end;
 function TSMCadastro.Insert(const BD, Tabela: string;
   Dados: OleVariant): Integer;
 var
-  DM: TDM;
+  DM: TServerDM;
   txt, campos, values, cp: string;
   i, x, rwaf: Integer;
   temp: TClientDataSet;
@@ -2256,7 +2257,7 @@ begin
   rwaf := 0;
   Result := -1;
 
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   temp := TClientDataSet.Create(nil);
   campos1 := TStringList.Create;
   try

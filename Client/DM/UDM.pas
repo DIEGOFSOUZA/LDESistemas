@@ -94,6 +94,7 @@ type
     dspRFormaPagto: TDSProviderConnection;
     dspRPedido: TDSProviderConnection;
     dspRProducao: TDSProviderConnection;
+    dspRProduto: TDSProviderConnection;
     procedure DataModuleCreate(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string;
@@ -112,6 +113,7 @@ type
     fSMFormaPagto: TSM_FinanceiroClient;
     fSMPedido: TSM_PedidoClient;
     fSMProducao: TSMProducaoClient;
+    fSMProduto: TSMProdutoClient;
     function GetSMClient: TSMClient;
   public
     { Public declarations }
@@ -128,6 +130,7 @@ type
     property SMFormaPagto : TSM_FinanceiroClient read fSMFormaPagto ;
     property SMPedido : TSM_PedidoClient read fSMPedido ;
     property SMProducao : TSMProducaoClient read fSMProducao ;
+    property SMProduto : TSMProdutoClient read fSMProduto ;
     property ArquivoConfiguracao : string read fArquivoConfiguracao write fArquivoConfiguracao ;
 
     function UsuarioDataHora() : string ;
@@ -202,6 +205,7 @@ begin
       fSMFormaPagto := TSM_FinanceiroClient.Create(Conexao.DBXConnection);
       fSMPedido := TSM_PedidoClient.Create(Conexao.DBXConnection);
       fSMProducao := TSMProducaoClient.Create(Conexao.DBXConnection);
+      fSMProduto := TSMProdutoClient.Create(Conexao.DBXConnection);
     end;
   except
     on e: Exception do
@@ -318,6 +322,7 @@ begin
   FreeAndNil(fSMFormaPagto);
   FreeAndNil(fSMPedido);
   FreeAndNil(fSMProducao);
+  FreeAndNil(fSMProduto);
 end;
 
 function TDM.GetSMClient: TSMClient;

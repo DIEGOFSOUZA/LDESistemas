@@ -1,4 +1,4 @@
-object DM: TDM
+object ServerDM: TServerDM
   OldCreateOrder = False
   OnDestroy = DataModuleDestroy
   Height = 300
@@ -9,10 +9,12 @@ object DM: TDM
   end
   object Conexao: TFDConnection
     Params.Strings = (
-      'Database=C:\Projetos\bancos\SISTEMA.FDB'
+      'Database=C:\projetos\bancos\FB30\sistema.FDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
-      'Server=localhost'
+      'Server=127.0.0.1'
+      'Port=3060'
+      'Protocol=TCPIP'
       'DriverID=FB')
     FetchOptions.AssignedValues = [evItems, evCache]
     FetchOptions.Items = [fiBlobs, fiDetails]

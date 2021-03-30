@@ -19,7 +19,7 @@ object DMACBr: TDMACBr
   end
   object ACBrValidador1: TACBrValidador
     IgnorarChar = './-'
-    Left = 96
-    Top = 40
+    Left = 112
+    Top = 32
   end
 end

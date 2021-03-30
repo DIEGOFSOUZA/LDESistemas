@@ -1,4 +1,4 @@
-unit UDM;
+unit uServerDM;
 
 interface
 
@@ -18,7 +18,7 @@ type
   end ;
 
 type
-  TDM = class(TDataModule)
+  TServerDM = class(TDataModule)
     FDPhysFBDriverLink1: TFDPhysFBDriverLink;
     Conexao: TFDConnection;
     TranLeitura: TFDTransaction;
@@ -63,7 +63,7 @@ type
   end;
 
 var
-  DM: TDM;
+  ServerDM: TServerDM;
 
 implementation
 
@@ -73,7 +73,7 @@ implementation
 
 { TDM }
 
-function TDM.CampoModificado(pCampo: TField): boolean;
+function TServerDM.CampoModificado(pCampo: TField): boolean;
 begin
   if pCampo.NewValue = Null then
     Result := pCampo.OldValue <> Null
@@ -93,13 +93,13 @@ begin
     }
 end;
 
-procedure TDM.Commit;
+procedure TServerDM.Commit;
 begin
   if TranGravacao.Active then
     TranGravacao.Commit ;
 end;
 
-constructor TDM.Create(pBancoDados: string);
+constructor TServerDM.Create(pBancoDados: string);
 var
   Servidor, Banco, Protocolo, Porta: string;
   mPos: integer;
@@ -107,7 +107,7 @@ begin
   inherited Create(nil);
   fBancoDados := pBancoDados;
   Protocolo := 'TCPIP';
-  Porta := '3050'; //FB 2.5 = 3050  FB 3 = 3051
+  Porta := '3060'; //FB 2.5 = 3050  FB 3 = 3060
   mPos := Pos(':', pBancoDados);
   if mPos > 0 then
   begin
@@ -116,7 +116,7 @@ begin
   end
   else
   begin
-    Servidor := 'Localhost';
+    Servidor := '127.0.0.1';
     Banco := pBancoDados;
   end;
 
@@ -132,12 +132,12 @@ begin
   end;
 end;
 
-procedure TDM.DataModuleDestroy(Sender: TObject);
+procedure TServerDM.DataModuleDestroy(Sender: TObject);
 begin
      Conexao.Close ;
 end;
 
-function TDM.Executar(pSQL: string): integer;
+function TServerDM.Executar(pSQL: string): integer;
 begin
   try
     if not TranGravacao.Active then
@@ -157,18 +157,18 @@ begin
   end;
 end;
 
-function TDM.ExecuteDirect(pSQL: string): integer;
+function TServerDM.ExecuteDirect(pSQL: string): integer;
 begin
 
   Result := Conexao.ExecSQL(pSQL) ;
 end;
 
-procedure TDM.FecharConexao;
+procedure TServerDM.FecharConexao;
 begin
   Conexao.Close ;
 end;
 
-function TDM.LerDataSet(pSQL: string): OleVariant;
+function TServerDM.LerDataSet(pSQL: string): OleVariant;
 begin
   Ler.Close ;
   try
@@ -190,7 +190,7 @@ begin
   end;
 end;
 
-function TDM.LerDataSetFloat(pSQL, pCampoRetorno: string): Double;
+function TServerDM.LerDataSetFloat(pSQL, pCampoRetorno: string): Double;
 begin
   Ler.Close ;
   try
@@ -211,7 +211,7 @@ begin
   end;
 end;
 
-function TDM.LerDataSetInteger(pSQL, pCampoRetorno: string): integer;
+function TServerDM.LerDataSetInteger(pSQL, pCampoRetorno: string): integer;
 begin
   Ler.Close ;
   try
@@ -232,7 +232,7 @@ begin
   end;
 end;
 
-function TDM.LerDataSetString(pSQL, pCampoRetorno: string): string;
+function TServerDM.LerDataSetString(pSQL, pCampoRetorno: string): string;
 begin
   Ler.Close ;
   try
@@ -253,7 +253,7 @@ begin
   end;
 end;
 
-procedure TDM.GravarTabelaSimples(pAutoTransacao : boolean; Tabela, pCampos : string;
+procedure TServerDM.GravarTabelaSimples(pAutoTransacao : boolean; Tabela, pCampos : string;
   pDados: OleVariant; pValorChave, pPreencherCampo : Array of TCampoValor;
   pUsarChavePKinterna : boolean) ;
 var Aux : TClientDataSet ;
@@ -386,7 +386,7 @@ begin
   end;
 end;
 
-procedure TDM.MontaInsert(Tabela, pCampos: string);
+procedure TServerDM.MontaInsert(Tabela, pCampos: string);
 begin
   Gravar.SQL.Clear ;
   Gravar.SQL.Add('insert into ' + Tabela) ;
@@ -395,7 +395,7 @@ begin
        StringReplace(pCampos,',',',:',[rfReplaceAll]) + ')' ) ;
 end;
 
-procedure TDM.MontaUpDate(Tabela, pCampos : string; pChavePrimaria : TStrings);
+procedure TServerDM.MontaUpDate(Tabela, pCampos : string; pChavePrimaria : TStrings);
 var mSet, tmp : string ;
     x : integer ;
 begin
@@ -428,19 +428,19 @@ begin
   end;
 end;
 
-procedure TDM.Rollback;
+procedure TServerDM.Rollback;
 begin
   if TranGravacao.Active then
     TranGravacao.Rollback ;
 end;
 
-procedure TDM.StartTransaction;
+procedure TServerDM.StartTransaction;
 begin
   if not TranGravacao.Active then
     TranGravacao.StartTransaction ;
 end;
 
-function TDM.TesteDataBase: Boolean;
+function TServerDM.TesteDataBase: Boolean;
 begin
   Result := True;
   Conexao.Connected := False;
@@ -456,7 +456,7 @@ begin
   end;
 end;
 
-procedure TDM.MontaDelete(Tabela : string; pChavePrimaria: TStrings);
+procedure TServerDM.MontaDelete(Tabela : string; pChavePrimaria: TStrings);
 var mWhere, tmp : string ;
     x : integer ;
 begin

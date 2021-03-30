@@ -4472,12 +4472,10 @@ object Frm_Inicial: TFrm_Inicial
       end
       object GrupodeProdutos1: TMenuItem
         Caption = 'GRUPO DE PRODUTO'
-        Visible = False
         OnClick = GrupodeProdutos1Click
       end
       object SubgrupoProdutos1: TMenuItem
         Caption = 'SUB GRUPO DE PRODUTO'
-        Visible = False
         OnClick = SubgrupoProdutos1Click
       end
     end

@@ -4,9 +4,12 @@ object SM: TSM
   Width = 354
   object Conexao: TFDConnection
     Params.Strings = (
-      'Database=C:\Projetos\bancos\SISTEMA.FDB'
+      'Database=C:\projetos\bancos\FB30\sistema.FDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
+      'Port=3060'
+      'Protocol=TCPIP'
+      'Server=127.0.0.1'
       'DriverID=FB')
     ConnectedStoredUsage = []
     LoginPrompt = False

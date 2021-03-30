@@ -3,12 +3,12 @@ object SM_Financeiro: TSM_Financeiro
   Height = 273
   Width = 427
   object TranGravar: TFDTransaction
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Left = 224
     Top = 16
   end
   object fdqryForma: TFDQuery
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       'SELECT a.* FROM PAGTO_FORMA a'
@@ -49,7 +49,7 @@ object SM_Financeiro: TSM_Financeiro
   object fdqryParcelamento: TFDQuery
     MasterSource = sFormaPagto
     MasterFields = 'ID_PAGTOFORMA'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       'SELECT a.* FROM PAGTO_PARCELAMENTO a'

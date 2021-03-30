@@ -2645,4 +2645,10 @@ object DM: TDM
     Left = 159
     Top = 187
   end
+  object dspRProduto: TDSProviderConnection
+    ServerClassName = 'TSMProduto'
+    SQLConnection = Conexao
+    Left = 248
+    Top = 80
+  end
 end

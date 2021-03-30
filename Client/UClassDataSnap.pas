@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 18/03/2021 15:38:42
+// 29/03/2021 15:35:54
 //
 
 unit UClassDataSnap;
@@ -234,6 +234,18 @@ type
     function setProducao(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProducao(BD: string; pID: Integer): OleVariant;
     function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+  end;
+
+  TSMProdutoClient = class(TDSAdminClient)
+  private
+    FsetProdutoCommand: TDBXCommand;
+    FgetProdutoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
+    function getProduto(BD: string; pID: Integer): OleVariant;
   end;
 
 implementation
@@ -1762,6 +1774,54 @@ begin
   FsetProducaoCommand.DisposeOf;
   FgetProducaoCommand.DisposeOf;
   FsetMovimentoCommand.DisposeOf;
+  inherited;
+end;
+
+function TSMProdutoClient.setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
+begin
+  if FsetProdutoCommand = nil then
+  begin
+    FsetProdutoCommand := FDBXConnection.CreateCommand;
+    FsetProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetProdutoCommand.Text := 'TSMProduto.setProduto';
+    FsetProdutoCommand.Prepare;
+  end;
+  FsetProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetProdutoCommand.Parameters[1].Value.SetInt32(pID);
+  FsetProdutoCommand.Parameters[2].Value.AsVariant := Dados;
+  FsetProdutoCommand.ExecuteUpdate;
+  Result := FsetProdutoCommand.Parameters[3].Value.AsVariant;
+end;
+
+function TSMProdutoClient.getProduto(BD: string; pID: Integer): OleVariant;
+begin
+  if FgetProdutoCommand = nil then
+  begin
+    FgetProdutoCommand := FDBXConnection.CreateCommand;
+    FgetProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FgetProdutoCommand.Text := 'TSMProduto.getProduto';
+    FgetProdutoCommand.Prepare;
+  end;
+  FgetProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FgetProdutoCommand.Parameters[1].Value.SetInt32(pID);
+  FgetProdutoCommand.ExecuteUpdate;
+  Result := FgetProdutoCommand.Parameters[2].Value.AsVariant;
+end;
+
+constructor TSMProdutoClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSMProdutoClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSMProdutoClient.Destroy;
+begin
+  FsetProdutoCommand.DisposeOf;
+  FgetProdutoCommand.DisposeOf;
   inherited;
 end;
 

@@ -6,53 +6,17 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad, System.Actions, Vcl.ActnList,
   Data.DB, Datasnap.DBClient, Vcl.Buttons, PngSpeedButton, Vcl.ExtCtrls,
-  UDBPesquisa, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.ComCtrls,
+  UDBPesquisa, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.ComCtrls,System.StrUtils,
   Vcl.DBGrids, UEDPesquisa, Vcl.Menus, Vcl.Imaging.pngimage, Vcl.Grids;
 
 type
   TFrm_Produto = class(TPdr_Cad)
     cdsComposicaoProduto: TClientDataSet;
     dsComposicaoProduto: TDataSource;
-    cdsComposicaoProdutoID: TIntegerField;
-    cdsComposicaoProdutoID_PRODUTO: TIntegerField;
-    cdsComposicaoProdutoID_MATPRIMA: TIntegerField;
-    cdsComposicaoProdutoQTDE: TFMTBCDField;
-    cdsComposicaoProdutoMATERIAPRIMA: TStringField;
     pnlFundo2: TPanel;
-    cdsCODIGO: TIntegerField;
-    cdsNOME: TStringField;
-    cdsCOD_UNIDADE: TIntegerField;
-    cdsEAN_CODBARRA: TStringField;
-    cdsCOD_FABRICANTE: TIntegerField;
-    cdsCOD_GRUPO: TIntegerField;
-    cdsCOD_SUBGRUPO: TIntegerField;
-    cdsDESCRICAO: TStringField;
-    cdsTIPO_PRODUTO: TStringField;
-    cdsDESCRI_UNIDADE: TStringField;
-    cdsGRUPO: TStringField;
-    cdsSUBGRUPO: TStringField;
     actTrilhar: TAction;
-    cdsCONV_UNIDADE: TIntegerField;
-    cdsCONV_DESCRIUNIDADE: TStringField;
-    cdsPRECO_VENDA: TCurrencyField;
-    cdsQTDE_ESTOQUE: TFMTBCDField;
-    cdsPRECO_CUSTO: TCurrencyField;
-    cdsPESO_BRUTO: TFMTBCDField;
-    cdsPESO_LIQUIDO: TFMTBCDField;
-    cdsQTDE_MINIMA: TFMTBCDField;
-    cdsCONV_QTDE: TFMTBCDField;
-    cdsCONV_PRECO: TCurrencyField;
-    cdsESTIMA_PRODUCAO: TFMTBCDField;
-    dsHistPreco: TDataSource;
-    cdsHisPreco: TClientDataSet;
-    cdsDT_CADASTRO: TDateField;
-    cdsHisPrecoINICIO: TDateField;
-    cdsHisPrecoFIM: TDateField;
-    cdsHisPrecoPRECO: TCurrencyField;
-    cdsHisPrecoUSUARIO: TStringField;
-    cdsDESC_MAXIMO: TFMTBCDField;
-    cdsPRECO_ATACADO: TFMTBCDField;
-    cdsQTDE_MIN_ATACADO: TFMTBCDField;
+    dsHistVenda: TDataSource;
+    cdsHistVenda: TClientDataSet;
     Panel3: TPanel;
     pnlPreco: TPanel;
     lblTitPreco: TLabel;
@@ -97,14 +61,11 @@ type
     Label6: TLabel;
     dbtxtCODIGO: TDBText;
     pnlPages: TPanel;
-    PageControl1: TPageControl;
+    pgc1: TPageControl;
     tsEstoque: TTabSheet;
     pnl2: TPanel;
     tsComposicao: TTabSheet;
-    pnl1: TPanel;
-    PngAddProduto: TPngSpeedButton;
-    PngSpeedButton1: TPngSpeedButton;
-    DBGrid1: TDBGrid;
+    pnlComposicao: TPanel;
     tsConversao: TTabSheet;
     pnlFundoTab: TPanel;
     lblTitConversao: TLabel;
@@ -116,11 +77,8 @@ type
     DBEdit6: TDBEdit;
     tsHistPrecoVenda: TTabSheet;
     pnlHistorico: TPanel;
-    Label14: TLabel;
-    dbgrdItens: TDBGrid;
     Label20: TLabel;
     dbcbbSITUACAO: TDBComboBox;
-    cdsSITUACAO: TStringField;
     Label8: TLabel;
     DBMemo1: TDBMemo;
     pnlMovimentar: TPanel;
@@ -145,17 +103,104 @@ type
     Label25: TLabel;
     dbpsqsNCM: TDBPesquisa;
     dbpsqsCEST: TDBPesquisa;
+    pnlFundoComposicao: TPanel;
+    pnlTopoComposicao: TPanel;
+    pnlFundo1Comp: TPanel;
+    pnlProdAdd: TPanel;
+    pnlAdd: TPanel;
+    btnAddItem: TSpeedButton;
+    pnlQtde: TPanel;
+    lblUM: TLabel;
+    edtQtde: TEdit;
+    pnlItem: TPanel;
+    edpsqsProduto: TEdPesquisa;
+    actAddItem: TAction;
+    pnlTotalItem: TPanel;
+    Label53: TLabel;
+    lblTotItem: TLabel;
+    pnlVlUnitario: TPanel;
+    lbl8: TLabel;
+    lblUnitario: TLabel;
+    pnlGridComposicao: TPanel;
+    pnlAcaoComposicao: TPanel;
+    PngSpeedButton1: TPngSpeedButton;
+    PngAddProduto: TPngSpeedButton;
+    pnlExcItem: TPanel;
+    imgExcItem: TImage;
+    btnEscItem: TSpeedButton;
+    pnlRodapeComposicao: TPanel;
+    Label27: TLabel;
+    lblCustEstimado: TLabel;
+    dbgrdComposicao: TDBGrid;
+    cdsCODIGO: TIntegerField;
+    cdsNOME: TStringField;
+    cdsPRECO_VENDA: TCurrencyField;
+    cdsCOD_UNIDADE: TIntegerField;
+    cdsQTDE_ESTOQUE: TFMTBCDField;
+    cdsPRECO_CUSTO: TCurrencyField;
+    cdsESTIMA_PRODUCAO: TFMTBCDField;
+    cdsPESO_BRUTO: TFMTBCDField;
+    cdsPESO_LIQUIDO: TFMTBCDField;
+    cdsEAN_CODBARRA: TStringField;
+    cdsCOD_GRUPO: TIntegerField;
+    cdsCOD_SUBGRUPO: TIntegerField;
+    cdsDESCRICAO: TStringField;
+    cdsTIPO_PRODUTO: TStringField;
+    cdsQTDE_MINIMA: TFMTBCDField;
+    cdsCONV_UNIDADE: TIntegerField;
+    cdsCONV_QTDE: TFMTBCDField;
+    cdsCONV_PRECO: TCurrencyField;
+    cdsDT_CADASTRO: TDateField;
+    cdsDESC_MAXIMO: TFMTBCDField;
+    cdsPRECO_ATACADO: TFMTBCDField;
+    cdsQTDE_MIN_ATACADO: TFMTBCDField;
+    cdsSITUACAO: TStringField;
     cdsFISCAL_TIPO: TStringField;
     cdsFISCAL_ORIGEM: TStringField;
     cdsFISCAL_NCM: TIntegerField;
     cdsFISCAL_CEST: TIntegerField;
+    cdsDESCRI_UNIDADE: TStringField;
+    cdsfdqryProdutoFornecedor: TDataSetField;
+    cdsfdqryProdutoComposicao: TDataSetField;
+    cdsULTIMA_ALTERACAO: TStringField;
+    pnlHistVenda: TPanel;
+    dbgrdItens: TDBGrid;
+    Label14: TLabel;
+    pnlHistCusto: TPanel;
+    lblTitHistCusto: TLabel;
+    dbgrdHistCusto: TDBGrid;
+    cdsfdqryPrecoVendaHist: TDataSetField;
+    cdsHistVendaID_PROD: TIntegerField;
+    cdsHistVendaUSUARIO: TStringField;
+    cdsHistVendaPRECO_NOVO: TFMTBCDField;
+    cdsHistVendaDATA: TDateField;
+    cdsHistVendaDT_FIM: TDateField;
+    cdsComposicaoProdutoID_PRODUTO: TIntegerField;
+    cdsComposicaoProdutoID_MATPRIMA: TIntegerField;
+    cdsComposicaoProdutoQTDE: TFMTBCDField;
+    cdsComposicaoProdutoCUSTO_UNIT: TFMTBCDField;
+    cdsComposicaoProdutoCUSTO_TOTAL: TFMTBCDField;
+    cdsComposicaoProdutoNOME: TStringField;
+    cdsComposicaoProdutoSIGLA: TStringField;
+    cdsHistCusto: TClientDataSet;
+    dsHistCusto: TDataSource;
+    cdsfdqryPrecoCustoHist: TDataSetField;
+    cdsHistCustoID_PROD: TIntegerField;
+    cdsHistCustoPRECO_NOVO: TFMTBCDField;
+    cdsHistCustoDATA: TDateField;
+    cdsHistCustoDATA_FIM: TDateField;
+    cdsHistCustoUSUARIO: TStringField;
+    cdsCALC_CUSTO_COMPOSICAO: TStringField;
+    chkCustoEstimado: TCheckBox;
+    cdsCONV_DESCRIUNIDADE: TStringField;
+    cdsGRUPO: TStringField;
+    cdsSUBGRUPO: TStringField;
     cdsNCM: TStringField;
     cdsCEST: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa6Pesquisa(Sender: TObject; var Retorno: string);
-    procedure EdPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure PngAddProdutoClick(Sender: TObject);
     procedure PngSpeedButton1Click(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -166,22 +211,32 @@ type
     procedure cdsPRECO_ATACADOChange(Sender: TField);
     procedure actMovimentarExecute(Sender: TObject);
     procedure edtQtdeMovKeyPress(Sender: TObject; var Key: Char);
-    procedure cdsBeforePost(DataSet: TDataSet);
     procedure dbpsqsNCMPesquisa(Sender: TObject; var Retorno: string);
     procedure dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
+    procedure actAddItemExecute(Sender: TObject);
+    procedure edpsqsProdutoPesquisa(Sender: TObject; var Retorno: string);
+    procedure edpsqsProdutoedtCampoChange(Sender: TObject);
+    procedure cdsBeforePost(DataSet: TDataSet);
+    procedure cdsComposicaoProdutoID_MATPRIMAGetText(Sender: TField;
+      var Text: string; DisplayText: Boolean);
+    procedure dbgrdComposicaoDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure chkCustoEstimadoClick(Sender: TObject);
+    procedure cdsAfterCancel(DataSet: TDataSet);
 
   private
+    FCustoEstimado: Currency;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar() : Boolean ;
     function ValidarMovimentacao() : Boolean;
 
     procedure ResetaCDS() ;
-    procedure ReadWrite() ;
-    procedure GeraHistoricoPreco(aState:TDataSetState);
     procedure MargemLucro(aTipo:integer);
-    procedure LoadHistPreco();
-
+    procedure SetItem(aIDMatPrima:integer);
+    procedure CalcCustoComposicao();
   public
+    property CustoEstimado: Currency  read FCustoEstimado;
+
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
     procedure Excluir() ; override ;
@@ -196,8 +251,15 @@ var
 implementation
 
 {$R *.dfm}
+uses
+  UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha,
+  UFuncoes, u_Mensagem;
 
-uses UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha, UFuncoes, u_Mensagem;
+procedure TFrm_Produto.actAddItemExecute(Sender: TObject);
+begin
+  inherited;
+//
+end;
 
 procedure TFrm_Produto.actMovimentarExecute(Sender: TObject);
 begin
@@ -237,11 +299,43 @@ begin
   end;
 end;
 
+procedure TFrm_Produto.CalcCustoComposicao;
+begin
+  FCustoEstimado := 0;
+
+  if (not cdsComposicaoProduto.IsEmpty) then
+  begin
+    cdsComposicaoProduto.DisableControls;
+    try
+      cdsComposicaoProduto.First;
+      while not cdsComposicaoProduto.Eof do
+      begin
+        FCustoEstimado := FCustoEstimado+cdsComposicaoProduto.FieldByName('CUSTO_TOTAL').AsCurrency;
+        cdsComposicaoProduto.Next;
+      end;
+    finally
+      cdsComposicaoProduto.EnableControls;
+    end;
+  end;
+  lblCustEstimado.Caption := FormatCurr('R$ #,##0.00',FCustoEstimado);
+  if (cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString = 'S') then
+    chkCustoEstimado.Checked := True
+  else
+    chkCustoEstimado.Checked := False;
+end;
+
 procedure TFrm_Produto.Cancelar;
 begin
   inherited;
-   if cdsComposicaoProduto.State in [dsEdit,dsInsert] then
-    cdsComposicaoProduto.Cancel ;
+
+end;
+
+procedure TFrm_Produto.cdsAfterCancel(DataSet: TDataSet);
+begin
+  inherited;
+  cdsComposicaoProduto.CancelUpdates;
+  cdsHistVenda.CancelUpdates;
+  cdsHistCusto.CancelUpdates;
 end;
 
 procedure TFrm_Produto.cdsAfterInsert(DataSet: TDataSet);
@@ -249,30 +343,34 @@ const
   SQL = 'select gen_id(GEN_PRODUTO,1) id from RDB$DATABASE';
 begin
   inherited;
-  cdsCODIGO.AsInteger       := DM.GetInteger(SQL,'id') ;
-  cdsQTDE_ESTOQUE.AsFloat   := 0 ;
-  cdsPESO_BRUTO.AsFloat     := 0 ;
-  cdsPESO_LIQUIDO.AsFloat   := 0 ;
-  cdsPRECO_VENDA.AsCurrency := 0 ;
-  cdsPRECO_CUSTO.AsCurrency := 0 ;
-  cdsCONV_PRECO.AsCurrency  := 0 ;
-  cdsQTDE_MINIMA.AsFloat    := 0 ;
-  cdsTIPO_PRODUTO.AsString  := 'PA' ;
+  cdsCODIGO.AsInteger := 0; //DM.GetInteger(SQL,'id')
+  cdsQTDE_ESTOQUE.AsFloat := 0;
+  cdsPESO_BRUTO.AsFloat := 0;
+  cdsPESO_LIQUIDO.AsFloat := 0;
+  cdsPRECO_VENDA.AsCurrency := 0;
+  cdsPRECO_CUSTO.AsCurrency := 0;
+  cdsCONV_PRECO.AsCurrency := 0;
+  cdsQTDE_MINIMA.AsFloat := 0;
+  cdsTIPO_PRODUTO.AsString := 'PA';
   cdsDT_CADASTRO.AsDateTime := Date;
-  cdsPRECO_ATACADO.AsCurrency := 0;
-  cdsQTDE_MIN_ATACADO.AsFloat := 0;
-  dbcbbFISCAL_TIPO.ItemIndex := 0;  //Selecione
-  dbcbbFISCAL_ORIGEM.ItemIndex := 0; //Selecione
-
+  cdsSITUACAO.AsString := 'ATIVO';
 end;
 
 procedure TFrm_Produto.cdsBeforePost(DataSet: TDataSet);
 begin
   inherited;
-  if (cds.FieldByName('FISCAL_TIPO').AsString = 'Selecione') then
-    cds.FieldByName('FISCAL_TIPO').Clear;
-  if (cds.FieldByName('FISCAL_ORIGEM').AsString = 'Selecione') then
-    cds.FieldByName('FISCAL_ORIGEM').Clear;
+  cds.FieldByName('ULTIMA_ALTERACAO').AsString := DM.UsuarioDataHora;
+  if (cds.FieldByName('PRECO_CUSTO').AsCurrency <> CustoEstimado) then
+    cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString := 'N'
+  else
+    cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString := IfThen(chkCustoEstimado.Checked, 'S', 'N');
+end;
+
+procedure TFrm_Produto.cdsComposicaoProdutoID_MATPRIMAGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+  Text := Sender.AsString+' '+cdsComposicaoProduto.FieldByName('NOME').AsString;
 end;
 
 procedure TFrm_Produto.cdsPRECO_ATACADOChange(Sender: TField);
@@ -281,7 +379,24 @@ begin
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
   if pnlQtdeMinAtac.Visible then
     dbedtQTDE_MIN_ATACADO.SetFocus;
+end;
 
+procedure TFrm_Produto.chkCustoEstimadoClick(Sender: TObject);
+begin
+  inherited;
+  Editar;
+  if chkCustoEstimado.Checked then
+    cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado
+  else
+    cds.FieldByName('PRECO_CUSTO').AsCurrency := 0;
+end;
+
+procedure TFrm_Produto.dbgrdComposicaoDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  inherited;
+//  ShowScrollBar(dbgrdComposicao.Handle, SB_VERT, False);
+//  ShowScrollBar(dbgrdComposicao.Handle, SB_HORZ, False);
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;
@@ -337,12 +452,28 @@ begin
   inherited;
 end;
 
-procedure TFrm_Produto.EdPesquisa5Pesquisa(Sender: TObject;
-  var Retorno: string);
-var aRet : TRetornoProduto ;
+procedure TFrm_Produto.edpsqsProdutoedtCampoChange(Sender: TObject);
 begin
   inherited;
-  aRet := Consulta.Produto(QuotedStr('MP'),'Consulta de Matéria-Prima') ;
+  if ((edpsqsProduto.Campo.Text <> '') and ((StrToInt(edpsqsProduto.Campo.Text) > 0))) then
+  begin
+    SetItem(StrToInt(edpsqsProduto.Campo.Text));
+  end
+  else
+  begin
+    lblUM.Visible := False;
+    edtQtde.Text := '1,000';
+    lblUnitario.Caption := '0,00';
+    lblTotItem.Caption := '0,00';
+  end;
+end;
+
+procedure TFrm_Produto.edpsqsProdutoPesquisa(Sender: TObject; var Retorno: string);
+var
+  aRet: TRetornoProduto;
+begin
+  inherited;
+  aRet := Consulta.Produto(QuotedStr('MP'), 'Consulta de Matéria-Prima');
   if aRet.iCodigo > 0 then
     Retorno := IntToStr(aRet.iCodigo);
 end;
@@ -357,11 +488,24 @@ end;
 procedure TFrm_Produto.Excluir;
 begin
   inherited;
-  if cds.ChangeCount > 0 then
-  begin
-    Dm.SMCadastroClient.setProduto(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([cds.Delta, null]));
-    ResetaCDS;
+  try
+    inherited;
+    if cds.ChangeCount > 0 then
+    begin
+      DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('ID').AsInteger, cds.Delta);
+      cds.Close;
+      cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+    end;
+//    LimpaForm();
+    TMensagem.Informacao('Exclusão efetuada com sucesso.');
+  except
+    TMensagem.Erro('', 'Exclusão não efetuada.');
   end;
+//  if cds.ChangeCount > 0 then
+//  begin
+//    Dm.SMCadastroClient.setProduto(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([cds.Delta, null]));
+//    ResetaCDS;
+//  end;
 end;
 
 procedure TFrm_Produto.FormCreate(Sender: TObject);
@@ -369,9 +513,9 @@ begin
   inherited;
   ResetaCDS ;
 
-  ReadWrite ;
+//  ReadWrite ;
 
-  PageControl1.TabIndex := 0 ;
+  pgc1.TabIndex := 1;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
@@ -387,86 +531,38 @@ begin
     end;
 end;
 
-procedure TFrm_Produto.GeraHistoricoPreco(aState:TDataSetState);
-const SQLUp = 'update PRECOVENDA_HISTORICO a '+
-              'set a.DT_FIM = dateadd(-1 day to current_date) '+
-              'where a.ID = (select max(b.ID) from PRECOVENDA_HISTORICO b where b.ID_PROD = %s)';
-var
-  lSQL : string;
-begin
-  if aState in [dsEdit] then
-    if (cds.FieldByName('preco_venda').NewValue = cds.FieldByName('preco_venda').OldValue) then
-      Exit;
-
-  DM.ExecutarSQL(DM.BancoDados,Format(SQLUp,[cds.FieldByName('codigo').AsString]));
-
-  lSQL := 'INSERT INTO PRECOVENDA_HISTORICO (ID, ID_PROD, USUARIO, PRECO_NOVO, DATA) '+
-          'VALUES ( '+
-          '0'+
-          ','+cds.FieldByName('codigo').AsString+
-          ','+QuotedStr(DM.User)+
-          ','+ValorFormatadoFirebird(cds.FieldByName('preco_venda').AsString)+
-          ','+QuotedStr(FormatDateTime('dd.mm.yyy',Date))+
-          ')';
-  DM.ExecutarSQL(DM.BancoDados,lSQL);
-  LoadHistPreco;
-end;
-
 procedure TFrm_Produto.Gravar;
 var
-  aRetorno, aProduto, aProdComposicao: OleVariant;
-  lEstado : TDataSetState;
+  lRetorno: OleVariant;
 begin
   if not Validar then
-    Exit;
+    Exit ;
 
-  lEstado := cds.State;
   inherited;
-  aProduto := null;
-  aProdComposicao := null;
-
   if cds.ChangeCount > 0 then
   begin
-    aProduto := cds.Delta;
-//    if lEstado in [dsEdit,dsInsert] then
+    try
+      lRetorno := DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('codigo').AsInteger, cds.Delta);
+      cds.Close;
+      cds.Data := lRetorno;
+      CalcCustoComposicao;
+
+      pnlLucro.Visible := False;
+      pnlLucroAtacado.Visible := False;
+
+      if (cds.FieldByName('preco_custo').AsCurrency > 0) then
+      begin
+        if (cds.FieldByName('preco_venda').AsCurrency > 0) then
+          MargemLucro(0);
+        if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
+          MargemLucro(1);
+      end;
+      TMensagem.Informacao('Gravação efetuada com sucesso');
+//        pgc1.TabIndex := 0;
+    except
+      TMensagem.Erro('Não foi possível efetuar a gravação. Tente novamente.');
+    end;
   end;
-
-  if cdsComposicaoProduto.ChangeCount > 0 then
-    aProdComposicao := cdsComposicaoProduto.Delta;
-
-  aRetorno := Dm.SMCadastroClient.setProduto(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([aProduto, aProdComposicao]));
-  GeraHistoricoPreco(lEstado);
-
-  cds.Close;
-  cds.Data := aRetorno[0];
-
-  cdsComposicaoProduto.Close;
-  cdsComposicaoProduto.Data := aRetorno[1];
-
-  pnlLucro.Visible := False;
-  pnlLucroAtacado.Visible := False;
-
-  if (cds.FieldByName('preco_custo').AsCurrency > 0) then
-  begin
-    if (cds.FieldByName('preco_venda').AsCurrency > 0) then
-      MargemLucro(0);
-    if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
-      MargemLucro(1);
-  end;
-end;
-
-procedure TFrm_Produto.LoadHistPreco;
-const SQL = 'select a.DATA inicio,a.DT_FIM FIM,cast(a.PRECO_NOVO as double precision)PRECO,a.USUARIO '+
-            'from PRECOVENDA_HISTORICO a '+
-            'where a.ID_PROD = %s';
-var
-  lCDS: TClientDataSet;
-begin
-  if (cds.FieldByName('CODIGO').AsInteger < 1) then
-    Exit;
-
-  cdsHisPreco.Close;
-  cdsHisPreco.Data := DM.LerDataSet(Format(SQL,[cds.FieldByName('codigo').AsString]));
 end;
 
 procedure TFrm_Produto.localizar;
@@ -513,37 +609,33 @@ begin
 end;
 
 procedure TFrm_Produto.MontaSql(pCodigo: Integer);
-var
-  tmp: OleVariant;
 begin
   if pCodigo = 0 then
     Exit;
 
-  tmp := DM.SMCadastroClient.getProduto(DM.BancoDados, pCodigo);
   cds.Close ;
-  cdsComposicaoProduto.Close ;
+  cds.Data := DM.SMProduto.getProduto(DM.BancoDados, pCodigo);
+  CalcCustoComposicao;
 
-  cds.Data := tmp[0];
-  cdsComposicaoProduto.Data := tmp[1];
-
-  ReadWrite;
-  LoadHistPreco;
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
 end;
 
 procedure TFrm_Produto.Novo;
 begin
-  inherited;
-  cdsComposicaoProduto.Close;
-  cdsComposicaoProduto.CreateDataSet ;
-  cdsHisPreco.Close;
+//  inherited;
+  if not (cds.State in [dsEdit, dsInsert]) then
+  begin
+    cds.FieldDefs.Clear;
+    ResetaCDS;
+    cds.append;
+  end;
   DBEdit1.SetFocus ;
 end;
 
 procedure TFrm_Produto.PngAddProdutoClick(Sender: TObject);
 begin
   inherited;
-  if cds.IsEmpty then
+  {if cds.IsEmpty then
     Exit;
 
   if not Assigned(Frm_ProdutoComposicao) then
@@ -561,7 +653,7 @@ begin
 
       ShowModal;
 
-      if aRetorno = 'sucesso' then
+      if (aRetorno = 'sucesso') then
       begin
         cdsComposicaoProduto.Append;
         cdsComposicaoProdutoID.AsInteger := 0;
@@ -576,7 +668,7 @@ begin
     end;
   finally
     FreeAndNil(Frm_ProdutoComposicao);
-  end;
+  end;   }
 end;
 
 procedure TFrm_Produto.PngSpeedButton1Click(Sender: TObject);
@@ -585,7 +677,7 @@ const
           'where a.ID = %s' ;
 begin
   inherited;
-  if cdsComposicaoProduto.IsEmpty then
+  {if cdsComposicaoProduto.IsEmpty then
   begin
     TMensagem.Informacao('Não há registro para ser excluso.') ;
     Exit ;
@@ -599,7 +691,7 @@ begin
       TMensagem.Informacao('Exclusão efetuada com sucesso.');
     end;
     MontaSql(cdsCODIGO.AsInteger);
-  end;
+  end; }
 end;
 
 procedure TFrm_Produto.pnlDescClick(Sender: TObject);
@@ -611,26 +703,31 @@ begin
   end;
 end;
 
-procedure TFrm_Produto.ReadWrite;
-begin
-  MakeReadWrite(cdsDESCRI_UNIDADE);
-  MakeReadWrite(cdsCONV_DESCRIUNIDADE);
-  MakeReadWrite(cdsNCM);
-  MakeReadWrite(cdsCEST);
-  MakeReadWrite(cdsGRUPO);
-  MakeReadWrite(cdsSUBGRUPO);
-  MakeReadWrite(cdsComposicaoProdutoMATERIAPRIMA);
-end;
-
 procedure TFrm_Produto.ResetaCDS;
 begin
   cds.Close;
-  cds.CreateDataSet ;
+  cds.FieldDefs.Clear;
+  cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+end;
 
-  cdsComposicaoProduto.Close;
-  cdsComposicaoProduto.CreateDataSet ;
+procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
+const
+  SQL = 'select a.preco_custo,b.sigla '+
+        'from produto a '+
+        'left join unidade b on (b.codigo=a.cod_unidade) '+
+        'where a.codigo = %s';
+begin
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aIDMatPrima.ToString]));
 
-  cdsHisPreco.Close;
+  lblUM.Visible := not DM.dsConsulta.IsEmpty;
+  if (not DM.dsConsulta.IsEmpty) then
+  begin
+    lblUM.Caption := DM.dsConsulta.FieldByName('sigla').AsString;
+    lblUnitario.Caption := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('preco_custo').AsCurrency);
+// adicionar linha no onchange do Field
+//    lblTotItem.Text := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('preco').AsCurrency);
+  end;
 end;
 
 function TFrm_Produto.Validar: Boolean;
@@ -660,7 +757,7 @@ begin
     Exit;
   end;
 
-  if Trim(DBPesquisa1.Campo.Text) = '' then
+  if (Trim(DBPesquisa1.Campo.Text) = '') then
   begin
     TMensagem.Atencao('Informar a Unidade de Medida.');
     DBPesquisa1.Campo.SetFocus;
@@ -668,7 +765,7 @@ begin
     Exit;
   end;
 
-  if DBPesquisa2.Campo.Text <> EmptyStr then
+  if (DBPesquisa2.Campo.Text <> EmptyStr) then
   begin
     if ((DBEdit4.Text = EmptyStr) or (StrToFloat(DBEdit4.Text) < 0)) then
     begin
@@ -678,13 +775,13 @@ begin
       Exit;
     end;
 
-    if StrToCurrDef(DBEdit6.Text, 0) < 0.01 then
-    begin
-      TMensagem.Atencao('Informar o Preço da Conversão.');
-      DBEdit6.SetFocus;
-      Result := False;
-      Exit;
-    end;
+//    if (StrToCurrDef(DBEdit6.Text, 0) < 0.01) then
+//    begin
+//      TMensagem.Atencao('Informar o Preço da Conversão.');
+//      DBEdit6.SetFocus;
+//      Result := False;
+//      Exit;
+//    end;
   end;
 end;
 

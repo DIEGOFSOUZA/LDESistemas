@@ -25,6 +25,8 @@ inherited Frm_Empresa: TFrm_Empresa
       ExplicitWidth = 688
       inherited Panel4: TPanel
         Width = 686
+        TabOrder = 2
+        OnDblClick = Panel4DblClick
         ExplicitWidth = 686
       end
       object pnlHeader: TPanel
@@ -36,7 +38,7 @@ inherited Frm_Empresa: TFrm_Empresa
         BevelOuter = bvNone
         Caption = 'pnlHeader'
         ShowCaption = False
-        TabOrder = 1
+        TabOrder = 0
         object Label1: TLabel
           Left = 2
           Top = 122
@@ -595,7 +597,7 @@ inherited Frm_Empresa: TFrm_Empresa
         Align = alClient
         BevelOuter = bvNone
         Caption = 'pnlDetail'
-        TabOrder = 2
+        TabOrder = 1
         object lbl2: TLabel
           Left = 0
           Top = 0
@@ -1541,6 +1543,10 @@ inherited Frm_Empresa: TFrm_Empresa
     object actLiberarSistema: TAction
       Caption = 'AUTORIZAR'
       OnExecute = actLiberarSistemaExecute
+    end
+    object actVisualizaVencimento: TAction
+      Caption = 'actVisualizaVencimento'
+      OnExecute = actVisualizaVencimentoExecute
     end
   end
   object Dialog: TOpenPictureDialog

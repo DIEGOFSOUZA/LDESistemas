@@ -3,7 +3,7 @@ object SM_Pedido: TSM_Pedido
   Height = 203
   Width = 443
   object fdqryPedVenda: TFDQuery
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       
@@ -164,7 +164,7 @@ object SM_Pedido: TSM_Pedido
   object fdqryPedVendaItem: TFDQuery
     MasterSource = sPedVenda
     MasterFields = 'ID_PEDVENDA'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       
@@ -248,7 +248,7 @@ object SM_Pedido: TSM_Pedido
   object fdqryPedVendaPagar: TFDQuery
     MasterSource = sPedVenda
     MasterFields = 'ID_PEDVENDA'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       
@@ -343,7 +343,7 @@ object SM_Pedido: TSM_Pedido
     Top = 131
   end
   object TranGravar: TFDTransaction
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Left = 240
     Top = 26
   end

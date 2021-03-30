@@ -77,7 +77,7 @@ type
 implementation
 
 uses
-  UDM;
+  uServerDM;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -97,9 +97,9 @@ end;
 function TSM_Pedido.setPedVenda(const BD: string; pID: integer;
   const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryPedVenda.Connection := DM.Conexao;
     fdqryPedVendaItem.Connection := DM.Conexao;

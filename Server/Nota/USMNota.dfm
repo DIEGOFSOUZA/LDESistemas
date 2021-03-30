@@ -1,9 +1,9 @@
 object SMNota: TSMNota
   OldCreateOrder = False
-  Height = 295
+  Height = 236
   Width = 300
   object fdqryEntrada: TFDQuery
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravacao
     SQL.Strings = (
       'SELECT a.*'
@@ -396,7 +396,7 @@ object SMNota: TSMNota
     MasterSource = sEntrada
     MasterFields = 'ID'
     DetailFields = 'ID_NOTAENTRADA'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravacao
     FetchOptions.AssignedValues = [evCache]
     FetchOptions.Cache = [fiBlobs]
@@ -723,8 +723,7 @@ object SMNota: TSMNota
     object fdqryEntrada_ItemICMS_ORIGEM: TStringField
       FieldName = 'ICMS_ORIGEM'
       Origin = 'ICMS_ORIGEM'
-      FixedChar = True
-      Size = 1
+      Size = 50
     end
     object fdqryEntrada_ItemICMS_PREDBCST: TCurrencyField
       FieldName = 'ICMS_PREDBCST'
@@ -1052,7 +1051,7 @@ object SMNota: TSMNota
     MasterSource = sEntrada
     MasterFields = 'ID'
     DetailFields = 'ID_NOTAENTRADA'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranGravacao
     FetchOptions.AssignedValues = [evCache]
     FetchOptions.Cache = [fiBlobs]
@@ -1163,7 +1162,7 @@ object SMNota: TSMNota
     end
   end
   object TranGravacao: TFDTransaction
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Left = 208
     Top = 10
   end

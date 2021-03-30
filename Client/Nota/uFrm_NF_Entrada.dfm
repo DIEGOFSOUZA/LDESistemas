@@ -404,6 +404,8 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         BevelOuter = bvNone
         TabOrder = 1
         TabStop = True
+        ExplicitLeft = 6
+        ExplicitTop = 155
         object Label6: TLabel
           Left = 34
           Top = 57
@@ -1190,7 +1192,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Height = 146
                 Align = alClient
                 BevelOuter = bvNone
-                TabOrder = 2
+                TabOrder = 1
                 object pnlRightGrid: TPanel
                   Left = 596
                   Top = 0
@@ -1198,7 +1200,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                   Height = 146
                   Align = alRight
                   BevelOuter = bvNone
-                  TabOrder = 0
+                  TabOrder = 1
                   object pnlExcItem: TPanel
                     Left = 11
                     Top = 10
@@ -1345,7 +1347,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                   Height = 146
                   Align = alClient
                   BevelOuter = bvNone
-                  TabOrder = 1
+                  TabOrder = 0
                   object pnlSubTotal: TPanel
                     Left = 0
                     Top = 112
@@ -1353,7 +1355,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     Height = 34
                     Align = alBottom
                     BevelOuter = bvNone
-                    TabOrder = 0
+                    TabOrder = 1
                     object Label4: TLabel
                       Left = 460
                       Top = 0
@@ -1394,7 +1396,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     BevelOuter = bvNone
                     Caption = 'pnlGrid'
                     ShowCaption = False
-                    TabOrder = 1
+                    TabOrder = 0
                     object pnlAlocaGrid: TPanel
                       Left = 0
                       Top = 0
@@ -1477,7 +1479,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 2
                 Visible = False
                 OnClick = cbbUMClick
               end
@@ -1693,7 +1695,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 2
+                TabOrder = 10
               end
               object DBEdit18: TDBEdit
                 Left = 146
@@ -1708,7 +1710,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 3
+                TabOrder = 1
               end
               object DBEdit19: TDBEdit
                 Left = 146
@@ -1723,7 +1725,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 4
+                TabOrder = 6
               end
               object DBEdit20: TDBEdit
                 Left = 146
@@ -1738,7 +1740,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 5
+                TabOrder = 11
               end
               object DBEdit21: TDBEdit
                 Left = 16
@@ -1753,7 +1755,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 5
               end
               object DBEdit15: TDBEdit
                 Left = 276
@@ -1768,7 +1770,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 6
+                TabOrder = 2
               end
               object DBEdit16: TDBEdit
                 Left = 276
@@ -1798,7 +1800,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 8
+                TabOrder = 12
               end
               object DBEdit22: TDBEdit
                 Left = 405
@@ -1813,7 +1815,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 9
+                TabOrder = 3
               end
               object DBEdit23: TDBEdit
                 Left = 405
@@ -1828,7 +1830,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 10
+                TabOrder = 8
               end
               object DBEdit24: TDBEdit
                 Left = 533
@@ -1843,7 +1845,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 11
+                TabOrder = 4
               end
               object DBEdit25: TDBEdit
                 Left = 533
@@ -1858,7 +1860,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                 Font.Name = 'Segoe UI Semibold'
                 Font.Style = [fsBold]
                 ParentFont = False
-                TabOrder = 12
+                TabOrder = 9
               end
             end
           end
@@ -2561,7 +2563,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                       BevelOuter = bvNone
                       Caption = 'pnlExcDup'
                       ShowCaption = False
-                      TabOrder = 0
+                      TabOrder = 1
                       object pnlbtnExcDup: TPanel
                         Left = 128
                         Top = 3
@@ -2608,7 +2610,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                       Font.Style = []
                       Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
                       ParentFont = False
-                      TabOrder = 1
+                      TabOrder = 0
                       TitleFont.Charset = ANSI_CHARSET
                       TitleFont.Color = clWindowText
                       TitleFont.Height = -11

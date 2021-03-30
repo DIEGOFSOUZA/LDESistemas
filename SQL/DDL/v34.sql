@@ -166,5 +166,325 @@ REFERENCES CEST(ID)
 ON DELETE SET NULL
 ON UPDATE CASCADE;
 
+DROP TRIGGER TRI_PRODUTO_FORNECEDOR;
+
+ALTER TABLE PRODUTO_FORNECEDOR DROP CONSTRAINT INTEG_201;
+
+ALTER TABLE PRODUTO_FORNECEDOR DROP ID;
+
+DROP SEQUENCE GEN_PRODUTO_FORNECEDOR;
+
+alter table PRODUTO_FORNECEDOR
+alter ID_FORNECEDOR position 1;
+
+alter table PRODUTO_FORNECEDOR
+alter ID_PRODUTO position 2;
+
+alter table PRODUTO_FORNECEDOR
+alter PRECO position 3;
+
+alter table PRODUTO_FORNECEDOR
+alter REFERENCIA_FORNEC position 4;
+
+ALTER TABLE PRODUTO_FORNECEDOR
+ADD CONSTRAINT PK_PRODUTO_FORNECEDOR
+PRIMARY KEY (ID_FORNECEDOR,ID_PRODUTO);
+
+SET TERM ^ ;
+
+CREATE trigger tri_produto_fornecedor_bi0 for produto_fornecedor
+active before insert position 0
+AS
+begin
+  if((new.id_produto = 0) or (new.id_produto is null)) then
+    begin
+      new.id_produto = gen_id(gen_produto,0);
+    end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PRODUTO_COMPOSICAO;
+
+ALTER TABLE PRODUTO_COMPOSICAO DROP ID;
+
+ALTER TABLE PRODUTO_COMPOSICAO
+ADD CONSTRAINT PK_PRODUTO_COMPOSICAO
+PRIMARY KEY (ID_PRODUTO,ID_MATPRIMA);
+
+DROP SEQUENCE GEN_PRODUTO_COMPOSICAO;
+
+ALTER TABLE PRODUTO_FORNECEDOR
+    ADD FORNECEDOR VARCHAR(60);
+	
+ALTER TABLE PRODUTO_COMPOSICAO
+    ADD CUSTO_UNIT NUMERIC(15,2),
+    ADD CUSTO_TOTAL NUMERIC(15,2);
+
+ALTER TABLE PRODUTO DROP COD_FABRICANTE;
+
+ALTER TABLE PRODUTO
+    ADD ULTIMA_ALTERACAO VARCHAR(200);
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure pro_hist_precovenda (
+    tipo char(1),
+    id_prod integer,
+    usuario varchar(100),
+    preco numeric(10,2))
+as
+begin
+  if (:TIPO = 'I') then
+  /*insert*/
+  begin
+    insert into PRECOVENDA_HISTORICO (ID, ID_PROD, USUARIO, PRECO_NOVO, data)
+    values (0, :ID_PROD, :USUARIO, :PRECO, current_date);
+  end
+  else
+  begin /*update*/
+    if (:PRECO <> (select P.PRECO_VENDA
+                   from PRODUTO P
+                   where P.CODIGO = :ID_PROD)) then
+    begin
+      update PRECOVENDA_HISTORICO A
+      set A.DT_FIM = current_date
+      where A.ID = (select max(B.ID)
+                    from PRECOVENDA_HISTORICO B
+                    where B.ID_PROD = :ID_PROD);
+
+      insert into PRECOVENDA_HISTORICO (ID, ID_PROD, USUARIO, PRECO_NOVO, data)
+      values (0, :ID_PROD, :USUARIO, :PRECO, current_date);
+    end
+  end
+
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger tri_produto_ai0 for produto
+active after insert position 0
+AS
+begin
+  execute procedure pro_hist_precovenda('I',new.codigo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),new.preco_venda);
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger tri_produto_bu0 for produto
+active before update position 0
+AS
+begin
+  if (new.preco_venda <> old.preco_venda) then
+  begin
+    execute procedure pro_hist_precovenda('U',new.codigo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),new.preco_venda);
+  end
+end^
+
+SET TERM ; ^
+
+ALTER TABLE PRECOCUSTO_HISTORICO
+    ADD DATA_FIM DATE,
+    ADD USUARIO VARCHAR(100);
+
+alter table PRECOCUSTO_HISTORICO
+alter ID position 1;
+
+alter table PRECOCUSTO_HISTORICO
+alter ID_PROD position 2;
+
+alter table PRECOCUSTO_HISTORICO
+alter PRECO_NOVO position 3;
+
+alter table PRECOCUSTO_HISTORICO
+alter DATA position 4;
+
+alter table PRECOCUSTO_HISTORICO
+alter DATA_FIM position 5;
+
+alter table PRECOCUSTO_HISTORICO
+alter USUARIO position 6;
+
+alter table PRECOCUSTO_HISTORICO
+alter ID_NFENTRADA position 7;
+
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure pro_hist_precocusto (
+    tipo char(1),
+    idproduto integer,
+    preco numeric(10,2),
+    usuario varchar(100),
+    idnf integer)
+as
+begin
+  if (:TIPO = 'I') then
+  /*insert*/
+  begin
+    insert into PRECOCUSTO_HISTORICO (ID, ID_PROD, PRECO_NOVO, data, USUARIO, ID_NFENTRADA)
+    values (0, :IDPRODUTO, :PRECO, current_date, :USUARIO, :IDNF);
+  end
+  else
+  begin /*update*/
+    if (:PRECO <> (select P.PRECO_CUSTO
+                   from PRODUTO P
+                   where P.CODIGO = :IDPRODUTO)) then
+    begin
+      update PRECOCUSTO_HISTORICO A
+      set A.DATA_FIM = current_date
+      where A.ID = (select max(B.ID)
+                    from PRECOCUSTO_HISTORICO B
+                    where B.ID_PROD = :IDPRODUTO);
+
+      insert into PRECOCUSTO_HISTORICO (ID, ID_PROD, PRECO_NOVO, data, USUARIO, ID_NFENTRADA)
+      values (0, :IDPRODUTO, :PRECO, current_date, :USUARIO, :IDNF);
+    end
+  end
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger tri_prod_ai_histprecocusto for produto
+active after insert position 0
+AS
+begin
+  execute procedure pro_hist_precocusto('I',new.codigo,new.preco_custo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),null);
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger tri_prod_bu_histprecocusto for produto
+active before update position 0
+AS
+begin
+  execute procedure pro_hist_precocusto('U',new.codigo,new.preco_custo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),null);
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_ai_estoque for nota_entrada_itens
+active after insert position 0
+AS
+begin
+  if (NEW.QTDE is not null) then
+  begin
+    execute procedure PRO_ENTRADA_SAIDA(new.ID_PRODUTO,new.QTDE,'+') ;
+  end
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_au_estoque for nota_entrada_itens
+active after update position 0
+
+as
+begin
+  execute procedure PRO_ENTRADA_SAIDA(old.ID_PRODUTO, old.QTDE, '-');
+  execute procedure PRO_ENTRADA_SAIDA(new.ID_PRODUTO, new.QTDE, '+');
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger tri_nf_itens_ai_precocusto for nota_entrada_itens
+active after insert position 0
+
+as
+begin
+  if (new.PRECO_CUSTO > 0) then
+  begin
+    update PRODUTO A
+    set A.PRECO_CUSTO = new.PRECO_CUSTO
+    where A.CODIGO = new.ID_PRODUTO;
+
+    if (exists(select A.CODIGO
+               from PRODUTO A
+               where A.CODIGO = new.id_produto)) then
+    begin
+      execute procedure PRO_HIST_PRECOCUSTO('U', new.ID_PRODUTO, new.PRECO_CUSTO, null, new.ID_NOTAENTRADA);
+    end
+    else
+    begin
+      execute procedure PRO_HIST_PRECOCUSTO('I', new.ID_PRODUTO, new.PRECO_CUSTO, null, new.ID_NOTAENTRADA);
+    end
+  end
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE trigger nota_entrada_itens_bu0 for nota_entrada_itens
+active before update position 0
+AS
+begin
+  if ((new.preco_custo > 0) and (new.preco_custo <> old.preco_custo)) then
+  begin
+    update PRODUTO A
+    set A.PRECO_CUSTO = new.PRECO_CUSTO
+    where A.CODIGO = new.ID_PRODUTO;
+
+    execute procedure pro_hist_precocusto('U',new.id_produto,new.preco_custo,null, new.id_notaentrada);
+  end
+end^
+
+SET TERM ; ^
+
+
+drop table cidades;
+
+CREATE TABLE CIDADE (
+    ID INTEGER NOT NULL,
+    ID_IBGE VARCHAR(10),
+    NOME VARCHAR(500) NOT NULL,
+    UF CHAR(2) NOT NULL);
+
+ALTER TABLE CIDADE
+ADD CONSTRAINT PK_CIDADE
+PRIMARY KEY (ID);
+
+SET TERM ^ ;
+
+create trigger cidade_bi for cidade
+active before insert position 0
+as
+begin
+  if (new.id is null) then
+    new.id = gen_id(gen_cidades_id,1);
+end^
+
+SET TERM ; ^
+
+ALTER TABLE PRODUTO
+    ADD CALC_CUSTO_COMPOSICAO CHAR(1);
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
 
 

@@ -20,6 +20,7 @@ type
     dsrvrclsFormaPagto: TDSServerClass;
     dsrvrclsPedVenda: TDSServerClass;
     dsrvrclsProducao: TDSServerClass;
+    dsrvrclsProduto: TDSServerClass;
     procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
     procedure DSServerClassCadastroGetClass(DSServerClass: TDSServerClass;
@@ -34,6 +35,8 @@ type
       var PersistentClass: TPersistentClass);
     procedure dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
+    procedure dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
   private
     { Private declarations }
   public
@@ -47,7 +50,7 @@ implementation
 
 {$R *.dfm}
 
-uses Winapi.Windows, uSM, uSMCadastro, USMNota, USM_PDV, uSM_Financeiro, uSM_Pedido, uSMProducao;
+uses Winapi.Windows, uSM, uSMCadastro, USMNota, USM_PDV, uSM_Financeiro, uSM_Pedido, uSMProducao, USMProduto;
 
 procedure TSC.dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass;
   var PersistentClass: TPersistentClass);
@@ -77,6 +80,12 @@ procedure TSC.dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass;
   var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSMProducao.TSMProducao;
+end;
+
+procedure TSC.dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := USMProduto.TSMProduto;
 end;
 
 procedure TSC.DSServerClass1GetClass(

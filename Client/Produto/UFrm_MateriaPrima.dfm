@@ -281,7 +281,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Campo.DataSource = ds
             Campo.TabOrder = 0
             OnPesquisa = DBPesquisa1Pesquisa
-            TabOrder = 4
+            TabOrder = 5
             TabStop = True
           end
           object DBEdit9: TDBEdit
@@ -298,7 +298,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Font.Style = [fsBold]
             ParentFont = False
             ReadOnly = True
-            TabOrder = 5
+            TabOrder = 6
           end
           object DBEdit10: TDBEdit
             Left = 369
@@ -313,7 +313,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 6
+            TabOrder = 7
           end
           object DBEdit5: TDBEdit
             Left = 154
@@ -328,7 +328,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 7
+            TabOrder = 8
           end
           object DBEdit7: TDBEdit
             Left = 369
@@ -343,7 +343,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 8
+            TabOrder = 9
           end
           object chkTipo: TCheckBox
             Left = 352
@@ -392,7 +392,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            TabOrder = 9
+            TabOrder = 4
           end
         end
         object PageControl1: TPageControl
@@ -400,7 +400,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           Top = 221
           Width = 545
           Height = 248
-          ActivePage = tsInfAd
+          ActivePage = TabSheet2
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -518,6 +518,10 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object tsConversao: TTabSheet
             Caption = 'Fator de Convers'#227'o'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnlFundoTab: TPanel
               Left = 0
               Top = 0
@@ -677,8 +681,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitWidth = 605
-              ExplicitHeight = 253
               object Label8: TLabel
                 Left = 0
                 Top = 13
@@ -699,7 +701,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Height = 71
                 DataField = 'DESCRICAO'
                 DataSource = ds
-                TabOrder = 0
+                TabOrder = 1
               end
               object pnlDesc: TPanel
                 Left = 391
@@ -709,7 +711,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 BevelOuter = bvNone
                 Caption = 'pnlDesc'
                 ShowCaption = False
-                TabOrder = 1
+                TabOrder = 0
                 OnClick = pnlDescClick
                 object pnlDescMaximo: TPanel
                   Left = 0
@@ -721,8 +723,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   Enabled = False
                   ShowCaption = False
                   TabOrder = 0
-                  ExplicitLeft = -7
-                  ExplicitTop = 2
                   object lblTitDesc: TLabel
                     Left = 1
                     Top = 1

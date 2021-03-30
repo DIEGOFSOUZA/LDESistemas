@@ -55,7 +55,7 @@ implementation
 
 {$R *.dfm}
 
-uses uSM, UDM;
+uses uSM, UServerDM;
 
 procedure TFrm_Principal.ApplicationEvents1Minimize(Sender: TObject);
 begin

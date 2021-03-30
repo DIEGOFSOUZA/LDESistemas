@@ -34,12 +34,12 @@ implementation
 
 {$R *.dfm}
 
-uses System.StrUtils, UDM;
+uses System.StrUtils, UServerDM;
 
 function TSM.Executar(const BD, Txt: string): integer;
-var DM : TDM ;
+var DM : TServerDM ;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     Result := DM.Executar( Txt ) ;
   finally
@@ -50,9 +50,9 @@ end;
 
 function TSM.LerDataSet(const BD, Txt: string): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       Result := DM.LerDataSet(Txt);

@@ -238,7 +238,7 @@ type
 implementation
 
 uses
-  UDM;
+  uServerDM;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -248,11 +248,11 @@ uses
 
 function TSMNota.getNotaEntrada(const BD: string; pID: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   lID: Integer;
 begin
   lID := pID;
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryEntrada.Connection := DM.Conexao;
     fdqryEntrada_Item.Connection := DM.Conexao;
@@ -285,9 +285,9 @@ end;
 
 function TSMNota.setNotaEntrada(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryEntrada.Connection := DM.Conexao;
     fdqryEntrada_Item.Connection := DM.Conexao;

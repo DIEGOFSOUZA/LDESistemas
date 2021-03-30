@@ -50,7 +50,7 @@ type
 implementation
 
 uses
-  UDM;
+  uServerDM;
 
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
@@ -61,11 +61,11 @@ uses
 
 function TSMProducao.getProducao(const BD: string; pID: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   lID: Integer;
 begin
   lID := pID;
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryLote.Connection := DM.Conexao;
     fdqryLoteItens.Connection := DM.Conexao;
@@ -96,13 +96,13 @@ end;
 function TSMProducao.setMovimento(const BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double;
         aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
 var
-  DM: TDM;
+  DM: TServerDM;
   SQLLote, SQLLoteItem: string;
   lHora, lDataBD, lData: string;
   lQtde: Double;
 begin
   Result := False;
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     try
       FormatSettings.DecimalSeparator := '.';
@@ -137,9 +137,9 @@ end;
 
 function TSMProducao.setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryLote.Connection := DM.Conexao;
     fdqryLoteItens.Connection := DM.Conexao;

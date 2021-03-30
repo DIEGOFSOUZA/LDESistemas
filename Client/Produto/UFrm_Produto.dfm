@@ -1,51 +1,79 @@
 inherited Frm_Produto: TFrm_Produto
   Caption = 'Cadastro de Produtos'
   ClientHeight = 650
-  ClientWidth = 700
+  ClientWidth = 750
   OnKeyDown = FormKeyDown
-  ExplicitWidth = 700
+  ExplicitWidth = 750
   ExplicitHeight = 650
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblTitulo: TLabel
-    Width = 700
+    Width = 750
     Caption = '         CADASTRO DE PRODUTO'
     ExplicitWidth = 700
   end
   inherited pnlFundo0: TPanel
-    Width = 700
+    Width = 750
     Height = 620
-    ExplicitWidth = 700
+    ExplicitWidth = 750
     ExplicitHeight = 620
     inherited Panel1: TPanel
       Height = 618
       ExplicitHeight = 618
+      inherited pnlSair: TPanel
+        Top = 534
+        ExplicitTop = 534
+      end
+      inherited pnlGravar: TPanel
+        Top = 449
+        ExplicitTop = 449
+      end
+      inherited pnlCancelar: TPanel
+        Top = 364
+        ExplicitTop = 364
+      end
+      inherited pnlLocalizar: TPanel
+        Top = 279
+        ExplicitTop = 279
+      end
+      inherited pnlExcluir: TPanel
+        Top = 194
+        ExplicitTop = 194
+      end
+      inherited pnlEditar: TPanel
+        Top = 109
+        ExplicitTop = 109
+      end
+      inherited pnlAdicionar: TPanel
+        Top = 24
+        ExplicitTop = 24
+      end
     end
     inherited pnlFundo1: TPanel
-      Width = 617
+      Width = 667
       Height = 618
       Color = 14803681
       ParentColor = False
-      ExplicitWidth = 617
+      ExplicitWidth = 667
       ExplicitHeight = 618
       inherited Panel4: TPanel
         Top = 597
-        Width = 615
+        Width = 665
         TabOrder = 1
         ExplicitTop = 597
-        ExplicitWidth = 615
+        ExplicitWidth = 665
       end
       object pnlFundo2: TPanel
         Left = 1
         Top = 1
-        Width = 615
+        Width = 665
         Height = 596
         Align = alClient
         TabOrder = 0
         object Panel3: TPanel
           Left = 1
           Top = 1
-          Width = 613
+          Width = 663
           Height = 362
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -58,7 +86,7 @@ inherited Frm_Produto: TFrm_Produto
           object pnlPreco: TPanel
             Left = 1
             Top = 201
-            Width = 611
+            Width = 661
             Height = 160
             Align = alClient
             BorderStyle = bsSingle
@@ -68,7 +96,7 @@ inherited Frm_Produto: TFrm_Produto
             object lblTitPreco: TLabel
               Left = 1
               Top = 1
-              Width = 605
+              Width = 655
               Height = 20
               Align = alTop
               AutoSize = False
@@ -142,7 +170,7 @@ inherited Frm_Produto: TFrm_Produto
             object pnlPrecoCenter: TPanel
               Left = 97
               Top = 21
-              Width = 509
+              Width = 559
               Height = 134
               Align = alClient
               BevelOuter = bvNone
@@ -152,7 +180,7 @@ inherited Frm_Produto: TFrm_Produto
               object pnlPVenda: TPanel
                 Left = 0
                 Top = 0
-                Width = 509
+                Width = 559
                 Height = 67
                 Align = alTop
                 BevelOuter = bvNone
@@ -296,7 +324,7 @@ inherited Frm_Produto: TFrm_Produto
               object pnlPAtac: TPanel
                 Left = 0
                 Top = 67
-                Width = 509
+                Width = 559
                 Height = 67
                 Align = alClient
                 BevelOuter = bvNone
@@ -389,7 +417,7 @@ inherited Frm_Produto: TFrm_Produto
                   end
                 end
                 object pnlQtdeMinAtac: TPanel
-                  Left = 354
+                  Left = 404
                   Top = 0
                   Width = 155
                   Height = 67
@@ -436,7 +464,7 @@ inherited Frm_Produto: TFrm_Produto
           object pnlTopo: TPanel
             Left = 1
             Top = 1
-            Width = 611
+            Width = 661
             Height = 200
             Align = alTop
             BevelOuter = bvNone
@@ -488,7 +516,7 @@ inherited Frm_Produto: TFrm_Produto
               ParentFont = False
             end
             object imgTrilha: TImage
-              Left = 555
+              Left = 603
               Top = 12
               Width = 48
               Height = 48
@@ -530,7 +558,7 @@ inherited Frm_Produto: TFrm_Produto
               OnClick = actTrilharExecute
             end
             object lblTrilhar: TLabel
-              Left = 554
+              Left = 602
               Top = 5
               Width = 48
               Height = 15
@@ -591,6 +619,7 @@ inherited Frm_Produto: TFrm_Produto
               ConsultaTabela.Tabela = 'UNIDADE'
               ConsultaTabela.Pesquisa = 'codigo'
               ConsultaTabela.Mostrar = 'SIGLA'
+              ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
               Mostrar.Left = 139
               Mostrar.Top = 0
               Mostrar.Width = 250
@@ -667,6 +696,7 @@ inherited Frm_Produto: TFrm_Produto
               ConsultaTabela.Tabela = 'GRUPO_PROD'
               ConsultaTabela.Pesquisa = 'codigo'
               ConsultaTabela.Mostrar = 'descri'
+              ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
               Mostrar.Left = 127
               Mostrar.Top = 0
               Mostrar.Width = 250
@@ -713,6 +743,7 @@ inherited Frm_Produto: TFrm_Produto
               ConsultaTabela.Tabela = 'SUBGRUPO_PROD'
               ConsultaTabela.Pesquisa = 'codigo'
               ConsultaTabela.Mostrar = 'descri'
+              ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
               Mostrar.Left = 150
               Mostrar.Top = 0
               Mostrar.Width = 250
@@ -830,7 +861,7 @@ inherited Frm_Produto: TFrm_Produto
         object pnlPages: TPanel
           Left = 1
           Top = 363
-          Width = 613
+          Width = 663
           Height = 232
           Align = alBottom
           BevelOuter = bvNone
@@ -838,10 +869,10 @@ inherited Frm_Produto: TFrm_Produto
           ParentColor = True
           ShowCaption = False
           TabOrder = 1
-          object PageControl1: TPageControl
+          object pgc1: TPageControl
             Left = 0
             Top = 0
-            Width = 613
+            Width = 663
             Height = 232
             ActivePage = tsFiscal
             Align = alClient
@@ -858,7 +889,7 @@ inherited Frm_Produto: TFrm_Produto
               object pnl2: TPanel
                 Left = 0
                 Top = 0
-                Width = 605
+                Width = 655
                 Height = 204
                 Align = alClient
                 Color = 14803681
@@ -867,7 +898,7 @@ inherited Frm_Produto: TFrm_Produto
                 object pnlMovimentar: TPanel
                   Left = 1
                   Top = 102
-                  Width = 603
+                  Width = 653
                   Height = 85
                   Align = alTop
                   Caption = 'pnlMovimentar'
@@ -902,7 +933,7 @@ inherited Frm_Produto: TFrm_Produto
                   object lblTitMov: TLabel
                     Left = 1
                     Top = 1
-                    Width = 601
+                    Width = 651
                     Height = 20
                     Align = alTop
                     AutoSize = False
@@ -975,7 +1006,7 @@ inherited Frm_Produto: TFrm_Produto
                 object Panel2: TPanel
                   Left = 1
                   Top = 1
-                  Width = 603
+                  Width = 653
                   Height = 101
                   Align = alTop
                   Caption = 'pnlMovimentar'
@@ -984,7 +1015,7 @@ inherited Frm_Produto: TFrm_Produto
                   object Label26: TLabel
                     Left = 1
                     Top = 1
-                    Width = 601
+                    Width = 651
                     Height = 20
                     Align = alTop
                     AutoSize = False
@@ -1069,97 +1100,516 @@ inherited Frm_Produto: TFrm_Produto
             object tsComposicao: TTabSheet
               Caption = 'COMPOSI'#199#195'O'
               ImageIndex = 1
-              object pnl1: TPanel
+              object pnlComposicao: TPanel
                 Left = 0
                 Top = 0
-                Width = 605
+                Width = 655
                 Height = 204
                 Align = alClient
                 Color = 14803681
                 ParentBackground = False
                 TabOrder = 0
-                object PngAddProduto: TPngSpeedButton
-                  Left = 209
-                  Top = 8
-                  Width = 86
-                  Height = 28
-                  Caption = 'Adicionar'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -11
-                  Font.Name = 'Tahoma'
-                  Font.Style = [fsBold]
-                  ParentFont = False
-                  OnClick = PngAddProdutoClick
-                  PngImage.Data = {
-                    89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
-                    610000016A4944415478DA95D23F4BC3401806F0E792D6FE113A48774741B008
-                    0E7E03A5285511058BA88393E0A8B8BAB90B2A38B8140445C14567FD08E250A1
-                    0E8A5AAA31B1964B9334C9F936810A9A8277F07221DCFDEECD73618818B99D8C
-                    F8FDEE76EB8B45AD65DD80CD956D58BE8926D56169571E585FDA80F1E102994F
-                    948E8FE481D5C53568AF1E94AC8EF3935379A0B8B04C800B356BE0EAECB23B10
-                    15587B4CCFCF42AB12D067E0FAE2266A4980B2898361313755A4B078189AC783
-                    6A701BF5BA033F59C7937307DDD48016356153590AC4632204F2FB43A2509881
-                    AEB5828D61F21CDCB260098E075E4643D4828F55DA2DD3AC56E9E92D1E02637B
-                    83627C321F6C0A008F00D7A40E2C94DF2B30590D31E1FF9CDCA4CDBC5D6A0844
-                    65908CA7911EF5F1A237908EB5202A09C027809C60F668162C04BADD021BA18E
-                    9C1EA41C17E23E257F8D2C67C256624818A213981C30D084D3AB22FECC3A81C9
-                    01FDF69FC0A480A89FE6DF80CCF8067BECD811176622860000000049454E44AE
-                    426082}
-                end
-                object PngSpeedButton1: TPngSpeedButton
-                  Left = 310
-                  Top = 8
-                  Width = 86
-                  Height = 28
-                  Caption = 'Excluir'
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -11
-                  Font.Name = 'Tahoma'
-                  Font.Style = [fsBold]
-                  ParentFont = False
-                  OnClick = PngSpeedButton1Click
-                  PngImage.Data = {
-                    89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
-                    610000000473424954080808087C086488000000097048597300000B1300000B
-                    1301009A9C18000000AD4944415478DA6364A01030E29210ABFDEDFF9F81C110
-                    C4FECFF0FF172B13EBACE78D8C6F883640A4EEF7E4374DACB920B650FD3F3EA6
-                    7F7F72DE34B3B5E13540B4F67703928C03D0EA03D8F8FF98180EBC6D643D80D5
-                    05A275BFFFE3F5F47F86C6D7CDAC0D0873711900540894ADC7468F1A30120CF8
-                    F98781818919C83C08C4F6E834305FD4BC69626BC5698048EDEF2EC6FFFF0A19
-                    989858D0E5FE3130DC67FCF7D7FD4D0BC76D9C06900A00F8AE981170C6214400
-                    00000049454E44AE426082}
-                end
-                object DBGrid1: TDBGrid
+                object pnlFundoComposicao: TPanel
                   Left = 1
-                  Top = 43
-                  Width = 603
-                  Height = 160
-                  TabStop = False
-                  Align = alBottom
-                  DataSource = dsComposicaoProduto
-                  Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                  Top = 1
+                  Width = 653
+                  Height = 202
+                  Align = alClient
+                  BevelOuter = bvNone
+                  Caption = 'pnlFundoComposicao'
+                  ShowCaption = False
                   TabOrder = 0
-                  TitleFont.Charset = DEFAULT_CHARSET
-                  TitleFont.Color = clWindowText
-                  TitleFont.Height = -11
-                  TitleFont.Name = 'Tahoma'
-                  TitleFont.Style = []
-                  Columns = <
-                    item
-                      Expanded = False
-                      FieldName = 'MATERIAPRIMA'
-                      Title.Caption = 'Mat'#233'ia-Prima'
-                      Width = 400
-                      Visible = True
+                  object pnlTopoComposicao: TPanel
+                    Left = 0
+                    Top = 0
+                    Width = 653
+                    Height = 50
+                    Align = alTop
+                    BevelOuter = bvNone
+                    Caption = 'pnlTopoComposicao'
+                    ShowCaption = False
+                    TabOrder = 0
+                    object pnlProdAdd: TPanel
+                      Left = 0
+                      Top = 0
+                      Width = 653
+                      Height = 50
+                      Align = alTop
+                      Caption = 'pnlProdAdd'
+                      Color = 13337441
+                      ParentBackground = False
+                      ShowCaption = False
+                      TabOrder = 0
+                      object pnlAdd: TPanel
+                        Left = 592
+                        Top = 1
+                        Width = 60
+                        Height = 48
+                        Align = alRight
+                        BevelOuter = bvNone
+                        Caption = 'pnlAdd'
+                        Color = 7024384
+                        ParentBackground = False
+                        ShowCaption = False
+                        TabOrder = 4
+                        object btnAddItem: TSpeedButton
+                          Left = 0
+                          Top = 0
+                          Width = 60
+                          Height = 48
+                          Action = actAddItem
+                          Align = alClient
+                          Flat = True
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -13
+                          Font.Name = 'Segoe UI'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          ExplicitLeft = 6
+                          ExplicitTop = -5
+                          ExplicitWidth = 94
+                        end
+                      end
+                      object pnlQtde: TPanel
+                        Left = 372
+                        Top = 1
+                        Width = 70
+                        Height = 48
+                        Align = alRight
+                        BevelOuter = bvNone
+                        Caption = 'pnlTotalItem'
+                        Color = 10114859
+                        ParentBackground = False
+                        ShowCaption = False
+                        TabOrder = 1
+                        TabStop = True
+                        object lblUM: TLabel
+                          Left = 6
+                          Top = 29
+                          Width = 30
+                          Height = 17
+                          Alignment = taCenter
+                          AutoSize = False
+                          Caption = 'UN'
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -13
+                          Font.Name = 'Segoe UI Semibold'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          Visible = False
+                        end
+                        object edtQtde: TEdit
+                          Left = 0
+                          Top = 0
+                          Width = 70
+                          Height = 25
+                          Alignment = taCenter
+                          AutoSize = False
+                          BorderStyle = bsNone
+                          Color = 10114859
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -16
+                          Font.Name = 'Segoe UI'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          TabOrder = 0
+                          Text = '1,000'
+                        end
+                      end
+                      object pnlItem: TPanel
+                        Left = 1
+                        Top = 1
+                        Width = 371
+                        Height = 48
+                        Align = alClient
+                        BevelOuter = bvNone
+                        Caption = 'pnlItem'
+                        ShowCaption = False
+                        TabOrder = 0
+                        object edpsqsProduto: TEdPesquisa
+                          Left = -2
+                          Top = 14
+                          Width = 321
+                          Height = 21
+                          PermitirBranco = Sim
+                          ConsultaTabela.Tabela = 'PRODUTO'
+                          ConsultaTabela.Pesquisa = 'codigo'
+                          ConsultaTabela.Mostrar = 'nome'
+                          ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+                          OnPesquisa = edpsqsProdutoPesquisa
+                          Titulo.Left = 0
+                          Titulo.Top = 3
+                          Titulo.Width = 3
+                          Titulo.Height = 13
+                          Titulo.Caption = ' '
+                          Titulo.Visible = False
+                          Mostrar.Left = 70
+                          Mostrar.Top = 0
+                          Mostrar.Width = 250
+                          Mostrar.Height = 25
+                          Mostrar.TabStop = False
+                          Mostrar.Font.Charset = ANSI_CHARSET
+                          Mostrar.Font.Color = clBlue
+                          Mostrar.Font.Height = -13
+                          Mostrar.Font.Name = 'Segoe UI'
+                          Mostrar.Font.Style = []
+                          Mostrar.ParentFont = False
+                          Mostrar.ReadOnly = True
+                          Mostrar.TabOrder = 1
+                          Campo.Left = 5
+                          Campo.Top = 0
+                          Campo.Width = 40
+                          Campo.Height = 25
+                          Campo.CharCase = ecUpperCase
+                          Campo.Font.Charset = ANSI_CHARSET
+                          Campo.Font.Color = clWindowText
+                          Campo.Font.Height = -13
+                          Campo.Font.Name = 'Segoe UI'
+                          Campo.Font.Style = []
+                          Campo.ParentFont = False
+                          Campo.TabOrder = 0
+                          Campo.OnChange = edpsqsProdutoedtCampoChange
+                          TabOrder = 0
+                          TabStop = True
+                        end
+                      end
+                      object pnlTotalItem: TPanel
+                        Left = 522
+                        Top = 1
+                        Width = 70
+                        Height = 48
+                        Align = alRight
+                        BevelOuter = bvNone
+                        Caption = 'pnlTotalItem'
+                        Color = 10114859
+                        ParentBackground = False
+                        ShowCaption = False
+                        TabOrder = 3
+                        object Label53: TLabel
+                          Left = 12
+                          Top = 4
+                          Width = 56
+                          Height = 15
+                          Caption = 'TOTAL (R$)'
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -12
+                          Font.Name = 'Segoe UI'
+                          Font.Style = []
+                          ParentFont = False
+                        end
+                        object lblTotItem: TLabel
+                          Left = 0
+                          Top = 23
+                          Width = 70
+                          Height = 25
+                          Align = alBottom
+                          Alignment = taCenter
+                          AutoSize = False
+                          Caption = '0,00'
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -19
+                          Font.Name = 'Segoe UI Semibold'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          ExplicitTop = 20
+                          ExplicitWidth = 79
+                        end
+                      end
+                      object pnlVlUnitario: TPanel
+                        Left = 442
+                        Top = 1
+                        Width = 80
+                        Height = 48
+                        Align = alRight
+                        BevelOuter = bvNone
+                        Caption = 'pnlTotalItem'
+                        Color = 10114859
+                        ParentBackground = False
+                        ShowCaption = False
+                        TabOrder = 2
+                        object lbl8: TLabel
+                          Left = 2
+                          Top = 4
+                          Width = 76
+                          Height = 15
+                          Caption = 'UNIT'#193'RIO (R$)'
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -12
+                          Font.Name = 'Segoe UI'
+                          Font.Style = []
+                          ParentFont = False
+                        end
+                        object lblUnitario: TLabel
+                          Left = 0
+                          Top = 23
+                          Width = 80
+                          Height = 25
+                          Align = alBottom
+                          Alignment = taCenter
+                          Caption = '0,00'
+                          Font.Charset = ANSI_CHARSET
+                          Font.Color = clWhite
+                          Font.Height = -19
+                          Font.Name = 'Segoe UI Semibold'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          Visible = False
+                          ExplicitWidth = 38
+                        end
+                      end
                     end
-                    item
-                      Expanded = False
-                      FieldName = 'QTDE'
-                      Title.Caption = 'Quantidade'
-                      Visible = True
-                    end>
+                  end
+                  object pnlFundo1Comp: TPanel
+                    Left = 0
+                    Top = 50
+                    Width = 653
+                    Height = 152
+                    Align = alClient
+                    BevelOuter = bvNone
+                    Caption = 'pnlFundo1Comp'
+                    ShowCaption = False
+                    TabOrder = 1
+                    object pnlGridComposicao: TPanel
+                      Left = 0
+                      Top = 0
+                      Width = 653
+                      Height = 132
+                      Align = alClient
+                      BevelOuter = bvNone
+                      Caption = 'pnlGridComposicao'
+                      ShowCaption = False
+                      TabOrder = 0
+                      object pnlAcaoComposicao: TPanel
+                        Left = 593
+                        Top = 0
+                        Width = 60
+                        Height = 132
+                        Align = alRight
+                        Caption = 'pnlAcaoComposicao'
+                        ShowCaption = False
+                        TabOrder = 1
+                        object PngSpeedButton1: TPngSpeedButton
+                          Left = 6
+                          Top = 69
+                          Width = 86
+                          Height = 28
+                          Caption = 'Excluir'
+                          Font.Charset = DEFAULT_CHARSET
+                          Font.Color = clWindowText
+                          Font.Height = -11
+                          Font.Name = 'Tahoma'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          OnClick = PngSpeedButton1Click
+                          PngImage.Data = {
+                            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+                            610000000473424954080808087C086488000000097048597300000B1300000B
+                            1301009A9C18000000AD4944415478DA6364A01030E29210ABFDEDFF9F81C110
+                            C4FECFF0FF172B13EBACE78D8C6F883640A4EEF7E4374DACB920B650FD3F3EA6
+                            7F7F72DE34B3B5E13540B4F67703928C03D0EA03D8F8FF98180EBC6D643D80D5
+                            05A275BFFFE3F5F47F86C6D7CDAC0D0873711900540894ADC7468F1A30120CF8
+                            F98781818919C83C08C4F6E834305FD4BC69626BC5698048EDEF2EC6FFFF0A19
+                            989858D0E5FE3130DC67FCF7D7FD4D0BC76D9C06900A00F8AE981170C6214400
+                            00000049454E44AE426082}
+                        end
+                        object PngAddProduto: TPngSpeedButton
+                          Left = 6
+                          Top = 38
+                          Width = 86
+                          Height = 28
+                          Caption = 'Adicionar'
+                          Font.Charset = DEFAULT_CHARSET
+                          Font.Color = clWindowText
+                          Font.Height = -11
+                          Font.Name = 'Tahoma'
+                          Font.Style = [fsBold]
+                          ParentFont = False
+                          OnClick = PngAddProdutoClick
+                          PngImage.Data = {
+                            89504E470D0A1A0A0000000D49484452000000100000001008060000001FF3FF
+                            610000016A4944415478DA95D23F4BC3401806F0E792D6FE113A48774741B008
+                            0E7E03A5285511058BA88393E0A8B8BAB90B2A38B8140445C14567FD08E250A1
+                            0E8A5AAA31B1964B9334C9F936810A9A8277F07221DCFDEECD73618818B99D8C
+                            F8FDEE76EB8B45AD65DD80CD956D58BE8926D56169571E585FDA80F1E102994F
+                            948E8FE481D5C53568AF1E94AC8EF3935379A0B8B04C800B356BE0EAECB23B10
+                            15587B4CCFCF42AB12D067E0FAE2266A4980B2898361313755A4B078189AC783
+                            6A701BF5BA033F59C7937307DDD48016356153590AC4632204F2FB43A2509881
+                            AEB5828D61F21CDCB260098E075E4643D4828F55DA2DD3AC56E9E92D1E02637B
+                            83627C321F6C0A008F00D7A40E2C94DF2B30590D31E1FF9CDCA4CDBC5D6A0844
+                            65908CA7911EF5F1A237908EB5202A09C027809C60F668162C04BADD021BA18E
+                            9C1EA41C17E23E257F8D2C67C256624818A213981C30D084D3AB22FECC3A81C9
+                            01FDF69FC0A480A89FE6DF80CCF8067BECD811176622860000000049454E44AE
+                            426082}
+                        end
+                        object pnlExcItem: TPanel
+                          Left = 18
+                          Top = 8
+                          Width = 25
+                          Height = 25
+                          BevelOuter = bvNone
+                          Caption = 'pnlIncluiCondPagto'
+                          Color = 7024384
+                          ParentBackground = False
+                          ShowCaption = False
+                          TabOrder = 0
+                          TabStop = True
+                          object imgExcItem: TImage
+                            Left = 0
+                            Top = 0
+                            Width = 25
+                            Height = 25
+                            Align = alClient
+                            Picture.Data = {
+                              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000190000
+                              00190806000000C4E9856300000006624B474400FF00FF00FFA0BDA793000001
+                              244944415478DA6364A003601CBE96FCFFFF9F1548F1A009B301F12C20D64112
+                              BB02C46940FC0B4DED174646C6DF842C090052EB71386A3BC810A8233C71A809
+                              045AB2819025AA50573B00710D10FF814A3D006A5E89A42E1C482940B92C40DC
+                              02C40740BE03AABB8DD712A801ED40AA028839811A7E100A73A07A0E20F51D88
+                              3B80EA2B09C6C9805802C48A406C0BC4AB8098171A17A0B8F90CC461407C1888
+                              EF536A4902104F07624D681C6C875AF40088AF037126102F18B564D492116E09
+                              2803CA01F1550648690C2ADB406513A8F4D506E2470C908C39388B952620550B
+                              C4A2404D6F88B0440448BD06E266A0FA3A622D7106527B182015D37542963040
+                              E20B54A139032DD9479425508BD2811408F31361C947209E01B4601636C961DC
+                              90A00500002294BF1ABE0ECED60000000049454E44AE426082}
+                            ExplicitLeft = 8
+                            ExplicitTop = 8
+                            ExplicitWidth = 105
+                            ExplicitHeight = 105
+                          end
+                          object btnEscItem: TSpeedButton
+                            Left = 0
+                            Top = 0
+                            Width = 25
+                            Height = 25
+                            Align = alClient
+                            Flat = True
+                            ParentShowHint = False
+                            ShowHint = True
+                            ExplicitLeft = 1
+                            ExplicitTop = 7
+                            ExplicitWidth = 23
+                            ExplicitHeight = 23
+                          end
+                        end
+                      end
+                      object dbgrdComposicao: TDBGrid
+                        Left = 0
+                        Top = 0
+                        Width = 593
+                        Height = 132
+                        Align = alClient
+                        DataSource = dsComposicaoProduto
+                        DrawingStyle = gdsGradient
+                        GradientEndColor = 13864803
+                        Font.Charset = ANSI_CHARSET
+                        Font.Color = clWindowText
+                        Font.Height = -13
+                        Font.Name = 'Segoe UI'
+                        Font.Style = []
+                        Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                        ParentFont = False
+                        TabOrder = 0
+                        TitleFont.Charset = ANSI_CHARSET
+                        TitleFont.Color = clWindowText
+                        TitleFont.Height = -11
+                        TitleFont.Name = 'Segoe UI'
+                        TitleFont.Style = []
+                        OnDrawColumnCell = dbgrdComposicaoDrawColumnCell
+                        Columns = <
+                          item
+                            Alignment = taLeftJustify
+                            Expanded = False
+                            FieldName = 'ID_MATPRIMA'
+                            Width = 250
+                            Visible = True
+                          end
+                          item
+                            Expanded = False
+                            FieldName = 'QTDE'
+                            Width = 70
+                            Visible = True
+                          end
+                          item
+                            Alignment = taCenter
+                            Expanded = False
+                            FieldName = 'SIGLA'
+                            Title.Alignment = taCenter
+                            Width = 50
+                            Visible = True
+                          end
+                          item
+                            Expanded = False
+                            FieldName = 'CUSTO_UNIT'
+                            Width = 95
+                            Visible = True
+                          end
+                          item
+                            Expanded = False
+                            FieldName = 'CUSTO_TOTAL'
+                            Width = 95
+                            Visible = True
+                          end>
+                      end
+                    end
+                    object pnlRodapeComposicao: TPanel
+                      Left = 0
+                      Top = 132
+                      Width = 653
+                      Height = 20
+                      Align = alBottom
+                      Caption = 'pnlRodapeComposicao'
+                      Font.Charset = ANSI_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -11
+                      Font.Name = 'Segoe UI Semibold'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      ShowCaption = False
+                      TabOrder = 1
+                      object Label27: TLabel
+                        Left = 450
+                        Top = 2
+                        Width = 98
+                        Height = 17
+                        Caption = 'Custo estimado:'
+                        Font.Charset = ANSI_CHARSET
+                        Font.Color = clWindowText
+                        Font.Height = -13
+                        Font.Name = 'Segoe UI Semibold'
+                        Font.Style = [fsBold]
+                        ParentFont = False
+                      end
+                      object lblCustEstimado: TLabel
+                        Left = 548
+                        Top = 2
+                        Width = 43
+                        Height = 17
+                        Caption = 'R$ 0,00'
+                        Font.Charset = ANSI_CHARSET
+                        Font.Color = clWindowText
+                        Font.Height = -13
+                        Font.Name = 'Segoe UI'
+                        Font.Style = []
+                        ParentFont = False
+                      end
+                      object chkCustoEstimado: TCheckBox
+                        Left = 184
+                        Top = 2
+                        Width = 218
+                        Height = 17
+                        Caption = 'Calcular custo a partir da composi'#231#227'o'
+                        TabOrder = 0
+                        OnClick = chkCustoEstimadoClick
+                      end
+                    end
+                  end
                 end
               end
             end
@@ -1169,14 +1619,14 @@ inherited Frm_Produto: TFrm_Produto
               object pnlFundoTab: TPanel
                 Left = 0
                 Top = 0
-                Width = 605
+                Width = 655
                 Height = 204
                 Align = alClient
                 TabOrder = 0
                 object lblTitConversao: TLabel
                   Left = 1
                   Top = 1
-                  Width = 603
+                  Width = 653
                   Height = 30
                   Align = alTop
                   AutoSize = False
@@ -1194,11 +1644,12 @@ inherited Frm_Produto: TFrm_Produto
                   OnMouseMove = lblTituloMouseMove
                   ExplicitLeft = -6
                   ExplicitTop = 16
+                  ExplicitWidth = 603
                 end
                 object pnlTopTab: TPanel
                   Left = 1
                   Top = 31
-                  Width = 603
+                  Width = 653
                   Height = 172
                   Align = alClient
                   BevelOuter = bvNone
@@ -1318,79 +1769,169 @@ inherited Frm_Produto: TFrm_Produto
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0
-                Width = 605
+                Width = 655
                 Height = 204
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 0
-                object Label14: TLabel
+                object pnlHistVenda: TPanel
+                  Left = 0
+                  Top = 102
+                  Width = 655
+                  Height = 102
+                  Align = alTop
+                  BevelOuter = bvNone
+                  Caption = 'pnlHistVenda'
+                  ShowCaption = False
+                  TabOrder = 1
+                  object Label14: TLabel
+                    Left = 0
+                    Top = 0
+                    Width = 655
+                    Height = 20
+                    Align = alTop
+                    AutoSize = False
+                    Caption = '  PRE'#199'O DE CUSTO'
+                    Color = 10114859
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWhite
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentColor = False
+                    ParentFont = False
+                    Transparent = False
+                    Layout = tlCenter
+                    OnMouseMove = lblTituloMouseMove
+                    ExplicitTop = 8
+                    ExplicitWidth = 605
+                  end
+                  object dbgrdItens: TDBGrid
+                    Left = 0
+                    Top = 20
+                    Width = 655
+                    Height = 82
+                    Align = alClient
+                    DataSource = dsHistCusto
+                    DrawingStyle = gdsGradient
+                    GradientEndColor = 13864803
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                    ParentFont = False
+                    TabOrder = 0
+                    TitleFont.Charset = ANSI_CHARSET
+                    TitleFont.Color = clWindowText
+                    TitleFont.Height = -11
+                    TitleFont.Name = 'Segoe UI'
+                    TitleFont.Style = []
+                    Columns = <
+                      item
+                        Expanded = False
+                        FieldName = 'DATA'
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'DATA_FIM'
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'PRECO_NOVO'
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'USUARIO'
+                        Width = 270
+                        Visible = True
+                      end>
+                  end
+                end
+                object pnlHistCusto: TPanel
                   Left = 0
                   Top = 0
-                  Width = 605
-                  Height = 30
+                  Width = 655
+                  Height = 102
                   Align = alTop
-                  AutoSize = False
-                  Caption = '  PRE'#199'O DE VENDA'
-                  Color = 10114859
-                  Font.Charset = ANSI_CHARSET
-                  Font.Color = clWhite
-                  Font.Height = -13
-                  Font.Name = 'Segoe UI Semibold'
-                  Font.Style = [fsBold]
-                  ParentColor = False
-                  ParentFont = False
-                  Transparent = False
-                  Layout = tlCenter
-                  OnMouseMove = lblTituloMouseMove
-                  ExplicitTop = 8
-                end
-                object dbgrdItens: TDBGrid
-                  Left = 0
-                  Top = 30
-                  Width = 605
-                  Height = 174
-                  Align = alClient
-                  DataSource = dsHistPreco
-                  DrawingStyle = gdsGradient
-                  GradientEndColor = 13864803
-                  Font.Charset = ANSI_CHARSET
-                  Font.Color = clWindowText
-                  Font.Height = -13
-                  Font.Name = 'Segoe UI'
-                  Font.Style = []
-                  Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-                  ParentFont = False
+                  BevelOuter = bvNone
+                  Caption = 'pnlHistVenda'
+                  ShowCaption = False
                   TabOrder = 0
-                  TitleFont.Charset = ANSI_CHARSET
-                  TitleFont.Color = clWindowText
-                  TitleFont.Height = -11
-                  TitleFont.Name = 'Segoe UI'
-                  TitleFont.Style = []
-                  Columns = <
-                    item
-                      Alignment = taCenter
-                      Expanded = False
-                      FieldName = 'INICIO'
-                      Visible = True
-                    end
-                    item
-                      Alignment = taCenter
-                      Expanded = False
-                      FieldName = 'FIM'
-                      Visible = True
-                    end
-                    item
-                      Expanded = False
-                      FieldName = 'PRECO'
-                      Width = 90
-                      Visible = True
-                    end
-                    item
-                      Expanded = False
-                      FieldName = 'USUARIO'
-                      Width = 280
-                      Visible = True
-                    end>
+                  object lblTitHistCusto: TLabel
+                    Left = 0
+                    Top = 0
+                    Width = 655
+                    Height = 20
+                    Align = alTop
+                    AutoSize = False
+                    Caption = '  PRE'#199'O DE VENDA'
+                    Color = 10114859
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWhite
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentColor = False
+                    ParentFont = False
+                    Transparent = False
+                    Layout = tlCenter
+                    OnMouseMove = lblTituloMouseMove
+                    ExplicitTop = 8
+                    ExplicitWidth = 605
+                  end
+                  object dbgrdHistCusto: TDBGrid
+                    Left = 0
+                    Top = 20
+                    Width = 655
+                    Height = 82
+                    Align = alClient
+                    DataSource = dsHistVenda
+                    DrawingStyle = gdsGradient
+                    GradientEndColor = 13864803
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI'
+                    Font.Style = []
+                    Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+                    ParentFont = False
+                    TabOrder = 0
+                    TitleFont.Charset = ANSI_CHARSET
+                    TitleFont.Color = clWindowText
+                    TitleFont.Height = -11
+                    TitleFont.Name = 'Segoe UI'
+                    TitleFont.Style = []
+                    Columns = <
+                      item
+                        Alignment = taCenter
+                        Expanded = False
+                        FieldName = 'DATA'
+                        Visible = True
+                      end
+                      item
+                        Alignment = taCenter
+                        Expanded = False
+                        FieldName = 'DT_FIM'
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'PRECO_NOVO'
+                        Width = 120
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'USUARIO'
+                        Width = 280
+                        Visible = True
+                      end>
+                  end
                 end
               end
             end
@@ -1400,7 +1941,7 @@ inherited Frm_Produto: TFrm_Produto
               object pnlFundoFiscal: TPanel
                 Left = 0
                 Top = 0
-                Width = 605
+                Width = 655
                 Height = 204
                 Align = alClient
                 BevelOuter = bvNone
@@ -1409,10 +1950,8 @@ inherited Frm_Produto: TFrm_Produto
                 ParentBackground = False
                 ShowCaption = False
                 TabOrder = 0
-                ExplicitLeft = -3
-                ExplicitTop = 3
                 object Label24: TLabel
-                  Left = 8
+                  Left = 27
                   Top = 14
                   Width = 26
                   Height = 17
@@ -1425,7 +1964,7 @@ inherited Frm_Produto: TFrm_Produto
                   ParentFont = False
                 end
                 object Label25: TLabel
-                  Left = 200
+                  Left = 235
                   Top = 14
                   Width = 44
                   Height = 17
@@ -1438,9 +1977,9 @@ inherited Frm_Produto: TFrm_Produto
                   ParentFont = False
                 end
                 object dbcbbFISCAL_TIPO: TDBComboBox
-                  Left = 8
+                  Left = 27
                   Top = 35
-                  Width = 145
+                  Width = 200
                   Height = 25
                   Style = csDropDownList
                   DataField = 'FISCAL_TIPO'
@@ -1451,7 +1990,6 @@ inherited Frm_Produto: TFrm_Produto
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Items.Strings = (
-                    'Selecione'
                     'Ativo Imobilizado'
                     'Embalagem'
                     'Material de Uso e Consumo'
@@ -1468,9 +2006,9 @@ inherited Frm_Produto: TFrm_Produto
                   TabOrder = 0
                 end
                 object dbcbbFISCAL_ORIGEM: TDBComboBox
-                  Left = 200
+                  Left = 235
                   Top = 35
-                  Width = 145
+                  Width = 400
                   Height = 25
                   Style = csDropDownList
                   DataField = 'FISCAL_ORIGEM'
@@ -1481,7 +2019,6 @@ inherited Frm_Produto: TFrm_Produto
                   Font.Name = 'Segoe UI'
                   Font.Style = []
                   Items.Strings = (
-                    'Selecione'
                     '0 - Nacional, exceto as indicadas nos c'#243'digos 3 a 5'
                     
                       '1 - Estrangeira - Importa'#231#227'o direta, exceto a indicada no c'#243'digo' +
@@ -1511,7 +2048,7 @@ inherited Frm_Produto: TFrm_Produto
                 object dbpsqsNCM: TDBPesquisa
                   Left = 8
                   Top = 76
-                  Width = 365
+                  Width = 627
                   Height = 25
                   Titulo.Left = 0
                   Titulo.Top = 3
@@ -1527,9 +2064,10 @@ inherited Frm_Produto: TFrm_Produto
                   ConsultaTabela.Tabela = 'NCM'
                   ConsultaTabela.Pesquisa = 'ID'
                   ConsultaTabela.Mostrar = 'descricao'
+                  ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
                   Mostrar.Left = 114
                   Mostrar.Top = 0
-                  Mostrar.Width = 250
+                  Mostrar.Width = 512
                   Mostrar.Height = 25
                   Mostrar.TabStop = False
                   Mostrar.DataField = 'NCM'
@@ -1563,7 +2101,7 @@ inherited Frm_Produto: TFrm_Produto
                 object dbpsqsCEST: TDBPesquisa
                   Left = 9
                   Top = 116
-                  Width = 364
+                  Width = 626
                   Height = 25
                   Titulo.Left = 0
                   Titulo.Top = 3
@@ -1582,7 +2120,7 @@ inherited Frm_Produto: TFrm_Produto
                   ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
                   Mostrar.Left = 113
                   Mostrar.Top = 0
-                  Mostrar.Width = 250
+                  Mostrar.Width = 512
                   Mostrar.Height = 25
                   Mostrar.TabStop = False
                   Mostrar.DataField = 'CEST'
@@ -1621,63 +2159,176 @@ inherited Frm_Produto: TFrm_Produto
     end
   end
   inherited ds: TDataSource
-    Left = 160
-    Top = 432
+    Left = 144
+    Top = 544
   end
   inherited cds: TClientDataSet
-    CommandText = 
-      'select A.*, U.NOME DESCRI_UNIDADE, X.NOME CONV_DESCRIUNIDADE, G.' +
-      'DESCRI GRUPO, S.DESCRI SUBGRUPO, N.DESCRICAO NCM,C.descricao CES' +
-      'T'#13#10'from PRODUTO A'#13#10'left outer join UNIDADE U on (U.CODIGO = A.CO' +
-      'D_UNIDADE)'#13#10'left outer join UNIDADE X on (X.CODIGO = A.CONV_UNID' +
-      'ADE)'#13#10'left outer join GRUPO_PROD G on (G.CODIGO = A.COD_GRUPO)'#13#10 +
-      'left outer join SUBGRUPO_PROD S on (S.CODIGO = A.COD_SUBGRUPO)'#13#10 +
-      'left outer join NCM N on (N.ID = A.FISCAL_NCM)'#13#10'left outer join ' +
-      'CEST C on (C.ID = A.FISCAL_CEST)'#13#10'where 1 = 2   '
-    ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
+    ProviderName = 'dspProduto'
+    RemoteServer = DM.dspRProduto
     AfterInsert = cdsAfterInsert
     BeforePost = cdsBeforePost
-    Left = 160
-    Top = 375
+    AfterCancel = cdsAfterCancel
+    Left = 144
+    Top = 495
     object cdsCODIGO: TIntegerField
       FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
-      DisplayFormat = '000'
     end
     object cdsNOME: TStringField
       FieldName = 'NOME'
+      Origin = 'NOME'
       Required = True
       Size = 100
     end
+    object cdsPRECO_VENDA: TCurrencyField
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      Required = True
+    end
     object cdsCOD_UNIDADE: TIntegerField
       FieldName = 'COD_UNIDADE'
+      Origin = 'COD_UNIDADE'
+    end
+    object cdsQTDE_ESTOQUE: TFMTBCDField
+      FieldName = 'QTDE_ESTOQUE'
+      Origin = 'QTDE_ESTOQUE'
+      Precision = 18
+      Size = 3
+    end
+    object cdsPRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      Origin = 'PRECO_CUSTO'
+    end
+    object cdsESTIMA_PRODUCAO: TFMTBCDField
+      FieldName = 'ESTIMA_PRODUCAO'
+      Origin = 'ESTIMA_PRODUCAO'
+      Precision = 18
+      Size = 3
+    end
+    object cdsPESO_BRUTO: TFMTBCDField
+      FieldName = 'PESO_BRUTO'
+      Origin = 'PESO_BRUTO'
+      Precision = 18
+      Size = 3
+    end
+    object cdsPESO_LIQUIDO: TFMTBCDField
+      FieldName = 'PESO_LIQUIDO'
+      Origin = 'PESO_LIQUIDO'
+      Precision = 18
+      Size = 3
     end
     object cdsEAN_CODBARRA: TStringField
       FieldName = 'EAN_CODBARRA'
+      Origin = 'EAN_CODBARRA'
       Size = 13
-    end
-    object cdsCOD_FABRICANTE: TIntegerField
-      FieldName = 'COD_FABRICANTE'
     end
     object cdsCOD_GRUPO: TIntegerField
       FieldName = 'COD_GRUPO'
+      Origin = 'COD_GRUPO'
     end
     object cdsCOD_SUBGRUPO: TIntegerField
       FieldName = 'COD_SUBGRUPO'
+      Origin = 'COD_SUBGRUPO'
     end
     object cdsDESCRICAO: TStringField
       FieldName = 'DESCRICAO'
+      Origin = 'DESCRICAO'
       Size = 200
     end
     object cdsTIPO_PRODUTO: TStringField
       FieldName = 'TIPO_PRODUTO'
+      Origin = 'TIPO_PRODUTO'
       Required = True
       FixedChar = True
       Size = 3
     end
+    object cdsQTDE_MINIMA: TFMTBCDField
+      FieldName = 'QTDE_MINIMA'
+      Origin = 'QTDE_MINIMA'
+      Precision = 18
+      Size = 3
+    end
+    object cdsCONV_UNIDADE: TIntegerField
+      FieldName = 'CONV_UNIDADE'
+      Origin = 'CONV_UNIDADE'
+    end
+    object cdsCONV_QTDE: TFMTBCDField
+      FieldName = 'CONV_QTDE'
+      Origin = 'CONV_QTDE'
+      Precision = 18
+      Size = 3
+    end
+    object cdsCONV_PRECO: TCurrencyField
+      FieldName = 'CONV_PRECO'
+      Origin = 'CONV_PRECO'
+    end
+    object cdsDT_CADASTRO: TDateField
+      FieldName = 'DT_CADASTRO'
+      Origin = 'DT_CADASTRO'
+    end
+    object cdsDESC_MAXIMO: TFMTBCDField
+      FieldName = 'DESC_MAXIMO'
+      Origin = 'DESC_MAXIMO'
+      Precision = 18
+      Size = 3
+    end
+    object cdsPRECO_ATACADO: TFMTBCDField
+      FieldName = 'PRECO_ATACADO'
+      Origin = 'PRECO_ATACADO'
+      Precision = 18
+      Size = 2
+    end
+    object cdsQTDE_MIN_ATACADO: TFMTBCDField
+      FieldName = 'QTDE_MIN_ATACADO'
+      Origin = 'QTDE_MIN_ATACADO'
+      Precision = 18
+      Size = 3
+    end
+    object cdsSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      Required = True
+      Size = 10
+    end
+    object cdsFISCAL_TIPO: TStringField
+      FieldName = 'FISCAL_TIPO'
+      Origin = 'FISCAL_TIPO'
+      Size = 30
+    end
+    object cdsFISCAL_ORIGEM: TStringField
+      FieldName = 'FISCAL_ORIGEM'
+      Origin = 'FISCAL_ORIGEM'
+      Size = 200
+    end
+    object cdsFISCAL_NCM: TIntegerField
+      FieldName = 'FISCAL_NCM'
+      Origin = 'FISCAL_NCM'
+    end
+    object cdsFISCAL_CEST: TIntegerField
+      FieldName = 'FISCAL_CEST'
+      Origin = 'FISCAL_CEST'
+    end
+    object cdsULTIMA_ALTERACAO: TStringField
+      FieldName = 'ULTIMA_ALTERACAO'
+      Origin = 'ULTIMA_ALTERACAO'
+      Size = 200
+    end
     object cdsDESCRI_UNIDADE: TStringField
       FieldName = 'DESCRI_UNIDADE'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsCALC_CUSTO_COMPOSICAO: TStringField
+      FieldName = 'CALC_CUSTO_COMPOSICAO'
+      FixedChar = True
+      Size = 1
+    end
+    object cdsCONV_DESCRIUNIDADE: TStringField
+      FieldName = 'CONV_DESCRIUNIDADE'
       Size = 30
     end
     object cdsGRUPO: TStringField
@@ -1688,119 +2339,30 @@ inherited Frm_Produto: TFrm_Produto
       FieldName = 'SUBGRUPO'
       Size = 45
     end
-    object cdsCONV_UNIDADE: TIntegerField
-      FieldName = 'CONV_UNIDADE'
-    end
-    object cdsCONV_DESCRIUNIDADE: TStringField
-      FieldName = 'CONV_DESCRIUNIDADE'
-      Size = 30
-    end
-    object cdsPRECO_VENDA: TCurrencyField
-      FieldName = 'PRECO_VENDA'
-      Required = True
-      DisplayFormat = 'R$ #,##0.00'
-    end
-    object cdsQTDE_ESTOQUE: TFMTBCDField
-      FieldName = 'QTDE_ESTOQUE'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsPRECO_CUSTO: TCurrencyField
-      FieldName = 'PRECO_CUSTO'
-      DisplayFormat = 'R$ #,##0.00'
-    end
-    object cdsPESO_BRUTO: TFMTBCDField
-      FieldName = 'PESO_BRUTO'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsPESO_LIQUIDO: TFMTBCDField
-      FieldName = 'PESO_LIQUIDO'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsQTDE_MINIMA: TFMTBCDField
-      FieldName = 'QTDE_MINIMA'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsCONV_QTDE: TFMTBCDField
-      FieldName = 'CONV_QTDE'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsCONV_PRECO: TCurrencyField
-      FieldName = 'CONV_PRECO'
-      DisplayFormat = '#,##0.00'
-    end
-    object cdsESTIMA_PRODUCAO: TFMTBCDField
-      FieldName = 'ESTIMA_PRODUCAO'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsDT_CADASTRO: TDateField
-      FieldName = 'DT_CADASTRO'
-    end
-    object cdsDESC_MAXIMO: TFMTBCDField
-      FieldName = 'DESC_MAXIMO'
-      DisplayFormat = '#,##0.000 %'
-      Precision = 18
-      Size = 3
-    end
-    object cdsPRECO_ATACADO: TFMTBCDField
-      FieldName = 'PRECO_ATACADO'
-      OnChange = cdsPRECO_ATACADOChange
-      DisplayFormat = 'R$ #,##0.00'
-      Precision = 18
-      Size = 2
-    end
-    object cdsQTDE_MIN_ATACADO: TFMTBCDField
-      Alignment = taCenter
-      FieldName = 'QTDE_MIN_ATACADO'
-      DisplayFormat = '#,##0.000'
-      Precision = 18
-      Size = 3
-    end
-    object cdsSITUACAO: TStringField
-      Alignment = taCenter
-      FieldName = 'SITUACAO'
-      Required = True
-      Size = 10
-    end
-    object cdsFISCAL_TIPO: TStringField
-      FieldName = 'FISCAL_TIPO'
-      Size = 30
-    end
-    object cdsFISCAL_ORIGEM: TStringField
-      FieldName = 'FISCAL_ORIGEM'
-      Size = 200
-    end
-    object cdsFISCAL_NCM: TIntegerField
-      FieldName = 'FISCAL_NCM'
-    end
-    object cdsFISCAL_CEST: TIntegerField
-      FieldName = 'FISCAL_CEST'
-    end
     object cdsNCM: TStringField
       FieldName = 'NCM'
-      ReadOnly = True
       Size = 500
     end
     object cdsCEST: TStringField
       FieldName = 'CEST'
-      ReadOnly = True
       Size = 500
+    end
+    object cdsfdqryProdutoFornecedor: TDataSetField
+      FieldName = 'fdqryProdutoFornecedor'
+    end
+    object cdsfdqryProdutoComposicao: TDataSetField
+      FieldName = 'fdqryProdutoComposicao'
+    end
+    object cdsfdqryPrecoVendaHist: TDataSetField
+      FieldName = 'fdqryPrecoVendaHist'
+    end
+    object cdsfdqryPrecoCustoHist: TDataSetField
+      FieldName = 'fdqryPrecoCustoHist'
     end
   end
   inherited actMaster: TActionList
-    Left = 104
-    Top = 373
+    Left = 136
+    Top = 157
     object actTrilhar: TAction
       Caption = 'actTrilhar'
       OnExecute = actTrilharExecute
@@ -1809,91 +2371,195 @@ inherited Frm_Produto: TFrm_Produto
       Caption = 'OK'
       OnExecute = actMovimentarExecute
     end
+    object actAddItem: TAction
+      Caption = 'INCLUIR '#13#10'ITEM'
+      OnExecute = actAddItemExecute
+    end
   end
   object cdsComposicaoProduto: TClientDataSet
     Aggregates = <>
-    CommandText = 
-      'select a.*,b.NOME materiaprima'#13#10'from PRODUTO_COMPOSICAO a'#13#10'left ' +
-      'outer join PRODUTO b on (b.CODIGO = a.ID_MATPRIMA)'#13#10'where 1 = 2'
+    DataSetField = cdsfdqryProdutoComposicao
     Params = <>
-    ProviderName = 'DSPLer1'
-    Left = 264
-    Top = 368
-    object cdsComposicaoProdutoID: TIntegerField
-      FieldName = 'ID'
-      Required = True
-    end
+    Left = 232
+    Top = 496
     object cdsComposicaoProdutoID_PRODUTO: TIntegerField
       FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
       Required = True
     end
     object cdsComposicaoProdutoID_MATPRIMA: TIntegerField
+      DisplayLabel = 'ITEM'
       FieldName = 'ID_MATPRIMA'
+      Origin = 'ID_MATPRIMA'
       Required = True
+      OnGetText = cdsComposicaoProdutoID_MATPRIMAGetText
     end
     object cdsComposicaoProdutoQTDE: TFMTBCDField
       FieldName = 'QTDE'
-      DisplayFormat = '#,##0.000'
+      Origin = 'QTDE'
       Precision = 18
       Size = 5
     end
-    object cdsComposicaoProdutoMATERIAPRIMA: TStringField
-      FieldName = 'MATERIAPRIMA'
+    object cdsComposicaoProdutoCUSTO_UNIT: TFMTBCDField
+      DisplayLabel = 'CUSTO UNIT'#193'RIO'
+      FieldName = 'CUSTO_UNIT'
+      Origin = 'CUSTO_UNIT'
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsComposicaoProdutoCUSTO_TOTAL: TFMTBCDField
+      DisplayLabel = 'CUSTO TOTAL'
+      FieldName = 'CUSTO_TOTAL'
+      Origin = 'CUSTO_TOTAL'
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsComposicaoProdutoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
       Size = 100
+    end
+    object cdsComposicaoProdutoSIGLA: TStringField
+      DisplayLabel = 'UND'
+      FieldName = 'SIGLA'
+      Origin = 'SIGLA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
     end
   end
   object dsComposicaoProduto: TDataSource
     DataSet = cdsComposicaoProduto
-    Left = 264
-    Top = 432
+    Left = 232
+    Top = 544
   end
-  object dsHistPreco: TDataSource
-    DataSet = cdsHisPreco
-    Left = 456
-    Top = 385
+  object dsHistVenda: TDataSource
+    DataSet = cdsHistVenda
+    Left = 560
+    Top = 489
   end
-  object cdsHisPreco: TClientDataSet
+  object cdsHistVenda: TClientDataSet
     Aggregates = <>
+    DataSetField = cdsfdqryPrecoVendaHist
     FieldDefs = <
       item
-        Name = 'INICIO'
-        DataType = ftDate
-      end
-      item
-        Name = 'FIM'
-        DataType = ftDate
-      end
-      item
-        Name = 'PRECO'
-        DataType = ftCurrency
+        Name = 'ID_PROD'
+        Attributes = [faRequired]
+        DataType = ftInteger
       end
       item
         Name = 'USUARIO'
+        Attributes = [faRequired]
         DataType = ftString
         Size = 100
+      end
+      item
+        Name = 'PRECO_NOVO'
+        Attributes = [faRequired]
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'DATA'
+        Attributes = [faRequired]
+        DataType = ftDate
+      end
+      item
+        Name = 'DT_FIM'
+        DataType = ftDate
       end>
-    IndexDefs = <>
+    IndexDefs = <
+      item
+        Name = 'DATA'
+        Fields = 'DATA'
+        Options = [ixDescending]
+      end>
+    IndexName = 'DATA'
     Params = <>
     StoreDefs = True
-    Left = 456
-    Top = 337
-    object cdsHisPrecoINICIO: TDateField
-      DisplayLabel = 'INICIO DA VIG'#202'NCIA'
-      FieldName = 'INICIO'
+    Left = 560
+    Top = 441
+    object cdsHistVendaID_PROD: TIntegerField
+      FieldName = 'ID_PROD'
+      Origin = 'ID_PROD'
+      Required = True
     end
-    object cdsHisPrecoFIM: TDateField
-      DisplayLabel = 'FINAL DA VIG'#202'NCIA'
-      FieldName = 'FIM'
-    end
-    object cdsHisPrecoPRECO: TCurrencyField
-      DisplayLabel = 'PRE'#199'O(R$)'
-      FieldName = 'PRECO'
-      DisplayFormat = 'R$ #,##0.00'
-    end
-    object cdsHisPrecoUSUARIO: TStringField
+    object cdsHistVendaUSUARIO: TStringField
       DisplayLabel = 'USU'#193'RIO'
       FieldName = 'USUARIO'
+      Origin = 'USUARIO'
+      Required = True
       Size = 100
     end
+    object cdsHistVendaPRECO_NOVO: TFMTBCDField
+      DisplayLabel = 'PRE'#199'O'
+      FieldName = 'PRECO_NOVO'
+      Origin = 'PRECO_NOVO'
+      Required = True
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsHistVendaDATA: TDateField
+      DisplayLabel = #205'NICIO VIG'#202'NCIA'
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+    object cdsHistVendaDT_FIM: TDateField
+      DisplayLabel = 'FINAL VIG'#202'NCIA'
+      FieldName = 'DT_FIM'
+      Origin = 'DT_FIM'
+    end
+  end
+  object cdsHistCusto: TClientDataSet
+    Aggregates = <>
+    DataSetField = cdsfdqryPrecoCustoHist
+    Params = <>
+    Left = 632
+    Top = 443
+    object cdsHistCustoID_PROD: TIntegerField
+      FieldName = 'ID_PROD'
+      Origin = 'ID_PROD'
+      Required = True
+    end
+    object cdsHistCustoPRECO_NOVO: TFMTBCDField
+      DisplayLabel = 'PRE'#199'O'
+      FieldName = 'PRECO_NOVO'
+      Origin = 'PRECO_NOVO'
+      Required = True
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsHistCustoDATA: TDateField
+      DisplayLabel = #205'NICIO VIG'#202'NCIA'
+      FieldName = 'DATA'
+      Origin = '"DATA"'
+      Required = True
+    end
+    object cdsHistCustoDATA_FIM: TDateField
+      DisplayLabel = 'FINAL VIG'#202'NCIA'
+      FieldName = 'DATA_FIM'
+      Origin = 'DATA_FIM'
+    end
+    object cdsHistCustoUSUARIO: TStringField
+      DisplayLabel = 'USU'#193'RIO'
+      FieldName = 'USUARIO'
+      Origin = 'USUARIO'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 500
+    end
+  end
+  object dsHistCusto: TDataSource
+    DataSet = cdsHistCusto
+    Left = 632
+    Top = 491
   end
 end

@@ -140,6 +140,7 @@ type
     actLiberarSistema: TAction;
     cdsLOGOTIPO: TBlobField;
     btnGerarCripto: TSpeedButton;
+    actVisualizaVencimento: TAction;
     procedure FormCreate(Sender: TObject);
     procedure Label1Click(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
@@ -150,7 +151,8 @@ type
     procedure actUploadLogoMarcaExecute(Sender: TObject);
     procedure actExcLogoMarcaExecute(Sender: TObject);
     procedure actLiberarSistemaExecute(Sender: TObject);
-    procedure actDescriptoExecute(Sender: TObject);
+    procedure Panel4DblClick(Sender: TObject);
+    procedure actVisualizaVencimentoExecute(Sender: TObject);
   private
     function ExisteCadEmpresa(): Boolean;
     procedure MontaSql(pCodigo : Integer) ;
@@ -174,14 +176,6 @@ implementation
 {$R *.dfm}
 
 uses UConsulta, UDM, UConsultaCNPJ, UMakeReadWrite, u_Mensagem, UCriptografia, UFrm_VoltaSenha;
-
-procedure TFrm_Empresa.actDescriptoExecute(Sender: TObject);
-begin
-  inherited;
-  TMensagem.Informacao('CLIENTE_LDE: '+Criptografia.DecodificarString(
-                                              cds.FieldByName('CLIENTE_LDE').AsString,''));
-//                                              cds.FieldByName('CHAVE').AsString));
-end;
 
 procedure TFrm_Empresa.actExcLogoMarcaExecute(Sender: TObject);
 begin
@@ -228,6 +222,14 @@ begin
      TBlobField(cds.FieldByName('LOGOMARCA')).LoadFromFile(
           Dialog.FileName);
   end;
+end;
+
+procedure TFrm_Empresa.actVisualizaVencimentoExecute(Sender: TObject);
+begin
+  inherited;
+  TMensagem.Informacao('CLIENTE_LDE: '+Criptografia.DecodificarString(
+                                              cds.FieldByName('CLIENTE_LDE').AsString,
+                                              Criptografia.CodificarString(cds.FieldByName('CNPJ').AsString,'')));
 end;
 
 procedure TFrm_Empresa.cdsAfterInsert(DataSet: TDataSet);
@@ -392,6 +394,12 @@ procedure TFrm_Empresa.Novo;
 begin
   inherited;
   DBEdit8.SetFocus ;
+end;
+
+procedure TFrm_Empresa.Panel4DblClick(Sender: TObject);
+begin
+  inherited;
+  actVisualizaVencimento.Execute;
 end;
 
 procedure TFrm_Empresa.RefreshImage(Field: TField; Img: TImage);

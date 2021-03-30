@@ -52,7 +52,7 @@ type
 implementation
 
 uses
-  UDM;
+  uServerDM;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -62,11 +62,11 @@ uses
 
 function TsmPDV.getOrcamento(const BD: string; pID: integer): OleVariant;
 var
-  DM: TDM;
+  DM: TServerDM;
   lID: Integer;
 begin
   lID := pID;
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryOrcamento.Connection := DM.Conexao;
     fdqryOrItem.Connection := DM.Conexao;
@@ -99,9 +99,9 @@ end;
 
 function TsmPDV.setOrcamento(const BD: string; pID: integer; const Dados: OleVariant): Boolean;
 var
-  DM: TDM;
+  DM: TServerDM;
 begin
-  DM := TDM.Create(BD);
+  DM := TServerDM.Create(BD);
   try
     fdqryOrcamento.Connection := DM.Conexao;
     fdqryOrItem.Connection := DM.Conexao;
