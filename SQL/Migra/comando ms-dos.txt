@@ -1,0 +1,3 @@
+SET ISC_USER=SYSDBA
+"25\gbak.exe" -z -b -g -v -y 25.log takano.fdb stdout |^
+"30\gbak.exe" -z -c -v -st t -y 30.log stdin .\takano30.fdb
