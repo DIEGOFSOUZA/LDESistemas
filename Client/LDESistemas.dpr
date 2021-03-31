@@ -38,7 +38,6 @@ uses
   UFrm_GrupoProdutos in 'Produto\UFrm_GrupoProdutos.pas' {Frm_GrupoProdutos},
   UFrm_MateriaPrima in 'Produto\UFrm_MateriaPrima.pas' {Frm_MateriaPrima},
   UFrm_Produto in 'Produto\UFrm_Produto.pas' {Frm_Produto},
-  UFrm_ProdutoComposicao in 'Produto\UFrm_ProdutoComposicao.pas' {Frm_ProdutoComposicao},
   UFrm_Cidades in 'Cadastros\UFrm_Cidades.pas' {Frm_Cidades},
   UFrm_Empresa in 'Cadastros\UFrm_Empresa.pas' {Frm_Empresa},
   UFrm_Fornecedor in 'Cadastros\UFrm_Fornecedor.pas' {Frm_Fornecedor},

@@ -473,6 +473,8 @@ inherited Frm_Produto: TFrm_Produto
             ParentColor = True
             ShowCaption = False
             TabOrder = 0
+            ExplicitLeft = 4
+            ExplicitTop = -2
             object Label1: TLabel
               Left = 147
               Top = 7
@@ -514,62 +516,6 @@ inherited Frm_Produto: TFrm_Produto
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-            end
-            object imgTrilha: TImage
-              Left = 603
-              Top = 12
-              Width = 48
-              Height = 48
-              Picture.Data = {
-                0954506E67496D61676589504E470D0A1A0A0000000D49484452000000300000
-                003008060000005702F987000000097048597300000B1300000B1301009A9C18
-                000003D54944415478DAED98DB6B53491CC7E737B96CB3A69E865ABC3E28D82A
-                14EAF6A122695AAB2012F192AA85B5B8EC83780103C5F5C1FF41500AD5075716
-                5CBC8297A445B462AD6993AA6961D542D1A40B0AA2E2A5B4595BB69A9319BFA7
-                362FEA1E53613309E40BC3FC7232A5DFCFE4777E732196E722D5060A00AA0D14
-                00541B2800A8365000506DE0FF06A0D56EF72AC9F95AC40BD02C59F295427B41
-                4274F7DCB9730FB19C31404343C33C914A9D60526ECE92E9AF4BCA769BAEEFBD
-                158DBECA1800E617095DFF0B611906C4807F1EFD20DABF59F1CC9803AD0AFF6F
-                07FA6578F4C69A4A5577DFBDFB3C1300AAF778AEA35F8FF607B75AFDA1506832
-                1BC6BF32914598C863087701A4331C896C609FA5D31700AB6B6BBD92E81AC2C1
-                91D1D19AA1A1A10F2ACCA7555959692F75B906105671C6BCA148A4D31400B3DF
-                8AAE05CDDF1B891C57693EADBADA5A3F11B531A2D6DE70F8C0B700CEA26B4605
-                58890A30A0DABCA1068FC723180BC3ECA59E48A4C9140063577029D7F5F6F51D
-                6126E52BAB006EF74F82F3FB4645822F9F29402E6A4600126FFE44C99BE5CEE0
-                D003D5C6670C30EA5B5C42CCFE18E15C0B59FCC5814739F1126704306DFE06C2
-                95D38F0431FA550BC6CEE43CC08877E96CCB0FFCA6611E0FDEE2CD9D8364C27E
-                04C54BCA5FB4F6E173390D30D658B11BF5E677980E61D6C701B0514AF61B113B
-                8C01AFB5607CA10AE35854D7C0F4383C24D300139393CD4E87639BADA8A8A3AB
-                AB2B310560A40F67F64D13A9F1CBB32CCE7300D82299ACE69C6C4227A7AB2376
-                5B0500D62463EF53869DC12164C25198BD0A6FC5061B72634F4F387CF28B2A94
-                F05504D300AEE0B0D24A04806674A7D9A7F5C8825F6004595D8AB8FF7D32B92E
-                1A8DFE93D30086EAEAEA7662F6FF44C8A71FF56383B91E1BCC31E343CE0318AA
-                AFAFDFCF843806905764B32D4F9BCF1B00436E5422BBDDFEF8F3AD7DDE00FC97
-                F202007E28B1A5FCA0E474D315883F3405186B2CBFC8246D4709F5CCBE12EB53
-                6DDE50626B458D14AC5F4A79D6D53EBCD31420E12B6F958C5AB088F9B5403C27
-                F642C80A3F7E853662B2550B0E9B1F6830D88BC1D7F0CDA066B5D5D045B5474A
-                D954694FE8C901E45115162FAF1688991F29A7F2CD578E433D4D1DEAB5920F7E
-                3AF554C9A1FE59D3224771F2C73684BB60AC536B8F6FA06F1DEA0DBDDD58B1D0
-                6A65F71196B14FD72A17F0670FF15E64E55A4508E980B31530F7339BBE56D175
-                563DE76A3CA36B95298D6F5E3237C56D278C8A940DD3260A5A45729FB3E349E6
-                175B6919E9F4AE71E92AC168AD14349F3859B3E1580AA913972F3993DDC581BF
-                EFD1F75C2DE68B0A00AA550050AD02806A1500542BEF013E02BD20B1406C58C3
-                2D0000000049454E44AE426082}
-              OnClick = actTrilharExecute
-            end
-            object lblTrilhar: TLabel
-              Left = 602
-              Top = 5
-              Width = 48
-              Height = 15
-              Caption = 'TRILHAR'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clBlue
-              Font.Height = -12
-              Font.Name = 'Segoe UI Semibold'
-              Font.Style = [fsBold]
-              ParentFont = False
-              OnClick = actTrilharExecute
             end
             object Label8: TLabel
               Left = 148
@@ -644,7 +590,7 @@ inherited Frm_Produto: TFrm_Produto
               Campo.DataSource = ds
               Campo.TabOrder = 0
               OnPesquisa = DBPesquisa1Pesquisa
-              TabOrder = 2
+              TabOrder = 3
               TabStop = True
             end
             object DBEdit5: TDBEdit
@@ -660,7 +606,7 @@ inherited Frm_Produto: TFrm_Produto
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 5
+              TabOrder = 6
             end
             object DBEdit7: TDBEdit
               Left = 429
@@ -675,7 +621,7 @@ inherited Frm_Produto: TFrm_Produto
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 6
+              TabOrder = 7
             end
             object DBPesquisa5: TDBPesquisa
               Left = 173
@@ -721,7 +667,7 @@ inherited Frm_Produto: TFrm_Produto
               Campo.DataSource = ds
               Campo.TabOrder = 0
               OnPesquisa = DBPesquisa5Pesquisa
-              TabOrder = 3
+              TabOrder = 4
               TabStop = True
             end
             object DBPesquisa6: TDBPesquisa
@@ -768,7 +714,7 @@ inherited Frm_Produto: TFrm_Produto
               Campo.DataSource = ds
               Campo.TabOrder = 0
               OnPesquisa = DBPesquisa6Pesquisa
-              TabOrder = 4
+              TabOrder = 5
               TabStop = True
             end
             object pnlTopLeft: TPanel
@@ -826,9 +772,9 @@ inherited Frm_Produto: TFrm_Produto
                 ParentFont = False
               end
               object dbcbbSITUACAO: TDBComboBox
-                Left = 1
-                Top = 66
-                Width = 108
+                Left = 5
+                Top = 64
+                Width = 100
                 Height = 25
                 Style = csDropDownList
                 Color = clWhite
@@ -854,7 +800,37 @@ inherited Frm_Produto: TFrm_Produto
               Height = 60
               DataField = 'DESCRICAO'
               DataSource = ds
-              TabOrder = 7
+              TabOrder = 8
+            end
+            object pnlTrilha: TPanel
+              Left = 564
+              Top = 4
+              Width = 90
+              Height = 49
+              Caption = 'pnlTrilha'
+              Color = 4868682
+              ParentBackground = False
+              ShowCaption = False
+              TabOrder = 2
+              object btnTrilhar: TSpeedButton
+                Left = 1
+                Top = 1
+                Width = 88
+                Height = 47
+                Action = actTrilhar
+                Align = alClient
+                Flat = True
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWhite
+                Font.Height = -11
+                Font.Name = 'Segoe UI Semibold'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ExplicitLeft = 32
+                ExplicitTop = 16
+                ExplicitWidth = 23
+                ExplicitHeight = 22
+              end
             end
           end
         end
@@ -2315,7 +2291,7 @@ inherited Frm_Produto: TFrm_Produto
     Left = 136
     Top = 157
     object actTrilhar: TAction
-      Caption = 'actTrilhar'
+      Caption = 'EXTRATO DE'#13#10'MOVIMENTA'#199#195'O'
       OnExecute = actTrilharExecute
     end
     object actMovimentar: TAction

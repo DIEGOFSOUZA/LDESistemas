@@ -231,9 +231,6 @@
         <DCCReference Include="Produto\UFrm_Produto.pas">
             <Form>Frm_Produto</Form>
         </DCCReference>
-        <DCCReference Include="Produto\UFrm_ProdutoComposicao.pas">
-            <Form>Frm_ProdutoComposicao</Form>
-        </DCCReference>
         <DCCReference Include="Cadastros\UFrm_Cidades.pas">
             <Form>Frm_Cidades</Form>
         </DCCReference>

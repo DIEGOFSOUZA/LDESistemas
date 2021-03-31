@@ -49,8 +49,6 @@ type
     Label1: TLabel;
     Label5: TLabel;
     Label7: TLabel;
-    imgTrilha: TImage;
-    lblTrilhar: TLabel;
     DBEdit1: TDBEdit;
     DBPesquisa1: TDBPesquisa;
     DBEdit5: TDBEdit;
@@ -196,6 +194,8 @@ type
     cdsNCM: TStringField;
     cdsCEST: TStringField;
     actExcItem: TAction;
+    pnlTrilha: TPanel;
+    btnTrilhar: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
@@ -346,7 +346,7 @@ end;
 procedure TFrm_Produto.actTrilharExecute(Sender: TObject);
 begin
   inherited;
-  if cdsCODIGO.AsInteger < 1 then
+  if (cdsCODIGO.AsInteger < 1) then
   begin
     TMensagem.Informacao('Informe o produto.');
     Exit;
