@@ -518,10 +518,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           object tsConversao: TTabSheet
             Caption = 'Fator de Convers'#227'o'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlFundoTab: TPanel
               Left = 0
               Top = 0

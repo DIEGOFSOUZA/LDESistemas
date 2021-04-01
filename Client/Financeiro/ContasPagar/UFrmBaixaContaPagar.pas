@@ -331,7 +331,7 @@ begin
   end;
 
   lNumCheque := 'null';
-  {Com cheque}
+{$REGION 'Com cheque'}
   if ((edtNumCheque.Text <> '') and (edtNumCheque.Text <> '0')) then
   begin
     if ((Trim(edpsqsConta.Campo.Text) = '') or
@@ -370,6 +370,7 @@ begin
 
     lNumCheque := edtNumCheque.Text;
   end;
+{$ENDREGION}
 
   if pTipo = 'restaurar' then
   begin
@@ -447,30 +448,6 @@ begin
   inherited;
   if btnBaixar.Action = actBaixar then
     edtDtBaixa.SetFocus;
-
-  {if Baixada then
-  begin
-    btnBaixar.Caption := '     Restaurar';
-    if IdConta <> '' then
-    begin
-      edpsqsConta.Campo.Text := IdConta;
-      edpsqsConta.Campo.OnExit(Self);
-    end;
-
-    if idHistorico <> '' then
-    begin
-      edpsqsHistorico.Campo.Text := idHistorico;
-      edpsqsHistorico.Campo.OnExit(Self);
-    end;
-
-    pnlBaixa.Enabled := False;
-    edtVlDesconto.ReadOnly := True;
-    edtVlJuros.ReadOnly := True;
-  end
-  else
-  begin
-    btnBaixar.Caption := '     Baixar';
-  end;}
 end;
 
 function TFrmBaixaContaPagar.GerarCheque(): Boolean;

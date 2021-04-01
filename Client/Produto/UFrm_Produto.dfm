@@ -2,7 +2,6 @@ inherited Frm_Produto: TFrm_Produto
   Caption = 'Cadastro de Produtos'
   ClientHeight = 650
   ClientWidth = 750
-  OnKeyDown = FormKeyDown
   ExplicitWidth = 750
   ExplicitHeight = 650
   PixelsPerInch = 96
@@ -473,8 +472,6 @@ inherited Frm_Produto: TFrm_Produto
             ParentColor = True
             ShowCaption = False
             TabOrder = 0
-            ExplicitLeft = 4
-            ExplicitTop = -2
             object Label1: TLabel
               Left = 147
               Top = 7
@@ -1448,7 +1445,6 @@ inherited Frm_Produto: TFrm_Produto
                         TitleFont.Height = -11
                         TitleFont.Name = 'Segoe UI'
                         TitleFont.Style = []
-                        OnDrawColumnCell = dbgrdComposicaoDrawColumnCell
                         Columns = <
                           item
                             Alignment = taLeftJustify
@@ -1540,10 +1536,10 @@ inherited Frm_Produto: TFrm_Produto
                 end
               end
             end
-            object tsConversao: TTabSheet
-              Caption = 'FATOR DE CONVERS'#195'O'
+            object tsFragmentacao: TTabSheet
+              Caption = 'VENDA FRAGMENTADA'
               ImageIndex = 2
-              object pnlFundoTab: TPanel
+              object pnlFundoFragm: TPanel
                 Left = 0
                 Top = 0
                 Width = 655
@@ -1557,7 +1553,7 @@ inherited Frm_Produto: TFrm_Produto
                   Height = 30
                   Align = alTop
                   AutoSize = False
-                  Caption = '  CONVERS'#195'O DE UNIDADE DE MEDIDA (MOVIMENTA'#199#195'O DE ESTOQUE)'
+                  Caption = '  FRAGMENTA'#199#195'O'
                   Color = 10114859
                   Font.Charset = ANSI_CHARSET
                   Font.Color = clWhite
@@ -1569,123 +1565,209 @@ inherited Frm_Produto: TFrm_Produto
                   Transparent = False
                   Layout = tlCenter
                   OnMouseMove = lblTituloMouseMove
-                  ExplicitLeft = -6
-                  ExplicitTop = 16
-                  ExplicitWidth = 603
+                  ExplicitLeft = 0
+                  ExplicitTop = 3
                 end
                 object pnlTopTab: TPanel
                   Left = 1
-                  Top = 31
+                  Top = 145
                   Width = 653
-                  Height = 172
-                  Align = alClient
+                  Height = 58
+                  Align = alBottom
                   BevelOuter = bvNone
                   Color = 14803681
                   ParentBackground = False
+                  TabOrder = 2
+                  ExplicitTop = 144
+                end
+                object pnlFragmExemplo: TPanel
+                  Left = 1
+                  Top = 31
+                  Width = 653
+                  Height = 42
+                  Align = alTop
+                  BevelOuter = bvNone
+                  Caption = 'pnlFragmExemplo'
+                  ShowCaption = False
                   TabOrder = 0
-                  object Label10: TLabel
-                    Left = 67
-                    Top = 52
-                    Width = 73
-                    Height = 15
-                    Caption = 'QUANTIDADE'
-                    FocusControl = DBEdit4
+                  object Label28: TLabel
+                    Left = 0
+                    Top = 0
+                    Width = 653
+                    Height = 17
+                    Align = alTop
+                    Caption = 'Venda fracionada, informe abaixo a condi'#231#227'o de fragmenta'#231#227'o'
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clWindowText
-                    Font.Height = -12
-                    Font.Name = 'Segoe UI'
-                    Font.Style = []
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
                     ParentFont = False
+                    Layout = tlCenter
+                    ExplicitWidth = 378
                   end
-                  object Label11: TLabel
-                    Left = 227
-                    Top = 52
-                    Width = 125
-                    Height = 15
-                    Caption = 'PRE'#199'O CONVERS'#195'O R$'
-                    FocusControl = DBEdit6
+                  object Label29: TLabel
+                    Left = 0
+                    Top = 17
+                    Width = 653
+                    Height = 17
+                    Align = alTop
+                    Caption = 'EXEMPLO: 1 Litro = 1000ml / 1 Caixa = 10 pacotes / 1 Saco = 50Kg'
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clWindowText
-                    Font.Height = -12
-                    Font.Name = 'Segoe UI'
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semilight'
                     Font.Style = []
                     ParentFont = False
+                    Layout = tlCenter
+                    ExplicitTop = 21
+                    ExplicitWidth = 375
                   end
-                  object DBPesquisa2: TDBPesquisa
-                    Left = 28
-                    Top = 21
-                    Width = 449
-                    Height = 22
-                    Titulo.Left = 0
-                    Titulo.Top = 3
-                    Titulo.Width = 114
-                    Titulo.Height = 15
-                    Titulo.Caption = 'UNIDADE DE MEDIDA'
-                    Titulo.Font.Charset = ANSI_CHARSET
-                    Titulo.Font.Color = clWindowText
-                    Titulo.Font.Height = -12
-                    Titulo.Font.Name = 'Segoe UI'
-                    Titulo.Font.Style = []
-                    Titulo.ParentFont = False
-                    ConsultaTabela.Tabela = 'UNIDADE'
-                    ConsultaTabela.Pesquisa = 'codigo'
-                    ConsultaTabela.Mostrar = 'SIGLA'
-                    Mostrar.Left = 198
-                    Mostrar.Top = 0
-                    Mostrar.Width = 250
-                    Mostrar.Height = 21
-                    Mostrar.TabStop = False
-                    Mostrar.DataField = 'CONV_DESCRIUNIDADE'
-                    Mostrar.DataSource = ds
-                    Mostrar.Font.Charset = DEFAULT_CHARSET
-                    Mostrar.Font.Color = clBlue
-                    Mostrar.Font.Height = -11
-                    Mostrar.Font.Name = 'Tahoma'
-                    Mostrar.Font.Style = []
-                    Mostrar.ParentFont = False
-                    Mostrar.ReadOnly = True
-                    Mostrar.TabOrder = 1
-                    Campo.Left = 116
-                    Campo.Top = 0
-                    Campo.Width = 57
-                    Campo.Height = 21
-                    Campo.CharCase = ecUpperCase
-                    Campo.DataField = 'CONV_UNIDADE'
-                    Campo.DataSource = ds
-                    Campo.TabOrder = 0
-                    OnPesquisa = DBPesquisa2Pesquisa
+                end
+                object pnlFragmentacao: TPanel
+                  Left = 1
+                  Top = 73
+                  Width = 653
+                  Height = 72
+                  Align = alClient
+                  BevelOuter = bvNone
+                  Caption = 'pnlFragmentacao'
+                  Color = 14803681
+                  ParentBackground = False
+                  ShowCaption = False
+                  TabOrder = 1
+                  ExplicitHeight = 48
+                  object lblUnidade: TLabel
+                    Left = 6
+                    Top = 19
+                    Width = 140
+                    Height = 34
+                    Alignment = taRightJustify
+                    AutoSize = False
+                    Caption = '1 CAIXA COM 50 UNIDADES = '
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    WordWrap = True
+                  end
+                  object pnlDadosFragmentacao: TPanel
+                    Left = 152
+                    Top = 0
+                    Width = 501
+                    Height = 72
+                    Align = alRight
+                    Caption = 'pnlDadosFragmentacao'
+                    ShowCaption = False
                     TabOrder = 0
-                    TabStop = True
-                  end
-                  object DBEdit4: TDBEdit
-                    Left = 146
-                    Top = 49
-                    Width = 57
-                    Height = 23
-                    DataField = 'CONV_QTDE'
-                    DataSource = ds
-                    Font.Charset = ANSI_CHARSET
-                    Font.Color = clWindowText
-                    Font.Height = -12
-                    Font.Name = 'Segoe UI'
-                    Font.Style = []
-                    ParentFont = False
-                    TabOrder = 1
-                  end
-                  object DBEdit6: TDBEdit
-                    Left = 356
-                    Top = 49
-                    Width = 121
-                    Height = 23
-                    DataField = 'CONV_PRECO'
-                    DataSource = ds
-                    Font.Charset = ANSI_CHARSET
-                    Font.Color = clWindowText
-                    Font.Height = -12
-                    Font.Name = 'Segoe UI'
-                    Font.Style = []
-                    ParentFont = False
-                    TabOrder = 2
+                    ExplicitHeight = 48
+                    object Label10: TLabel
+                      Left = 24
+                      Top = 16
+                      Width = 73
+                      Height = 15
+                      Caption = 'QUANTIDADE'
+                      FocusControl = DBEdit4
+                      Font.Charset = ANSI_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -12
+                      Font.Name = 'Segoe UI'
+                      Font.Style = []
+                      ParentFont = False
+                    end
+                    object Label11: TLabel
+                      Left = 2
+                      Top = 44
+                      Width = 95
+                      Height = 15
+                      Caption = 'PRE'#199'O DE VENDA'
+                      FocusControl = DBEdit6
+                      Font.Charset = ANSI_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -12
+                      Font.Name = 'Segoe UI'
+                      Font.Style = []
+                      ParentFont = False
+                    end
+                    object DBEdit4: TDBEdit
+                      Left = 99
+                      Top = 13
+                      Width = 81
+                      Height = 23
+                      DataField = 'CONV_QTDE'
+                      DataSource = ds
+                      Font.Charset = ANSI_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -12
+                      Font.Name = 'Segoe UI'
+                      Font.Style = []
+                      ParentFont = False
+                      TabOrder = 0
+                    end
+                    object DBPesquisa2: TDBPesquisa
+                      Left = 182
+                      Top = 13
+                      Width = 318
+                      Height = 22
+                      Titulo.Left = 0
+                      Titulo.Top = 3
+                      Titulo.Width = 50
+                      Titulo.Height = 15
+                      Titulo.Caption = 'UNIDADE'
+                      Titulo.Font.Charset = ANSI_CHARSET
+                      Titulo.Font.Color = clWindowText
+                      Titulo.Font.Height = -12
+                      Titulo.Font.Name = 'Segoe UI'
+                      Titulo.Font.Style = []
+                      Titulo.ParentFont = False
+                      ConsultaTabela.Tabela = 'UNIDADE'
+                      ConsultaTabela.Pesquisa = 'codigo'
+                      ConsultaTabela.Mostrar = 'SIGLA'
+                      ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+                      Mostrar.Left = 117
+                      Mostrar.Top = 0
+                      Mostrar.Width = 200
+                      Mostrar.Height = 21
+                      Mostrar.TabStop = False
+                      Mostrar.DataField = 'CONV_DESCRIUNIDADE'
+                      Mostrar.DataSource = ds
+                      Mostrar.Font.Charset = DEFAULT_CHARSET
+                      Mostrar.Font.Color = clBlue
+                      Mostrar.Font.Height = -11
+                      Mostrar.Font.Name = 'Tahoma'
+                      Mostrar.Font.Style = []
+                      Mostrar.ParentFont = False
+                      Mostrar.ReadOnly = True
+                      Mostrar.TabOrder = 1
+                      Campo.Left = 52
+                      Campo.Top = 0
+                      Campo.Width = 40
+                      Campo.Height = 21
+                      Campo.CharCase = ecUpperCase
+                      Campo.DataField = 'CONV_UNIDADE'
+                      Campo.DataSource = ds
+                      Campo.TabOrder = 0
+                      OnPesquisa = DBPesquisa2Pesquisa
+                      TabOrder = 1
+                      TabStop = True
+                    end
+                    object DBEdit6: TDBEdit
+                      Left = 99
+                      Top = 41
+                      Width = 81
+                      Height = 23
+                      DataField = 'CONV_PRECO'
+                      DataSource = ds
+                      Font.Charset = ANSI_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -12
+                      Font.Name = 'Segoe UI'
+                      Font.Style = []
+                      ParentFont = False
+                      TabOrder = 2
+                    end
                   end
                 end
               end
@@ -2121,6 +2203,7 @@ inherited Frm_Produto: TFrm_Produto
     object cdsQTDE_ESTOQUE: TFMTBCDField
       FieldName = 'QTDE_ESTOQUE'
       Origin = 'QTDE_ESTOQUE'
+      OnGetText = cdsQTDE_ESTOQUEGetText
       Precision = 18
       Size = 3
     end
@@ -2242,17 +2325,15 @@ inherited Frm_Produto: TFrm_Produto
       Origin = 'ULTIMA_ALTERACAO'
       Size = 200
     end
-    object cdsDESCRI_UNIDADE: TStringField
-      FieldName = 'DESCRI_UNIDADE'
-      Origin = 'NOME'
-      ProviderFlags = []
-      ReadOnly = True
-      Size = 30
-    end
     object cdsCALC_CUSTO_COMPOSICAO: TStringField
       FieldName = 'CALC_CUSTO_COMPOSICAO'
       FixedChar = True
       Size = 1
+    end
+    object cdsDESCRI_UNIDADE: TStringField
+      FieldName = 'DESCRI_UNIDADE'
+      OnGetText = cdsDESCRI_UNIDADEGetText
+      Size = 30
     end
     object cdsCONV_DESCRIUNIDADE: TStringField
       FieldName = 'CONV_DESCRIUNIDADE'

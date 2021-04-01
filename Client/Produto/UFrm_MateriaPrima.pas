@@ -126,7 +126,7 @@ implementation
 
 {$R *.dfm}
 
-uses UDM, UConsulta,UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha, u_Mensagem;
+uses UDM, UConsulta,UMakeReadWrite, URel_ProdutoTrilha, u_Mensagem;
 
 procedure TFrm_MateriaPrima.actTrilharExecute(Sender: TObject);
 begin
@@ -308,7 +308,7 @@ end;
 
 procedure TFrm_MateriaPrima.PngAddProdutoClick(Sender: TObject);
 begin
-  if cds.IsEmpty then
+ { if cds.IsEmpty then
     Exit ;
 
   if not Assigned(Frm_ProdutoComposicao) then
@@ -340,7 +340,7 @@ begin
 
   finally
     FreeAndNil(Frm_ProdutoComposicao);
-  end;
+  end;  }
 end;
 
 

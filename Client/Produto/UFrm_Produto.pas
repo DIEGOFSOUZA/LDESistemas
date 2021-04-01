@@ -1,4 +1,4 @@
-unit UFrm_Produto;
+unit UFrm_Produto; //CONVERSÃO DE UNIDADE DE MEDIDA (MOVIMENTAÇÃO DE ESTOQUE)
 
 interface
 
@@ -64,15 +64,10 @@ type
     pnl2: TPanel;
     tsComposicao: TTabSheet;
     pnlComposicao: TPanel;
-    tsConversao: TTabSheet;
-    pnlFundoTab: TPanel;
+    tsFragmentacao: TTabSheet;
+    pnlFundoFragm: TPanel;
     lblTitConversao: TLabel;
     pnlTopTab: TPanel;
-    Label10: TLabel;
-    Label11: TLabel;
-    DBPesquisa2: TDBPesquisa;
-    DBEdit4: TDBEdit;
-    DBEdit6: TDBEdit;
     tsHistPrecoVenda: TTabSheet;
     pnlHistorico: TPanel;
     Label20: TLabel;
@@ -155,7 +150,6 @@ type
     cdsFISCAL_ORIGEM: TStringField;
     cdsFISCAL_NCM: TIntegerField;
     cdsFISCAL_CEST: TIntegerField;
-    cdsDESCRI_UNIDADE: TStringField;
     cdsfdqryProdutoFornecedor: TDataSetField;
     cdsfdqryProdutoComposicao: TDataSetField;
     cdsULTIMA_ALTERACAO: TStringField;
@@ -188,7 +182,6 @@ type
     cdsHistCustoUSUARIO: TStringField;
     cdsCALC_CUSTO_COMPOSICAO: TStringField;
     chkCustoEstimado: TCheckBox;
-    cdsCONV_DESCRIUNIDADE: TStringField;
     cdsGRUPO: TStringField;
     cdsSUBGRUPO: TStringField;
     cdsNCM: TStringField;
@@ -196,11 +189,23 @@ type
     actExcItem: TAction;
     pnlTrilha: TPanel;
     btnTrilhar: TSpeedButton;
+    pnlFragmExemplo: TPanel;
+    Label28: TLabel;
+    Label29: TLabel;
+    pnlFragmentacao: TPanel;
+    lblUnidade: TLabel;
+    pnlDadosFragmentacao: TPanel;
+    Label10: TLabel;
+    DBEdit4: TDBEdit;
+    DBPesquisa2: TDBPesquisa;
+    DBEdit6: TDBEdit;
+    Label11: TLabel;
+    cdsDESCRI_UNIDADE: TStringField;
+    cdsCONV_DESCRIUNIDADE: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa6Pesquisa(Sender: TObject; var Retorno: string);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure actTrilharExecute(Sender: TObject);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
@@ -216,19 +221,22 @@ type
     procedure cdsBeforePost(DataSet: TDataSet);
     procedure cdsComposicaoProdutoID_MATPRIMAGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
-    procedure dbgrdComposicaoDrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure chkCustoEstimadoClick(Sender: TObject);
     procedure cdsAfterCancel(DataSet: TDataSet);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
     procedure edtQtdeClick(Sender: TObject);
     procedure edtQtdeExit(Sender: TObject);
     procedure actExcItemExecute(Sender: TObject);
+    procedure cdsDESCRI_UNIDADEGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
 
   private
     FCustoEstimado: Currency;
     FQtde: Double;
     FvUnitario: Double;
+    FAtualizaPrecoCusto: Boolean;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
@@ -244,6 +252,7 @@ type
     property CustoEstimado: Currency  read FCustoEstimado;
     property Qtde: Double read FQtde write SetQtde;
     property vUnitario: Double read FvUnitario write setvUnitario;
+    property AtualizaPrecoCusto:Boolean read FAtualizaPrecoCusto;
 
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
@@ -260,8 +269,8 @@ implementation
 
 {$R *.dfm}
 uses
-  UConsulta, UDM, UMakeReadWrite, UFrm_ProdutoComposicao, URel_ProdutoTrilha,
-  UFuncoes, u_Mensagem, ACBrUtil;
+  UConsulta, UDM, UMakeReadWrite, URel_ProdutoTrilha, UFuncoes, u_Mensagem,
+  ACBrUtil;
 
 procedure TFrm_Produto.actAddItemExecute(Sender: TObject);
 begin
@@ -384,10 +393,16 @@ begin
     end;
   end;
   lblCustEstimado.Caption := FormatCurr('R$ #,##0.00',FCustoEstimado);
-  if (cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString = 'S') then
-    chkCustoEstimado.Checked := True
-  else
-    chkCustoEstimado.Checked := False;
+
+  try
+    chkCustoEstimado.OnClick := nil;
+    if (cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString = 'S') then
+      chkCustoEstimado.Checked := True
+    else
+      chkCustoEstimado.Checked := False;
+  finally
+    chkCustoEstimado.OnClick := chkCustoEstimadoClick;
+  end;
 end;
 
 procedure TFrm_Produto.Cancelar;
@@ -439,12 +454,31 @@ begin
   Text := Sender.AsString+' '+cdsComposicaoProduto.FieldByName('NOME').AsString;
 end;
 
+procedure TFrm_Produto.cdsDESCRI_UNIDADEGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+  Text := Sender.AsString;
+  if ((not Sender.IsNull) and (Sender.AsString <> EmptyStr)) then
+    lblUnidade.Caption := '1 ' + Sender.AsString + ' = ';
+end;
+
 procedure TFrm_Produto.cdsPRECO_ATACADOChange(Sender: TField);
 begin
   inherited;
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
   if pnlQtdeMinAtac.Visible then
     dbedtQTDE_MIN_ATACADO.SetFocus;
+end;
+
+procedure TFrm_Produto.cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  inherited;
+  if (not cds.FieldByName('CONV_QTDE').IsNull) then
+  begin
+    Text := FormatFloat('##0.000',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat));
+  end;
 end;
 
 procedure TFrm_Produto.chkCustoEstimadoClick(Sender: TObject);
@@ -455,14 +489,6 @@ begin
     cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado
   else
     cds.FieldByName('PRECO_CUSTO').AsCurrency := 0;
-end;
-
-procedure TFrm_Produto.dbgrdComposicaoDrawColumnCell(Sender: TObject;
-  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-begin
-  inherited;
-//  ShowScrollBar(dbgrdComposicao.Handle, SB_VERT, False);
-//  ShowScrollBar(dbgrdComposicao.Handle, SB_HORZ, False);
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;
@@ -601,23 +627,8 @@ procedure TFrm_Produto.FormCreate(Sender: TObject);
 begin
   inherited;
   ResetaCDS ;
-
-//  ReadWrite ;
-
-  pgc1.TabIndex := 1;
+  pgc1.TabIndex := 2;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
-end;
-
-procedure TFrm_Produto.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  inherited;
-   //Apertou ESC
-  if Key = Vk_Escape then
-    if cdsComposicaoProduto.State in [dsInsert] then
-    begin
-      cdsComposicaoProduto.Cancel;
-    end;
 end;
 
 procedure TFrm_Produto.Gravar;
@@ -735,6 +746,7 @@ begin
   cds.Close;
   cds.FieldDefs.Clear;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+  FAtualizaPrecoCusto := False;
 end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
