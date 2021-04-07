@@ -3,96 +3,180 @@ unit UFrm_MateriaPrima;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad, System.Actions, Vcl.ActnList,
-  Data.DB, Datasnap.DBClient, Vcl.ComCtrls, Vcl.Buttons, PngSpeedButton,
-  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls, UDBPesquisa, Vcl.Mask,
-  Vcl.DBGrids, UEDPesquisa, Vcl.Menus, Vcl.Imaging.pngimage, Vcl.Grids;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad,
+  System.Actions, Vcl.ActnList, Data.DB, Datasnap.DBClient, Vcl.ComCtrls,
+  Vcl.Buttons, PngSpeedButton, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
+  UDBPesquisa, Vcl.Mask, Vcl.DBGrids, UEDPesquisa, Vcl.Menus,
+  Vcl.Imaging.pngimage, Vcl.Grids;
 
 type
   TFrm_MateriaPrima = class(TPdr_Cad)
-    dsProdutoFornecedor: TDataSource;
-    cdsProdutoFornecedor: TClientDataSet;
-    cdsCODIGO: TIntegerField;
-    cdsNOME: TStringField;
-    cdsCOD_UNIDADE: TIntegerField;
-    cdsEAN_CODBARRA: TStringField;
-    cdsCOD_FABRICANTE: TIntegerField;
-    cdsCOD_GRUPO: TIntegerField;
-    cdsCOD_SUBGRUPO: TIntegerField;
-    cdsDESCRICAO: TStringField;
-    cdsCOD_NCM: TStringField;
-    cdsTIPO_PRODUTO: TStringField;
-    cdsDESCRI_UNIDADE: TStringField;
-    cdsFABRICANTE: TStringField;
-    cdsGRUPO: TStringField;
-    cdsSUBGRUPO: TStringField;
-    cdsDESCRI_NCM: TStringField;
     Panel2: TPanel;
-    Panel3: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label4: TLabel;
-    Label9: TLabel;
-    Label5: TLabel;
-    Label7: TLabel;
-    DBEdit1: TDBEdit;
-    DBEdit2: TDBEdit;
-    DBPesquisa1: TDBPesquisa;
-    DBEdit9: TDBEdit;
-    DBEdit10: TDBEdit;
-    DBEdit5: TDBEdit;
-    DBEdit7: TDBEdit;
-    PageControl1: TPageControl;
-    TabSheet2: TTabSheet;
-    chkTipo: TCheckBox;
-    cdsProdutoFornecedorID: TIntegerField;
-    cdsProdutoFornecedorID_PRODUTO: TIntegerField;
-    cdsProdutoFornecedorID_FORNECEDOR: TIntegerField;
-    cdsProdutoFornecedorREFERENCIA_FORNEC: TStringField;
-    cdsProdutoFornecedorRAZAO_NOME: TStringField;
-    pnlFornecedores: TPanel;
-    PngAddProduto: TPngSpeedButton;
-    PngSpeedButton1: TPngSpeedButton;
-    DBGrid1: TDBGrid;
-    Label6: TLabel;
-    DBEdit3: TDBEdit;
-    imgTrilha: TImage;
-    lblTrilhar: TLabel;
     actTrilhar: TAction;
-    cdsCONV_UNIDADE: TIntegerField;
-    tsConversao: TTabSheet;
-    pnlFundoTab: TPanel;
+    pnlPages: TPanel;
+    pgc1: TPageControl;
+    tsEstoque: TTabSheet;
+    TabSheet2: TTabSheet;
+    pnlFornecedores: TPanel;
+    tsFragmentacao: TTabSheet;
+    Panel5: TPanel;
+    pnlMovimentar: TPanel;
+    Label21: TLabel;
+    Label22: TLabel;
+    lblTitMov: TLabel;
+    btnMovimentar: TSpeedButton;
+    cbbTpMov: TComboBox;
+    edtQtdeMov: TEdit;
+    pnlEstoqueAtual: TPanel;
+    Label26: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    dbtxtQTDE_ESTOQUE: TDBText;
+    DBEdit12: TDBEdit;
+    pnlFundoFragm: TPanel;
     lblTitConversao: TLabel;
     pnlTopTab: TPanel;
+    pnlFragmExemplo: TPanel;
+    Label28: TLabel;
+    Label29: TLabel;
+    pnlFragmentacao: TPanel;
+    lblUnidade: TLabel;
+    pnlDadosFragmentacao: TPanel;
     Label10: TLabel;
-    DBPesquisa2: TDBPesquisa;
-    DBEdit4: TDBEdit;
-    cdsCONV_DESCRIUNIDADE: TStringField;
     Label11: TLabel;
-    DBEdit6: TDBEdit;
+    dbedtCONV_QTDE: TDBEdit;
+    dbpsqsConvUnidade: TDBPesquisa;
+    dbedtCONV_PRECO: TDBEdit;
+    tsFiscal: TTabSheet;
+    pnlFundoFiscal: TPanel;
+    Label24: TLabel;
+    Label25: TLabel;
+    dbcbbFISCAL_TIPO: TDBComboBox;
+    dbcbbFISCAL_ORIGEM: TDBComboBox;
+    dbpsqsNCM: TDBPesquisa;
+    dbpsqsCEST: TDBPesquisa;
+    tsHistPreco: TTabSheet;
+    pnlHistorico: TPanel;
+    pnlHistVenda: TPanel;
+    Label14: TLabel;
+    dbgrdHistCusto: TDBGrid;
+    pnlHistCusto: TPanel;
+    lblTitHistCusto: TLabel;
+    dbgrdHistVenda: TDBGrid;
+    Panel6: TPanel;
+    pnlPreco: TPanel;
+    lblTitPreco: TLabel;
+    pnlPrecoCusto: TPanel;
+    Label15: TLabel;
+    Label17: TLabel;
+    dbedtPRECO_CUSTO: TDBEdit;
+    pnlPrecoCenter: TPanel;
+    pnlPVenda: TPanel;
+    Label16: TLabel;
+    dbedtPRECO_VENDA: TDBEdit;
+    pnlLucro: TPanel;
+    lblLucro: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    pnlDescMaximo: TPanel;
+    Label20: TLabel;
+    DBEdit13: TDBEdit;
+    pnlPAtac: TPanel;
+    Label27: TLabel;
+    dbedtPRECO_ATACADO: TDBEdit;
+    pnlLucroAtacado: TPanel;
+    lblLucroAtacado: TLabel;
+    Label30: TLabel;
+    Label31: TLabel;
+    pnlQtdeMinAtac: TPanel;
+    Label32: TLabel;
+    dbedtQTDE_MIN_ATACADO: TDBEdit;
+    pnlTopo: TPanel;
+    Label33: TLabel;
+    Label34: TLabel;
+    Label35: TLabel;
+    Label36: TLabel;
+    dbedtNOME: TDBEdit;
+    dbpsqsUnidade: TDBPesquisa;
+    DBEdit15: TDBEdit;
+    DBEdit16: TDBEdit;
+    DBPesquisa5: TDBPesquisa;
+    DBPesquisa6: TDBPesquisa;
+    pnlTopLeft: TPanel;
+    Label37: TLabel;
+    dbtxtCODIGO: TDBText;
+    Label38: TLabel;
+    dbcbbSITUACAO: TDBComboBox;
+    DBMemo2: TDBMemo;
+    pnlTrilha: TPanel;
+    btnTrilhar: TSpeedButton;
+    cdsCODIGO: TIntegerField;
+    cdsNOME: TStringField;
     cdsPRECO_VENDA: TCurrencyField;
+    cdsCOD_UNIDADE: TIntegerField;
     cdsQTDE_ESTOQUE: TFMTBCDField;
     cdsPRECO_CUSTO: TCurrencyField;
     cdsESTIMA_PRODUCAO: TFMTBCDField;
     cdsPESO_BRUTO: TFMTBCDField;
     cdsPESO_LIQUIDO: TFMTBCDField;
+    cdsEAN_CODBARRA: TStringField;
+    cdsCOD_GRUPO: TIntegerField;
+    cdsCOD_SUBGRUPO: TIntegerField;
+    cdsDESCRICAO: TStringField;
+    cdsTIPO_PRODUTO: TStringField;
     cdsQTDE_MINIMA: TFMTBCDField;
+    cdsCONV_UNIDADE: TIntegerField;
     cdsCONV_QTDE: TFMTBCDField;
     cdsCONV_PRECO: TCurrencyField;
-    cdsProdutoFornecedorPRECO: TFMTBCDField;
-    Label3: TLabel;
-    DBEdit8: TDBEdit;
     cdsDT_CADASTRO: TDateField;
-    tsInfAd: TTabSheet;
-    pnl2: TPanel;
-    Label8: TLabel;
-    DBMemo1: TDBMemo;
-    pnlDesc: TPanel;
-    pnlDescMaximo: TPanel;
-    lblTitDesc: TLabel;
-    DBEdit11: TDBEdit;
     cdsDESC_MAXIMO: TFMTBCDField;
+    cdsPRECO_ATACADO: TFMTBCDField;
+    cdsQTDE_MIN_ATACADO: TFMTBCDField;
+    cdsSITUACAO: TStringField;
+    cdsFISCAL_TIPO: TStringField;
+    cdsFISCAL_ORIGEM: TStringField;
+    cdsFISCAL_NCM: TIntegerField;
+    cdsFISCAL_CEST: TIntegerField;
+    cdsULTIMA_ALTERACAO: TStringField;
+    cdsCALC_CUSTO_COMPOSICAO: TStringField;
+    cdsDESCRI_UNIDADE: TStringField;
+    cdsCONV_DESCRIUNIDADE: TStringField;
+    cdsGRUPO: TStringField;
+    cdsSUBGRUPO: TStringField;
+    cdsNCM: TStringField;
+    cdsCEST: TStringField;
+    cdsfdqryPrecoCustoHist: TDataSetField;
+    cdsfdqryPrecoVendaHist: TDataSetField;
+    cdsfdqryProdutoFornecedor: TDataSetField;
+    cdsfdqryProdutoComposicao: TDataSetField;
+    chkTipo: TCheckBox;
+    cdsFornecedor: TClientDataSet;
+    cdsHistVenda: TClientDataSet;
+    cdsHistCusto: TClientDataSet;
+    dsFornecedor: TDataSource;
+    dsHistVenda: TDataSource;
+    dsHistCusto: TDataSource;
+    cdsHistVendaID_PROD: TIntegerField;
+    cdsHistVendaUSUARIO: TStringField;
+    cdsHistVendaPRECO_NOVO: TFMTBCDField;
+    cdsHistVendaDATA: TDateField;
+    cdsHistVendaDT_FIM: TDateField;
+    cdsHistCustoID_PROD: TIntegerField;
+    cdsHistCustoPRECO_NOVO: TFMTBCDField;
+    cdsHistCustoDATA: TDateField;
+    cdsHistCustoDATA_FIM: TDateField;
+    cdsHistCustoUSUARIO: TStringField;
+    cdsFornecedorID_FORNECEDOR: TIntegerField;
+    cdsFornecedorID_PRODUTO: TIntegerField;
+    cdsFornecedorPRECO: TFMTBCDField;
+    cdsFornecedorREFERENCIA_FORNEC: TStringField;
+    cdsFornecedorRAZAO_NOME: TStringField;
+    actMovimentar: TAction;
+    pnlExcFrag: TPanel;
+    imgExcFrag: TImage;
+    btnExcFragmentacao: TSpeedButton;
+    actExcFragmentacao: TAction;
     procedure EdPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
@@ -101,16 +185,29 @@ type
     procedure FormCreate(Sender: TObject);
     procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
     procedure actTrilharExecute(Sender: TObject);
-    procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsConvUnidadePesquisa(Sender: TObject; var Retorno: string);
     procedure pnlDescClick(Sender: TObject);
+    procedure actMovimentarExecute(Sender: TObject);
+    procedure cdsDESCRI_UNIDADEGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure cdsPRECO_ATACADOChange(Sender: TField);
+    procedure cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure cdsBeforePost(DataSet: TDataSet);
+    procedure cdsAfterCancel(DataSet: TDataSet);
+    procedure chkTipoClick(Sender: TObject);
+    procedure actExcFragmentacaoExecute(Sender: TObject);
+    procedure dbpsqsNCMPesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
   private
-    { Private declarations }
+    function Validar(): Boolean;
+    function ValidarMovimentacao(): Boolean;
+    function VoltaQtde(aQtde: Extended): Extended;
+
     procedure MontaSql(pCodigo : Integer) ;
-    function Validar() : Boolean ;
     procedure ResetaCDS() ;
-    procedure ReadWrite() ;
+    procedure MargemLucro(aTipo:integer);
   public
-    { Public declarations }
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
     procedure Excluir() ; override ;
@@ -126,7 +223,36 @@ implementation
 
 {$R *.dfm}
 
-uses UDM, UConsulta,UMakeReadWrite, URel_ProdutoTrilha, u_Mensagem;
+uses
+  UDM, UConsulta, URel_ProdutoTrilha, u_Mensagem;
+
+procedure TFrm_MateriaPrima.actExcFragmentacaoExecute(Sender: TObject);
+begin
+  inherited;
+  Editar;
+  cds.FieldByName('CONV_UNIDADE').Clear;
+  cds.FieldByName('CONV_QTDE').Clear;
+  cds.FieldByName('CONV_PRECO').Clear;
+  cds.FieldByName('CONV_DESCRIUNIDADE').Clear;
+end;
+
+procedure TFrm_MateriaPrima.actMovimentarExecute(Sender: TObject);
+begin
+  inherited;
+  if ValidarMovimentacao then
+    if DM.SMProducao.setMovimento(DM.BancoDados, DM.User,
+      cds.FieldByName('codigo').AsInteger, StrToFloat(edtQtdeMov.Text),
+      VoltaQtde(StrToFloat(edtQtdeMov.Text)),
+      cds.FieldByName('COD_UNIDADE').AsInteger, cbbTpMov.Text,
+      cds.FieldByName('NOME').AsString) then
+    begin
+      MontaSql(cds.FieldByName('codigo').AsInteger);
+      cbbTpMov.ItemIndex := 0;
+      edtQtdeMov.Text := '0';
+    end
+    else
+      TMensagem.Erro('Não foi possivel gerar a movimentação. Tente novamente.');
+end;
 
 procedure TFrm_MateriaPrima.actTrilharExecute(Sender: TObject);
 begin
@@ -153,14 +279,20 @@ end;
 procedure TFrm_MateriaPrima.Cancelar;
 begin
   inherited;
-  if cdsProdutoFornecedor.State in [dsEdit, dsInsert] then
-    cdsProdutoFornecedor.Cancel;
+end;
+
+procedure TFrm_MateriaPrima.cdsAfterCancel(DataSet: TDataSet);
+begin
+  inherited;
+  cdsFornecedor.CancelUpdates;
+  cdsHistVenda.CancelUpdates;
+  cdsHistCusto.CancelUpdates;
 end;
 
 procedure TFrm_MateriaPrima.cdsAfterInsert(DataSet: TDataSet);
 begin
   inherited;
-  cdsCODIGO.AsInteger       := DM.GetInteger('select GEN_ID(GEN_PRODUTO,1) id from RDB$DATABASE','id') ;
+  cdsCODIGO.AsInteger       := 0;//DM.GetInteger('select GEN_ID(GEN_PRODUTO,1) id from RDB$DATABASE','id') ;
   cdsQTDE_ESTOQUE.AsFloat   := 0 ;
   cdsPESO_BRUTO.AsFloat     := 0 ;
   cdsPESO_LIQUIDO.AsFloat   := 0 ;
@@ -170,6 +302,54 @@ begin
   cdsQTDE_MINIMA.AsFloat    := 0 ;
   cdsTIPO_PRODUTO.AsString  := 'MP' ;
   cdsDT_CADASTRO.AsDateTime := Date;
+  cdsSITUACAO.AsString := 'ATIVO';
+end;
+
+procedure TFrm_MateriaPrima.cdsBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  cds.FieldByName('ULTIMA_ALTERACAO').AsString := DM.UsuarioDataHora;
+end;
+
+procedure TFrm_MateriaPrima.cdsDESCRI_UNIDADEGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+  Text := Sender.AsString;
+  lblUnidade.Visible := False;
+  if ((not Sender.IsNull) and (Sender.AsString <> EmptyStr)) then
+  begin
+    lblUnidade.Caption := '1 ' + Sender.AsString + ' = ';
+    lblUnidade.Visible := True;
+  end;
+end;
+
+procedure TFrm_MateriaPrima.cdsPRECO_ATACADOChange(Sender: TField);
+begin
+  inherited;
+  pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
+  if pnlQtdeMinAtac.Visible then
+    dbedtQTDE_MIN_ATACADO.SetFocus;
+end;
+
+procedure TFrm_MateriaPrima.cdsQTDE_ESTOQUEGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  inherited;
+  if (not cds.FieldByName('CONV_QTDE').IsNull) then
+    Text := FormatFloat('##0.000', (Sender.AsFloat / cds.FieldByName('CONV_QTDE').AsFloat))
+  else
+    Text := FormatFloat('##0.000', Sender.AsFloat);
+end;
+
+procedure TFrm_MateriaPrima.chkTipoClick(Sender: TObject);
+begin
+  inherited;
+  Editar;
+  if chkTipo.Checked then
+    cds.FieldByName('TIPO_PRODUTO').AsString := 'A'
+  else
+    cds.FieldByName('TIPO_PRODUTO').AsString := 'MP';
 end;
 
 procedure TFrm_MateriaPrima.DBEdit2KeyPress(Sender: TObject; var Key: Char);
@@ -190,7 +370,14 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
-procedure TFrm_MateriaPrima.DBPesquisa2Pesquisa(Sender: TObject;
+procedure TFrm_MateriaPrima.dbpsqsCESTPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.CEST.ToString;
+end;
+
+procedure TFrm_MateriaPrima.dbpsqsConvUnidadePesquisa(Sender: TObject;
   var Retorno: string);
 var
   aRet: TRetornoUnidade;
@@ -201,10 +388,16 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
+procedure TFrm_MateriaPrima.dbpsqsNCMPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.NCM.ToString;
+end;
+
 procedure TFrm_MateriaPrima.Editar;
 begin
   inherited;
-
 end;
 
 procedure TFrm_MateriaPrima.EdPesquisa5Pesquisa(Sender: TObject;
@@ -222,10 +415,17 @@ end;
 procedure TFrm_MateriaPrima.Excluir;
 begin
   inherited;
-  if cds.ChangeCount > 0 then
-  begin
-    Dm.SMCadastroClient.setMateriaPrima(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([cds.Delta, null]));
-    ResetaCDS;
+  try
+    inherited;
+    if cds.ChangeCount > 0 then
+    begin
+      DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('ID').AsInteger, cds.Delta);
+      cds.Close;
+      cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+    end;
+    TMensagem.Informacao('Exclusão efetuada com sucesso.');
+  except
+    TMensagem.Erro('', 'Exclusão não efetuada.');
   end;
 end;
 
@@ -233,38 +433,41 @@ procedure TFrm_MateriaPrima.FormCreate(Sender: TObject);
 begin
   inherited;
   ResetaCDS ;
-  PageControl1.TabIndex := 0 ;
+  pgc1.TabIndex := 0 ;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
 procedure TFrm_MateriaPrima.Gravar;
 var
-  oRetorno,aMatPrima,aFornecedor: OleVariant;
+  lRetorno: OleVariant;
 begin
   if not Validar then
     Exit ;
 
-  if chkTipo.Checked then
-    cdsTIPO_PRODUTO.AsString := 'A'
-  else
-    cdsTIPO_PRODUTO.AsString := 'MP' ;
   inherited;
-
-  aMatPrima := null ;
-  aFornecedor := null ;
-
   if cds.ChangeCount > 0 then
-    aMatPrima := cds.Delta ;
-  if cdsProdutoFornecedor.ChangeCount > 0 then
-    aFornecedor := cdsProdutoFornecedor.Delta ;
+  begin
+    try
+      lRetorno := DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('codigo').AsInteger, cds.Delta);
+      cds.Close;
+      cds.Data := lRetorno;
 
-  oRetorno := Dm.SMCadastroClient.setMateriaPrima(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([aMatPrima,aFornecedor]));
+      pnlLucro.Visible := False;
+      pnlLucroAtacado.Visible := False;
 
-  cds.Close;
-  cds.Data := oRetorno[0];
-
-  cdsProdutoFornecedor.Close;
-  cdsProdutoFornecedor.Data := oRetorno[1];
+      if (cds.FieldByName('preco_custo').AsCurrency > 0) then
+      begin
+        if (cds.FieldByName('preco_venda').AsCurrency > 0) then
+          MargemLucro(0);
+        if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
+          MargemLucro(1);
+      end;
+      TMensagem.Informacao('Gravação efetuada com sucesso');
+//        pgc1.TabIndex := 0;
+    except
+      TMensagem.Erro('Não foi possível efetuar a gravação. Tente novamente.');
+    end;
+  end;
 end;
 
 procedure TFrm_MateriaPrima.localizar;
@@ -275,6 +478,39 @@ begin
   aRetProd := Consulta.Produto('''MP'',''A''','Consulta de Produtos/Matéria-Prima');
 
   MontaSql(aRetProd.iCodigo);
+  pnlLucro.Visible := False;
+  pnlLucroAtacado.Visible := False;
+
+  if (cds.FieldByName('preco_custo').AsCurrency > 0) then
+  begin
+    if (cds.FieldByName('preco_venda').AsCurrency > 0) then
+      MargemLucro(0);
+    if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
+      MargemLucro(1);
+  end;
+end;
+
+procedure TFrm_MateriaPrima.MargemLucro(aTipo: integer);
+var
+  lResultado: Currency;
+begin
+  if (aTipo = 0) then //Venda varejo
+  begin
+    lResultado := ((cds.FieldByName('preco_venda').AsCurrency - cds.FieldByName('preco_custo').AsCurrency) /
+                      cds.FieldByName('preco_custo').AsCurrency) * 100;
+
+    lblLucro.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    pnlLucro.Visible := True;
+  end;
+
+  if (aTipo = 1) then //Venda Atacado
+  begin
+    lResultado := ((cds.FieldByName('PRECO_ATACADO').AsCurrency - cds.FieldByName('preco_custo').AsCurrency) /
+                      cds.FieldByName('preco_custo').AsCurrency) * 100;
+
+    lblLucroAtacado.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    pnlLucroAtacado.Visible := True;
+  end;
 end;
 
 procedure TFrm_MateriaPrima.MontaSql(pCodigo: Integer);
@@ -284,26 +520,32 @@ begin
   if pCodigo = 0 then
     Exit;
 
-  tmp := DM.SMCadastroClient.getMateriaPrima(DM.BancoDados, pCodigo);
-
   cds.Close ;
-  cdsProdutoFornecedor.Close ;
+  cds.Data := DM.SMProduto.getProduto(DM.BancoDados, pCodigo);
 
-  cds.Data := tmp[0];
-  cdsProdutoFornecedor.Data := tmp[1];
+  pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
 
-  chkTipo.Checked := cdsTIPO_PRODUTO.AsString = 'A' ;
-  ReadWrite;
+  try
+    chkTipo.OnClick := nil;
+    if (cds.FieldByName('TIPO_PRODUTO').AsString = 'A') then
+      chkTipo.Checked := True
+    else
+      chkTipo.Checked := False;
+  finally
+    chkTipo.OnClick := chkTipoClick;
+  end;
 end;
 
 
 procedure TFrm_MateriaPrima.Novo;
 begin
-  inherited;
-  cdsProdutoFornecedor.Close ;
-  cdsProdutoFornecedor.CreateDataSet ;
-
-  DBEdit1.SetFocus ;
+//  inherited;
+  if not (cds.State in [dsEdit, dsInsert]) then
+  begin
+    ResetaCDS;
+    cds.append;
+  end;
+  dbedtNOME.SetFocus ;
 end;
 
 procedure TFrm_MateriaPrima.PngAddProdutoClick(Sender: TObject);
@@ -350,18 +592,18 @@ const
           'where a.ID = %s' ;
 begin
   inherited;
-  if cdsProdutoFornecedor.IsEmpty then
-  begin
-    TMensagem.Atencao('Não há registro para ser excluso.') ;
-    Exit ;
-  end;
-
-  if TMensagem.Pergunta('Confirma a exclusão do Fornecedor: ' + cdsProdutoFornecedorRAZAO_NOME.AsString + ' ?') then
-    if DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(cdsProdutoFornecedorID.AsInteger)])) > 0 then
-    begin
-      cdsProdutoFornecedor.Delete;
-      TMensagem.Informacao('Exclusão efetuada com sucesso.');
-    end;
+//  if cdsProdutoFornecedor.IsEmpty then
+//  begin
+//    TMensagem.Atencao('Não há registro para ser excluso.') ;
+//    Exit ;
+//  end;
+//
+//  if TMensagem.Pergunta('Confirma a exclusão do Fornecedor: ' + cdsProdutoFornecedorRAZAO_NOME.AsString + ' ?') then
+//    if DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(cdsProdutoFornecedorID.AsInteger)])) > 0 then
+//    begin
+//      cdsProdutoFornecedor.Delete;
+//      TMensagem.Informacao('Exclusão efetuada com sucesso.');
+//    end;
 end;
 
 procedure TFrm_MateriaPrima.pnlDescClick(Sender: TObject);
@@ -373,71 +615,111 @@ begin
   end;
 end;
 
-procedure TFrm_MateriaPrima.ReadWrite;
-begin
-  MakeReadWrite(cdsDESCRI_UNIDADE);
-  MakeReadWrite(cdsCONV_DESCRIUNIDADE);
-  MakeReadWrite(cdsDESCRI_NCM);
-  MakeReadWrite(cdsFABRICANTE);
-  MakeReadWrite(cdsGRUPO);
-  MakeReadWrite(cdsSUBGRUPO);
-  MakeReadWrite(cdsProdutoFornecedorRAZAO_NOME);
-end;
-
 procedure TFrm_MateriaPrima.ResetaCDS;
 begin
   cds.Close;
-  cds.CreateDataSet;
-
-  cdsProdutoFornecedor.Close;
-  cdsProdutoFornecedor.CreateDataSet;
+  cds.FieldDefs.Clear;
+  cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
 end;
 
 function TFrm_MateriaPrima.Validar: Boolean;
 begin
   Result := True;
-  if Trim(DBEdit1.Text) = '' then
+  if (Trim(dbedtNOME.Text) = '') then
   begin
+    Result := False;
     TMensagem.Atencao('Informe a Descrição do Material');
-    DBEdit1.SetFocus;
-    Result := False;
+    dbedtNOME.SetFocus;
     Exit;
   end;
 
-  if Trim(DBPesquisa1.Campo.Text) = '' then
+  if (Trim(dbpsqsUnidade.Campo.Text) = '') then
   begin
-    TMensagem.Atencao('Informe a Unidade de Medida');
-    DBPesquisa1.Campo.SetFocus;
     Result := False;
+    TMensagem.Atencao('Informe a unidade de medida');
+    dbpsqsUnidade.Campo.SetFocus;
     Exit;
   end;
 
-  if ((chkTipo.Checked) and (DBEdit2.Text = EmptyStr)) then
+  if ((chkTipo.Checked) and (dbedtPRECO_VENDA.Text = EmptyStr)) then
   begin
+    Result := False;
     TMensagem.Atencao('Informe o Preço de Venda.');
-    DBEdit2.SetFocus;
+    dbedtPRECO_VENDA.SetFocus;
+    Exit;
+  end;
+
+  //Validar Fragmentacao
+  if ( (dbedtCONV_QTDE.Text <> '') or (dbedtCONV_PRECO.Text <> '') or
+       (dbpsqsConvUnidade.Campo.Text <> '') ) then
+  begin
+    if (dbedtCONV_QTDE.Text = '') then
+    begin
+      Result := False;
+      TMensagem.Atencao('Informar a quantidade fragmentada.');
+      pgc1.TabIndex := 2;
+      dbedtCONV_QTDE.SetFocus;
+      Exit;
+    end;
+    if (dbedtCONV_PRECO.Text = '') then
+    begin
+      Result := False;
+      TMensagem.Atencao('Informar o preço de venda fragmentado.');
+      pgc1.TabIndex := 2;
+      dbedtCONV_PRECO.SetFocus;
+      Exit;
+    end;
+    if (dbpsqsConvUnidade.Campo.Text = '') then
+    begin
+      Result := False;
+      TMensagem.Atencao('Informar a unidade fragmentada.');
+      pgc1.TabIndex := 2;
+      dbpsqsConvUnidade.Campo.SetFocus;
+      Exit;
+    end;
+  end;
+end;
+
+function TFrm_MateriaPrima.ValidarMovimentacao: Boolean;
+begin
+  Result := True;
+
+  if cds.IsEmpty then
+  begin
     Result := False;
     Exit;
   end;
 
-  if DBPesquisa2.Campo.Text <> EmptyStr then
+  if ((cds.Active) and (cds.State in [dsEdit, dsInsert])) then
   begin
-    if ((DBEdit4.Text = EmptyStr) or (StrToFloat(DBEdit4.Text) < 0)) then
-    begin
-      TMensagem.Atencao('Informar a Quantidade da Conversão.');
-      DBEdit4.SetFocus;
-      Result := False;
-      Exit;
-    end;
-
-    if StrToCurrDef(DBEdit6.Text, 0) < 1 then
-    begin
-      TMensagem.Atencao('Informar o Preço da Conversão.');
-      DBEdit6.SetFocus;
-      Result := False;
-      Exit;
-    end;
+    Result := False;
+    TMensagem.Atencao('Necessário Salvar/Cancelar alteração antes de gerar a movimentação.');
+    Exit;
   end;
+
+  if (cbbTpMov.ItemIndex = 0) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Informe o tipo de movimentação: ENTRADA/SAIDA');
+    cbbTpMov.SetFocus;
+    Exit;
+  end;
+
+  if ((edtQtdeMov.Text = '') or (StrToFloat(edtQtdeMov.Text) < 1)) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Informe a quantidade a ser movimentada.');
+    edtQtdeMov.SetFocus;
+    Exit;
+  end;
+end;
+
+function TFrm_MateriaPrima.VoltaQtde(aQtde: Extended): Extended;
+begin
+  Result := aQtde;
+
+  if ((not cds.FieldByName('CONV_QTDE').IsNull) and (cds.FieldByName('CONV_QTDE').AsFloat > 0)) then
+    Result := (aQtde * cds.FieldByName('CONV_QTDE').AsFloat)
 end;
 
 end.

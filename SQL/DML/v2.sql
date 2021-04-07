@@ -37745,3 +37745,8 @@ SET GENERATOR GEN_CIDADES_ID TO 5570;
 
 update produto a
 set a.calc_custo_composicao = 'N';
+
+
+
+
+

@@ -228,10 +228,11 @@ inherited SMProduto: TSMProduto
     Connection = ServerDM.Conexao
     Transaction = TranGravacao
     SQL.Strings = (
-      'select a.*,b.nome,c.sigla'
+      'select a.*,b.nome,coalesce(d.sigla,c.sigla)sigla'
       'from produto_composicao a'
       'left join produto b on (b.codigo=a.id_matprima)'
       'left join unidade c on (c.codigo=b.cod_unidade)'
+      'left join unidade d on (d.codigo=b.conv_unidade)'
       'where a.id_produto = :codigo')
     Left = 56
     Top = 72

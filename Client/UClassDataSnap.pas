@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 29/03/2021 15:35:54
+// 05/04/2021 16:38:06
 //
 
 unit UClassDataSnap;
@@ -233,7 +233,7 @@ type
     destructor Destroy; override;
     function setProducao(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProducao(BD: string; pID: Integer): OleVariant;
-    function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+    function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
   end;
 
   TSMProdutoClient = class(TDSAdminClient)
@@ -1739,7 +1739,7 @@ begin
   Result := FgetProducaoCommand.Parameters[2].Value.AsVariant;
 end;
 
-function TSMProducaoClient.setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+function TSMProducaoClient.setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
 begin
   if FsetMovimentoCommand = nil then
   begin
@@ -1752,11 +1752,12 @@ begin
   FsetMovimentoCommand.Parameters[1].Value.SetWideString(aUsuario);
   FsetMovimentoCommand.Parameters[2].Value.SetInt32(aCodPro);
   FsetMovimentoCommand.Parameters[3].Value.SetDouble(aQtde);
-  FsetMovimentoCommand.Parameters[4].Value.SetInt32(aCodUND);
-  FsetMovimentoCommand.Parameters[5].Value.SetWideString(aEntSai);
-  FsetMovimentoCommand.Parameters[6].Value.SetWideString(aDescriProd);
+  FsetMovimentoCommand.Parameters[4].Value.SetDouble(aQtdeFechada);
+  FsetMovimentoCommand.Parameters[5].Value.SetInt32(aCodUND);
+  FsetMovimentoCommand.Parameters[6].Value.SetWideString(aEntSai);
+  FsetMovimentoCommand.Parameters[7].Value.SetWideString(aDescriProd);
   FsetMovimentoCommand.ExecuteUpdate;
-  Result := FsetMovimentoCommand.Parameters[7].Value.GetBoolean;
+  Result := FsetMovimentoCommand.Parameters[8].Value.GetBoolean;
 end;
 
 constructor TSMProducaoClient.Create(ADBXConnection: TDBXConnection);

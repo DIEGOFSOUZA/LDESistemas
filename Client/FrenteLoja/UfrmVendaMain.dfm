@@ -199,7 +199,7 @@ object frmVendaMain: TfrmVendaMain
       Align = alBottom
       Color = 6381921
       ParentBackground = False
-      TabOrder = 1
+      TabOrder = 3
     end
     object pnlFundo1: TPanel
       Left = 1
@@ -211,7 +211,7 @@ object frmVendaMain: TfrmVendaMain
       Caption = 'pnlFundo1'
       ParentColor = True
       ShowCaption = False
-      TabOrder = 3
+      TabOrder = 1
       object pnlDireita: TPanel
         Left = 974
         Top = 0
@@ -220,7 +220,7 @@ object frmVendaMain: TfrmVendaMain
         Align = alRight
         Color = 13337441
         ParentBackground = False
-        TabOrder = 0
+        TabOrder = 1
         object pnlProduto: TPanel
           Left = 1
           Top = 1
@@ -952,7 +952,7 @@ object frmVendaMain: TfrmVendaMain
         Width = 974
         Height = 631
         Align = alClient
-        TabOrder = 1
+        TabOrder = 0
         object pnlTotal: TPanel
           Left = 1
           Top = 570
@@ -961,7 +961,7 @@ object frmVendaMain: TfrmVendaMain
           Align = alBottom
           Color = 10114859
           ParentBackground = False
-          TabOrder = 0
+          TabOrder = 1
           object lbl1: TLabel
             Left = 9
             Top = 5
@@ -979,7 +979,7 @@ object frmVendaMain: TfrmVendaMain
             Left = 797
             Top = 1
             Width = 174
-            Height = 45
+            Height = 58
             Align = alRight
             Caption = 'R$ 1025,45 '
             Font.Charset = ANSI_CHARSET
@@ -988,6 +988,7 @@ object frmVendaMain: TfrmVendaMain
             Font.Name = 'Segoe UI'
             Font.Style = [fsBold]
             ParentFont = False
+            ExplicitHeight = 45
           end
           object lbl2: TLabel
             Left = 122
@@ -1067,7 +1068,7 @@ object frmVendaMain: TfrmVendaMain
           Font.Style = []
           Options = [dgTitles, dgColumnResize, dgTabs, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clBlack
           TitleFont.Height = -13
@@ -1135,7 +1136,7 @@ object frmVendaMain: TfrmVendaMain
         Width = 693
         Height = 100
         Align = alLeft
-        TabOrder = 0
+        TabOrder = 1
         object Label7: TLabel
           Left = 0
           Top = 48
@@ -1233,7 +1234,7 @@ object frmVendaMain: TfrmVendaMain
         Align = alRight
         Color = 13337441
         ParentBackground = False
-        TabOrder = 1
+        TabOrder = 0
         object imgLogoLDE: TImage
           Left = 247
           Top = 247

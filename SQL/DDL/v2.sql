@@ -5,8 +5,7 @@ ALTER TABLE PRODUTO
 ADD QTDE_MIN_ATACADO NUMERIC(15,3);
 
 ALTER TABLE PRODUTO
-ADD SITUACAO VARCHAR(10)
-NOT NULL ;
+    ADD SITUACAO VARCHAR(10) DEFAULT 'ATIVO' NOT NULL;
 
 SET TERM ^ ;
 
@@ -472,8 +471,88 @@ SET TERM ; ^
 ALTER TABLE PRODUTO
     ADD CALC_CUSTO_COMPOSICAO CHAR(1);
 	
-/*ALTER TABLE NOTA_ENTRADA_PAGAR
-    ALTER BAIXA_USUARIO TYPE VARCHAR(50) CHARACTER SET NONE;*/
+SET TERM ^ ;
+
+CREATE OR ALTER procedure pro_movimentoproduto (
+    id_prod integer)
+returns (
+    entsai char(1),
+    qtde numeric(15,3),
+    qtde_fechada numeric(15,3),
+    dtmovto date,
+    lote varchar(20),
+    tipo_movimento varchar(20),
+    usuario varchar(100),
+    id_produto integer,
+    descri varchar(100),
+    tipo_produto varchar(20),
+    codbarra varchar(13),
+    estoque_minimo numeric(15,3),
+    sigla_um varchar(10))
+as
+begin
+  select a.NOME,a.CODIGO,
+  case upper(a.TIPO_PRODUTO)
+  when 'PA' then 'Produto Acabado'
+  when 'MP' then 'Materia Prima'
+  else 'Ambos'
+  end tipo_produto,
+  coalesce(a.EAN_CODBARRA,0),coalesce(a.QTDE_MINIMA,0),
+  coalesce(c.sigla,b.SIGLA)sigla
+  from PRODUTO a
+  left outer join UNIDADE b on (b.CODIGO = a.COD_UNIDADE)
+  left join UNIDADE c on (c.CODIGO = a.conv_unidade)
+  where (a.codigo = :ID_PROD)
+  into :DESCRI,:ID_PRODUTO,:TIPO_PRODUTO,:CODBARRA,:ESTOQUE_MINIMO,:SIGLA_UM; 
+  
+  /**************ENTRADA - LOTE ****************/
+  for SELECT iif(b.entsai = 'ENTRADA','E','S') ENTSAI,b.QTDE, b.QTDE_FECHADA,a.EMISSAO,a.LOTE,a.USUARIO,'LOTE' tipo_movimento
+      FROM LOTE a
+      left outer join LOTE_ITENS b on (b.ID_LOTE = a.LOTE) 
+      where (b.codpro = :ID_PROD)
+      into :ENTSAI,:QTDE,:QTDE_FECHADA,:DTMOVTO,:LOTE,:USUARIO,:TIPO_MOVIMENTO do
+  begin
+    suspend ;
+  end
+   /****************SAIDA - LOTE MAT. PRIMA *********************************/
+  for SELECT 'S' entsai,b.QTDE, b.QTDE_FECHADA,a.EMISSAO,a.LOTE,a.USUARIO,'LOTE' tipo_movimento
+      FROM LOTE a
+      left outer join LOTE_MATPRIMA b on (b.ID_LOTE = a.LOTE) 
+      where a.GERA_MATPRIMA = 'S'
+      and (b.ID_MATPRIMA = :ID_PROD)
+      into :ENTSAI,:QTDE,:QTDE_FECHADA,:DTMOVTO,:LOTE,:USUARIO,:TIPO_MOVIMENTO do
+  begin
+    suspend ;
+  end
+  
+   /****************SAIDA - VENDAS*********************************/
+  for select 'S' entsai,b.QTDE,b.QTDE_BAIXA,a.EMISSAO,a.TIPO||'-'||a.ID,c.USU_NOME,'VENDA' tipo_movimento
+      from PDV_MASTER a
+      left outer join PDV_ITENS b on (b.TIPO = a.TIPO and b.ID = a.ID)
+      left outer join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR)
+      where (b.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI,:QTDE,:QTDE_FECHADA,:DTMOVTO,:LOTE,:USUARIO,:TIPO_MOVIMENTO do
+  begin
+    suspend ;
+  end
+  
+   /****************ENTRADA - NF*********************************/
+  for select 'E' entsai,b.QTDE,b.QTDE,a.EMISSAO,'NF:'||a.N_NF,c.USU_NOME,'ENT-NF'
+      from NOTA_ENTRADA a
+      left outer join NOTA_ENTRADA_ITENS b on (b.ID_NOTAENTRADA = a.ID)
+      left outer join USUARIO c on (c.USU_ID = a.ID_USUARIO)
+      where (b.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI,:QTDE,:QTDE_FECHADA,:DTMOVTO,:LOTE,:USUARIO,:TIPO_MOVIMENTO do
+  begin
+    suspend ;
+  end
+  
+end^
+
+SET TERM ; ^
+
+	
+
 
 	
 

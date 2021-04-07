@@ -46,7 +46,7 @@ inherited Frm_Desconto: TFrm_Desconto
       BevelOuter = bvNone
       Caption = 'pnlDireita'
       ShowCaption = False
-      TabOrder = 0
+      TabOrder = 1
       object btnCancel: TButton
         Left = 1
         Top = 61
@@ -61,7 +61,7 @@ inherited Frm_Desconto: TFrm_Desconto
         ImageIndex = 4
         Images = DM.il2
         ParentFont = False
-        TabOrder = 0
+        TabOrder = 1
         TabStop = False
         OnClick = btnCancelClick
       end
@@ -79,7 +79,7 @@ inherited Frm_Desconto: TFrm_Desconto
         ImageIndex = 3
         Images = DM.il2
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 0
         TabStop = False
         OnClick = btnokClick
       end
@@ -93,7 +93,7 @@ inherited Frm_Desconto: TFrm_Desconto
       BevelOuter = bvNone
       Caption = 'pnlCentro'
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 0
       object pnlCentro1: TPanel
         Left = 0
         Top = 0
@@ -113,7 +113,7 @@ inherited Frm_Desconto: TFrm_Desconto
           BevelOuter = bvNone
           Caption = 'pnlDireita1'
           ShowCaption = False
-          TabOrder = 0
+          TabOrder = 1
           Visible = False
           object lblPercMax: TLabel
             Left = 5
@@ -175,7 +175,7 @@ inherited Frm_Desconto: TFrm_Desconto
           BevelOuter = bvNone
           Caption = 'pnlEdits'
           ShowCaption = False
-          TabOrder = 1
+          TabOrder = 0
           object edtPerc: TEdit
             Left = 90
             Top = 58
@@ -276,10 +276,10 @@ inherited Frm_Desconto: TFrm_Desconto
             Font.Height = -13
             Font.Name = 'Segoe UI'
             Font.Style = []
-            ItemIndex = 0
+            ItemIndex = 1
             ParentFont = False
             TabOrder = 1
-            Text = 'Percentual %'
+            Text = 'Valor R$'
             Items.Strings = (
               'Percentual %'
               'Valor R$')

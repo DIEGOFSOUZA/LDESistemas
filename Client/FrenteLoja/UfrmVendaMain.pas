@@ -257,7 +257,6 @@ type
     procedure LimpaEdtsLbls() ;
     procedure AtualizaTotais() ;
     procedure OrdenarItens() ;
-//    function CaixaFechado() : Boolean ;
 
     function VoltaPK(aTipo : string) : TRetornoPK ;
     procedure FecharVenda(aID : Integer; aTipo : string; aCondPagto : integer; aImprimir : Boolean) ;
@@ -413,8 +412,8 @@ begin
       if (not Assigned(Frm_Desconto)) then // verifica se o formulário não existe na memória
         Frm_Desconto := TFrm_Desconto.Create(Self); // cria o formúlário em run-time
       try
-        Frm_Desconto.ValSemDesc := cdsItenssubtotal.AsFloat;
-        Frm_Desconto.lblSemDesc.Caption := FormatFloat('#,##0.00', cdsItenssubtotal.AsFloat);
+        Frm_Desconto.ValSemDesc := (cdsItenssubtotal.AsFloat+cdsItensVL_DESCONTO.AsCurrency);
+        Frm_Desconto.lblSemDesc.Caption := FormatFloat('#,##0.00', (cdsItenssubtotal.AsFloat+cdsItensVL_DESCONTO.AsCurrency));
         with DescMaximo(cdsItens.FieldByName('codigo').AsString) do
         begin
           if Valor = 0 then
@@ -722,7 +721,7 @@ begin
       if Retorno <> -1 then
       begin
         IdVendedor := Retorno;
-        lblOperador.Caption := '         '+NomeVend;
+        lblOperador.Caption := '         ' + NomeVend;
       end;
     end;
   finally
@@ -734,7 +733,7 @@ procedure TfrmVendaMain.AtualizaOrcamento;
 const
   SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
 begin
-  DM.ExecutarSQL(DM.BancoDados,Format(SQL,[IntToStr(OrcamentoID)]));
+  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
 end;
 
 procedure TfrmVendaMain.AtualizaTotais;
@@ -757,35 +756,6 @@ procedure TfrmVendaMain.Button1Click(Sender: TObject);
 begin
 //  Imprimir() ;
 end;
-
-//function TfrmVendaMain.CaixaFechado: Boolean;
-//const
-//  SQL = 'select a.ID IDCAIXA, a.ABERTO_FECHADO status ' +
-//        'from CAIXA a ' +
-//        'left outer join CAIXA_ABERT_FECH b on (b.ID_CAIXA = a.ID) ' +
-//        'where a.ABERTO_FECHADO = ''A'' '+
-//        'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
-//begin
-//  Result := False ;
-//  cdsTemp.Close ;
-//  cdsTemp.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
-//
-//  if cdsTemp.IsEmpty then
-//  begin
-//    MessageDlg('O Caixa do dia encontra-se FECHADO no momento.'+#13#10+
-//               'Necessário efetuar a abertura.',mtInformation,[mbAbort],0) ;
-//    Result := True ;
-//    Exit ;
-//  end
-//  else if cdsTemp.FieldByName('status').AsString = 'F' then
-//  begin
-//    MessageDlg('Caixa encontra-se Fechado.'+#13#10+
-//                'Venda não pode ser efetuada.' ,mtInformation,[mbAbort],0) ;
-//    Result := True ;
-//    Exit ;
-//  end;
-//  IdCaixa := cdsTemp.FieldByName('IDCAIXA').AsInteger ;
-//end;
 
 procedure TfrmVendaMain.CarregaCliente(iCodigo: integer);
 const
@@ -963,9 +933,9 @@ end;
 procedure TfrmVendaMain.CarregaProduto(sProduto: string);
 const
   SQL = 'select a.CODIGO,a.NOME DESCRICAO,a.PRECO_VENDA,b.SIGLA unidade,a.QTDE_ESTOQUE,' +
-        'coalesce(a.conv_qtde,1) qtde_conversao ' +
+        'coalesce(a.conv_qtde,1) qtde_conversao,a.SITUACAO ' +
         'from PRODUTO a ' +
-        'left outer join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) ' +
+        'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) ' +
         'where a.TIPO_PRODUTO in (''PA'',''A'') '+
         'and a.codigo = %s';
 var
@@ -985,7 +955,7 @@ begin
       Exit ;
     end;
 
-    if tmp.FieldByName('PRECO_VENDA').AsFloat <= 0 then
+    if (tmp.FieldByName('PRECO_VENDA').AsFloat <= 0) then
     begin
       TMensagem.Informacao('Produto com Preço R$ 0,00.' + #13#10 + 'Item não pode ser inserido na Venda!');
       Exit;
@@ -1024,15 +994,22 @@ begin
       aVlUn := tmp.FieldbyName('preco_venda').AsFloat;
     end;
 
-//    if ( tmp.FieldByName('qtde_estoque').AsFloat < (aQtde) ) then //StrToFloat(edtQtde.Text)
-//    begin
-//      TMensagem.Informacao('Estoque contém apenas '+tmp.FieldByName('qtde_estoque').AsString+' '+tmp.FieldByName('unidade').AsString);   //tmp.FieldByName('unidade').AsString
-//      Exit;
-//    end;
+    //valida se ha estoque suficiente
+    if ( tmp.FieldByName('qtde_estoque').AsFloat < (aQtde) ) then //StrToFloat(edtQtde.Text)
+    begin
+      TMensagem.Atencao('Estoque baixo. Não foi possível adicionar o item.');
+      Exit;
+    end;
+
+    if (tmp.FieldByName('SITUACAO').AsString = 'INATIVO') then
+    begin
+      TMensagem.Atencao('Produto Inativo. Verifique o cadastro.') ;
+      Exit ;
+    end;
 
     iOrdem := cdsItens.RecordCount + 1 ;
 
-    if not cdsItens.Locate('codigo', tmp.FieldByName('codigo').AsInteger, []) then
+    if (not cdsItens.Locate('codigo', tmp.FieldByName('codigo').AsInteger, [])) then
     begin
       cdsItens.Append;
       cdsItensCODIGO.AsInteger := tmp.FieldByName('codigo').AsInteger;
@@ -1057,6 +1034,7 @@ begin
         Exit;
       end;
 
+      //valida se ha estoque suficiente
       if (tmp.FieldByName('qtde_estoque').AsFloat < (cdsItensQTDE.AsFloat + aQtde)) then
       begin
         TMensagem.Informacao('Estoque contém apenas ' + tmp.FieldByName('qtde_estoque').AsString + ' ' + tmp.FieldByName('unidade').AsString);
@@ -1100,22 +1078,24 @@ end;
 
 function TfrmVendaMain.DescMaximo(aId: string): TRetDescMax;
 const
-  SQL = 'select coalesce(a.desc_maximo,0) perc,cast(iif(coalesce(a.desc_maximo,0)>0,(%s*(a.desc_maximo/100)),0)as numeric(10,2))vl '+
+//  SQL = 'select coalesce(a.desc_maximo,0) perc,cast(iif(coalesce(a.desc_maximo,0)>0,(%s*(a.desc_maximo/100)),0)as numeric(10,2))vl '+
+  SQL = 'select coalesce(A.DESC_MAXIMO, 0) PERC '+
         'from produto a '+
         'where a.codigo = %s';
+var
+  lSubtotal: Currency;
 begin
   Result.Percentual := 0;
   Result.Valor := 0;
+  lSubtotal := cdsItens.FieldByName('subtotal').AsCurrency + cdsItens.FieldByName('VL_DESCONTO').AsCurrency;
 
   DM.dsConsulta.Close;
-  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[StringReplace(cdsItens.FieldByName('subtotal').AsString,',','.',[rfReplaceAll]),
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[//StringReplace(CurrToStr(lSubtotal),',','.',[rfReplaceAll]),
                                                   cdsItens.FieldByName('codigo').AsString]));
-  if ((not DM.dsConsulta.IsEmpty) and (DM.dsConsulta.FieldByName('perc').AsFloat > 0))then
+  if ((not DM.dsConsulta.IsEmpty) and (DM.dsConsulta.FieldByName('perc').AsFloat > 0)) then
   begin
-  Result.Percentual := DM.dsConsulta.FieldByName('perc').AsFloat;
-  Result.Valor := DM.dsConsulta.FieldByName('vl').AsCurrency;
-//    Result.Percentual := FormatFloatBr(DM.dsConsulta.FieldByName('perc').AsFloat)+' %';
-//    Result.Valor := 'R$ '+FormatFloatBr(DM.dsConsulta.FieldByName('vl').AsFloat);
+    Result.Percentual := DM.dsConsulta.FieldByName('perc').AsFloat;
+    Result.Valor := RoundABNT((lSubtotal*(DM.dsConsulta.FieldByName('perc').AsFloat/100)),2);
   end;
 end;
 
@@ -1310,14 +1290,6 @@ end;
 procedure TfrmVendaMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Action := caFree;
-
-//  if Self.FormStyle = fsMDIChild then
-//  begin
-//    Action := caFree;
-//    if Assigned(cdsItens) then
-//      FreeAndNil(cdsItens);
-//    FreeAndNil(Self);
-//  end;
 end;
 
 procedure TfrmVendaMain.FormCreate(Sender: TObject);

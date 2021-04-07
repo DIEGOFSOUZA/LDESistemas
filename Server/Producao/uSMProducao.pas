@@ -43,7 +43,8 @@ type
   public
     function setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
     function getProducao(const BD: string; pID: integer): OleVariant;
-    function setMovimento(const BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double;
+    function setMovimento(const BD: string; aUsuario: string; aCodPro: Integer;
+        aQtde,aQtdeFechada: Double;
         aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
   end;
 
@@ -93,13 +94,14 @@ begin
   end;
 end;
 
-function TSMProducao.setMovimento(const BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double;
+function TSMProducao.setMovimento(const BD: string; aUsuario: string; aCodPro: Integer;
+        aQtde,aQtdeFechada: Double;
         aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
 var
   DM: TServerDM;
   SQLLote, SQLLoteItem: string;
   lHora, lDataBD, lData: string;
-  lQtde: Double;
+  lQtde,lQtdeFechada: Extended;
 begin
   Result := False;
   DM := TServerDM.Create(BD);
@@ -110,8 +112,17 @@ begin
       lDataBD := FormatDateTime('dd.mm.yyyy', date);
       lData := FormatDateTime('dd/mm/yyyy', date);
       lQtde := aQtde;
+      lQtdeFechada := aQtdeFechada;
       if (aEntSai = 'SAIDA') then
-        lQtde := lQtde*-1;
+      begin
+        lQtde := lQtde *  - 1;
+        lQtdeFechada := lQtdeFechada *  - 1;
+      end
+      else
+      begin
+        lQtde := aQtde;
+        lQtdeFechada := aQtdeFechada;
+      end;
 
 
       SQLLote := 'insert into LOTE (ID, LOTE, EMISSAO, STATUS, GERA_MATPRIMA, USUARIO, LOTE_ACERTO) '+
@@ -121,7 +132,7 @@ begin
 
       SQLLoteItem := 'insert into LOTE_ITENS (ID, ID_LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DESCRI_ITEM) '+
                      'values (0, '+QuotedStr('PROD'+lHora)+', '+aCodPro.ToString+', '+FormatFloat('##0.000',lQtde)+', '+
-                      FormatFloat('##0.000',lQtde)+', '+aCodUND.ToString+', '+QuotedStr(aEntSai)+', '+
+                      FormatFloat('##0.000',lQtdeFechada)+', '+aCodUND.ToString+', '+QuotedStr(aEntSai)+', '+
                       QuotedStr(aDescriProd)+')';
       DM.Executar(SQLLoteItem);
       Result := True;

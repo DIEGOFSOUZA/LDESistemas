@@ -4463,7 +4463,7 @@ object Frm_Inicial: TFrm_Inicial
         OnClick = Produtos1Click
       end
       object MatriaPrima1: TMenuItem
-        Caption = 'MAT'#201'RIA-PRIMA'
+        Caption = 'INSUMO (MAT'#201'RIA-PRIMA)'
         OnClick = MatriaPrima1Click
       end
       object CadastrodeUnidade1: TMenuItem

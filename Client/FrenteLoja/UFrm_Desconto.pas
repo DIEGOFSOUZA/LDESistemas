@@ -103,7 +103,7 @@ begin
   if StrToFloat(edtPerc.Text) > 0 then
   begin
     if cbbTipoDesc.ItemIndex = 0 then
-      ValComDesc := Roundto(Resultado('P'), -1)
+      ValComDesc := Roundto(Resultado('P'), -2)
     else
       ValComDesc := Resultado('V');
     ValDesc := ValSemDesc - ValComDesc;

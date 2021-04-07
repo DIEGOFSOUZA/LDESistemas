@@ -1,13 +1,14 @@
-unit UFrm_Produto; //CONVERSÃO DE UNIDADE DE MEDIDA (MOVIMENTAÇÃO DE ESTOQUE)
+unit UFrm_Produto;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad, System.Actions, Vcl.ActnList,
-  Data.DB, Datasnap.DBClient, Vcl.Buttons, PngSpeedButton, Vcl.ExtCtrls,
-  UDBPesquisa, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls, Vcl.ComCtrls,System.StrUtils,
-  Vcl.DBGrids, UEDPesquisa, Vcl.Menus, Vcl.Imaging.pngimage, Vcl.Grids;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad,
+  System.Actions, Vcl.ActnList, Data.DB, Datasnap.DBClient, Vcl.Buttons,
+  PngSpeedButton, Vcl.ExtCtrls, UDBPesquisa, Vcl.StdCtrls, Vcl.Mask, Vcl.DBCtrls,
+  Vcl.ComCtrls, System.StrUtils, Vcl.DBGrids, UEDPesquisa, Vcl.Menus,
+  Vcl.Imaging.pngimage, Vcl.Grids;
 
 type
   TFrm_Produto = class(TPdr_Cad)
@@ -196,19 +197,23 @@ type
     lblUnidade: TLabel;
     pnlDadosFragmentacao: TPanel;
     Label10: TLabel;
-    DBEdit4: TDBEdit;
-    DBPesquisa2: TDBPesquisa;
-    DBEdit6: TDBEdit;
+    dbedtCONV_QTDE: TDBEdit;
+    dbpsqsConvUnidade: TDBPesquisa;
+    dbedtCONV_PRECO: TDBEdit;
     Label11: TLabel;
     cdsDESCRI_UNIDADE: TStringField;
     cdsCONV_DESCRIUNIDADE: TStringField;
+    pnlExcFrag: TPanel;
+    imgExcFrag: TImage;
+    btnExcFragmentacao: TSpeedButton;
+    actExcFragmentacao: TAction;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure DBPesquisa6Pesquisa(Sender: TObject; var Retorno: string);
     procedure actTrilharExecute(Sender: TObject);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
-    procedure DBPesquisa2Pesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsConvUnidadePesquisa(Sender: TObject; var Retorno: string);
     procedure pnlDescClick(Sender: TObject);
     procedure cdsPRECO_ATACADOChange(Sender: TField);
     procedure actMovimentarExecute(Sender: TObject);
@@ -231,16 +236,17 @@ type
       DisplayText: Boolean);
     procedure cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
+    procedure actExcFragmentacaoExecute(Sender: TObject);
 
   private
     FCustoEstimado: Currency;
     FQtde: Double;
     FvUnitario: Double;
-    FAtualizaPrecoCusto: Boolean;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
     function ValidaInsertItem(): Boolean;
+    function VoltaQtde(aQtde: Extended): Extended;
 
     procedure ResetaCDS() ;
     procedure MargemLucro(aTipo:integer);
@@ -252,7 +258,6 @@ type
     property CustoEstimado: Currency  read FCustoEstimado;
     property Qtde: Double read FQtde write SetQtde;
     property vUnitario: Double read FvUnitario write setvUnitario;
-    property AtualizaPrecoCusto:Boolean read FAtualizaPrecoCusto;
 
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
@@ -269,8 +274,7 @@ implementation
 
 {$R *.dfm}
 uses
-  UConsulta, UDM, UMakeReadWrite, URel_ProdutoTrilha, UFuncoes, u_Mensagem,
-  ACBrUtil;
+  UConsulta, UDM, URel_ProdutoTrilha, UFuncoes, u_Mensagem, ACBrUtil;
 
 procedure TFrm_Produto.actAddItemExecute(Sender: TObject);
 begin
@@ -312,6 +316,16 @@ begin
   edpsqsProduto.Campo.SetFocus;
 end;
 
+procedure TFrm_Produto.actExcFragmentacaoExecute(Sender: TObject);
+begin
+  inherited;
+  Editar;
+  cds.FieldByName('CONV_UNIDADE').Clear;
+  cds.FieldByName('CONV_QTDE').Clear;
+  cds.FieldByName('CONV_PRECO').Clear;
+  cds.FieldByName('CONV_DESCRIUNIDADE').Clear;
+end;
+
 procedure TFrm_Produto.actExcItemExecute(Sender: TObject);
 begin
   inherited;
@@ -340,13 +354,13 @@ procedure TFrm_Produto.actMovimentarExecute(Sender: TObject);
 begin
   inherited;
   if ValidarMovimentacao then
-    if DM.SMProducao.setMovimento(DM.BancoDados,DM.User,cds.FieldByName('codigo').AsInteger,
-         StrToFloat(edtQtdeMov.Text),cds.FieldByName('COD_UNIDADE').AsInteger,cbbTpMov.Text,
-         cds.FieldByName('NOME').AsString) then
+    if DM.SMProducao.setMovimento(DM.BancoDados, DM.User, cds.FieldByName('codigo').AsInteger,
+          StrToFloat(edtQtdeMov.Text), VoltaQtde(StrToFloat(edtQtdeMov.Text)),cds.FieldByName('COD_UNIDADE').AsInteger, cbbTpMov.Text,
+          cds.FieldByName('NOME').AsString) then
     begin
       MontaSql(cds.FieldByName('codigo').AsInteger);
       cbbTpMov.ItemIndex := 0;
-      edtQtdeMov.Text:= '0';
+      edtQtdeMov.Text := '0';
     end
     else
       TMensagem.Erro('Não foi possivel gerar a movimentação. Tente novamente.');
@@ -408,7 +422,6 @@ end;
 procedure TFrm_Produto.Cancelar;
 begin
   inherited;
-
 end;
 
 procedure TFrm_Produto.cdsAfterCancel(DataSet: TDataSet);
@@ -459,8 +472,12 @@ procedure TFrm_Produto.cdsDESCRI_UNIDADEGetText(Sender: TField;
 begin
   inherited;
   Text := Sender.AsString;
+  lblUnidade.Visible := False;
   if ((not Sender.IsNull) and (Sender.AsString <> EmptyStr)) then
+  begin
     lblUnidade.Caption := '1 ' + Sender.AsString + ' = ';
+    lblUnidade.Visible := True;
+  end;
 end;
 
 procedure TFrm_Produto.cdsPRECO_ATACADOChange(Sender: TField);
@@ -476,9 +493,9 @@ procedure TFrm_Produto.cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
 begin
   inherited;
   if (not cds.FieldByName('CONV_QTDE').IsNull) then
-  begin
-    Text := FormatFloat('##0.000',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat));
-  end;
+    Text := FormatFloat('##0.000',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat))
+  else
+    Text := FormatFloat('##0.000',Sender.AsFloat);
 end;
 
 procedure TFrm_Produto.chkCustoEstimadoClick(Sender: TObject);
@@ -502,7 +519,7 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
-procedure TFrm_Produto.DBPesquisa2Pesquisa(Sender: TObject;
+procedure TFrm_Produto.dbpsqsConvUnidadePesquisa(Sender: TObject;
   var Retorno: string);
 var
   aRet: TRetornoUnidade;
@@ -611,16 +628,10 @@ begin
       cds.Close;
       cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
     end;
-//    LimpaForm();
     TMensagem.Informacao('Exclusão efetuada com sucesso.');
   except
     TMensagem.Erro('', 'Exclusão não efetuada.');
   end;
-//  if cds.ChangeCount > 0 then
-//  begin
-//    Dm.SMCadastroClient.setProduto(dm.BancoDados, cdsCODIGO.AsInteger, VarArrayOf([cds.Delta, null]));
-//    ResetaCDS;
-//  end;
 end;
 
 procedure TFrm_Produto.FormCreate(Sender: TObject);
@@ -725,7 +736,6 @@ begin
 //  inherited;
   if not (cds.State in [dsEdit, dsInsert]) then
   begin
-    cds.FieldDefs.Clear;
     ResetaCDS;
     cds.append;
   end;
@@ -746,14 +756,14 @@ begin
   cds.Close;
   cds.FieldDefs.Clear;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
-  FAtualizaPrecoCusto := False;
 end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
 const
-  SQL = 'select coalesce(a.preco_custo,0)preco_custo,b.sigla '+
+  SQL = 'select coalesce(a.preco_custo,0)preco_custo,coalesce(c.sigla,b.sigla)sigla '+
         'from produto a '+
         'left join unidade b on (b.codigo=a.cod_unidade) '+
+        'left join unidade c on (c.codigo=a.conv_unidade) '+
         'where a.codigo = %s';
 begin
   vUnitario := 0;
@@ -836,23 +846,34 @@ begin
     Exit;
   end;
 
-  if (DBPesquisa2.Campo.Text <> EmptyStr) then
+  //Validar Fragmentacao
+  if ( (dbedtCONV_QTDE.Text <> '') or (dbedtCONV_PRECO.Text <> '') or
+       (dbpsqsConvUnidade.Campo.Text <> '') ) then
   begin
-    if ((DBEdit4.Text = EmptyStr) or (StrToFloat(DBEdit4.Text) < 0)) then
+    if (dbedtCONV_QTDE.Text = '') then
     begin
-      TMensagem.Atencao('Informar a Quantidade da Conversão.');
-      DBEdit4.SetFocus;
       Result := False;
+      TMensagem.Atencao('Informar a quantidade fragmentada.');
+      pgc1.TabIndex := 2;
+      dbedtCONV_QTDE.SetFocus;
       Exit;
     end;
-
-//    if (StrToCurrDef(DBEdit6.Text, 0) < 0.01) then
-//    begin
-//      TMensagem.Atencao('Informar o Preço da Conversão.');
-//      DBEdit6.SetFocus;
-//      Result := False;
-//      Exit;
-//    end;
+    if (dbedtCONV_PRECO.Text = '') then
+    begin
+      Result := False;
+      TMensagem.Atencao('Informar o preço de venda fragmentado.');
+      pgc1.TabIndex := 2;
+      dbedtCONV_PRECO.SetFocus;
+      Exit;
+    end;
+    if (dbpsqsConvUnidade.Campo.Text = '') then
+    begin
+      Result := False;
+      TMensagem.Atencao('Informar a unidade fragmentada.');
+      pgc1.TabIndex := 2;
+      dbpsqsConvUnidade.Campo.SetFocus;
+      Exit;
+    end;
   end;
 end;
 
@@ -869,7 +890,7 @@ begin
   if ((cds.Active) and (cds.State in [dsEdit, dsInsert])) then
   begin
     Result := False;
-    TMensagem.Atencao('Necessário salvar antes de gerar a movimentação.');
+    TMensagem.Atencao('Necessário Salvar/Cancelar alteração antes de gerar a movimentação.');
     Exit;
   end;
 
@@ -888,6 +909,14 @@ begin
     edtQtdeMov.SetFocus;
     Exit;
   end;
+end;
+
+function TFrm_Produto.VoltaQtde(aQtde: Extended): Extended;
+begin
+  Result := aQtde;
+
+  if ((not cds.FieldByName('CONV_QTDE').IsNull) and (cds.FieldByName('CONV_QTDE').AsFloat > 0)) then
+    Result := (aQtde*cds.FieldByName('CONV_QTDE').AsFloat)
 end;
 
 end.

@@ -814,6 +814,7 @@ inherited Frm_Produto: TFrm_Produto
                 Top = 1
                 Width = 88
                 Height = 47
+                Cursor = crHandPoint
                 Action = actTrilhar
                 Align = alClient
                 Flat = True
@@ -847,7 +848,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsComposicao
+            ActivePage = tsFragmentacao
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -931,6 +932,7 @@ inherited Frm_Produto: TFrm_Produto
                     Top = 51
                     Width = 23
                     Height = 25
+                    Cursor = crHandPoint
                     Action = actMovimentar
                     Flat = True
                     Font.Charset = ANSI_CHARSET
@@ -985,6 +987,8 @@ inherited Frm_Produto: TFrm_Produto
                   Caption = 'pnlMovimentar'
                   ShowCaption = False
                   TabOrder = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = -4
                   object Label26: TLabel
                     Left = 1
                     Top = 1
@@ -1025,7 +1029,7 @@ inherited Frm_Produto: TFrm_Produto
                   object Label4: TLabel
                     Left = 105
                     Top = 26
-                    Width = 80
+                    Width = 150
                     Height = 15
                     Alignment = taCenter
                     AutoSize = False
@@ -1040,7 +1044,7 @@ inherited Frm_Produto: TFrm_Produto
                   object dbtxtQTDE_ESTOQUE: TDBText
                     Left = 105
                     Top = 45
-                    Width = 80
+                    Width = 150
                     Height = 17
                     Alignment = taCenter
                     DataField = 'QTDE_ESTOQUE'
@@ -1578,7 +1582,6 @@ inherited Frm_Produto: TFrm_Produto
                   Color = 14803681
                   ParentBackground = False
                   TabOrder = 2
-                  ExplicitTop = 144
                 end
                 object pnlFragmExemplo: TPanel
                   Left = 1
@@ -1620,7 +1623,6 @@ inherited Frm_Produto: TFrm_Produto
                     Font.Style = []
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitTop = 21
                     ExplicitWidth = 375
                   end
                 end
@@ -1636,7 +1638,6 @@ inherited Frm_Produto: TFrm_Produto
                   ParentBackground = False
                   ShowCaption = False
                   TabOrder = 1
-                  ExplicitHeight = 48
                   object lblUnidade: TLabel
                     Left = 6
                     Top = 19
@@ -1651,6 +1652,7 @@ inherited Frm_Produto: TFrm_Produto
                     Font.Name = 'Segoe UI Semibold'
                     Font.Style = [fsBold]
                     ParentFont = False
+                    Visible = False
                     WordWrap = True
                   end
                   object pnlDadosFragmentacao: TPanel
@@ -1662,14 +1664,13 @@ inherited Frm_Produto: TFrm_Produto
                     Caption = 'pnlDadosFragmentacao'
                     ShowCaption = False
                     TabOrder = 0
-                    ExplicitHeight = 48
                     object Label10: TLabel
                       Left = 24
                       Top = 16
                       Width = 73
                       Height = 15
                       Caption = 'QUANTIDADE'
-                      FocusControl = DBEdit4
+                      FocusControl = dbedtCONV_QTDE
                       Font.Charset = ANSI_CHARSET
                       Font.Color = clWindowText
                       Font.Height = -12
@@ -1683,7 +1684,7 @@ inherited Frm_Produto: TFrm_Produto
                       Width = 95
                       Height = 15
                       Caption = 'PRE'#199'O DE VENDA'
-                      FocusControl = DBEdit6
+                      FocusControl = dbedtCONV_PRECO
                       Font.Charset = ANSI_CHARSET
                       Font.Color = clWindowText
                       Font.Height = -12
@@ -1691,7 +1692,7 @@ inherited Frm_Produto: TFrm_Produto
                       Font.Style = []
                       ParentFont = False
                     end
-                    object DBEdit4: TDBEdit
+                    object dbedtCONV_QTDE: TDBEdit
                       Left = 99
                       Top = 13
                       Width = 81
@@ -1706,7 +1707,7 @@ inherited Frm_Produto: TFrm_Produto
                       ParentFont = False
                       TabOrder = 0
                     end
-                    object DBPesquisa2: TDBPesquisa
+                    object dbpsqsConvUnidade: TDBPesquisa
                       Left = 182
                       Top = 13
                       Width = 318
@@ -1749,11 +1750,11 @@ inherited Frm_Produto: TFrm_Produto
                       Campo.DataField = 'CONV_UNIDADE'
                       Campo.DataSource = ds
                       Campo.TabOrder = 0
-                      OnPesquisa = DBPesquisa2Pesquisa
+                      OnPesquisa = dbpsqsConvUnidadePesquisa
                       TabOrder = 1
                       TabStop = True
                     end
-                    object DBEdit6: TDBEdit
+                    object dbedtCONV_PRECO: TDBEdit
                       Left = 99
                       Top = 41
                       Width = 81
@@ -1766,7 +1767,59 @@ inherited Frm_Produto: TFrm_Produto
                       Font.Name = 'Segoe UI'
                       Font.Style = []
                       ParentFont = False
+                      TabOrder = 3
+                    end
+                    object pnlExcFrag: TPanel
+                      Left = 466
+                      Top = 39
+                      Width = 25
+                      Height = 25
+                      BevelOuter = bvNone
+                      Caption = 'pnlIncluiCondPagto'
+                      Color = 7024384
+                      ParentBackground = False
+                      ShowCaption = False
                       TabOrder = 2
+                      TabStop = True
+                      object imgExcFrag: TImage
+                        Left = 0
+                        Top = 0
+                        Width = 25
+                        Height = 25
+                        Align = alClient
+                        Picture.Data = {
+                          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000190000
+                          00190806000000C4E9856300000006624B474400FF00FF00FFA0BDA793000001
+                          244944415478DA6364A003601CBE96FCFFFF9F1548F1A009B301F12C20D64112
+                          BB02C46940FC0B4DED174646C6DF842C090052EB71386A3BC810A8233C71A809
+                          045AB2819025AA50573B00710D10FF814A3D006A5E89A42E1C482940B92C40DC
+                          02C40740BE03AABB8DD712A801ED40AA028839811A7E100A73A07A0E20F51D88
+                          3B80EA2B09C6C9805802C48A406C0BC4AB8098171A17A0B8F90CC461407C1888
+                          EF536A4902104F07624D681C6C875AF40088AF037126102F18B564D492116E09
+                          2803CA01F1550648690C2ADB406513A8F4D506E2470C908C39388B952620550B
+                          C4A2404D6F88B0440448BD06E266A0FA3A622D7106527B182015D37542963040
+                          E20B54A139032DD9479425508BD2811408F31361C947209E01B4601636C961DC
+                          90A00500002294BF1ABE0ECED60000000049454E44AE426082}
+                        ExplicitLeft = 8
+                        ExplicitTop = 8
+                        ExplicitWidth = 105
+                        ExplicitHeight = 105
+                      end
+                      object btnExcFragmentacao: TSpeedButton
+                        Left = 0
+                        Top = 0
+                        Width = 25
+                        Height = 25
+                        Action = actExcFragmentacao
+                        Align = alClient
+                        Flat = True
+                        ParentShowHint = False
+                        ShowHint = True
+                        ExplicitLeft = 1
+                        ExplicitTop = 7
+                        ExplicitWidth = 23
+                        ExplicitHeight = 23
+                      end
                     end
                   end
                 end
@@ -2385,6 +2438,9 @@ inherited Frm_Produto: TFrm_Produto
     end
     object actExcItem: TAction
       OnExecute = actExcItemExecute
+    end
+    object actExcFragmentacao: TAction
+      OnExecute = actExcFragmentacaoExecute
     end
   end
   object cdsComposicaoProduto: TClientDataSet
