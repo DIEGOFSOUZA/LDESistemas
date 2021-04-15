@@ -404,8 +404,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
         BevelOuter = bvNone
         TabOrder = 1
         TabStop = True
-        ExplicitLeft = 6
-        ExplicitTop = 155
         object Label6: TLabel
           Left = 34
           Top = 57

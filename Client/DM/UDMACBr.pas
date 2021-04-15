@@ -3,12 +3,15 @@ unit UDMACBr;
 interface
 
 uses
-  System.SysUtils, System.Classes, ACBrNFe, ACBrValidador, ACBrBase, ACBrDFe;
+  System.SysUtils, System.Classes, ACBrNFe, ACBrValidador, ACBrBase, ACBrDFe,
+  ACBrBoleto, ACBrBoletoFCFortesFr;
 
 type
   TDMACBr = class(TDataModule)
     ACBrNFe1: TACBrNFe;
     ACBrValidador1: TACBrValidador;
+    ACBrBoleto: TACBrBoleto;
+    ACBrBoletoReport: TACBrBoletoFCFortes;
   private
     { Private declarations }
   public

@@ -14,19 +14,19 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
   inherited pnlFundo0: TPanel
     Width = 750
     Height = 620
-    ExplicitWidth = 632
-    ExplicitHeight = 494
+    ExplicitWidth = 750
+    ExplicitHeight = 620
     inherited pnlFundo1: TPanel [0]
       Width = 667
       Height = 618
-      ExplicitWidth = 549
-      ExplicitHeight = 492
+      ExplicitWidth = 667
+      ExplicitHeight = 618
       inherited Panel4: TPanel
         Top = 597
         Width = 665
         TabOrder = 1
-        ExplicitTop = 471
-        ExplicitWidth = 547
+        ExplicitTop = 597
+        ExplicitWidth = 665
       end
       object Panel2: TPanel
         Left = 1
@@ -35,8 +35,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
         Height = 596
         Align = alClient
         TabOrder = 0
-        ExplicitWidth = 547
-        ExplicitHeight = 470
         object pnlPages: TPanel
           Left = 1
           Top = 363
@@ -47,8 +45,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           Caption = 'pnlPages'
           ShowCaption = False
           TabOrder = 1
-          ExplicitTop = 259
-          ExplicitWidth = 545
           object pgc1: TPageControl
             Left = 0
             Top = 0
@@ -67,8 +63,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsEstoque: TTabSheet
               Caption = 'ESTOQUE'
               ImageIndex = 3
-              ExplicitWidth = 537
-              object Panel5: TPanel
+              object pnlEstoque: TPanel
                 Left = 0
                 Top = 0
                 Width = 655
@@ -84,6 +79,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   Height = 85
                   Align = alTop
                   Caption = 'pnlMovimentar'
+                  Enabled = False
                   ShowCaption = False
                   TabOrder = 1
                   object Label21: TLabel
@@ -194,8 +190,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   Caption = 'pnlMovimentar'
                   ShowCaption = False
                   TabOrder = 0
-                  ExplicitLeft = 0
-                  ExplicitTop = -4
                   object Label26: TLabel
                     Left = 1
                     Top = 1
@@ -294,7 +288,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Color = 14803681
                 ParentBackground = False
                 TabOrder = 0
-                ExplicitTop = -1
               end
             end
             object tsFragmentacao: TTabSheet
@@ -758,7 +751,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsFiscal: TTabSheet
               Caption = 'FISCAL'
               ImageIndex = 4
-              ExplicitTop = 23
               object pnlFundoFiscal: TPanel
                 Left = 0
                 Top = 0
@@ -989,9 +981,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
           Font.Style = []
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 9
-          ExplicitHeight = 236
           object pnlPreco: TPanel
             Left = 1
             Top = 201
@@ -1002,7 +991,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             Caption = 'pnlPreco'
             ShowCaption = False
             TabOrder = 1
-            ExplicitHeight = 34
             object lblTitPreco: TLabel
               Left = 1
               Top = 1
@@ -1033,7 +1021,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Caption = 'pnlPrecoCusto'
               ShowCaption = False
               TabOrder = 0
-              ExplicitHeight = 8
               object Label15: TLabel
                 Left = 2
                 Top = 16
@@ -1088,7 +1075,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Caption = 'pnlPrecoCenter'
               ShowCaption = False
               TabOrder = 1
-              ExplicitHeight = 8
               object pnlPVenda: TPanel
                 Left = 0
                 Top = 0
@@ -1243,8 +1229,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                 Caption = 'pnlPAtac'
                 ShowCaption = False
                 TabOrder = 1
-                ExplicitLeft = 6
-                ExplicitTop = 64
                 object Label27: TLabel
                   Left = 10
                   Top = 13
@@ -1535,7 +1519,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               ParentFont = False
               TabOrder = 8
             end
-            object DBPesquisa5: TDBPesquisa
+            object dbpsqsGrupo: TDBPesquisa
               Left = 173
               Top = 57
               Width = 378
@@ -1578,10 +1562,11 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Campo.DataField = 'COD_GRUPO'
               Campo.DataSource = ds
               Campo.TabOrder = 0
+              OnPesquisa = dbpsqsGrupoPesquisa
               TabOrder = 4
               TabStop = True
             end
-            object DBPesquisa6: TDBPesquisa
+            object dbpsqsSubGrupo: TDBPesquisa
               Left = 150
               Top = 82
               Width = 401
@@ -1624,6 +1609,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Campo.DataField = 'COD_SUBGRUPO'
               Campo.DataSource = ds
               Campo.TabOrder = 0
+              OnPesquisa = dbpsqsSubGrupoPesquisa
               TabOrder = 6
               TabStop = True
             end
@@ -1766,7 +1752,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     end
     inherited Panel1: TPanel [1]
       Height = 618
-      ExplicitHeight = 492
+      ExplicitHeight = 618
       inherited pnlSair: TPanel
         Top = 534
         ExplicitTop = 534
@@ -1918,6 +1904,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
       FieldName = 'PRECO_ATACADO'
       Origin = 'PRECO_ATACADO'
       OnChange = cdsPRECO_ATACADOChange
+      currency = True
       Precision = 18
       Size = 2
     end

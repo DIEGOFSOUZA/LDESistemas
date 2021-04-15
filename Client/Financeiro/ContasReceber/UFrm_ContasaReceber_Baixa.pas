@@ -3,9 +3,10 @@ unit UFrm_ContasaReceber_Baixa;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child, Vcl.ExtCtrls, Vcl.StdCtrls,
-  UEDPesquisa, Vcl.Imaging.pngimage, Vcl.Buttons;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child,
+  Vcl.ExtCtrls, Vcl.StdCtrls, UEDPesquisa, Vcl.Imaging.pngimage, Vcl.Buttons,
+  System.Actions, Vcl.ActnList, Vcl.ComCtrls, U_DataCorrida;
 
 type
   TFrm_ContasaReceber_Baixa = class(TPdr_Child)
@@ -31,70 +32,50 @@ type
     edpsqsHistorico: TEdPesquisa;
     edpsqsConta: TEdPesquisa;
     Label7: TLabel;
-    edtDataBaixa: TEdit;
     Label9: TLabel;
     edtValorBaixa: TEdit;
-    Label10: TLabel;
-    edtusuarioBaixa: TEdit;
     pnlCancelar: TPanel;
     btnCancelar: TSpeedButton;
-    imgCancelar: TImage;
     pnlBtnBaixar: TPanel;
     btnBaixar: TSpeedButton;
-    imgBaixar: TImage;
+    actlst1: TActionList;
+    actEfetuarBaixa: TAction;
+    actVoltar: TAction;
+    dtpBaixa: TDateTimePicker;
     procedure edtValorBaixaKeyPress(Sender: TObject; var Key: Char);
-    procedure edtDataBaixaChange(Sender: TObject);
-    procedure edtDataBaixaKeyPress(Sender: TObject; var Key: Char);
-    procedure edtValorBaixaExit(Sender: TObject);
     procedure edpsqsContaPesquisa(Sender: TObject; var Retorno: string);
     procedure edpsqsHistoricoPesquisa(Sender: TObject; var Retorno: string);
     procedure btnCancelarClick(Sender: TObject);
-    procedure btnBaixarClick(Sender: TObject);
-    procedure edtDataBaixaExit(Sender: TObject);
+    procedure actEfetuarBaixaExecute(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure actVoltarExecute(Sender: TObject);
   private
     fGetTitDuplicata: string;
     fGetTitCliente: string;
     fGetDataBaixa: Tdate;
     fGetTitEmissao: Tdate;
-    fGetTitVencto: Tdate;
     fGetValorBaixa: Currency;
     fGetUsuario: string;
     fGetTitVenda: integer;
-    fGetIdCaixa: string;
     fGetTitValor: Currency;
     fRetorno: string;
-    procedure setTitVenda(const Value: integer);
-    procedure setTitCliente(const Value: string);
-    procedure setTitDuplicata(const Value: string);
-    procedure setTitEmissao(const Value: TDate);
-    procedure setTitVencto(const Value: Tdate);
-    procedure setDataBaixa(const Value: Tdate);
-    procedure setUsuario(const Value: string);
-    procedure setValorBaixa(const Value: Currency);
+    fIdCaixa: string;
 
     function GerarParcial(pVlTitulo, pVlPago: Currency): Boolean;
-    procedure PagtoParcial(pDiferenca: Currency);
+    procedure PagtoParcial(pVlPago, pVlDiferenca: Currency);
     procedure Baixa();
-    procedure setIdCaixa(const Value: string);
-    procedure setTitValor(const Value: Currency);
-    procedure SetRetorno(const Value: string);
-
     function Validar(): Boolean;
   public
-    Historico,Conta : string;
-   {Titulo}
-    property TitVenda: integer read fGetTitVenda write setTitVenda;
-    property TitEmissao: TDate read fGetTitEmissao write setTitEmissao;
-    property TitDuplicata: string read fGetTitDuplicata write setTitDuplicata;
-    property TitVencto: Tdate read fGetTitVencto write setTitVencto;
-    property TitValor: Currency read fGetTitValor write setTitValor;
-    property TitCliente: string read fGetTitCliente write setTitCliente;
+    var
+      Historico, Conta: string;
+    procedure Executar(aTipo: string; aId: integer; aOrdem: string);
+            {Titulo}
+    property TitVenda: integer read fGetTitVenda;
+    property TitDuplicata: string read fGetTitDuplicata;
+    property TitValor: Currency read fGetTitValor;
     {Baixa}
-    property Usuario: string read fGetUsuario write setUsuario;
-    property DataBaixa: Tdate read fGetDataBaixa write setDataBaixa;
-    property ValorBaixa: Currency read fGetValorBaixa write setValorBaixa;
-    property IdCaixa: string read fGetIdCaixa write setIdCaixa;
-    property Retorno:string read fRetorno write SetRetorno;
+    property IdCaixa: string read fIdCaixa;
+    property Retorno:string read fRetorno;
   end;
 
 var
@@ -107,72 +88,36 @@ uses
 
 {$R *.dfm}
 
-procedure TFrm_ContasaReceber_Baixa.Baixa;
-var
-  lSQL: string;
+procedure TFrm_ContasaReceber_Baixa.Executar(aTipo: string; aId: integer; aOrdem: string);
+const
+  SQL = 'select A.ID, A.ORDEM, A.DT_VENC, A.VALOR, PM.EMISSAO, B.NOME_RAZAO CLIENTE '+
+        'from PDV_RECEBER A '+
+        'join PDV_MASTER PM on (PM.TIPO = A.TIPO and '+
+        '      PM.ID = A.ID) '+
+        'join CLIENTE B on (B.CODIGO = PM.ID_CLIENTE) '+
+        'where A.TIPO = %s and '+
+        '      A.ID   = %s and '+
+        '   A.ORDEM   = %s';
 begin
-  lSQL := 'update PDV_RECEBER a ' +
-          'set a.DT_BAIXA = '+ QuotedStr(FormatDateTime('dd.mm.yyyy',DataBaixa))+
-          ',a.VL_PAGO = '+ValorFormatadoFirebird(CurrToStr(ValorBaixa))+
-          ',a.USUARIO_BAIXA = '+QuotedStr(DM.UsuarioDataHora)+
-          ',a.ID_HISTORICO = '+Historico+
-          ',a.ID_CONTA = '+Conta+
-          ',a.BAIXA_ID_CAIXA = '+IdCaixa+
-          ' where a.TIPO = ''0'' and a.ID = '+IntToStr(TitVenda)+
-          ' and a.ORDEM = '+QuotedStr(TitDuplicata);
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(aTipo),aId.ToString,QuotedStr(aOrdem)]));
 
-  try
-    DM.ExecutarSQL(DM.BancoDados, lSQL);
-    Retorno := 'sucesso';
-  except
-    on e: Exception do
-    begin
-      Retorno := 'Erro: ' + e.Message;
-    end;
-  end;
+  edtVenda.Text := FormatFloat('000',DM.dsConsulta.FieldByName('ID').AsInteger);
+  edtEmissao.Text := FormatDateTime('dd/mm/yyyy',DM.dsConsulta.FieldByName('emissao').AsDateTime);
+  edtDuplicata.Text := DM.dsConsulta.FieldByName('emissao').AsString;
+  edtVencto.Text := FormatDateTime('dd/mm/yyyy',DM.dsConsulta.FieldByName('dt_venc').AsDateTime);
+  edtValorTit.Text := FormatCurr('R$ #,##0.00',DM.dsConsulta.FieldByName('valor').AsCurrency);
+  edtCliente.Text := DM.dsConsulta.FieldByName('cliente').AsString;
+
+  fGetTitValor := DM.dsConsulta.FieldByName('valor').AsCurrency;
+  fGetTitVenda := DM.dsConsulta.FieldByName('id').AsInteger;
+  fGetTitDuplicata := DM.dsConsulta.FieldByName('ordem').AsString;
+
+  dtpBaixa.Date := Date;
+  edtValorBaixa.Text := FormatCurr('##0.00',DM.dsConsulta.FieldByName('valor').AsCurrency);
 end;
 
-procedure TFrm_ContasaReceber_Baixa.PagtoParcial(pDiferenca: Currency);
-var
-  lSQL: string;
-begin
-  lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO, ' +
-          'ORDEM, DT_VENC, VALOR, USUARIO_EMISSAO, DT_BAIXA, VL_PAGO, ' +
-          'USUARIO_BAIXA, ID_HISTORICO,ID_CONTA,ID_CAIXA) ' + //BAIXA_FORMA_PAGTO,
-          'VALUES ( ' +
-          '0'+
-          ','+IntToStr(TitVenda)+
-          ','+QuotedStr('0') +
-          ','+QuotedStr('PARCIAL') +
-          ','+QuotedStr(TitDuplicata) +
-          ','+QuotedStr(FormatDateTime('dd.mm.yyyy',DataBaixa)) +
-          ','+ValorFormatadoFirebird(CurrToStr(ValorBaixa))+
-          ','+QuotedStr(DM.UsuarioDataHora)+
-          ','+QuotedStr(FormatDateTime('dd.mm.yyyy',DataBaixa)) +
-          ','+ValorFormatadoFirebird(CurrToStr(ValorBaixa))+
-          ','+QuotedStr(DM.UsuarioDataHora) +
-          ','+Historico +
-          ','+Conta +
-          ','+IdCaixa+
-          ')';
-
-  try
-    DM.ExecutarSQL(DM.BancoDados, lSQL);
-    DM.ExecutarSQL(DM.BancoDados, 'update PDV_RECEBER a '+
-                                  'set a.VALOR = '+ValorFormatadoFirebird(CurrToStr(pDiferenca))+
-                                  'where a.TIPO = ''0'' '+
-                                  'and a.ID = ' + IntToStr(TitVenda)+
-                                  'and a.ORDEM = ' + QuotedStr(TitDuplicata));
-    Retorno := 'sucesso';
-  except
-    on e: Exception do
-    begin
-      Retorno := 'Erro: ' + e.Message;
-    end;
-  end;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.btnBaixarClick(Sender: TObject);
+procedure TFrm_ContasaReceber_Baixa.actEfetuarBaixaExecute(Sender: TObject);
 begin
   inherited;
   if not Validar() then
@@ -181,14 +126,14 @@ begin
   if TMensagem.Pergunta('Confirma a baixa da duplicata?') then
   begin
     try
-      Historico := edpsqsHistorico.Campo.Text;
+//      Historico := edpsqsHistorico.Campo.Text;
+//
+//      if edpsqsConta.Campo.Text <> '' then
+//        Conta := QuotedStr(edpsqsConta.Campo.Text)
+//      else
+//        Conta := 'null';
 
-      if edpsqsConta.Campo.Text <> '' then
-        Conta := QuotedStr(edpsqsConta.Campo.Text)
-      else
-        Conta := 'null';
-
-      if not GerarParcial(TitValor, ValorBaixa) then
+      if not GerarParcial(TitValor, StrToFloat(edtValorBaixa.Text)) then
         Baixa();
     finally
       Close;
@@ -196,10 +141,82 @@ begin
   end;
 end;
 
+procedure TFrm_ContasaReceber_Baixa.actVoltarExecute(Sender: TObject);
+begin
+  inherited;
+  fRetorno := 'cancelar';
+  Close();
+end;
+
+procedure TFrm_ContasaReceber_Baixa.Baixa;
+var
+  lSQL: string;
+begin
+  lSQL := 'update PDV_RECEBER a ' +
+          'set a.DT_BAIXA = '+ QuotedStr(FormatDateTime('dd.mm.yyyy',dtpBaixa.Date))+
+          ',a.VL_PAGO = '+ValorFormatadoFirebird(edtValorBaixa.Text)+
+          ',a.USUARIO_BAIXA = '+QuotedStr(DM.UsuarioDataHora)+
+          ',a.ID_HISTORICO = '+edpsqsHistorico.Campo.Text+
+          ',a.ID_CONTA = '+QuotedStr(edpsqsConta.Campo.Text)+
+          ',a.BAIXA_ID_CAIXA = '+IdCaixa+
+          ' where a.TIPO = ''0'' and a.ID = '+IntToStr(TitVenda)+
+          ' and a.ORDEM = '+QuotedStr(TitDuplicata);
+
+  try
+    DM.ExecutarSQL(DM.BancoDados, lSQL);
+    fRetorno := 'sucesso';
+  except
+    on e: Exception do
+    begin
+      fRetorno := 'Erro: ' + e.Message;
+    end;
+  end;
+end;
+
+procedure TFrm_ContasaReceber_Baixa.PagtoParcial(pVlPago, pVlDiferenca: Currency);
+var
+  lSQL: string;
+begin
+  lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO, ' +
+          'ORDEM, DT_VENC, VALOR, USUARIO_EMISSAO, DT_BAIXA, VL_PAGO, ' +
+          'USUARIO_BAIXA, ID_HISTORICO,ID_CONTA,ID_CAIXA) ' + //BAIXA_FORMA_PAGTO,
+          'VALUES ( ' +
+          '0'+
+          ','+TitVenda.ToString+
+          ','+QuotedStr('0') +
+          ','+QuotedStr('PARCIAL') +
+          ','+QuotedStr(TitDuplicata) +
+          ','+QuotedStr(FormatDateTime('dd.mm.yyyy',Date)) +
+          ','+ValorFormatadoFirebird(CurrToStr(pVlPago))+
+          ','+QuotedStr(DM.UsuarioDataHora)+
+          ','+QuotedStr(FormatDateTime('dd.mm.yyyy',dtpBaixa.Date)) +
+          ','+ValorFormatadoFirebird(CurrToStr(pVlPago))+
+          ','+QuotedStr(DM.UsuarioDataHora) +
+          ','+edpsqsHistorico.Campo.Text +
+          ','+QuotedStr(edpsqsConta.Campo.Text) +
+          ','+IdCaixa+
+          ')';
+
+  try
+    DM.ExecutarSQL(DM.BancoDados, lSQL);
+    DM.ExecutarSQL(DM.BancoDados, 'update PDV_RECEBER a '+
+                                  'set a.VALOR = '+ValorFormatadoFirebird(CurrToStr(pVlDiferenca))+
+                                  'where a.TIPO = ''0'' '+
+                                  'and a.ID = ' + IntToStr(TitVenda)+
+                                  'and a.ORDEM = ' + QuotedStr(TitDuplicata));
+    fRetorno := 'sucesso';
+  except
+    on e: Exception do
+    begin
+      fRetorno := 'Erro: ' + e.Message;
+    end;
+  end;
+end;
+
 procedure TFrm_ContasaReceber_Baixa.btnCancelarClick(Sender: TObject);
 begin
   inherited;
-  Retorno := 'cancelar';
+  fRetorno := 'cancelar';
   Close();
 end;
 
@@ -217,48 +234,6 @@ begin
   Retorno := Consulta.Historico(1,'DUPLICATA RECEBIDA').ToString;
 end;
 
-procedure TFrm_ContasaReceber_Baixa.edtDataBaixaChange(Sender: TObject);
-begin
-  inherited;
-  edtDataBaixa.Text := MaskData(edtDataBaixa.Text,'99/99/9999');
-  edtDataBaixa.SelStart := Length(edtDataBaixa.Text);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.edtDataBaixaExit(Sender: TObject);
-begin
-  inherited;
-  if (not ValidaData(edtDataBaixa.Text, True)) then
-    edtDataBaixa.SelectAll;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.edtDataBaixaKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-  inherited;
-  if not (Key in ['0'..'9', #8, #13]) then
-    Key := #0;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.edtValorBaixaExit(Sender: TObject);
-var
-  lFormata: TFormataValor;
-begin
-  inherited;
-  lFormata := ValidaFormataCurrency(edtValorBaixa.Text);
-
-  if lFormata.Retorno = 'sucesso' then
-  begin
-    if ((lFormata.vlFloat > TitValor) or (lFormata.vlFloat <= 0)) then
-    begin
-      TMensagem.Atencao('Valor de baixa inválido.');
-      ValorBaixa := 0;
-      edtValorBaixa.SetFocus;
-    end
-    else
-      ValorBaixa := lFormata.vlFloat;
-  end;
-end;
-
 procedure TFrm_ContasaReceber_Baixa.edtValorBaixaKeyPress(Sender: TObject;
   var Key: Char);
 begin
@@ -267,85 +242,27 @@ begin
     Key := #0;
 end;
 
+procedure TFrm_ContasaReceber_Baixa.FormShow(Sender: TObject);
+begin
+  inherited;
+  dtpBaixa.Date := Date;
+  edpsqsHistorico.Campo.SetFocus;
+end;
+
 function TFrm_ContasaReceber_Baixa.GerarParcial(pVlTitulo, pVlPago: Currency): Boolean;
 var
   lDiferenca: Currency;
 begin
   Result := False;
-  if ( pVlTitulo > pVlPago) then
+  if (pVlTitulo > pVlPago) then
   begin
     lDiferenca := pVlTitulo - pVlPago;
-    if TMensagem.Pergunta('Será gerado uma nova duplicata pendente no valor de R$ '+FormatCurr('#,##0.00',lDiferenca) +#13#10+
-                          'Confirma o pagamento parcial da duplicata?') then
+    if TMensagem.Pergunta('Será gerado uma nova duplicata pendente no valor de R$ ' + FormatCurr('#,##0.00', lDiferenca) + #13#10 + 'Confirma o pagamento parcial da duplicata?') then
     begin
-      Result := True ;
-      PagtoParcial(lDiferenca);
+      Result := True;
+      PagtoParcial(pVlPago, lDiferenca);
     end;
   end;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setDataBaixa(const Value: Tdate);
-begin
-  fGetDataBaixa := Value;
-  edtDataBaixa.Text := FormatDateTime('dd/mm/yyyy',Value);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setIdCaixa(const Value: string);
-begin
-  fGetIdCaixa := Value;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.SetRetorno(const Value: string);
-begin
-  fRetorno := Value;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitCliente(const Value: string);
-begin
-  fGetTitCliente := Value;
-  edtCliente.Text := Value;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitDuplicata(const Value: string);
-begin
-  fGetTitDuplicata := Value;
-  edtDuplicata.Text := Value ;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitEmissao(const Value: TDate);
-begin
-  fGetTitEmissao := Value;
-  edtEmissao.Text := FormatDateTime('dd/mm/yyyy',Value);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitValor(const Value: Currency);
-begin
-  fGetTitValor := Value;
-  edtValorTit.Text := FormatCurr('#,##0.00',Value);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitVencto(const Value: Tdate);
-begin
-  fGetTitVencto := Value;
-  edtVencto.Text := FormatDateTime('dd/mm/yyyy',Value);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setTitVenda(const Value: integer);
-begin
-  fGetTitVenda := Value;
-  edtVenda.Text := FormatFloat('000',Value);
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setUsuario(const Value: string);
-begin
-  fGetUsuario := Value;
-  edtusuarioBaixa.Text := Value ;
-end;
-
-procedure TFrm_ContasaReceber_Baixa.setValorBaixa(const Value: Currency);
-begin
-  fGetValorBaixa := Value;
-  edtValorBaixa.Text := FormatCurr('#,##0.00',Value);
 end;
 
 function TFrm_ContasaReceber_Baixa.Validar: Boolean;
@@ -355,7 +272,7 @@ var
 begin
   Result := True;
 
-  if edpsqsHistorico.Campo.Text = '' then
+  if (edpsqsHistorico.Campo.Text = '') then
   begin
     Result := False;
     TMensagem.Atencao('Informe o histórico.');
@@ -363,7 +280,7 @@ begin
     Exit;
   end;
 
-  if edpsqsConta.Campo.Text = '' then
+  if (edpsqsConta.Campo.Text = '') then
   begin
     Result := False;
     TMensagem.Atencao('Informe a conta.');
@@ -371,12 +288,12 @@ begin
     Exit;
   end;
 
-  if edpsqsConta.Campo.Text = '1' then {Conta Caixa PDV}
+  if (edpsqsConta.Campo.Text = '1') then {Conta Caixa PDV}
   begin
     lExisteCaixa := CaixaFechado;
     if (lExisteCaixa.ID > 0) then
     begin
-      IdCaixa := IntToStr(lExisteCaixa.ID);
+      fIdCaixa := IntToStr(lExisteCaixa.ID);
     end
     else
     begin
@@ -384,7 +301,7 @@ begin
       TMensagem.Atencao('Baixa não pode ser efetuada. Caixa PDV fechado/inexistente.');
       Exit;
     end;
-    if StrToDate(edtDataBaixa.Text) <> date then
+    if (dtpBaixa.Date <> date) then
       begin
         Result := False;
         TMensagem.Atencao('Baixa não pode ser efetuada. Utilizando conta caixa PDV e data de baixa diferente de hoje.');
@@ -392,7 +309,32 @@ begin
       end;
   end
   else
-    IdCaixa := 'null';
+    fIdCaixa := 'null';
+
+  if not ValidaData(DateToStr(dtpBaixa.Date), False) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Data inválida');
+    dtpBaixa.SetFocus;
+    Exit;
+  end;
+
+  if (StrToCurrDef(edtValorBaixa.Text, 0) <= 0) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Valor R$ inválido');
+    edtValorBaixa.SetFocus;
+    Exit;
+  end;
+
+  if (StrToCurr(edtValorBaixa.Text) > TitValor) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Valor da baixa é maior que o saldo devido.');
+    edtValorBaixa.SetFocus;
+    Exit;
+  end;
+
 end;
 
 end.

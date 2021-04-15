@@ -3,30 +3,10 @@ unit UFuncoes;
 interface
 
 uses
-    Vcl.Controls,
-    Vcl.Dialogs,
-    Vcl.Forms,
-    Vcl.DBGrids,
-
-    System.SysUtils,
-    System.Classes,
-    System.Math,
-
-    System.Character,
-    System.Variants,
-
-    Data.DB,
-    Datasnap.DBClient,
-
-    Winapi.Windows,
-
-    Winapi.Messages,
-
-    ShlObj,
-    ComObj,
-    ActiveX,
-
-    ACBrUtil;
+  Vcl.Controls, Vcl.Dialogs, Vcl.Forms, Vcl.DBGrids, System.SysUtils,
+  System.Classes, System.Math, System.Character, System.Variants, Data.DB,
+  Datasnap.DBClient, Winapi.Windows, Winapi.Messages, ShlObj, ComObj, ActiveX,
+  ACBrUtil;
 
 type
   TCaixa = record
@@ -100,15 +80,15 @@ procedure RemoveLinhasEmBranco(aLista : TStrings); //Memo
 
 implementation
 
-uses UDM, u_Mensagem, UDMACBr;
+uses
+  UDM, u_Mensagem, UDMACBr;
 
 
 function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
 const
-  SQL = 'SELECT coalesce(u2.SIGLA,'''') SIGLA,COALESCE(CONV_QTDE,0) qtde '+
-        'FROM PRODUTO p '+
-        'LEFT OUTER JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
-        'WHERE p.CODIGO = %s';
+  SQL = 'select P.CONV_UNIDADE, P.CONV_QTDE, P.CONV_PRECO '+
+        'from PRODUTO P '+
+        'where P.CODIGO = %s';
 begin
   Result := aQtde;
   if (aCod < 1) then
@@ -120,13 +100,8 @@ begin
     cdsConsulta.Data := DM.LerDataSet(Format(SQL, [aCod.ToString]));
     if (not cdsConsulta.IsEmpty) then
     begin
-      if ((cdsConsulta.FieldByName('SIGLA').AsString = aSigla) and
-          (cdsConsulta.FieldByName('QTDE').AsFloat > 0)) then
-      begin
-        Result := aQtde * cdsConsulta.FieldByName('QTDE').AsFloat;
-      end;
+      Result := (aQtde * cdsConsulta.FieldByName('CONV_QTDE').AsFloat);
     end;
-
   finally
     FreeAndNil(cdsConsulta);
   end;
@@ -1088,7 +1063,7 @@ const
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
 {$REGION 'Trecho Producao'}
-  {Result.Fechado := False ;
+  Result.Fechado := False ;
   Result.ID := 0;
 
   DM.dsConsulta.Close ;
@@ -1105,12 +1080,12 @@ begin
     Exit ;
   end;
 
-  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;  }
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
 {$ENDREGION}
 
 {$REGION 'Trecho teste'}
-  Result.Fechado := False;
-  Result.ID := 254;
+//  Result.Fechado := False;
+//  Result.ID := 254;
 {$ENDREGION}
 end;
 

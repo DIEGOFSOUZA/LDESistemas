@@ -62,7 +62,7 @@ type
     pnlPages: TPanel;
     pgc1: TPageControl;
     tsEstoque: TTabSheet;
-    pnl2: TPanel;
+    pnlEstoque: TPanel;
     tsComposicao: TTabSheet;
     pnlComposicao: TPanel;
     tsFragmentacao: TTabSheet;
@@ -83,7 +83,7 @@ type
     lblTitMov: TLabel;
     btnMovimentar: TSpeedButton;
     actMovimentar: TAction;
-    Panel2: TPanel;
+    pnlEstoqueAtual: TPanel;
     Label26: TLabel;
     Label9: TLabel;
     DBEdit10: TDBEdit;
@@ -144,7 +144,6 @@ type
     cdsCONV_PRECO: TCurrencyField;
     cdsDT_CADASTRO: TDateField;
     cdsDESC_MAXIMO: TFMTBCDField;
-    cdsPRECO_ATACADO: TFMTBCDField;
     cdsQTDE_MIN_ATACADO: TFMTBCDField;
     cdsSITUACAO: TStringField;
     cdsFISCAL_TIPO: TStringField;
@@ -207,6 +206,7 @@ type
     imgExcFrag: TImage;
     btnExcFragmentacao: TSpeedButton;
     actExcFragmentacao: TAction;
+    cdsPRECO_ATACADO: TFMTBCDField;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
@@ -443,7 +443,6 @@ begin
   cdsPESO_LIQUIDO.AsFloat := 0;
   cdsPRECO_VENDA.AsCurrency := 0;
   cdsPRECO_CUSTO.AsCurrency := 0;
-  cdsCONV_PRECO.AsCurrency := 0;
   cdsQTDE_MINIMA.AsFloat := 0;
   cdsTIPO_PRODUTO.AsString := 'PA';
   cdsDT_CADASTRO.AsDateTime := Date;
@@ -582,7 +581,7 @@ var
   aRet: TRetornoProduto;
 begin
   inherited;
-  aRet := Consulta.Produto(QuotedStr('MP'), 'Consulta de Matéria-Prima');
+  aRet := Consulta.Produto('', 'Consulta de Matéria-Prima');
   if aRet.iCodigo > 0 then
     Retorno := IntToStr(aRet.iCodigo);
 end;
@@ -640,6 +639,7 @@ begin
   ResetaCDS ;
   pgc1.TabIndex := 2;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
+  pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
 procedure TFrm_Produto.Gravar;
@@ -706,6 +706,10 @@ begin
           cds.FieldByName('preco_custo').AsCurrency) / cds.FieldByName('preco_custo').AsCurrency) * 100;
 
     lblLucro.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    if (lResultado > 0) then
+      lblLucro.Font.Color := clGreen
+    else
+      lblLucro.Font.Color := clRed;
     pnlLucro.Visible := True;
   end;
 
@@ -715,6 +719,10 @@ begin
           cds.FieldByName('preco_custo').AsCurrency) / cds.FieldByName('preco_custo').AsCurrency) * 100;
 
     lblLucroAtacado.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    if (lResultado > 0) then
+      lblLucroAtacado.Font.Color := clGreen
+    else
+      lblLucroAtacado.Font.Color := clRed;
     pnlLucroAtacado.Visible := True;
   end;
 end;
@@ -760,7 +768,8 @@ end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
 const
-  SQL = 'select coalesce(a.preco_custo,0)preco_custo,coalesce(c.sigla,b.sigla)sigla '+
+  SQL = 'select coalesce(iif(a.conv_qtde>0,cast(a.preco_custo/a.conv_qtde as numeric(10,2)),A.PRECO_CUSTO),0) PRECO_CUSTO,'+
+        'coalesce(C.SIGLA, B.SIGLA) SIGLA '+
         'from produto a '+
         'left join unidade b on (b.codigo=a.cod_unidade) '+
         'left join unidade c on (c.codigo=a.conv_unidade) '+
@@ -822,7 +831,7 @@ begin
     Exit;
   end;
 
-  if Trim(dbedtPRECO_VENDA.Text) = '' then
+  if (Trim(dbedtPRECO_VENDA.Text) = '') then
   begin
     TMensagem.Atencao('Informar preço de venda.');
     dbedtPRECO_VENDA.SetFocus;
@@ -830,12 +839,23 @@ begin
     Exit;
   end;
 
-  if Trim(dbedtPRECO_CUSTO.Text) = '' then
+  if (Trim(dbedtPRECO_CUSTO.Text) = '') then
   begin
     TMensagem.Atencao('Informar preço de custo.');
     dbedtPRECO_CUSTO.SetFocus;
     Result := False;
     Exit;
+  end;
+
+  if (dbedtPRECO_ATACADO.Text <> '') then
+  begin
+    if not (StrToFloatDef(dbedtQTDE_MIN_ATACADO.Text,0) > 0) then
+    begin
+      TMensagem.Atencao('Informar a qtde. mínima para venda no atacado');
+      dbedtQTDE_MIN_ATACADO.SetFocus;
+      Result := False;
+      Exit;
+    end;
   end;
 
   if (Trim(DBPesquisa1.Campo.Text) = '') then

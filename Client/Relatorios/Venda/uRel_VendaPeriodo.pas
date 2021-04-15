@@ -125,20 +125,6 @@ begin
   lProdV := 0;
   lPrecoMedio := 0;
 
-  {lSQL := 'select ''PDV'' fonte,a.ID,a.EMISSAO,iif(a.ID_CLIENTE is null,''Ao Consumidor'',b.NOME_RAZAO) cliente,'+
-          'iif(a.ID_VENDEDOR is null,''Não informado'',c.NOME) vendedor,'+
-          'cast(sum(d.QTDE) as numeric(18,3)) qtde,cast(0 as numeric(10,2))vl_entrega,'+
-          'cast(coalesce(a.VL_PRODUTO,0) as numeric(10,2))vl_bruto,cast(coalesce((a.VL_DESCONTO),0) as numeric(10,2))vl_desconto,'+
-          'cast(coalesce(a.VL_TOTAL,0) as numeric(10,2))vl_total '+
-          'from PDV_MASTER a '+
-          'left outer join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
-          'left outer join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
-          'left outer join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
-          'left outer join PDV_RECEBER e on (e.TIPO = a.TIPO and e.ID = a.TIPO) '+
-          'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
-                             ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-          ' group by 1,2,3,4,5,7,8,9,10';}
-
   lSQL := 'with RET_PERIODO as '+
           '( '+
           'select ''PDV'' fonte,a.ID,a.EMISSAO,iif(a.ID_CLIENTE is null,''Ao Consumidor'',b.NOME_RAZAO) cliente,'+
@@ -146,9 +132,9 @@ begin
           'cast(0 as numeric(10,2))vl_entrega,cast(coalesce(a.VL_PRODUTO,0) as numeric(10,2))vl_bruto,'+
           'cast(coalesce((a.VL_DESCONTO),0) as numeric(10,2))vl_desconto,a.TIPO '+
           'from PDV_MASTER a '+
-          'left outer join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
-          'left outer join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
-          'left outer join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
+          'left join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
+          ' join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
+          'left join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
           'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                              ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
           'and a.STATUS <> ''CANCELADA'' '+
@@ -158,6 +144,20 @@ begin
           'r.QTDE,r.VL_ENTREGA,r.VL_BRUTO,r.VL_DESCONTO,'+
           '(select p.VL_TOTAL from PRO_TOT_DUPLICATAS(r.TIPO,r.ID) p) vl_total '+
           'from RET_PERIODO r';
+
+//  lSQL := 'select ''PDV'' FONTE, A.ID, A.EMISSAO, iif(A.ID_CLIENTE is null, ''AO CONSUMIDOR'', B.NOME_RAZAO) CLIENTE,'+
+//          '       iif(A.ID_VENDEDOR is null, ''NAO INFORMADO'', C.NOME) VENDEDOR, cast(sum(D.QTDE) as numeric(18,3)) QTDE,'+
+//          '       cast(0 as numeric(10,2)) VL_ENTREGA, cast(coalesce(A.VL_PRODUTO, 0) as numeric(10,2)) VL_BRUTO,'+
+//          '       cast(coalesce((A.VL_DESCONTO), 0) as numeric(10,2)) VL_DESCONTO, A.VL_TOTAL '+
+//          'from PDV_MASTER A '+
+//          'left join PDV_ITENS D on (D.TIPO = A.TIPO and '+
+//          '      D.ID = A.ID) '+
+//          'left join CLIENTE B on (B.CODIGO = A.ID_CLIENTE) '+
+//          'join USUARIO C on (C.ID_VENDEDOR = A.ID_VENDEDOR) '+
+//          'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
+//                             ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
+//          'and a.STATUS <> ''CANCELADA'' '+
+//          'group by 1, 2, 3, 4, 5, 7, 8, 9, 10 ';
 
   dsGrid.Close;
   dsGrid.Data := DM.LerDataSet(lSQL);
@@ -278,7 +278,7 @@ begin
 
   Self.Height := pnlFundo0.Height;
   Self.Width :=  pnlFundo0.Width;
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPeriodo.RLBand3BeforePrint(Sender: TObject;

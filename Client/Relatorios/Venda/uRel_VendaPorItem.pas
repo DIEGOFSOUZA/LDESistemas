@@ -120,7 +120,7 @@ begin
           'left outer join PRODUTO c on (c.CODIGO = b.ID_PRODUTO) '+
           'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                              ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-          'and a.STATUS is null '+
+          'and a.STATUS <> ''CANCELADA'' '+
           'group by c.NOME,c.PRECO_CUSTO,c.PRECO_VENDA';
 
   dsGrid.Close;

@@ -20,7 +20,7 @@ type
     TabSheet2: TTabSheet;
     pnlFornecedores: TPanel;
     tsFragmentacao: TTabSheet;
-    Panel5: TPanel;
+    pnlEstoque: TPanel;
     pnlMovimentar: TPanel;
     Label21: TLabel;
     Label22: TLabel;
@@ -101,8 +101,8 @@ type
     dbpsqsUnidade: TDBPesquisa;
     DBEdit15: TDBEdit;
     DBEdit16: TDBEdit;
-    DBPesquisa5: TDBPesquisa;
-    DBPesquisa6: TDBPesquisa;
+    dbpsqsGrupo: TDBPesquisa;
+    dbpsqsSubGrupo: TDBPesquisa;
     pnlTopLeft: TPanel;
     Label37: TLabel;
     dbtxtCODIGO: TDBText;
@@ -199,6 +199,8 @@ type
     procedure actExcFragmentacaoExecute(Sender: TObject);
     procedure dbpsqsNCMPesquisa(Sender: TObject; var Retorno: string);
     procedure dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsGrupoPesquisa(Sender: TObject; var Retorno: string);
+    procedure dbpsqsSubGrupoPesquisa(Sender: TObject; var Retorno: string);
   private
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
@@ -298,7 +300,6 @@ begin
   cdsPESO_LIQUIDO.AsFloat   := 0 ;
   cdsPRECO_VENDA.AsCurrency := 0 ;
   cdsPRECO_CUSTO.AsCurrency := 0 ;
-  cdsCONV_PRECO.AsCurrency  := 0 ;
   cdsQTDE_MINIMA.AsFloat    := 0 ;
   cdsTIPO_PRODUTO.AsString  := 'MP' ;
   cdsDT_CADASTRO.AsDateTime := Date;
@@ -370,6 +371,13 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
+procedure TFrm_MateriaPrima.dbpsqsGrupoPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := IntToStr(Consulta.Grupo_Produto) ;
+end;
+
 procedure TFrm_MateriaPrima.dbpsqsCESTPesquisa(Sender: TObject;
   var Retorno: string);
 begin
@@ -393,6 +401,13 @@ procedure TFrm_MateriaPrima.dbpsqsNCMPesquisa(Sender: TObject;
 begin
   inherited;
   Retorno := Consulta.NCM.ToString;
+end;
+
+procedure TFrm_MateriaPrima.dbpsqsSubGrupoPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := IntToStr(Consulta.SubGrupo_Produto) ;
 end;
 
 procedure TFrm_MateriaPrima.Editar;
@@ -435,6 +450,7 @@ begin
   ResetaCDS ;
   pgc1.TabIndex := 0 ;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
+  pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
 procedure TFrm_MateriaPrima.Gravar;
@@ -500,6 +516,10 @@ begin
                       cds.FieldByName('preco_custo').AsCurrency) * 100;
 
     lblLucro.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    if (lResultado > 0) then
+      lblLucro.Font.Color := clGreen
+    else
+      lblLucro.Font.Color := clRed;
     pnlLucro.Visible := True;
   end;
 
@@ -509,6 +529,10 @@ begin
                       cds.FieldByName('preco_custo').AsCurrency) * 100;
 
     lblLucroAtacado.Caption := FormatCurr('#,##0.00', lResultado) + '%';
+    if (lResultado > 0) then
+      lblLucroAtacado.Font.Color := clGreen
+    else
+      lblLucroAtacado.Font.Color := clRed;
     pnlLucroAtacado.Visible := True;
   end;
 end;
@@ -647,6 +671,17 @@ begin
     TMensagem.Atencao('Informe o Preço de Venda.');
     dbedtPRECO_VENDA.SetFocus;
     Exit;
+  end;
+
+  if (dbedtPRECO_ATACADO.Text <> '') then
+  begin
+    if not (StrToFloatDef(dbedtQTDE_MIN_ATACADO.Text, 0) > 0) then
+    begin
+      TMensagem.Atencao('Informar a qtde. mínima para venda no atacado');
+      dbedtQTDE_MIN_ATACADO.SetFocus;
+      Result := False;
+      Exit;
+    end;
   end;
 
   //Validar Fragmentacao

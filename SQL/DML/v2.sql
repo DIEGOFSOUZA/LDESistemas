@@ -37746,6 +37746,36 @@ SET GENERATOR GEN_CIDADES_ID TO 5570;
 update produto a
 set a.calc_custo_composicao = 'N';
 
+ALTER TRIGGER TRI_PRODUTO_BU0 INACTIVE;
+ALTER TRIGGER TRI_PROD_BU_HISTPRECOCUSTO INACTIVE;
+
+update produto a
+set a.conv_preco = null
+where a.conv_qtde is null and
+a.conv_unidade is null;
+
+
+update PRODUTO A
+set A.COD_UNIDADE = A.CONV_UNIDADE,
+    A.CONV_UNIDADE = A.COD_UNIDADE,
+    A.PRECO_VENDA = coalesce(A.CONV_PRECO, A.PRECO_VENDA),
+    A.CONV_PRECO = A.PRECO_VENDA
+where A.CODIGO in (select A.CODIGO
+                   from PRODUTO A
+                   left join UNIDADE B on (B.CODIGO = A.CONV_UNIDADE)
+                   where A.CONV_PRECO is not null and
+                         A.COD_UNIDADE <> A.CONV_UNIDADE);
+
+update PRODUTO A
+set A.CALC_CUSTO_COMPOSICAO = 'S',
+    A.PRECO_CUSTO = (select sum(PC.CUSTO_TOTAL)
+                     from PRODUTO_COMPOSICAO PC
+                     where PC.ID_PRODUTO = A.CODIGO)
+where A.CODIGO in (select distinct(PC2.ID_PRODUTO) CODIGO
+                   from PRODUTO_COMPOSICAO PC2);
+
+ALTER TRIGGER TRI_PRODUTO_BU0 ACTIVE;
+ALTER TRIGGER TRI_PROD_BU_HISTPRECOCUSTO ACTIVE;
 
 
 

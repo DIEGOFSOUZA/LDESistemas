@@ -551,6 +551,520 @@ end^
 
 SET TERM ; ^
 
+
+DROP TRIGGER ATENDIMENTO_BI;
+
+DROP TABLE ATENDIMENTO;
+
+DROP TRIGGER CIDADE_BI;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_cidade for cidade
+active before insert position 0
+as
+begin
+  if (new.id is null) then
+    new.id = gen_id(gen_cidades_id,1);
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER BI_PRODUTO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_produto for produto
+active before insert position 0
+AS
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    NEW.CODIGO = gen_id( GEN_PRODUTO, 1 );
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER NOTA_ENTRADA_ITENS_BU0;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bu_nf_itens for nota_entrada_itens
+active before update position 0
+AS
+begin
+  if ((new.preco_custo > 0) and (new.preco_custo <> old.preco_custo)) then
+  begin
+    update PRODUTO A
+    set A.PRECO_CUSTO = new.PRECO_CUSTO
+    where A.CODIGO = new.ID_PRODUTO;
+
+    execute procedure pro_hist_precocusto('U',new.id_produto,new.preco_custo,null, new.id_notaentrada);
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_CLIENTE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_cliente for cliente
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from CLIENTE into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+   end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_CONDPAGTO_ID;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_condpagto for condpagto
+active before insert position 0
+AS 
+BEGIN 
+  IF ((NEW.CODIGO IS NULL) OR (NEW.CODIGO = 0)) then
+   new.CODIGO = gen_id(GEN_CONDPAGTO,1) ;
+END^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_EMPRESA;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_empresa for empresa
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from EMPRESA into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_FABRICANTE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_fabricante for fabricante
+active before insert position 0
+as
+declare variable mcd integer ;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+  begin
+    select max(codigo) from FABRICANTE into :mcd ;
+    if (mcd is null) then
+    begin
+      mcd = 0 ;
+    end
+    new.codigo = mcd + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_FUNCIONARIO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_funcionario for funcionario
+active before insert position 0
+as
+declare variable mcd integer ;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+  begin
+    select max(codigo) from FUNCIONARIO into :mcd ;
+    if (mcd is null) then
+    begin
+      mcd = 0 ;
+    end
+    new.codigo = mcd + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_GRUPO_FABRICANTE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_grupofabricante for grupo_fabricante
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from GRUPO_FABRICANTE into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_GRUPO_PROD;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_grupoprod for grupo_prod
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from grupo_prod into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_GRUPO_SERVICO;
+
+DROP TRIGGER TRI_SERVICO;
+
+DROP TABLE SERVICO;
+
+DROP TABLE GRUPO_SERVICO;
+
+DROP TRIGGER TRI_LINHAS_PROD;
+
+DROP TABLE LINHAS_PROD;
+
+DROP TABLE VENDA_RECEBIMENTO;
+
+DROP TABLE VENDA_PROD;
+
+DROP TABLE VENDA;
+
+DROP TRIGGER TRI_LOTE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_lote for lote
+active before insert position 0
+AS 
+BEGIN 
+  IF ((NEW.ID IS NULL) OR (NEW.ID = 0)) then
+   new.ID = gen_id(GEN_LOTE,1) ;
+END^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_LOTEITENS_ID;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_loteitens for lote_itens
+active before insert position 0
+AS 
+BEGIN 
+  IF ((NEW.ID IS NULL) OR (NEW.ID = 0)) then
+   new.ID = gen_id(GEN_LOTE_ITENS,1) ;
+END^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_LOTE_MATPRIMA;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_lotematprima for lote_matprima
+active before insert position 0
+AS 
+BEGIN 
+  IF ((NEW.ID IS NULL) OR (NEW.ID = 0)) then
+    new.ID = gen_id(GEN_LOTE_MATPRIMA,1) ;
+END^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_NF_ITENS_AI_PRECOCUSTO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_ai_nfitensprecocusto for nota_entrada_itens
+active after insert position 0
+as
+begin
+  if (new.PRECO_CUSTO > 0) then
+  begin
+    update PRODUTO A
+    set A.PRECO_CUSTO = new.PRECO_CUSTO
+    where A.CODIGO = new.ID_PRODUTO;
+
+    if (exists(select A.CODIGO
+               from PRODUTO A
+               where A.CODIGO = new.id_produto)) then
+    begin
+      execute procedure PRO_HIST_PRECOCUSTO('U', new.ID_PRODUTO, new.PRECO_CUSTO, null, new.ID_NOTAENTRADA);
+    end
+    else
+    begin
+      execute procedure PRO_HIST_PRECOCUSTO('I', new.ID_PRODUTO, new.PRECO_CUSTO, null, new.ID_NOTAENTRADA);
+    end
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PAIS;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_pais for pais
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from PAIS into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PRODUTO_AI0;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_ai_produto for produto
+active after insert position 0
+AS
+begin
+  execute procedure pro_hist_precovenda('I',new.codigo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),new.preco_venda);
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PRODUTO_BU0;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bu_produto for produto
+active before update position 0
+AS
+begin
+  if (new.preco_venda <> old.preco_venda) then
+  begin
+    execute procedure pro_hist_precovenda('U',new.codigo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),new.preco_venda);
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PRODUTO_FORNECEDOR_BI0;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_produtofornecedor for produto_fornecedor
+active before insert position 0
+AS
+begin
+  if((new.id_produto = 0) or (new.id_produto is null)) then
+    begin
+      new.id_produto = gen_id(gen_produto,0);
+    end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PROD_AI_HISTPRECOCUSTO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_ai_prodhistprecocusto for produto
+active after insert position 0
+AS
+begin
+  execute procedure pro_hist_precocusto('I',new.codigo,new.preco_custo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),null);
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_PROD_BU_HISTPRECOCUSTO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bu_prodhistprecocusto for produto
+active before update position 0
+AS
+begin
+  execute procedure pro_hist_precocusto('U',new.codigo,new.preco_custo,substring(new.ultima_alteracao from 1 for (position('|',new.ultima_alteracao)-1)),null);
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_RAMO_ATIVIDADE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_ramoatividade for ramo_atividade
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from RAMO_ATIVIDADE into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_REPRESENTANTE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_representante for representante
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from REPRESENTANTE into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_SUBGRUPO_PROD;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_subgrupoprod for subgrupo_prod
+active before insert position 0
+AS
+declare variable mcodigo integer;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+   begin
+    select max(codigo) from subgrupo_prod into :mCodigo ;
+     if (mCodigo is null) then
+     begin
+       mCodigo = 0 ;
+     end
+     new.codigo = mCodigo + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_TRANSPORTADORA;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_transportadora for transportadora
+active before insert position 0
+as
+declare variable mcd integer ;
+begin
+  if ((new.codigo = 0) or (new.codigo is null)) then
+  begin
+    select max(codigo) from TRANSPORTADORA into :mcd ;
+    if (mcd is null) then
+    begin
+      mcd = 0 ;
+    end
+    new.codigo = mcd + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_UNIDADE;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_unidade for unidade
+active before insert position 0
+AS 
+BEGIN 
+  IF ((NEW.CODIGO IS NULL) OR (NEW.CODIGO = 0)) then
+   new.CODIGO = gen_id(GEN_UNIDADE,1) ;
+END^
+
+SET TERM ; ^
+
+DROP TRIGGER TRI_USUARIO;
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bi_usuario for usuario
+active before insert position 0
+as
+declare variable mcd integer ;
+begin
+  if ((new.usu_id = 0) or (new.usu_id is null)) then
+  begin
+    select max(usu_id) from USUARIO into :mcd ;
+    if (mcd is null) then
+    begin
+      mcd = 0 ;
+    end
+    new.usu_id = mcd + 1 ;
+  end
+end^
+
+SET TERM ; ^
+
+CREATE INDEX PDV_MASTER_EMISSAO
+ON PDV_MASTER (EMISSAO);
+
+
+
+
+
 	
 
 

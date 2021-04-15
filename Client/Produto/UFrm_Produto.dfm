@@ -848,7 +848,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsFragmentacao
+            ActivePage = tsEstoque
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -860,7 +860,7 @@ inherited Frm_Produto: TFrm_Produto
             TabStop = False
             object tsEstoque: TTabSheet
               Caption = 'ESTOQUE'
-              object pnl2: TPanel
+              object pnlEstoque: TPanel
                 Left = 0
                 Top = 0
                 Width = 655
@@ -876,6 +876,7 @@ inherited Frm_Produto: TFrm_Produto
                   Height = 85
                   Align = alTop
                   Caption = 'pnlMovimentar'
+                  Enabled = False
                   ShowCaption = False
                   TabOrder = 1
                   object Label21: TLabel
@@ -978,17 +979,14 @@ inherited Frm_Produto: TFrm_Produto
                     OnKeyPress = edtQtdeMovKeyPress
                   end
                 end
-                object Panel2: TPanel
+                object pnlEstoqueAtual: TPanel
                   Left = 1
                   Top = 1
                   Width = 653
                   Height = 101
                   Align = alTop
-                  Caption = 'pnlMovimentar'
                   ShowCaption = False
                   TabOrder = 0
-                  ExplicitLeft = 0
-                  ExplicitTop = -4
                   object Label26: TLabel
                     Left = 1
                     Top = 1
@@ -2339,7 +2337,8 @@ inherited Frm_Produto: TFrm_Produto
     end
     object cdsPRECO_ATACADO: TFMTBCDField
       FieldName = 'PRECO_ATACADO'
-      Origin = 'PRECO_ATACADO'
+      OnChange = cdsPRECO_ATACADOChange
+      currency = True
       Precision = 18
       Size = 2
     end

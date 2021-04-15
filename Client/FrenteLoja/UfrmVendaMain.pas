@@ -3,31 +3,11 @@ unit UfrmVendaMain;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.Actions,
-
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.ExtCtrls,
-  Vcl.DBGrids,
-  Vcl.StdCtrls,
-  Vcl.ActnList,
-  Vcl.Imaging.pngimage,
-  Vcl.Grids,
-  Vcl.Buttons,
-
-  Data.DB,
-  Datasnap.DBClient,
-
-  ACBrUtil,
-  DateUtils, Vcl.Imaging.jpeg ;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, System.Actions, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.DBGrids, Vcl.StdCtrls, Vcl.ActnList,
+  Vcl.Imaging.pngimage, Vcl.Grids, Vcl.Buttons, Data.DB, Datasnap.DBClient,
+  ACBrUtil, DateUtils, Vcl.Imaging.jpeg;
 
 const
   senhaMaster1 = 'takanoadm';
@@ -245,6 +225,7 @@ type
     fUsuarioAutorizou: string;
     fIdVendedor: integer;
     FOrcamentoId: integer;
+    FOrcLiberado: Boolean;
     { Private declarations }
     procedure TelaCheia() ;
 
@@ -285,6 +266,7 @@ type
     property UsuarioAutorizou : string read fUsuarioAutorizou ;
     property IdVendedor : integer read fIdVendedor write setIdVendedor;
     property OrcamentoID: integer read FOrcamentoId write SetOrcamentoId;
+    property OrcLiberado: Boolean read FOrcLiberado;
     constructor CreateChild(AOwner : TComponent) ;
   end;
 
@@ -294,11 +276,11 @@ var
 implementation
 
 uses
-  UDM, UFrm_ClientePDV, UFrm_Inicial, UFrm_PDVReceberRapido,
-  UFrm_PDVPagamento, UFuncoes, UFrm_PDVCrediario, URel_Venda0,
-  UFrm_EscolhaUM, UFrm_Desconto, u_Mensagem, UFrm_VoltaSenha,
-  UFrm_PagtoOrcamento, UFrmOrcamentoConsulta, UConsulta,
-  UFrm_PDV_Vendedor, UFrm_GeraOrcamento;
+  UDM, UFrm_ClientePDV, UFrm_Inicial, UFrm_PDVReceberRapido, UFrm_PDVPagamento,
+  UFuncoes, UFrm_PDVCrediario, URel_Venda0, UFrm_EscolhaUM, UFrm_Desconto,
+  u_Mensagem, UFrm_VoltaSenha, UFrm_PagtoOrcamento, UFrmOrcamentoConsulta,
+  UConsulta, UFrm_PDV_Vendedor, UFrm_GeraOrcamento;
+
 
 {$R *.dfm}
 
@@ -649,8 +631,10 @@ begin
     if not ValidaVenda('CREDIARIO') then
       Exit;
 
-    if not ValidaLimiteCredito(IdCliente.ToString, cdsItenstotal.Value) then
-      Abort;
+    if (not OrcLiberado) then
+      if not ValidaLimiteCredito(IdCliente.ToString, cdsItenstotal.Value) then
+        Exit;
+
 
     if not Assigned(Frm_PDVCrediario) then
       Frm_PDVCrediario := TFrm_PDVCrediario.Create(Self);
@@ -801,9 +785,10 @@ end;
 
 procedure TfrmVendaMain.CarregaOrcamento();
 const SQL = 'select a.ORDEM,a.VUNIT,a.UNID,a.QTDE,a.QTDE_BAIXA,a.ID_PROD,a.VDESC,'+
-            'b.QTDE_ESTOQUE,b.NOME produto '+
+            'b.QTDE_ESTOQUE,b.NOME produto,c.liberado '+
             'from ORCAMENTO_ITEM a '+
-            'left outer join PRODUTO b on (b.CODIGO = a.ID_PROD) '+
+            'left join PRODUTO b on (b.CODIGO = a.ID_PROD) '+
+            'left join orcamento c on (c.id=a.id_orcamento) '+
             'where a.ID_ORCAMENTO = %s';
 begin
   if not Assigned(frmOrcamentoConsulta) then
@@ -819,6 +804,9 @@ begin
       DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[IntToStr(frmOrcamentoConsulta.IdOrcamento)]));
 
       DM.dsConsulta.First;
+      if (DM.dsConsulta.FieldByName('LIBERADO').AsString = 'SIM') then
+        FOrcLiberado := True;
+
       while not DM.dsConsulta.Eof do
       begin
         cdsItens.Append;
@@ -1604,17 +1592,18 @@ begin
   else
     IdCaixa := lCaixa.ID;
 
-  if (tpPagto = 'CREDIARIO') then
-  begin
-    if (ValidaDebitoCliente(IdCliente) > 5) then
+  if (not OrcLiberado) then
+    if (tpPagto = 'CREDIARIO') then
     begin
-      TMensagem.Atencao('Foi localizado débito deste cliente. Necessário gerar orçamento para liberação.');
+      if (ValidaDebitoCliente(IdCliente) > 5) then
       begin
-        actGeraOrcamento.Execute;
-        Result := False;
-        Exit;
-      end;
-
+        TMensagem.Atencao('Foi localizado débito deste cliente. Necessário gerar orçamento para liberação.');
+        begin
+          actGeraOrcamento.Execute;
+          Result := False;
+          Exit;
+        end;
+{$REGION 'solitacao de senha para liberar venda'}
 //      lSenha := VoltaSenha('Liberar a venda');
 //      if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
 //      begin
@@ -1624,8 +1613,9 @@ begin
 //      end
 //      else
 //        fUsuarioAutorizou := lSenha;
+{$ENDREGION}
+      end;
     end;
-  end;
 
   if not ValidaDescMaximo then
   begin
@@ -1782,6 +1772,7 @@ begin
 
   IdCliente := -1 ;
   IdCaixa   := -1;
+  FOrcLiberado := False;
 end;
 
 end.

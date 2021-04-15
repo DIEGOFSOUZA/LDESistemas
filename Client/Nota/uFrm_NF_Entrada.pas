@@ -538,9 +538,21 @@ begin
     Abort;
   end;
 
+  //Verifica se escolheu unidade fragmentada
+  if (cbbUM.ItemIndex > 0) then
+  begin                          //escolheu und fragmentada
+    lQtde := Qtde;
+    lPrCustoCalc := RoundABNT((FvUnitario*DM.GetFloat('select coalesce(CONV_QTDE,0)CONV_QTDE from PRODUTO p where p.codigo= '+edpsqsProduto.Campo.Text,'conv_qtde')),-2);
+  end
+  else
+  begin
+    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
+    lPrCustoCalc := RoundABNT((FvUnitario),-2);
+  end;
+
   //Verificando se há conversao de UM
-  lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
-  lConv_UM := IfThen((lQtde<>Qtde),'S','N');
+//  lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
+//  lConv_UM := IfThen((lQtde<>Qtde),'S','N');
 
   if dsItem.Locate('ID_PRODUTO',edpsqsProduto.Campo.Text,[]) then
   begin
@@ -576,12 +588,12 @@ begin
   dsItem.FieldByName('TOTAL').AsCurrency :=
      (dsItem.FieldByName('QTDE_INFORMADA').AsFloat * vUnitario) - dsItem.FieldByName('VALORDESCONTO').AsCurrency;
 
-  if (lConv_UM = 'S') then
-    lPrCustoCalc := RoundABNT(dsItem.FieldByName('SUBTOTAL').AsCurrency / lQtde,-2)
-  else
-    lPrCustoCalc := RoundABNT(FvUnitario,-2);
+//  if (lConv_UM = 'S') then
+//    lPrCustoCalc := RoundABNT(dsItem.FieldByName('SUBTOTAL').AsCurrency / lQtde,-2)
+//  else
+//    lPrCustoCalc := RoundABNT(FvUnitario,-2);
 
-  //Verifiacao para atualizar ou nao preco de custo atual e insercao de historico preco custo(trigger)
+  //Verificacao para atualizar ou nao preco de custo atual e insercao de historico preco custo(trigger)
   if (lPrCustoCalc <> PrCustoAtual(dsItem.FieldByName('ID_PRODUTO').AsInteger))then
     dsItem.FieldByName('PRECO_CUSTO').AsCurrency := lPrCustoCalc
   else
@@ -1245,10 +1257,10 @@ end;
 procedure TFrm_NF_Entrada.LoadUnidades(aCodigo:string);
 const
   SQL = 'SELECT coalesce(u.SIGLA,'''') SIGLA1,coalesce(u2.SIGLA,'''') SIGLA2,'+
-        'coalesce(p.PRECO_CUSTO,0) preco0,coalesce(p.CONV_PRECO,0) preco1 '+
+        'coalesce(p.PRECO_CUSTO,0) preco0,coalesce(p.PRECO_CUSTO/p.CONV_QTDE,0) preco1 '+
         'FROM PRODUTO p '+
-        'LEFT OUTER JOIN UNIDADE u ON (u.CODIGO=p.COD_UNIDADE) '+
-        'LEFT OUTER JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
+        'LEFT JOIN UNIDADE u ON (u.CODIGO=p.COD_UNIDADE) '+
+        'LEFT JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
         'WHERE p.CODIGO = %s';
 var
   i: Integer;
@@ -1358,6 +1370,7 @@ const
 begin
 //  Qtde := 1;
   vUnitario := 0;
+  cbbUM.ItemIndex := -1;
 
   DM.dsConsulta.Close;
   DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aID]));

@@ -236,7 +236,8 @@ end;
 procedure TFrm_PDVPagamento.actDescontoExecute(Sender: TObject);
 begin
   inherited;
-  setPanel(pnlDesconto,'DESCONTO');
+  TMensagem.Informacao('Desconto permitido apenas por item.');
+//  setPanel(pnlDesconto,'DESCONTO');
 end;
 
 procedure TFrm_PDVPagamento.actFinalizaVendaExecute(Sender: TObject);

@@ -134,6 +134,7 @@ inherited SMProduto: TSMProduto
     object fdqryProdutoPRECO_ATACADO: TFMTBCDField
       FieldName = 'PRECO_ATACADO'
       Origin = 'PRECO_ATACADO'
+      currency = True
       Precision = 18
       Size = 2
     end

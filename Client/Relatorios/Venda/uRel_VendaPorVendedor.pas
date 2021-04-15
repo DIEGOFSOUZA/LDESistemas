@@ -100,7 +100,7 @@ begin
           'left outer join USUARIO d on (d.ID_VENDEDOR = a.ID_VENDEDOR) '+
           'where (a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                               ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+')'+
-          'and (a.STATUS is null) '+
+          'and (a.STATUS <> ''CANCELADA'') '+
           'group by 1,2,d.COMISSAO';
 
   dsGrid.Close;
