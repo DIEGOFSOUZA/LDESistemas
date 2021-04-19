@@ -230,7 +230,7 @@ begin
   Self.Width := pnlFundo0.Width;
   chkExibirResumo.Checked := True;
   chkExibirResumoClick(Self);
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPorVendedor.RLBand3BeforePrint(Sender: TObject;

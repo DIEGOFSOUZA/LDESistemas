@@ -763,10 +763,11 @@ begin
       lblDebito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_debito').AsFloat);
       lblCredito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_credito').AsFloat);
 
-      if ValidaDebitoCliente(IdCliente) > 5 then
-      begin
-        TMensagem.Atencao('Cliente com duplicata(s) vencida(s) a mais de 5 dias.' + #13 + #10 + 'Será necessário a liberação do administrador para o fechamento da venda.');
-      end;
+      if (not OrcLiberado) then
+        if ValidaDebitoCliente(IdCliente) > 5 then
+        begin
+          TMensagem.Atencao('Cliente com duplicata(s) vencida(s) a mais de 5 dias.' + #13 + #10 + 'Será necessário a liberação do administrador para o fechamento da venda.');
+        end;
 
     {limite para vendas no crediario}
       if cdsTemp.FieldByName('limite').AsFloat > 0 then
@@ -797,16 +798,16 @@ begin
     frmOrcamentoConsulta.ShowModal;
     if frmOrcamentoConsulta.IdOrcamento > 0 then
     begin
-      OrcamentoID := frmOrcamentoConsulta.IdOrcamento;
-      CarregaCliente(frmOrcamentoConsulta.IdCliente);
-
       DM.dsConsulta.Close;
       DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[IntToStr(frmOrcamentoConsulta.IdOrcamento)]));
 
-      DM.dsConsulta.First;
       if (DM.dsConsulta.FieldByName('LIBERADO').AsString = 'SIM') then
         FOrcLiberado := True;
 
+      OrcamentoID := frmOrcamentoConsulta.IdOrcamento;
+      CarregaCliente(frmOrcamentoConsulta.IdCliente);
+
+      DM.dsConsulta.First;
       while not DM.dsConsulta.Eof do
       begin
         cdsItens.Append;

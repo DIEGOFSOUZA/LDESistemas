@@ -31,6 +31,7 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
     inherited pnlFundo1: TPanel
       inherited pnlGrid: TPanel
         inherited pnlRodape: TPanel
+          TabOrder = 1
           object lblQtdeRegistros: TLabel
             Left = 8
             Top = 2
@@ -62,6 +63,7 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
           end
         end
         inherited dbgrd1: TDBGrid
+          TabOrder = 0
           Columns = <
             item
               Expanded = False
@@ -85,9 +87,11 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
         end
       end
       inherited cbbLista: TComboBox [1]
+        TabOrder = 0
         OnClick = cbbListaClick
       end
       inherited pnlRight: TPanel [2]
+        TabOrder = 2
         object Label5: TLabel
           Left = 1
           Top = 21

@@ -7,7 +7,8 @@ uses
   System.Classes, System.Actions, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
   Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ActnList, Vcl.Buttons,
   Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, UPdr_Child, UEDPesquisa, Data.DB,
-  Datasnap.DBClient, Vcl.Imaging.pngimage, U_DataCorrida, DateUtils, Vcl.Menus;
+  Datasnap.DBClient, Vcl.Imaging.pngimage, U_DataCorrida, DateUtils, Vcl.Menus,
+  System.StrUtils;
 
 type
   TGetCaixa = record
@@ -50,21 +51,10 @@ type
     actAlteraVencto: TAction;
     actFiltrar: TAction;
     cdsGrid: TClientDataSet;
-    cdsGridID: TIntegerField;
-    cdsGridTIPO: TStringField;
-    cdsGridORDEM: TStringField;
-    cdsGridDT_VENC: TDateField;
-    cdsGridDT_BAIXA: TDateField;
-    cdsGridUSUARIO_BAIXA: TStringField;
-    cdsGridCLIENTE: TStringField;
     dsGrid: TDataSource;
     actSair: TAction;
-    cdsGridUSUARIO_EMISSAO: TStringField;
     Label9: TLabel;
     actImprimir: TAction;
-    dbgrd1: TDBGrid;
-    cdsGridVALOR: TFloatField;
-    cdsGridEMISSAO: TDateField;
     pnlSair: TPanel;
     lblSair: TLabel;
     imgSair: TImage;
@@ -93,6 +83,26 @@ type
     actRestaurarBaixa: TAction;
     pm1: TPopupMenu;
     actRestaurarBaixa1: TMenuItem;
+    cdsGridID: TIntegerField;
+    cdsGridTIPO: TStringField;
+    cdsGridORDEM: TStringField;
+    cdsGridDT_VENC: TDateField;
+    cdsGridVALOR: TFMTBCDField;
+    cdsGridDT_BAIXA: TDateField;
+    cdsGridUSUARIO_BAIXA: TStringField;
+    cdsGridCLIENTE: TStringField;
+    cdsGridUSUARIO_EMISSAO: TStringField;
+    cdsGridEMISSAO: TDateField;
+    cdsGridPARCELA: TIntegerField;
+    cdsGridPESSOA: TStringField;
+    cdsGridCPF_CNPJ: TStringField;
+    cdsGridLOGRADOURO: TStringField;
+    cdsGridNUMERO: TStringField;
+    cdsGridBAIRRO: TStringField;
+    cdsGridCEP: TStringField;
+    cdsGridCIDADE: TStringField;
+    cdsGridUF: TStringField;
+    dbgrdDuplicata: TDBGrid;
     procedure edpClientePesquisa(Sender: TObject; var Retorno: string);
     procedure rgPesquisarClick(Sender: TObject);
     procedure actBaixaDuplicataExecute(Sender: TObject);
@@ -100,13 +110,13 @@ type
     procedure actFiltrarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actSairExecute(Sender: TObject);
-    procedure dbgrd1TitleClick(Column: TColumn);
-    procedure dbgrd1DrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure actImprimirExecute(Sender: TObject);
     procedure imgFecharClick(Sender: TObject);
     procedure actGerarBoletoExecute(Sender: TObject);
     procedure actRestaurarBaixaExecute(Sender: TObject);
+    procedure dbgrdDuplicataDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure dbgrdDuplicataTitleClick(Column: TColumn);
   private
     { Private declarations }
     procedure MontaSQL() ;
@@ -245,10 +255,22 @@ end;
 procedure TFrm_ContasAReceber.actGerarBoletoExecute(Sender: TObject);
 var
   Titulo: TACBrTitulo;
+  lNumDoc: string;
 begin
   inherited;
   if not actGerarBoleto.Enabled then
     Exit;
+
+  if cdsGrid.IsEmpty then
+    Exit ;
+
+  if (not cdsGridDT_BAIXA.IsNull) then
+  begin
+    TMensagem.Informacao('Duplicata já foi baixada.') ;
+    Exit ;
+  end;
+
+  lNumDoc := cdsGrid.FieldByName('TIPO').AsString + '|' + cdsGrid.FieldByName('ID').AsString + '|' + cdsGrid.FieldByName('ORDEM').AsString;
 
   with DMACBr.ACBrBoleto do
   begin
@@ -263,16 +285,23 @@ begin
       TipoInscricao := pJuridica;
       CNPJCPF := DM.Empresa.CNPJ;
 
-      Convenio := '';
-      Agencia := '4446';
+      Agencia := '3183';
       AgenciaDigito := '6';
-      Conta := '6975';
-      ContaDigito := '2';
+      Conta := '7507';
+      ContaDigito := '8';
+      DigitoVerificadorAgenciaConta := '0';
       Nome := DM.Empresa.RazaoSocial;
+      CodigoCedente := '247774';
+      Logradouro := DM.Empresa.Endereco+' '+DM.Empresa.Numero;
+      Bairro := DM.Empresa.Bairro;
+      Cidade := DM.Empresa.Cidade;
+      UF := DM.Empresa.UF;
+      Telefone := DM.Empresa.Fone;
+      CEP := DM.Empresa.Cep;
 
+      Modalidade := '01';
       ResponEmissao := tbCliEmite;
       Operacao := '0';
-
     end;
   end;
 
@@ -281,36 +310,47 @@ begin
   with Titulo do
   begin
     //Segmento P
+//    NossoNumero := '';
     Carteira := '1';
     CarteiraEnvio := tceCedente;
-    NumeroDocumento := '12345678';
-    Vencimento := IncDay(Date, 30);
-    ValorDocumento := StrToCurr('100');
     EspecieDoc := 'DM';
     Aceite := atNao;
-    DataDocumento := Date;
+
+    Parcela := cdsGrid.FieldByName('PARCELA').AsInteger;
+    NumeroDocumento := lNumDoc;
+    Vencimento := cdsGrid.FieldByName('DT_VENC').AsDateTime;
+    ValorDocumento := cdsGrid.FieldByName('VALOR').AsCurrency;
+    DataDocumento := cdsGrid.FieldByName('EMISSAO').AsDateTime;
+
     CodigoMora := '2';
-    DataMoraJuros := IncDay(Date, 30);
-    ValorMoraJuros := 4;
+    ValorMoraJuros := 8;
+    DataMoraJuros := cdsGrid.FieldByName('DT_VENC').AsDateTime+1;
     TipoDesconto := tdNaoConcederDesconto;
     ValorDesconto := 0;
     ValorIOF := 0;
     ValorAbatimento := 0;
-    SeuNumero := '12345678';
-    CodigoNegativacao := cnNaoProtestar;
+    SeuNumero := lNumDoc;
+    DiasDeProtesto := 7;
+//    CodigoMulta := cmPercentual;
+//    MultaValorFixo := True;
+    PercentualMulta := 2;
+    DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime+1;
 
     //Segmento Q
     with Sacado do
     begin
-      Pessoa := pJuridica;
-      CNPJCPF := '123456789000112';
-      NomeSacado := 'LDE SISTEMAS';
-      Logradouro := 'TRAVESSA 1';
-      Numero := '123';
-      Bairro := 'BAIRRO DAS OLIVEIRAS';
-      CEP := '18900000';
-      Cidade := 'JUNQUEIROPOLIS';
-      UF := 'SP';
+      if (cdsGrid.FieldByName('PESSOA').AsString = 'F') then
+        Pessoa := pFisica
+      else
+        Pessoa := pJuridica;
+      CNPJCPF := cdsGrid.FieldByName('CPF_CNPJ').AsString;
+      NomeSacado := cdsGrid.FieldByName('CLIENTE').AsString;
+      Logradouro := cdsGrid.FieldByName('LOGRADOURO').AsString;
+      Numero := cdsGrid.FieldByName('NUMERO').AsString;
+      Bairro := cdsGrid.FieldByName('BAIRRO').AsString;
+      CEP := OnlyNumber(cdsGrid.FieldByName('CEP').AsString);
+      Cidade := cdsGrid.FieldByName('CIDADE').AsString;
+      UF := cdsGrid.FieldByName('UF').AsString;
     end;
 //    logo:= ExtractFileDir(ParamStr(0)) + '\acbr_logo.jpg';
 //    ArquivoLogoEmp := logo;  // logo da empresa
@@ -318,8 +358,8 @@ begin
 //    Verso := ((cbxImprimirVersoFatura.Checked) and ( cbxImprimirVersoFatura.Enabled = true ));
   end;
 
-//  DMACBr.ACBrBoleto.Imprimir;
-//  DMACBr.ACBrBoleto.GerarPDF;
+  DMACBr.ACBrBoleto.Imprimir;
+  DMACBr.ACBrBoleto.GerarPDF;
   DMACBr.ACBrBoleto.GerarRemessa(1);
 
 end;
@@ -400,21 +440,21 @@ begin
   Close ;
 end;
 
-procedure TFrm_ContasAReceber.dbgrd1DrawColumnCell(Sender: TObject;
+procedure TFrm_ContasAReceber.dbgrdDuplicataDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
   inherited;
   {Efeito de linha selecionada}
-  if Rect.Top = TStringGrid(dbgrd1).CellRect(0, TStringGrid(dbgrd1).Row).Top then
+  if Rect.Top = TStringGrid(dbgrdDuplicata).CellRect(0, TStringGrid(dbgrdDuplicata).Row).Top then
   begin
-    dbgrd1.Canvas.FillRect(Rect);
-    dbgrd1.Canvas.Font.Color := clWhite;
-    dbgrd1.Canvas.Brush.Color := clHighlight;
-    dbgrd1.DefaultDrawDataCell(Rect, Column.Field, State)
+    dbgrdDuplicata.Canvas.FillRect(Rect);
+    dbgrdDuplicata.Canvas.Font.Color := clWhite;
+    dbgrdDuplicata.Canvas.Brush.Color := clHighlight;
+    dbgrdDuplicata.DefaultDrawDataCell(Rect, Column.Field, State)
   end;
 end;
 
-procedure TFrm_ContasAReceber.dbgrd1TitleClick(Column: TColumn);
+procedure TFrm_ContasAReceber.dbgrdDuplicataTitleClick(Column: TColumn);
 begin
   inherited;
   cdsGrid.IndexFieldNames := Column.FieldName ;
@@ -521,31 +561,44 @@ var
 begin
   txtParcial := '' ;
 
-  txt := 'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
-         'cast(a.VALOR as double precision)valor,'+
-         'a.DT_BAIXA,a.USUARIO_BAIXA,'+
-         'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
-         'FROM PDV_MASTER b '+
-         'left outer join PDV_RECEBER a on (a.TIPO = b.TIPO and a.ID = b.ID) '+
-         'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) '+
-         'where a.FORMA_PAGTO = ''CREDIARIO'' ' ;
+//  txt := 'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
+//         'cast(a.VALOR as double precision)valor,'+
+//         'a.DT_BAIXA,a.USUARIO_BAIXA,'+
+//         'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
+//         'FROM PDV_MASTER b '+
+//         'left outer join PDV_RECEBER a on (a.TIPO = b.TIPO and a.ID = b.ID) '+
+//         'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) '+
+//         'where a.FORMA_PAGTO = ''CREDIARIO'' ' ;
+
+  txt := 'SELECT pr.ID, pr.TIPO, pr.ORDEM, pr.DT_VENC,'+
+         'pr.VALOR,pr.DT_BAIXA,pr.USUARIO_BAIXA,'+
+         'c.NOME_RAZAO cliente,pr.USUARIO_EMISSAO,pm.emissao,'+
+         'cast(left(pr.ordem,2) as integer) parcela,'+
+         'c.pessoa,c.cpf_cnpj,coalesce(c.cob_endereco,c.endereco) logradouro,'+
+         'coalesce(c.cob_numero,c.numero) numero,coalesce(c.cob_bairro,c.bairro) bairro,'+
+         'coalesce(c.cob_cep,c.cep) cep,coalesce(c.cob_cidade,c.cidade) cidade,'+
+         'coalesce(c.cob_uf,c.uf) UF '+
+         'FROM PDV_RECEBER pr '+
+         'left join PDV_MASTER pm on (pm.TIPO = pr.TIPO and pm.ID = pr.ID) '+
+         'left join CLIENTE c on (c.CODIGO = pm.ID_CLIENTE) '+
+         'where pr.FORMA_PAGTO = ''CREDIARIO'' ' ;
   case rgPesquisar.ItemIndex of
     0:
       begin
-        txt := txt + ' and a.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
+        txt := txt + ' and pr.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
                                                  QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sFiltro := 'Vencimento: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     1:
       begin
-        txt := txt + ' and b.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
+        txt := txt + ' and pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
                                                  QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sFiltro := 'Emissão: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     2:
       begin
-        txt := txt + ' and a.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                  QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + ' and pr.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
+                                                   QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sFiltro := 'Baixada: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     3:
@@ -558,7 +611,7 @@ begin
         end
         else
         begin
-          txt := txt + ' and b.id_cliente = ' + edpCliente.Campo.Text;
+          txt := txt + ' and pm.id_cliente = ' + edpCliente.Campo.Text;
           sFiltro := 'Cliente: '+edpCliente.Campo.Text;
         end;
       end;
@@ -572,8 +625,8 @@ begin
         end
         else
         begin
-          txt := txt + ' and b.tipo = ''0'' ' +
-                       ' and b.ID = '+ edtDoc.Text ;
+          txt := txt + ' and pr.tipo = ''0'' ' +
+                       ' and pr.ID = '+ edtDoc.Text ;
           sFiltro := 'Venda Nº: '+edtDoc.Text ;
         end;
      end;
@@ -582,13 +635,13 @@ begin
   case rgSituacao.ItemIndex of
     0:
       begin
-        txt := txt + ' and a.dt_baixa is null ';
-        txtParcial := txtParcial + ' and b.dt_baixa is null ';
+        txt := txt + ' and pr.dt_baixa is null ';
+        txtParcial := txtParcial + ' and pr.dt_baixa is null ';
       end;
     1:
       begin
-        txt := txt + ' and a.dt_baixa is not null ';
-        txtParcial := txtParcial + ' and b.dt_baixa is not null ';
+        txt := txt + ' and pr.dt_baixa is not null ';
+        txtParcial := txtParcial + ' and pr.dt_baixa is not null ';
       end;
   end;
 
@@ -610,40 +663,38 @@ var
   txt: string;
   sWhere : string ;
 begin
-  txt :=  'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
-          'cast(a.VALOR as numeric(10,2))valor,'+
-          'a.DT_BAIXA,a.USUARIO_BAIXA,'+
-          'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
-          'FROM PDV_RECEBER_PARCIAL a '+
-          'left outer join PDV_MASTER b on (b.ID = a.ID and b.TIPO = a.TIPO) '+
-          'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) ';
+  txt :=  'select RP.ID, RP.TIPO, RP.ORDEM, RP.DT_VENC, RP.VALOR, RP.DT_BAIXA, RP.USUARIO_BAIXA, C.NOME_RAZAO CLIENTE,'+
+          'RP.USUARIO_EMISSAO, PM.EMISSAO '+
+          'from PDV_RECEBER_PARCIAL RP '+
+          'left join PDV_MASTER PM on (PM.ID= rp.ID and PM.TIPO = rp.TIPO) '+
+          'left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) ';
 
   sWhere := ' where ';
 
   case rgPesquisar.ItemIndex of
     0:
       begin
-        txt := txt + sWhere + ' a.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' rp.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     1:
       begin
-        txt := txt + sWhere + ' b.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     2:
       begin
-        txt := txt + sWhere + ' a.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' rp.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     3:
       begin
-        txt := txt + sWhere + 'b.id_cliente = ' + edpCliente.Campo.Text;
+        txt := txt + sWhere + 'pm.id_cliente = ' + edpCliente.Campo.Text;
         sWhere := ' and ';
       end;
     4:
       begin
-        txt := txt + sWhere + 'b.tipo = ''0'' ' + ' and b.ID = ' + edtDoc.Text;
+        txt := txt + sWhere + 'rp.tipo = ''0'' ' + ' and rp.ID = ' + edtDoc.Text;
       end;
   end;
 

@@ -637,7 +637,7 @@ procedure TFrm_Produto.FormCreate(Sender: TObject);
 begin
   inherited;
   ResetaCDS ;
-  pgc1.TabIndex := 2;
+  pgc1.TabIndex := 0;
   pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
   pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
 end;

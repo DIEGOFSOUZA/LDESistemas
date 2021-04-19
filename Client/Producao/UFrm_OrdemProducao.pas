@@ -143,9 +143,6 @@ type
     procedure localizar() ; override ;
     procedure Editar() ; override ;
   end;
-const SQL_CONVERSAO = 'select coalesce(a.CONV_QTDE,1) qtde_conversao '+
-                      'from PRODUTO a '+
-                      'where a.CODIGO = %s' ;
 
 var
   Frm_OrdemProducao: TFrm_OrdemProducao;
@@ -153,13 +150,12 @@ var
 implementation
 
 {$R *.dfm}
-
-uses UDM, UConsulta, UFuncoes, URel_ListaMatPrimaLote,
-      UFrm_EscolhaUM, u_Mensagem;
+uses
+  UDM, UConsulta, UFuncoes, URel_ListaMatPrimaLote, UFrm_EscolhaUM, u_Mensagem;
 
 procedure TFrm_OrdemProducao.actFinalizarLoteExecute(Sender: TObject);
 const
-  SQL = 'SELECT cast(iif(a.COD_UM = b.CONV_UNIDADE,(a.QTDE*b.CONV_QTDE),a.QTDE)as numeric(15,3)) qtde_a_fechar '+
+  SQL = 'SELECT cast(iif(a.COD_UM <> b.CONV_UNIDADE,(a.QTDE*b.CONV_QTDE),a.QTDE)as numeric(15,3)) qtde_a_fechar '+
         'FROM LOTE_ITENS a '+
         'left outer join PRODUTO b on (b.CODIGO = a.CODPRO) '+
         'where a.ID = %s';

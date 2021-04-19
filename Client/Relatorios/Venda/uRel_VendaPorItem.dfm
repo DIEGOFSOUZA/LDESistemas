@@ -1,8 +1,8 @@
 inherited Rel_VendaPorItem: TRel_VendaPorItem
   Caption = 'Rel_VendaPorItem'
-  ClientWidth = 1663
+  ClientWidth = 825
   OnCreate = FormCreate
-  ExplicitWidth = 1663
+  ExplicitWidth = 825
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlFundo0: TPanel

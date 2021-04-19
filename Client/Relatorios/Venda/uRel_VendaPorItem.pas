@@ -234,7 +234,7 @@ begin
 
   Self.Height := pnlFundo0.Height;
   Self.Width := pnlFundo0.Width;
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPorItem.RLBand3BeforePrint(Sender: TObject;

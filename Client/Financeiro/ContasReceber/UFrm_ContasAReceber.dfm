@@ -403,7 +403,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         end
       end
     end
-    object dbgrd1: TDBGrid
+    object dbgrdDuplicata: TDBGrid
       Left = 1
       Top = 129
       Width = 924
@@ -417,7 +417,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ParentFont = False
       PopupMenu = pm1
       TabOrder = 1
@@ -426,26 +426,24 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       TitleFont.Height = -11
       TitleFont.Name = 'Segoe UI'
       TitleFont.Style = []
-      OnDrawColumnCell = dbgrd1DrawColumnCell
-      OnDblClick = actBaixaDuplicataExecute
-      OnTitleClick = dbgrd1TitleClick
+      OnDrawColumnCell = dbgrdDuplicataDrawColumnCell
+      OnTitleClick = dbgrdDuplicataTitleClick
       Columns = <
-        item
-          Expanded = False
-          FieldName = 'TIPO'
-          Visible = True
-        end
         item
           Expanded = False
           FieldName = 'ID'
           Visible = True
         end
         item
+          Alignment = taCenter
           Expanded = False
           FieldName = 'ORDEM'
+          Title.Alignment = taCenter
+          Width = 60
           Visible = True
         end
         item
+          Alignment = taCenter
           Expanded = False
           FieldName = 'DT_VENC'
           Visible = True
@@ -464,6 +462,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         item
           Expanded = False
           FieldName = 'CLIENTE'
+          Width = 400
           Visible = True
         end>
     end
@@ -958,77 +957,113 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
   object cdsGrid: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC, '#13#10'cast(a.VALOR as doubl' +
-      'e precision)valor, '#13#10'a.DT_BAIXA, a.USUARIO_BAIXA,'#13#10'c.NOME_RAZAO ' +
-      'cliente,a.USUARIO_EMISSAO,b.emissao'#13#10'FROM PDV_MASTER b '#13#10'left ou' +
-      'ter join PDV_RECEBER a on (a.TIPO = b.TIPO and a.ID = b.ID)'#13#10'lef' +
-      't outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE)'#13#10'where 1 = 2'
+      'SELECT pr.ID, pr.TIPO, pr.ORDEM, pr.DT_VENC,'#13#10'pr.VALOR,pr.DT_BAI' +
+      'XA,pr.USUARIO_BAIXA,'#13#10'c.NOME_RAZAO cliente,pr.USUARIO_EMISSAO,pm' +
+      '.emissao,'#13#10'cast(left(pr.ordem,2) as integer) parcela,'#13#10'c.pessoa,' +
+      'c.cpf_cnpj,coalesce(c.cob_endereco,c.endereco) logradouro,'#13#10'coal' +
+      'esce(c.cob_numero,c.numero) numero,coalesce(c.cob_bairro,c.bairr' +
+      'o) bairro,'#13#10'coalesce(c.cob_cep,c.cep) cep,coalesce(c.cob_cidade,' +
+      'c.cidade) cidade,'#13#10'coalesce(c.cob_uf,c.uf) UF'#13#10'FROM PDV_RECEBER ' +
+      'pr'#13#10'left join PDV_MASTER pm on (pm.TIPO = pr.TIPO and pm.ID = pr' +
+      '.ID)'#13#10'left join CLIENTE c on (c.CODIGO = pm.ID_CLIENTE)'#13#10'where 1' +
+      ' = 2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
     Left = 77
     Top = 236
     object cdsGridID: TIntegerField
-      Alignment = taCenter
-      DisplayLabel = 'N'#186' Venda'
+      DisplayLabel = 'N'#186' VENDA'
       FieldName = 'ID'
-      Origin = 'ID'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+      DisplayFormat = '000'
     end
     object cdsGridTIPO: TStringField
-      Alignment = taCenter
-      DisplayLabel = 'Tipo'
       FieldName = 'TIPO'
-      Origin = 'TIPO'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
       FixedChar = True
       Size = 1
     end
     object cdsGridORDEM: TStringField
-      Alignment = taCenter
-      DisplayLabel = 'Parcela'
+      DisplayLabel = 'PARCELA'
       FieldName = 'ORDEM'
-      Origin = 'ORDEM'
+      Required = True
       Size = 5
     end
     object cdsGridDT_VENC: TDateField
-      Alignment = taCenter
-      DisplayLabel = 'Data vencto.'
+      DisplayLabel = 'VENCTO.'
       FieldName = 'DT_VENC'
-      Origin = 'DT_VENC'
+    end
+    object cdsGridVALOR: TFMTBCDField
+      FieldName = 'VALOR'
+      Required = True
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
     end
     object cdsGridDT_BAIXA: TDateField
-      Alignment = taCenter
-      DisplayLabel = 'Data da baixa'
       FieldName = 'DT_BAIXA'
-      Origin = 'DT_BAIXA'
     end
     object cdsGridUSUARIO_BAIXA: TStringField
-      DisplayLabel = 'Baixada por'
+      DisplayLabel = 'LOG DE BAIXA'
       FieldName = 'USUARIO_BAIXA'
-      Origin = 'USUARIO_BAIXA'
       Size = 50
     end
     object cdsGridCLIENTE: TStringField
-      DisplayLabel = 'Cliente'
       FieldName = 'CLIENTE'
-      Origin = 'CLIENTE'
       Size = 100
     end
     object cdsGridUSUARIO_EMISSAO: TStringField
       FieldName = 'USUARIO_EMISSAO'
-      Origin = 'USUARIO_EMISSAO'
       Size = 50
-    end
-    object cdsGridVALOR: TFloatField
-      DisplayLabel = 'Valor R$'
-      FieldName = 'VALOR'
-      Origin = 'VALOR'
-      DisplayFormat = '#,##0.00'
     end
     object cdsGridEMISSAO: TDateField
       FieldName = 'EMISSAO'
-      Required = True
+    end
+    object cdsGridPARCELA: TIntegerField
+      FieldName = 'PARCELA'
+      ReadOnly = True
+    end
+    object cdsGridPESSOA: TStringField
+      FieldName = 'PESSOA'
+      ReadOnly = True
+      FixedChar = True
+      Size = 1
+    end
+    object cdsGridCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      ReadOnly = True
+    end
+    object cdsGridLOGRADOURO: TStringField
+      FieldName = 'LOGRADOURO'
+      ReadOnly = True
+      Size = 45
+    end
+    object cdsGridNUMERO: TStringField
+      FieldName = 'NUMERO'
+      ReadOnly = True
+      Size = 10
+    end
+    object cdsGridBAIRRO: TStringField
+      FieldName = 'BAIRRO'
+      ReadOnly = True
+      Size = 30
+    end
+    object cdsGridCEP: TStringField
+      FieldName = 'CEP'
+      ReadOnly = True
+      Size = 10
+    end
+    object cdsGridCIDADE: TStringField
+      FieldName = 'CIDADE'
+      ReadOnly = True
+      Size = 50
+    end
+    object cdsGridUF: TStringField
+      FieldName = 'UF'
+      ReadOnly = True
+      FixedChar = True
+      Size = 2
     end
   end
   object dsGrid: TDataSource
@@ -1037,8 +1072,8 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
     Top = 293
   end
   object pm1: TPopupMenu
-    Left = 496
-    Top = 320
+    Left = 736
+    Top = 232
     object actRestaurarBaixa1: TMenuItem
       Action = actRestaurarBaixa
       Caption = 'Restaurar Baixa'
