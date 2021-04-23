@@ -848,7 +848,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsEstoque
+            ActivePage = tsComposicao
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText

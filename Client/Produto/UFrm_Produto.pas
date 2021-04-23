@@ -242,6 +242,7 @@ type
     FCustoEstimado: Currency;
     FQtde: Double;
     FvUnitario: Double;
+    FExibirMsg: Boolean;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
@@ -258,9 +259,10 @@ type
     property CustoEstimado: Currency  read FCustoEstimado;
     property Qtde: Double read FQtde write SetQtde;
     property vUnitario: Double read FvUnitario write setvUnitario;
+    property ExibirMsg: Boolean read FExibirMsg;
 
     procedure Novo() ; override ;
-    procedure Gravar() ; override ;
+    procedure Gravar(); override;
     procedure Excluir() ; override ;
     procedure localizar() ; override ;
     procedure Editar() ; override ;
@@ -347,6 +349,7 @@ begin
     cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado;
   end;
 
+  FExibirMsg := False;
   Gravar;
 end;
 
@@ -605,6 +608,9 @@ end;
 procedure TFrm_Produto.edtQtdeKeyPress(Sender: TObject; var Key: Char);
 begin
   inherited;
+  if (Key = #13) then
+    actAddItem.Execute;
+
   if not (Key in ['0'..'9', #8, ',', #13]) then
     Key := #0;
 end;
@@ -642,7 +648,7 @@ begin
   pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
 end;
 
-procedure TFrm_Produto.Gravar;
+procedure TFrm_Produto.Gravar();
 var
   lRetorno: OleVariant;
 begin
@@ -668,12 +674,14 @@ begin
         if (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0) then
           MargemLucro(1);
       end;
-      TMensagem.Informacao('Gravação efetuada com sucesso');
+      if ExibirMsg then
+        TMensagem.Informacao('Gravação efetuada com sucesso');
 //        pgc1.TabIndex := 0;
     except
       TMensagem.Erro('Não foi possível efetuar a gravação. Tente novamente.');
     end;
   end;
+  FExibirMsg := True;
 end;
 
 procedure TFrm_Produto.localizar;
@@ -764,6 +772,7 @@ begin
   cds.Close;
   cds.FieldDefs.Clear;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+  FExibirMsg := True;
 end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
@@ -847,7 +856,7 @@ begin
     Exit;
   end;
 
-  if (dbedtPRECO_ATACADO.Text <> '') then
+  if ((dbedtPRECO_ATACADO.Text <> '') and (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0)) then
   begin
     if not (StrToFloatDef(dbedtQTDE_MIN_ATACADO.Text,0) > 0) then
     begin
