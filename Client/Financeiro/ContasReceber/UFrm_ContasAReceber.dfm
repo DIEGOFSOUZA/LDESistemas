@@ -44,7 +44,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       BorderStyle = bsSingle
       Color = 16764573
       ParentBackground = False
-      TabOrder = 2
+      TabOrder = 3
       object Label4: TLabel
         Left = 197
         Top = 9
@@ -417,7 +417,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = []
-      Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       ParentFont = False
       PopupMenu = pm1
       TabOrder = 1
@@ -426,9 +426,18 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       TitleFont.Height = -11
       TitleFont.Name = 'Segoe UI'
       TitleFont.Style = []
+      OnCellClick = dbgrdDuplicataCellClick
       OnDrawColumnCell = dbgrdDuplicataDrawColumnCell
+      OnKeyPress = dbgrdDuplicataKeyPress
       OnTitleClick = dbgrdDuplicataTitleClick
       Columns = <
+        item
+          Expanded = False
+          FieldName = 'SELECAO'
+          Title.Caption = ' '
+          Width = 25
+          Visible = True
+        end
         item
           Expanded = False
           FieldName = 'ID'
@@ -465,6 +474,20 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Width = 400
           Visible = True
         end>
+    end
+    object chkSelTudo: TCheckBox
+      Left = 8
+      Top = 130
+      Width = 15
+      Height = 17
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      OnClick = chkSelTudoClick
     end
   end
   object pnlAcoes: TPanel
@@ -957,19 +980,17 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
   object cdsGrid: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'SELECT pr.ID, pr.TIPO, pr.ORDEM, pr.DT_VENC,'#13#10'pr.VALOR,pr.DT_BAI' +
-      'XA,pr.USUARIO_BAIXA,'#13#10'c.NOME_RAZAO cliente,pr.USUARIO_EMISSAO,pm' +
-      '.emissao,'#13#10'cast(left(pr.ordem,2) as integer) parcela,'#13#10'c.pessoa,' +
-      'c.cpf_cnpj,coalesce(c.cob_endereco,c.endereco) logradouro,'#13#10'coal' +
-      'esce(c.cob_numero,c.numero) numero,coalesce(c.cob_bairro,c.bairr' +
-      'o) bairro,'#13#10'coalesce(c.cob_cep,c.cep) cep,coalesce(c.cob_cidade,' +
-      'c.cidade) cidade,'#13#10'coalesce(c.cob_uf,c.uf) UF'#13#10'FROM PDV_RECEBER ' +
-      'pr'#13#10'left join PDV_MASTER pm on (pm.TIPO = pr.TIPO and pm.ID = pr' +
-      '.ID)'#13#10'left join CLIENTE c on (c.CODIGO = pm.ID_CLIENTE)'#13#10'where 1' +
-      ' = 2'
+      'SELECT cast(0 as integer)selecao,pr.ID, pr.TIPO, pr.ORDEM, pr.DT' +
+      '_VENC,'#13#10'pr.VALOR,pr.DT_BAIXA,pr.USUARIO_BAIXA,'#13#10'c.NOME_RAZAO cli' +
+      'ente,pr.USUARIO_EMISSAO,pm.emissao,'#13#10'cast(left(pr.ordem,2) as in' +
+      'teger) parcela,'#13#10'c.pessoa,c.cpf_cnpj,coalesce(c.cob_endereco,c.e' +
+      'ndereco) logradouro,'#13#10'coalesce(c.cob_numero,c.numero) numero,coa' +
+      'lesce(c.cob_bairro,c.bairro) bairro,'#13#10'coalesce(c.cob_cep,c.cep) ' +
+      'cep,coalesce(c.cob_cidade,c.cidade) cidade,'#13#10'coalesce(c.cob_uf,c' +
+      '.uf) UF'#13#10'FROM PDV_RECEBER pr'#13#10'left join PDV_MASTER pm on (pm.TIP' +
+      'O = pr.TIPO and pm.ID = pr.ID)'#13#10'left join CLIENTE c on (c.CODIGO' +
+      ' = pm.ID_CLIENTE)'#13#10'where 1 = 2'
     Params = <>
-    ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 77
     Top = 236
     object cdsGridID: TIntegerField
@@ -1064,6 +1085,9 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       ReadOnly = True
       FixedChar = True
       Size = 2
+    end
+    object cdsGridSELECAO: TIntegerField
+      FieldName = 'SELECAO'
     end
   end
   object dsGrid: TDataSource

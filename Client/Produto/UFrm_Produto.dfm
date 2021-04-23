@@ -2332,6 +2332,7 @@ inherited Frm_Produto: TFrm_Produto
     object cdsDESC_MAXIMO: TFMTBCDField
       FieldName = 'DESC_MAXIMO'
       Origin = 'DESC_MAXIMO'
+      DisplayFormat = '##0.00'
       Precision = 18
       Size = 3
     end

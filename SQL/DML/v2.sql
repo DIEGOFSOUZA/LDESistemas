@@ -37760,9 +37760,18 @@ set A.CALC_CUSTO_COMPOSICAO = 'S',
                      where PC.ID_PRODUTO = A.CODIGO)
 where A.CODIGO in (select distinct(PC2.ID_PRODUTO) CODIGO
                    from PRODUTO_COMPOSICAO PC2);
+				   
+update produto a
+set a.conv_preco = cast((a.preco_venda/a.conv_qtde) as numeric(10,2))
+where a.conv_preco is not null;				   
+
+update produto a
+set a.desc_maximo=10;
 
 ALTER TRIGGER tri_bu_produto ACTIVE;
 ALTER TRIGGER tri_bu_prodhistprecocusto ACTIVE;
+
+
 
 
 

@@ -21,7 +21,7 @@ object DM: TDM
       'Port=311'
       'Filters={}')
     Left = 69
-    Top = 24
+    Top = 16
     UniqueId = '{0AB9AE97-D7F3-4B8A-951A-B589D0441070}'
   end
   object DSProviderConnection1: TDSProviderConnection
