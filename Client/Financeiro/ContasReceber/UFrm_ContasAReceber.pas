@@ -264,7 +264,7 @@ end;
 procedure TFrm_ContasAReceber.actGerarBoletoExecute(Sender: TObject);
 var
   Titulo: TACBrTitulo;
-  lNumDoc,lNomeBoleto: string;
+  lNumDoc, lNomeBoleto: string;
   i: Integer;
 begin
   inherited;
@@ -272,19 +272,18 @@ begin
     Exit;
 
   if cdsGrid.IsEmpty then
-    Exit ;
-
+    Exit;
 
   with DMACBr.ACBrBoleto do
   begin
     Banco.TipoCobranca := cobBancoob;
     LayoutRemessa := c240;
 
-    lNomeBoleto := 'boleto'+FormatDateTime('ddmmyyhhmm',Now);
-    DMACBr.ACBrBoletoReport.NomeArquivo := ExtractFilePath(Application.ExeName) + 'SICOOB\boleto\'+lNomeBoleto+'.pdf';
+    lNomeBoleto := 'boleto' + FormatDateTime('ddmmyyhhmm', Now);
+    DMACBr.ACBrBoletoReport.NomeArquivo := ExtractFilePath(Application.ExeName) + 'SICOOB\boleto\' + lNomeBoleto + '.pdf';
 
     DirArqRemessa := ExtractFilePath(Application.ExeName) + 'SICOOB\remessa\';
-    NomeArqRemessa := 'cb'+FormatDateTime('ddmmyyhhmm',Now)+'.rem';
+    NomeArqRemessa := 'cb' + FormatDateTime('ddmmyyhhmm', Now) + '.rem';
 
     DMACBr.ACBrBoletoReport.DirLogo := ExtractFilePath(Application.ExeName) + 'LogosBoleto\Colorido';
 
@@ -300,7 +299,7 @@ begin
       DigitoVerificadorAgenciaConta := '0';
       Nome := DM.Empresa.RazaoSocial;
       CodigoCedente := '247774';
-      Logradouro := DM.Empresa.Endereco+' '+DM.Empresa.Numero;
+      Logradouro := DM.Empresa.Endereco + ' ' + DM.Empresa.Numero;
       Bairro := DM.Empresa.Bairro;
       Cidade := DM.Empresa.Cidade;
       UF := DM.Empresa.UF;
@@ -319,8 +318,11 @@ begin
     cdsGrid.First;
     while not cdsGrid.Eof do
     begin
-      if ((not cdsGridDT_BAIXA.IsNull) or (cdsGrid.FieldByName('SELECAO').AsInteger = 0)) then
+      if (cdsGrid.FieldByName('SELECAO').AsInteger = 0) then
+      begin
+        cdsGrid.Next;
         Continue;
+      end;
 
       lNumDoc := cdsGrid.FieldByName('TIPO').AsString + '|' + cdsGrid.FieldByName('ID').AsString + '|' + cdsGrid.FieldByName('ORDEM').AsString;
 
@@ -329,7 +331,7 @@ begin
       with Titulo do
       begin
     //Segmento P
-//    NossoNumero := '';
+        NossoNumero := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString + cdsGrid.FieldByName('PARCELA').AsString;
         Carteira := '1';
         CarteiraEnvio := tceCedente;
         EspecieDoc := 'DM';
@@ -372,8 +374,6 @@ begin
           UF := cdsGrid.FieldByName('UF').AsString;
         end;
 
-
-
 //    logo:= ExtractFileDir(ParamStr(0)) + '\acbr_logo.jpg';
 //    ArquivoLogoEmp := logo;  // logo da empresa
     //ShowMessage(logo);
@@ -392,7 +392,6 @@ begin
 //     DMACBr.ACBrBoleto.ListadeBoletos[i].Imprimir();
 //     DMACBr.ACBrBoleto.ListadeBoletos[i].GerarPDF();
 //   end;
-
 //  DMACBr.ACBrBoleto.Imprimir;
 //  DMACBr.ACBrBoleto.GerarPDF;
 
