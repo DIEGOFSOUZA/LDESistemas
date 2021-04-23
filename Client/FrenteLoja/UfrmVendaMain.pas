@@ -541,8 +541,9 @@ begin
         gIdCliente := IdCliente.ToString;
         aCliemDebito := False;
 
-        if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
-         aCliemDebito := True;
+        if not OrcLiberado then
+          if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
+            aCliemDebito := True;
 
         cdsPagamentos.Close;
         cdsPagamentos.CreateDataSet;
