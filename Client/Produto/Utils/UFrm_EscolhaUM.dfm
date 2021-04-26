@@ -48,4 +48,10 @@ inherited Frm_EscolhaUM: TFrm_EscolhaUM
     ParentFont = False
     TabOrder = 0
   end
+  object cdsTemp: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 280
+    Top = 56
+  end
 end

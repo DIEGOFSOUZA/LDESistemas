@@ -432,24 +432,25 @@ begin
     try
       with Frm_EscolhaUM do
       begin
-        aCodPro := pCodPro;
-        aQTDE := 0;
-        RadioGroup1.Items.Clear;
-        MontaSql();
+        Executar(pCodPro.ToInteger(),0);
+//        aCodPro := pCodPro;
+//        aQTDE := 0;
+//        RadioGroup1.Items.Clear;
+//        MontaSql();
 
         if DM.GetInteger(Format(SQL, [pCodPro]), 'conv_qtde') > 1 then
         begin
           ShowModal;
 
 //          Result := aRetCodUnidade;
-          cdsItensCOD_UM.AsInteger := aRetCodUnidade;
-          cdsItensUM.AsString := aRetUnidade;
+          cdsItensCOD_UM.AsInteger :=  CodUnidade;
+          cdsItensUM.AsString := Unidade;
         end
         else
         begin
 //          Result := Frm_EscolhaUM.RadioGroup1.Items[RadioGroup1.ItemIndex] ;
-          cdsItensCOD_UM.AsInteger := aCodUM1;
-          cdsItensUM.AsString := Frm_EscolhaUM.RadioGroup1.Items[RadioGroup1.ItemIndex];
+          cdsItensCOD_UM.AsInteger := CodUnidade;
+          cdsItensUM.AsString := Unidade;
         end;
       end;
     finally

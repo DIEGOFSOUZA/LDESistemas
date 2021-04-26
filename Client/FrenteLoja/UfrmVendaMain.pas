@@ -958,23 +958,22 @@ begin
 //    end;
 
     if (tmp.FieldByName('qtde_conversao').AsFloat > 1) then
-    {Necessario atualizar os valores abaixo, por isso comentei a linha}
-//         (not cdsItens.Locate('codigo', tmp.FieldByName('codigo').AsInteger, [])) ) then
     begin
-      with VoltaQtdeConversao(sProduto, StrToFloat(edtQtde.Text)) do
-      begin
-        if (tmp.FieldbyName('unidade').AsString <> UM) then
+      if not Assigned(Frm_EscolhaUM) then
+        Frm_EscolhaUM := TFrm_EscolhaUM.Create(Self);
+      try
+        with Frm_EscolhaUM do
         begin
-          aUnidade := UM;
-          aQtde := Qtde;
-          aVlUn := PrecoConv;
-        end
-        else
-        begin
-          aUnidade := tmp.FieldbyName('unidade').AsString;
-          aQtde := StrToFloat(edtQtde.Text);
-          aVlUn := tmp.FieldbyName('preco_venda').AsFloat;
+          Executar(sProduto.ToInteger,StrToFloat(edtQtde.Text));
+
+          ShowModal;
+
+          aUnidade := Unidade;
+          aQtde := QtdeBaixa;
+          aVlUn := vUnitario;
         end;
+      finally
+        FreeAndNil(Frm_EscolhaUM);
       end;
     end
     else
@@ -983,6 +982,29 @@ begin
       aQtde := StrToFloat(edtQtde.Text);
       aVlUn := tmp.FieldbyName('preco_venda').AsFloat;
     end;
+
+//      with VoltaQtdeConversao(sProduto, StrToFloat(edtQtde.Text)) do
+//      begin
+//        if (tmp.FieldbyName('unidade').AsString <> UM) then
+//        begin
+//          aUnidade := UM;
+//          aQtde := Qtde;
+//          aVlUn := PrecoConv;
+//        end
+//        else
+//        begin
+//          aUnidade := tmp.FieldbyName('unidade').AsString;
+//          aQtde := StrToFloat(edtQtde.Text);
+//          aVlUn := tmp.FieldbyName('preco_venda').AsFloat;
+//        end;
+//      end;
+//    end
+//    else
+//    begin
+//      aUnidade := tmp.FieldbyName('unidade').AsString;
+//      aQtde := StrToFloat(edtQtde.Text);
+//      aVlUn := tmp.FieldbyName('preco_venda').AsFloat;
+//    end;
 
     //valida se ha estoque suficiente
     if ( tmp.FieldByName('qtde_estoque').AsFloat < (aQtde) ) then //StrToFloat(edtQtde.Text)
@@ -1717,16 +1739,17 @@ begin
   try
     with Frm_EscolhaUM do
     begin
-      aCodPro := pCodPro ;
-      aQTDE := pQtde ;
-      RadioGroup1.Items.Clear ;
-      MontaSql() ;
+//      aCodPro := pCodPro;
+//      aQtde := pQtde;
+//      RadioGroup1.Items.Clear;
+//      MontaSql();
+//      Executar();
 
       ShowModal;
 
-      Result.UM   := aRetUnidade ;
-      Result.Qtde := aRetQtde ;
-      Result.PrecoConv := aRetPreco ;
+//      Result.UM := aRetUnidade;
+//      Result.Qtde := aRetQtde;
+//      Result.PrecoConv := aRetPreco;
     end;
   finally
     FreeAndNil(Frm_EscolhaUM);

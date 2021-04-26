@@ -9,6 +9,9 @@
         <Projects Include="..\Client\LDESistemas.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\..\Backup BD\BackupBanco.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="LDESistemas:Make">
         <MSBuild Projects="..\Client\LDESistemas.dproj" Targets="Make"/>
     </Target>
+    <Target Name="BackupBanco">
+        <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj"/>
+    </Target>
+    <Target Name="BackupBanco:Clean">
+        <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BackupBanco:Make">
+        <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LDEServer;LDESistemas"/>
+        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean"/>
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LDEServer:Make;LDESistemas:Make"/>
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
