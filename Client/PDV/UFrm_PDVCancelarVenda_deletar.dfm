@@ -5,7 +5,6 @@ inherited Frm_PDVCancelarVenda: TFrm_PDVCancelarVenda
   ClientHeight = 300
   ClientWidth = 457
   OnClick = actLocalizarExecute
-  OnKeyDown = FormKeyDown
   OnShow = FormShow
   ExplicitHeight = 329
   PixelsPerInch = 96

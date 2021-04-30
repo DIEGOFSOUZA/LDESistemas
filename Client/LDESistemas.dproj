@@ -195,29 +195,11 @@
         </DCCReference>
         <DCCReference Include="Utils\UFuncoes.pas"/>
         <DCCReference Include="UConectar.pas"/>
-        <DCCReference Include="FrenteLoja\UfrmVendaMain.pas">
-            <Form>frmVendaMain</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_ClientePDV.pas">
-            <Form>Frm_ClientePDV</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PDVReceberRapido.pas">
-            <Form>Frm_PDVReceberRapido</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PDVPagamento.pas">
-            <Form>Frm_PDVPagamento</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PDVCrediario.pas">
-            <Form>Frm_PDVCrediario</Form>
-        </DCCReference>
         <DCCReference Include="Producao\Relatorios\URel_ListaMatPrimaLote.pas">
             <Form>Rel_ListaMatPrimaLote</Form>
         </DCCReference>
         <DCCReference Include="Producao\UFrm_OrdemProducao.pas">
             <Form>Frm_OrdemProducao</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\Relatorios\URel_Venda0.pas">
-            <Form>Rel_Venda0</Form>
         </DCCReference>
         <DCCReference Include="DM\UDM.pas">
             <Form>DM</Form>
@@ -259,12 +241,6 @@
         <DCCReference Include="Cadastros\UFrm_Representante.pas">
             <Form>Frm_Representante</Form>
         </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PDVCancelarVenda.pas">
-            <Form>Frm_PDVCancelarVenda</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\Relatorios\URel_PDV_Venda.pas">
-            <Form>Rel_PDV_Venda</Form>
-        </DCCReference>
         <DCCReference Include="Produto\Relatorios\URel_ListaEstoque.pas">
             <Form>RelListaEtoque</Form>
         </DCCReference>
@@ -295,9 +271,6 @@
         </DCCReference>
         <DCCReference Include="Financeiro\Caixa\UFrm_ReabreCaixa.pas">
             <Form>Frm_ReabreCaixa</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_Desconto.pas">
-            <Form>Frm_Desconto</Form>
         </DCCReference>
         <DCCReference Include="Financeiro\Caixa\UFrm_Caixa_InformaValores.pas">
             <Form>Frm_Caixa_InformaValores</Form>
@@ -360,12 +333,6 @@
         <DCCReference Include="Financeiro\ContasPagar\UFrm_GrupoHistorico.pas">
             <Form>Frm_GrupoHistorico</Form>
         </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PagtoOrcamento.pas">
-            <Form>Frm_PagtoOrcamento</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrmOrcamentoConsulta.pas">
-            <Form>frmOrcamentoConsulta</Form>
-        </DCCReference>
         <DCCReference Include="Cadastros\UFrm_Usuario.pas">
             <Form>Frm_Usuario</Form>
         </DCCReference>
@@ -378,9 +345,6 @@
         </DCCReference>
         <DCCReference Include="Pedido\UFrm_Pedido.pas">
             <Form>Frm_Pedido</Form>
-        </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_PDV_Vendedor.pas">
-            <Form>Frm_PDV_Vendedor</Form>
         </DCCReference>
         <DCCReference Include="Heranca\Relatorio\uPdr_ListaRelatorio.pas">
             <Form>Pdr_ListaRelatorio</Form>
@@ -438,19 +402,71 @@
             <Form>Pdr_Child2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_GerenciaOrcamento.pas">
-            <Form>Frm_GerenciaOrcamento</Form>
+        <DCCReference Include="UClassDataSnap.pas"/>
+        <DCCReference Include="PDV\UFrm_ClientePDV.pas">
+            <Form>Frm_ClientePDV</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_GeraOrcamento.pas">
+        <DCCReference Include="PDV\UFrm_Desconto.pas">
+            <Form>Frm_Desconto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_GeraOrcamento.pas">
             <Form>Frm_GeraOrcamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="FrenteLoja\UFrm_GerOrcItens.pas">
+        <DCCReference Include="PDV\UFrm_GerenciaOrcamento.pas">
+            <Form>Frm_GerenciaOrcamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_GerOrcItens.pas">
             <Form>Frm_GerOrcItens</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UClassDataSnap.pas"/>
+        <DCCReference Include="PDV\UFrm_PagtoOrcamento.pas">
+            <Form>Frm_PagtoOrcamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDV_Vendedor.pas">
+            <Form>Frm_PDV_Vendedor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDVCrediario.pas">
+            <Form>Frm_PDVCrediario</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDVPagamento.pas">
+            <Form>Frm_PDVPagamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDVReceberRapido.pas">
+            <Form>Frm_PDVReceberRapido</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrmOrcamentoConsulta.pas">
+            <Form>frmOrcamentoConsulta</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UfrmVendaMain.pas">
+            <Form>frmVendaMain</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\Relatorios\URel_PDV_Venda.pas">
+            <Form>Rel_PDV_Venda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\Relatorios\URel_Venda0.pas">
+            <Form>Rel_Venda0</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDVDevConsulta.pas">
+            <Form>Frm_PDVDevConsulta</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PDV\UFrm_PDVDevItem.pas">
+            <Form>Frm_PDVDevItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

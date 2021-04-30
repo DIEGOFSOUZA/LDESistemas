@@ -25,7 +25,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alTop
-      TabOrder = 0
+      TabOrder = 1
       object lblTitTotPagar: TLabel
         Left = 1
         Top = 1
@@ -65,7 +65,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alTop
-      TabOrder = 1
+      TabOrder = 4
       object lblTitRestante: TLabel
         Left = 1
         Top = 1
@@ -105,7 +105,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 232
       Height = 412
       Align = alLeft
-      TabOrder = 2
+      TabOrder = 6
       object pnlDinheiro: TPanel
         Left = 5
         Top = 11
@@ -437,7 +437,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         BevelInner = bvLowered
         Color = clWhite
         ParentBackground = False
-        TabOrder = 5
+        TabOrder = 7
         OnClick = actFinalizaVendaExecute
         object lblOpcFinalizarVenda: TLabel
           Left = 45
@@ -503,7 +503,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         BevelInner = bvLowered
         Color = clWhite
         ParentBackground = False
-        TabOrder = 6
+        TabOrder = 5
         OnClick = actDescontoExecute
         object lblOpcDesconto: TLabel
           Left = 45
@@ -568,7 +568,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         BevelInner = bvLowered
         Color = clWhite
         ParentBackground = False
-        TabOrder = 7
+        TabOrder = 6
         OnClick = actLimparExecute
         object lblLimpar: TLabel
           Left = 45
@@ -608,7 +608,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alBottom
-      TabOrder = 3
+      TabOrder = 8
       object imgVoltar: TImage
         Left = 7
         Top = 3
@@ -637,9 +637,9 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       object lblVoltar: TLabel
         Left = 45
         Top = 6
-        Width = 87
+        Width = 106
         Height = 17
-        Caption = 'Voltar a Venda'
+        Caption = 'VOLTAR A VENDA'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -671,7 +671,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 400
       Height = 412
       Align = alClient
-      TabOrder = 4
+      TabOrder = 7
       object pnlTop1: TPanel
         Left = 1
         Top = 1
@@ -679,8 +679,10 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 96
         Align = alTop
         TabOrder = 0
+        ExplicitLeft = 6
+        ExplicitTop = -5
         object Label4: TLabel
-          Left = 108
+          Left = 132
           Top = 18
           Width = 23
           Height = 25
@@ -693,7 +695,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           ParentFont = False
         end
         object edtValor: TEdit
-          Left = 137
+          Left = 161
           Top = 15
           Width = 105
           Height = 33
@@ -980,7 +982,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alTop
-      TabOrder = 5
+      TabOrder = 2
       object lblTitDesconto: TLabel
         Left = 1
         Top = 1
@@ -1020,7 +1022,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alTop
-      TabOrder = 6
+      TabOrder = 5
       object lblTitTroco: TLabel
         Left = 1
         Top = 1
@@ -1060,7 +1062,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 36
       Align = alTop
-      TabOrder = 7
+      TabOrder = 0
       object lblTitulo: TLabel
         Left = 1
         Top = 1
@@ -1105,7 +1107,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Width = 632
       Height = 30
       Align = alTop
-      TabOrder = 8
+      TabOrder = 3
       object lblTitAcrescimo: TLabel
         Left = 1
         Top = 1

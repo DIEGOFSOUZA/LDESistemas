@@ -4502,10 +4502,6 @@ object Frm_Inicial: TFrm_Inicial
           Caption = 'GERAR VENDA/OR'#199'AMENTO'
           OnClick = Venda2Click
         end
-        object CancelarVenda1: TMenuItem
-          Caption = 'CANCELAR VENDA'
-          OnClick = CancelarVenda1Click
-        end
         object AberturadeCaixa1: TMenuItem
           Caption = 'ABERTURA DE CAIXA'
           OnClick = AberturadeCaixa1Click
@@ -4517,6 +4513,10 @@ object Frm_Inicial: TFrm_Inicial
         object AUTORIZARORAMENTO1: TMenuItem
           Caption = 'AUTORIZAR OR'#199'AMENTO'
           OnClick = AUTORIZARORAMENTO1Click
+        end
+        object VENDAS2: TMenuItem
+          Caption = 'VENDAS'
+          OnClick = VENDAS2Click
         end
       end
       object Pedidos1: TMenuItem
@@ -4652,10 +4652,6 @@ object Frm_Inicial: TFrm_Inicial
       end
       object PDV1: TMenuItem
         Caption = 'PDV'
-        object ReimpressoComprovantedeVenda1: TMenuItem
-          Caption = 'IMPRIMIR VENDA'
-          OnClick = ReimpressoComprovantedeVenda1Click
-        end
         object Oramento1: TMenuItem
           Caption = 'IMPRIMIR OR'#199'AMENTO'
           OnClick = Oramento1Click

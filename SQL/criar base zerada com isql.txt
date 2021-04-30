@@ -1,0 +1,12 @@
+Extrair Metadata
+ isql.exe -x -o "estrutura.sql" takano
+ 
+Criar novo banco
+  isql.exe
+  CREATE DATABASE 'C:\projetos\bancos\FB30\novo.FDB'
+  USER 'SYSDBA' PASSWORD 'masterkey' PAGE_SIZE 8192
+  DEFAULT CHARACTER SET WIN1252 COLLATION WIN_PTBR;
+  quit;
+  
+Registrar banco em IBExpert
+Rodar em script executive o script estrutura.  

@@ -358,7 +358,7 @@ procedure TFrm_ContasPagar.actRel1Execute(Sender: TObject);
 begin
   inherited;
   if dsPagar.IsEmpty then
-    Exit ;
+    Exit;
 
   if not Assigned(Rel_ContasAPagar) then
     Rel_ContasAPagar := TRel_ContasAPagar.Create(Self);
@@ -366,16 +366,16 @@ begin
     with Rel_ContasAPagar do
     begin
       rlblNomeRelatorio.Caption := 'Contas a Pagar';
-      Relatorio.PrintDialog := False ;
-      Relatorio.ShowProgress := False ;
+      Relatorio.PrintDialog := False;
+      Relatorio.ShowProgress := False;
 
-      rlMemoParametros.Lines.Clear ;
+      rlMemoParametros.Lines.Clear;
       rlMemoParametros.Lines.Add('Situação da(s) Duplicata(s): ');
-      rlMemoParametros.Lines.Add('  '+rgTipo.Items[rgTipo.ItemIndex]);
+      rlMemoParametros.Lines.Add('  ' + rgTipo.Items[rgTipo.ItemIndex]);
       rlMemoParametros.Lines.Add('Filtro:');
-      rlMemoParametros.Lines.Add('  '+sFiltro) ;
+      rlMemoParametros.Lines.Add('  ' + sFiltro);
 
-      Executar ;
+      Executar(dsPagar);
     end;
   finally
     FreeAndNil(Rel_ContasAPagar);

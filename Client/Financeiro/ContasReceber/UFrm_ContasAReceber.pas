@@ -170,17 +170,6 @@ begin
   try
     with Frm_ContasaReceber_Baixa do
     begin
-//      TitVenda := cdsGrid.FieldByName('id').AsInteger;
-//      TitEmissao := cdsGrid.FieldByName('emissao').AsDateTime;
-//      TitDuplicata := cdsGrid.FieldByName('ordem').AsString;
-//      TitVencto := cdsGrid.FieldByName('dt_venc').AsDateTime;
-//      TitValor := cdsGrid.FieldByName('valor').AsCurrency;
-//      TitCliente := cdsGrid.FieldByName('cliente').AsString;
-//
-//      Usuario := DM.User;
-//      DataBaixa := Date;
-//      ValorBaixa := cdsGrid.FieldByName('valor').AsCurrency;
-//      IdCaixa := lIdCaixa;
       Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger, cdsGrid.FieldByName('ORDEM').AsString);
 
       ShowModal;
@@ -331,7 +320,12 @@ begin
       with Titulo do
       begin
     //Segmento P
-        NossoNumero := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString + cdsGrid.FieldByName('PARCELA').AsString;
+        NossoNumero := cdsGrid.FieldByName('TIPO').AsString +
+                               cdsGrid.FieldByName('ID').AsString;
+//                     PadLeft(cdsGrid.FieldByName('TIPO').AsString +
+//                               cdsGrid.FieldByName('ID').AsString +
+//                               PadLeft(cdsGrid.FieldByName('PARCELA').AsString,2,'0'),10,'0')+
+//                               PadRight('01011',10);
         Carteira := '1';
         CarteiraEnvio := tceCedente;
         EspecieDoc := 'DM';

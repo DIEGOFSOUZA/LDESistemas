@@ -1215,9 +1215,9 @@ begin
       DM.Executar(Format(SQL_MASTER, [QuotedStr(pMotivo), QuotedStr(pUsuario),
                                       QuotedStr(pTipo), IntToStr(pID)]));
 
-      DM.Executar(Format(SQL_ITENS, [QuotedStr(pTipo), IntToStr(pID)]));
+//      DM.Executar(Format(SQL_ITENS, [QuotedStr(pTipo), IntToStr(pID)]));
 
-      DM.Executar(Format(SQL_RECEBER, [QuotedStr(pTipo), IntToStr(pID)]));
+//      DM.Executar(Format(SQL_RECEBER, [QuotedStr(pTipo), IntToStr(pID)]));
 
       Result := True;
     except
