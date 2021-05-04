@@ -164,7 +164,7 @@ begin
   try
     with Frm_PDVDevItem do
     begin
-//      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger, cdsGrid.FieldByName('ORDEM').AsString);
+      Executar(cdsVenda.FieldByName('TIPO').AsString, cdsVenda.FieldByName('ID').AsInteger);
 
       ShowModal;
 

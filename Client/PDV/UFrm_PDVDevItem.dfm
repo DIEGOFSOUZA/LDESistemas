@@ -9,6 +9,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 883
+    ExplicitWidth = 883
     inherited lblTitulo: TLabel
       Width = 858
       Caption = '   DEVOLU'#199#195'O'
@@ -18,6 +19,9 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     end
     inherited pnlBotaoSair: TPanel
       Left = 858
+      ExplicitLeft = 858
+      ExplicitTop = 0
+      ExplicitHeight = 30
     end
   end
   object pnlFundo: TPanel [1]
@@ -29,10 +33,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     Color = 14803681
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 152
-    ExplicitTop = 192
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pnlRodape: TPanel
       Left = 1
       Top = 399
@@ -42,7 +42,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
       Color = 10461087
       ParentBackground = False
       TabOrder = 1
-      ExplicitTop = 481
       object pnlTotais: TPanel
         Left = 1
         Top = 1
@@ -50,8 +49,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         Height = 118
         Align = alLeft
         TabOrder = 0
-        ExplicitLeft = 0
-        ExplicitHeight = 159
         object Label1: TLabel
           Left = 29
           Top = 19
@@ -94,44 +91,44 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Font.Style = [fsBold]
           ParentFont = False
         end
-        object lblVInicial: TLabel
-          Left = 146
-          Top = 19
-          Width = 112
-          Height = 21
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'R$ 1.500,25'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWhite
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblVDevolvido: TLabel
-          Left = 146
-          Top = 48
-          Width = 112
-          Height = 21
-          Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'R$ 1.500,25'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWhite
-          Font.Height = -16
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object lblVAtual: TLabel
+        object dbtxtTOT_ATUAL: TDBText
           Left = 146
           Top = 77
           Width = 112
-          Height = 21
+          Height = 17
           Alignment = taRightJustify
-          AutoSize = False
-          Caption = 'R$ 1.500,25'
+          DataField = 'TOT_ATUAL'
+          DataSource = dsItens
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object dbtxtTOTAL_DEV: TDBText
+          Left = 146
+          Top = 48
+          Width = 112
+          Height = 17
+          Alignment = taRightJustify
+          DataField = 'TOTAL_DEV'
+          DataSource = dsItens
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -16
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object dbtxtTOT_GERAL: TDBText
+          Left = 146
+          Top = 19
+          Width = 112
+          Height = 17
+          Alignment = taRightJustify
+          DataField = 'TOT_GERAL'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite
           Font.Height = -16
@@ -147,9 +144,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         Height = 118
         Align = alRight
         TabOrder = 2
-        ExplicitLeft = 56
-        ExplicitTop = 64
-        ExplicitHeight = 41
         object pnlConfirma: TPanel
           Left = 17
           Top = 36
@@ -193,10 +187,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         Height = 118
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = 56
-        ExplicitTop = 64
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object pnlDevCenter: TPanel
           Left = 13
           Top = 26
@@ -206,7 +196,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Color = 12342537
           ParentBackground = False
           TabOrder = 0
-          object Label4: TLabel
+          object lblDevolvendo: TLabel
             Left = 5
             Top = 22
             Width = 233
@@ -261,25 +251,17 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 136
-      ExplicitTop = 160
-      ExplicitWidth = 185
-      ExplicitHeight = 41
       object pnlCliente: TPanel
-        Left = 409
+        Left = 380
         Top = 0
-        Width = 472
+        Width = 501
         Height = 398
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = -1
-        ExplicitTop = -5
-        ExplicitWidth = 409
-        ExplicitHeight = 480
         object lblTitPreco: TLabel
           Left = 1
           Top = 1
-          Width = 470
+          Width = 499
           Height = 20
           Align = alTop
           AutoSize = False
@@ -301,23 +283,21 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         object pnlGrid: TPanel
           Left = 1
           Top = 21
-          Width = 351
+          Width = 409
           Height = 376
           Align = alClient
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 320
-          ExplicitHeight = 458
           object pnlTitVendas: TPanel
             Left = 0
             Top = 0
-            Width = 351
+            Width = 409
             Height = 37
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 0
             object Label13: TLabel
-              Left = 8
+              Left = 1
               Top = 19
               Width = 70
               Height = 17
@@ -330,10 +310,12 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
               ParentFont = False
             end
             object Label14: TLabel
-              Left = 270
+              Left = 304
               Top = 19
-              Width = 41
+              Width = 78
               Height = 17
+              Alignment = taCenter
+              AutoSize = False
               Caption = 'SALDO'
               Font.Charset = ANSI_CHARSET
               Font.Color = clWindowText
@@ -346,20 +328,17 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           object pnlGrid1: TPanel
             Left = 0
             Top = 37
-            Width = 351
+            Width = 409
             Height = 339
             Align = alClient
             TabOrder = 1
-            ExplicitLeft = 144
-            ExplicitTop = 168
-            ExplicitWidth = 185
-            ExplicitHeight = 41
-            object dbgrdVendas: TDBGrid
+            object dbgrdItens: TDBGrid
               Left = 1
               Top = 1
-              Width = 349
+              Width = 407
               Height = 337
               Align = alClient
+              DataSource = dsItens
               DrawingStyle = gdsGradient
               GradientEndColor = 13864803
               Font.Charset = ANSI_CHARSET
@@ -375,34 +354,128 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
               TitleFont.Height = -11
               TitleFont.Name = 'Segoe UI'
               TitleFont.Style = []
+              OnDblClick = dbgrdItensDblClick
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'DESCRI_PROD'
+                  Width = 297
+                  Visible = True
+                end
+                item
+                  Alignment = taRightJustify
+                  Expanded = False
+                  FieldName = 'SALDO'
+                  Visible = True
+                end>
             end
           end
         end
         object pnlQtdeADevolver: TPanel
-          Left = 352
+          Left = 410
           Top = 21
-          Width = 119
+          Width = 90
           Height = 376
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitHeight = 458
+          object pnlQtde: TPanel
+            Left = 2
+            Top = 138
+            Width = 86
+            Height = 100
+            TabOrder = 0
+            Visible = False
+            object Label16: TLabel
+              Left = 1
+              Top = 1
+              Width = 84
+              Height = 20
+              Align = alTop
+              Alignment = taCenter
+              AutoSize = False
+              Caption = 'QTDE'
+              Color = 10114859
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWhite
+              Font.Height = -13
+              Font.Name = 'Segoe UI Semibold'
+              Font.Style = [fsBold]
+              ParentColor = False
+              ParentFont = False
+              Transparent = False
+              Layout = tlCenter
+              OnMouseMove = lblTituloMouseMove
+              ExplicitLeft = 2
+              ExplicitTop = 9
+            end
+            object edtQtde: TEdit
+              Left = 3
+              Top = 30
+              Width = 80
+              Height = 25
+              Alignment = taCenter
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'Segoe UI'
+              Font.Style = [fsBold]
+              ParentFont = False
+              TabOrder = 0
+              Text = '0'
+              OnChange = edtQtdeChange
+              OnKeyPress = edtQtdeKeyPress
+            end
+            object pnlOk: TPanel
+              Left = 4
+              Top = 70
+              Width = 78
+              Height = 30
+              BevelOuter = bvNone
+              Caption = 'pnlIncluiCondPagto'
+              Color = 7024384
+              ParentBackground = False
+              ShowCaption = False
+              TabOrder = 1
+              TabStop = True
+              object btnOk: TSpeedButton
+                Left = 0
+                Top = 0
+                Width = 78
+                Height = 30
+                Cursor = crHandPoint
+                Action = actOk
+                Align = alClient
+                Flat = True
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWhite
+                Font.Height = -13
+                Font.Name = 'Segoe UI Semibold'
+                Font.Style = [fsBold]
+                ParentFont = False
+                ParentShowHint = False
+                ShowHint = True
+                ExplicitLeft = 1
+                ExplicitTop = 7
+                ExplicitWidth = 23
+                ExplicitHeight = 23
+              end
+            end
+          end
         end
       end
       object pnlItem: TPanel
         Left = 0
         Top = 0
-        Width = 409
+        Width = 380
         Height = 398
         Align = alLeft
+        Enabled = False
         TabOrder = 0
-        ExplicitLeft = -5
-        ExplicitTop = -5
-        ExplicitHeight = 480
         object lbl1: TLabel
           Left = 1
           Top = 1
-          Width = 407
+          Width = 378
           Height = 20
           Align = alTop
           AutoSize = False
@@ -419,10 +492,11 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Layout = tlCenter
           OnMouseMove = lblTituloMouseMove
           ExplicitTop = 5
+          ExplicitWidth = 407
         end
         object Label5: TLabel
-          Left = 24
-          Top = 40
+          Left = 20
+          Top = 36
           Width = 55
           Height = 17
           Caption = 'CPF/CNPJ'
@@ -434,8 +508,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label6: TLabel
-          Left = 184
-          Top = 40
+          Left = 180
+          Top = 36
           Width = 60
           Height = 17
           Caption = 'TELEFONE'
@@ -447,8 +521,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label7: TLabel
-          Left = 24
-          Top = 104
+          Left = 20
+          Top = 148
           Width = 41
           Height = 17
           Caption = 'E-MAIL'
@@ -460,8 +534,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label8: TLabel
-          Left = 24
-          Top = 168
+          Left = 20
+          Top = 204
           Width = 22
           Height = 17
           Caption = 'CEP'
@@ -473,8 +547,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label9: TLabel
-          Left = 184
-          Top = 168
+          Left = 180
+          Top = 204
           Width = 66
           Height = 17
           Caption = 'ENDERE'#199'O'
@@ -486,8 +560,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label10: TLabel
-          Left = 24
-          Top = 240
+          Left = 20
+          Top = 260
           Width = 44
           Height = 17
           Caption = 'BAIRRO'
@@ -499,8 +573,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label11: TLabel
-          Left = 184
-          Top = 240
+          Left = 180
+          Top = 260
           Width = 56
           Height = 17
           Caption = 'N'#218'MERO'
@@ -512,8 +586,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label12: TLabel
-          Left = 21
-          Top = 304
+          Left = 20
+          Top = 316
           Width = 95
           Height = 17
           Caption = 'COMPLEMENTO'
@@ -524,166 +598,200 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Font.Style = []
           ParentFont = False
         end
-        object edtCPFCNPJ: TEdit
-          Left = 24
-          Top = 61
+        object Label15: TLabel
+          Left = 20
+          Top = 92
+          Width = 39
+          Height = 17
+          Caption = 'NOME'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object DBEdit1: TDBEdit
+          Left = 20
+          Top = 57
           Width = 150
           Height = 25
+          DataField = 'CPF_CNPJ'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
           TabOrder = 0
-          Text = 'edtCPFCNPJ'
         end
-        object edtTelefone: TEdit
-          Left = 184
-          Top = 61
+        object DBEdit2: TDBEdit
+          Left = 180
+          Top = 57
           Width = 180
           Height = 25
+          DataField = 'TELEFONE1'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
           TabOrder = 1
-          Text = 'edtCPFCNPJ'
         end
-        object edtEMAIL: TEdit
-          Left = 24
-          Top = 125
+        object DBEdit3: TDBEdit
+          Left = 20
+          Top = 169
           Width = 340
           Height = 25
+          DataField = 'EMAIL'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
-          TabOrder = 2
-          Text = 'edtCPFCNPJ'
-        end
-        object edtCEP: TEdit
-          Left = 24
-          Top = 189
-          Width = 150
-          Height = 25
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Segoe UI Semibold'
-          Font.Style = [fsBold]
-          ParentFont = False
-          ReadOnly = True
           TabOrder = 3
-          Text = 'edtCPFCNPJ'
         end
-        object edtENDERECO: TEdit
-          Left = 184
-          Top = 189
-          Width = 180
+        object DBEdit4: TDBEdit
+          Left = 20
+          Top = 337
+          Width = 340
           Height = 25
+          DataField = 'COMPLEMENTO'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
-          TabOrder = 4
-          Text = 'edtCPFCNPJ'
+          TabOrder = 8
         end
-        object edtBairro: TEdit
-          Left = 24
-          Top = 261
+        object DBEdit5: TDBEdit
+          Left = 20
+          Top = 225
           Width = 150
           Height = 25
+          DataField = 'CEP'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
-          TabOrder = 5
-          Text = 'edtCPFCNPJ'
+          TabOrder = 4
         end
-        object edtNumero: TEdit
-          Left = 184
-          Top = 261
+        object DBEdit6: TDBEdit
+          Left = 180
+          Top = 225
           Width = 180
           Height = 25
+          DataField = 'ENDERECO'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
-          TabOrder = 6
-          Text = 'edtCPFCNPJ'
+          TabOrder = 5
         end
-        object edtCompl: TEdit
-          Left = 21
-          Top = 325
-          Width = 343
+        object DBEdit7: TDBEdit
+          Left = 20
+          Top = 281
+          Width = 150
           Height = 25
+          DataField = 'BAIRRO'
+          DataSource = dsItens
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          ReadOnly = True
+          TabOrder = 6
+        end
+        object DBEdit8: TDBEdit
+          Left = 180
+          Top = 281
+          Width = 180
+          Height = 25
+          DataField = 'NUMERO'
+          DataSource = dsItens
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = [fsBold]
+          ParentFont = False
           TabOrder = 7
-          Text = 'edtCPFCNPJ'
+        end
+        object DBEdit9: TDBEdit
+          Left = 20
+          Top = 113
+          Width = 340
+          Height = 25
+          DataField = 'CLIENTE'
+          DataSource = dsItens
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 2
         end
       end
     end
   end
   inherited actlst1: TActionList
-    Left = 168
-    Top = 416
+    Left = 448
+    Top = 322
     object actConfirma: TAction
       Caption = 'CONFIRMAR'
       OnExecute = actConfirmaExecute
     end
+    object actOk: TAction
+      Caption = 'OK'
+      OnExecute = actOkExecute
+    end
   end
   object dsItens: TDataSource
+    DataSet = cdsItens
     Left = 571
     Top = 323
   end
   object cdsItens: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'select ID, TIPO, ORDEM, ID_PRODUTO, QTDE, QTDE_BAIXA, SALDO, DES' +
-      'CRI_PROD, CLIENTE, CEP, CPF_CNPJ, TELEFONE1, EMAIL,'#13#10'       ENDE' +
-      'RECO, BAIRRO, NUMERO, COMPLEMENTO, sum(VL_TOTAL) over() TOT_GERA' +
-      'L, sum(TOT_DEV) over() TOTAL_DEV,'#13#10'       sum(VL_TOTAL - TOT_DEV' +
-      ') over() TOT_ATUAL'#13#10'from (select A.ID, A.TIPO, A.ORDEM, A.ID_PRO' +
-      'DUTO, A.QTDE, A.QTDE_BAIXA, A.VL_TOTAL,'#13#10'             cast(cast(' +
-      '(A.QTDE - A.QTDE_DISPONIVEL) as integer) || '#39'/'#39' || cast(A.QTDE a' +
-      's integer) as varchar(10)) SALDO, cast('#13#10'             case'#13#10'    ' +
-      '           when A.QTDE_DISPONIVEL = 0 then A.VL_TOTAL'#13#10'         ' +
-      '      when (A.QTDE > A.QTDE_DISPONIVEL) then ((A.QTDE - A.QTDE_D' +
-      'ISPONIVEL) * (A.VL_TOTAL / A.QTDE))'#13#10'               else 0'#13#10'    ' +
-      '         end as numeric(10,2)) TOT_DEV, P.NOME DESCRI_PROD, C.NO' +
-      'ME_RAZAO CLIENTE, C.CEP, C.CPF_CNPJ, C.TELEFONE1,'#13#10'             ' +
-      'C.EMAIL, C.ENDERECO, C.BAIRRO, C.NUMERO, C.COMPLEMENTO'#13#10'      fr' +
-      'om PDV_ITENS A'#13#10'      left join PRODUTO P on (P.CODIGO = A.ID_PR' +
-      'ODUTO)'#13#10'      left join PDV_MASTER PM on (PM.ID = A.ID and'#13#10'    ' +
-      '        PM.TIPO = A.TIPO)'#13#10'      left join CLIENTE C on (C.CODIG' +
-      'O = PM.ID_CLIENTE)'#13#10'      where 1=2)'
+      'select ID, TIPO, ORDEM, ID_PRODUTO, QTDE, QTDE_BAIXA, QTDE_DISPO' +
+      'NIVEL, VL_TOTAL, SALDO, DESCRI_PROD, IDCLIENTE, CLIENTE, CEP, CP' +
+      'F_CNPJ, TELEFONE1, EMAIL,'#13#10'       ENDERECO, BAIRRO, NUMERO, COMP' +
+      'LEMENTO, sum(VL_TOTAL) over() TOT_GERAL, sum(TOT_DEV) over() TOT' +
+      'AL_DEV,'#13#10'       sum(VL_TOTAL - TOT_DEV) over() TOT_ATUAL'#13#10'from (' +
+      'select A.ID, A.TIPO, A.ORDEM, A.ID_PRODUTO, A.QTDE, A.QTDE_BAIXA' +
+      ', A.QTDE_DISPONIVEL,A.VL_TOTAL,'#13#10'             cast(cast((A.QTDE ' +
+      '- A.QTDE_DISPONIVEL) as integer) || '#39'/'#39' || cast(A.QTDE as intege' +
+      'r) as varchar(10)) SALDO, cast('#13#10'             case'#13#10'            ' +
+      '   when A.QTDE_DISPONIVEL = 0 then A.VL_TOTAL'#13#10'               wh' +
+      'en (A.QTDE > A.QTDE_DISPONIVEL) then ((A.QTDE - A.QTDE_DISPONIVE' +
+      'L) * (A.VL_TOTAL / A.QTDE))'#13#10'               else 0'#13#10'            ' +
+      ' end as numeric(10,2)) TOT_DEV, P.NOME DESCRI_PROD, C.CODIGO IDC' +
+      'LIENTE, C.NOME_RAZAO CLIENTE, C.CEP, C.CPF_CNPJ, C.TELEFONE1,'#13#10' ' +
+      '            C.EMAIL, C.ENDERECO, C.BAIRRO, C.NUMERO, C.COMPLEMEN' +
+      'TO'#13#10'      from PDV_ITENS A'#13#10'      left join PRODUTO P on (P.CODI' +
+      'GO = A.ID_PRODUTO)'#13#10'      left join PDV_MASTER PM on (PM.ID = A.' +
+      'ID and'#13#10'            PM.TIPO = A.TIPO)'#13#10'      left join CLIENTE C' +
+      ' on (C.CODIGO = PM.ID_CLIENTE)'#13#10'      where 1=2)'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
-    Left = 515
+    Left = 511
     Top = 323
     object cdsItensID: TIntegerField
       FieldName = 'ID'
@@ -711,7 +819,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     end
     object cdsItensSALDO: TStringField
       FieldName = 'SALDO'
-      ReadOnly = True
       Size = 10
     end
     object cdsItensDESCRI_PROD: TStringField
@@ -766,20 +873,35 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     object cdsItensTOT_GERAL: TFMTBCDField
       FieldName = 'TOT_GERAL'
       ReadOnly = True
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 2
     end
     object cdsItensTOTAL_DEV: TFMTBCDField
       FieldName = 'TOTAL_DEV'
       ReadOnly = True
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 2
     end
     object cdsItensTOT_ATUAL: TFMTBCDField
       FieldName = 'TOT_ATUAL'
       ReadOnly = True
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 2
+    end
+    object cdsItensVL_TOTAL: TFMTBCDField
+      FieldName = 'VL_TOTAL'
+      Precision = 18
+      Size = 2
+    end
+    object cdsItensIDCLIENTE: TIntegerField
+      FieldName = 'IDCLIENTE'
+      ReadOnly = True
+    end
+    object cdsItensQTDE_DISPONIVEL: TCurrencyField
+      FieldName = 'QTDE_DISPONIVEL'
     end
   end
 end

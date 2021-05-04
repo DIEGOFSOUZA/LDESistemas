@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 05/04/2021 16:38:06
+// 04/05/2021 10:12:34
 //
 
 unit UClassDataSnap;
@@ -190,12 +190,14 @@ type
   private
     FsetOrcamentoCommand: TDBXCommand;
     FgetOrcamentoCommand: TDBXCommand;
+    FsetDevolucaoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setOrcamento(BD: string; pID: Integer; Dados: OleVariant): Boolean;
     function getOrcamento(BD: string; pID: Integer): OleVariant;
+    function setDevolucao(BD: string; pTipo: string; pId: Integer; pOrdem: Integer; pQtdeDev: Double; pUsuario: string; pVlCredito: Currency; pIDCliente: Integer): Boolean;
   end;
 
   TSM_FinanceiroClient = class(TDSAdminClient)
@@ -1595,6 +1597,27 @@ begin
   Result := FgetOrcamentoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TsmPDVClient.setDevolucao(BD: string; pTipo: string; pId: Integer; pOrdem: Integer; pQtdeDev: Double; pUsuario: string; pVlCredito: Currency; pIDCliente: Integer): Boolean;
+begin
+  if FsetDevolucaoCommand = nil then
+  begin
+    FsetDevolucaoCommand := FDBXConnection.CreateCommand;
+    FsetDevolucaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetDevolucaoCommand.Text := 'TsmPDV.setDevolucao';
+    FsetDevolucaoCommand.Prepare;
+  end;
+  FsetDevolucaoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetDevolucaoCommand.Parameters[1].Value.SetWideString(pTipo);
+  FsetDevolucaoCommand.Parameters[2].Value.SetInt32(pId);
+  FsetDevolucaoCommand.Parameters[3].Value.SetInt32(pOrdem);
+  FsetDevolucaoCommand.Parameters[4].Value.SetDouble(pQtdeDev);
+  FsetDevolucaoCommand.Parameters[5].Value.SetWideString(pUsuario);
+  FsetDevolucaoCommand.Parameters[6].Value.AsCurrency := pVlCredito;
+  FsetDevolucaoCommand.Parameters[7].Value.SetInt32(pIDCliente);
+  FsetDevolucaoCommand.ExecuteUpdate;
+  Result := FsetDevolucaoCommand.Parameters[8].Value.GetBoolean;
+end;
+
 constructor TsmPDVClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1609,6 +1632,7 @@ destructor TsmPDVClient.Destroy;
 begin
   FsetOrcamentoCommand.DisposeOf;
   FgetOrcamentoCommand.DisposeOf;
+  FsetDevolucaoCommand.DisposeOf;
   inherited;
 end;
 

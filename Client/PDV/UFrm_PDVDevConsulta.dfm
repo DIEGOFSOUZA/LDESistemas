@@ -9,12 +9,15 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 749
+    ExplicitWidth = 749
     inherited lblTitulo: TLabel
       Width = 724
       Caption = '         VENDAS'
+      ExplicitWidth = 724
     end
     inherited pnlBotaoSair: TPanel
       Left = 724
+      ExplicitLeft = 724
     end
   end
   object pnlFundo: TPanel [1]
@@ -27,8 +30,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
     Color = 14803681
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 22
-    ExplicitHeight = 520
     object pnlConsulta: TPanel
       Left = 0
       Top = 0
@@ -187,9 +188,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
       Align = alClient
       BevelOuter = bvLowered
       TabOrder = 2
-      ExplicitTop = 152
-      ExplicitWidth = 902
-      ExplicitHeight = 337
       object pnlAcoes: TPanel
         Left = 618
         Top = 1
@@ -197,8 +195,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
         Height = 503
         Align = alRight
         TabOrder = 1
-        ExplicitLeft = 743
-        ExplicitHeight = 335
         object pnlTroca: TPanel
           Left = 10
           Top = 26
@@ -313,10 +309,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 256
-        ExplicitTop = 136
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object dbgrdVendas: TDBGrid
           Left = 0
           Top = 0
@@ -369,7 +361,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitHeight = 70
       object Label4: TLabel
         Left = 8
         Top = 16
