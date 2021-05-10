@@ -89,6 +89,15 @@ type
     cdsItensVL_TOTAL: TFMTBCDField;
     cdsItensIDCLIENTE: TIntegerField;
     cdsItensQTDE_DISPONIVEL: TCurrencyField;
+    cdsItemSet: TClientDataSet;
+    cdsItemSetTIPO: TStringField;
+    cdsItemSetID: TIntegerField;
+    cdsItemSetORDEM: TIntegerField;
+    cdsItemSetID_PROD: TIntegerField;
+    cdsItemSetQTDE: TFloatField;
+    cdsItemSetQTDE_BAIXA: TFloatField;
+    cdsItemSetNOVA_QTDE_DISP: TFloatField;
+    pnlDevolvidos: TPanel;
     procedure actConfirmaExecute(Sender: TObject);
     procedure actOkExecute(Sender: TObject);
     procedure dbgrdItensDblClick(Sender: TObject);
@@ -99,6 +108,7 @@ type
     FQtdeDevolvendo: Extended;
     FVlUnitario: Currency;
     FQtdeDisponivel: Extended;
+    FIDProduto: Integer;
     procedure SetVDevolucao(const Value: Currency);
     { Private declarations }
   public
@@ -106,6 +116,7 @@ type
     property QtdeDevolvendo: Extended read FQtdeDevolvendo;
     property QtdeDisponivel: Extended read FQtdeDisponivel;
     property VlUnitario: Currency read FVlUnitario;
+    property IDProduto: Integer read FIDProduto;
 
     procedure Executar(aTipo: string; aID: integer);
   end;
@@ -116,37 +127,91 @@ var
 implementation
 
 uses
-  UDM, u_Mensagem, ACBrUtil, UMakeReadWrite;
+  UDM, u_Mensagem, ACBrUtil, UMakeReadWrite, UFuncoes;
 
 {$R *.dfm}
 
 procedure TFrm_PDVDevItem.actConfirmaExecute(Sender: TObject);
+var
+  lCaixa: TCaixa;
 begin
   inherited;
-//
+  if (cbbOpcao.ItemIndex < 1) then
+  begin
+    TMensagem.Atencao('Selecione o que deseja: Vale ao Cliente ou Devolucao do dinheiro');
+    cbbOpcao.SetFocus;
+  end;
+
+  if (cbbOpcao.ItemIndex = 2) then //Devolucao do dinheiro
+  begin
+    lCaixa := CaixaFechado;
+    if lCaixa.Fechado then
+    begin
+      TMensagem.Informacao('Devolução de valor não é possível. Caixa Fechado.');
+      Abort;
+    end
+    else
+    begin
+      if DM.SMOrcamento.setDevolucao(DM.BancoDados, DM.UsuarioDataHora, VDevolucao, cdsItens.FieldByName('IDCLIENTE').AsInteger, cdsItemSet.Data, lCaixa.ID) then
+      begin
+        TMensagem.Informacao('Devolução realizada com sucesso.');
+        actSair.Execute;
+      end;
+    end
+  end
+  else if (cbbOpcao.ItemIndex = 1) then //Vale
+  begin
+    if DM.SMOrcamento.setDevolucao(DM.BancoDados, DM.UsuarioDataHora, VDevolucao, cdsItens.FieldByName('IDCLIENTE').AsInteger, cdsItemSet.Data,0) then
+    begin
+      actSair.Execute;
+      TMensagem.Informacao('Devolução realizada com sucesso.');
+    end;
+  end;
 end;
 
 procedure TFrm_PDVDevItem.actOkExecute(Sender: TObject);
+var
+  lQtdeBaixa,lNovaQtde: Extended;
 begin
   inherited;
-  if (QtdeDevolvendo>QtdeDisponivel) then
+  if (QtdeDevolvendo > QtdeDisponivel) then
   begin
     TMensagem.Atencao('Quantidade não pode ser superior à quantidade total do item.');
+    edtQtde.SetFocus;
+    edtQtde.SelectAll;
     Exit;
   end;
 
-//  cdsItens.Edit;
-//  cdsItensSALDO.AsString := FormatFloat('##0',(cdsItensQTDE_DISPONIVEL.AsFloat-QtdeDevolvendo)) +
-//                            '/'+cdsItensQTDE.AsInteger.ToString;
-//  cdsItens.Post;
+  cdsItens.Locate('id_produto',IDProduto,[]);
+  cdsItens.Edit;
+  cdsItensSALDO.AsString := FormatFloat('##0',QtdeDevolvendo) +
+                            '/'+cdsItens.FieldByName('QTDE').AsInteger.ToString;
+  cdsItens.Post;
 
-  if DM.SMOrcamento.setDevolucao(DM.BancoDados,cdsItens.FieldByName('TIPO').AsString,
-                              cdsItens.FieldByName('ID').AsInteger,cdsItens.FieldByName('ORDEM').AsInteger,
-                              QtdeDevolvendo,DM.UsuarioDataHora,VDevolucao,cdsItens.FieldByName('IDCLIENTE').AsInteger) then
+  lQtdeBaixa := ((cdsItens.FieldByName('QTDE_BAIXA').AsFloat/cdsItens.FieldByName('QTDE').AsFloat)*QtdeDevolvendo);
+  lNovaQtde := (cdsItens.FieldByName('QTDE_DISPONIVEL').AsFloat-QtdeDevolvendo);
+  if cdsItemSet.Locate('id_prod', IDProduto, []) then
   begin
-    Executar(cdsItens.FieldByName('TIPO').AsString,cdsItens.FieldByName('ID').AsInteger);
-    pnlQtde.Visible := False;
+    cdsItemSet.Edit;
+    cdsItemSet.FieldByName('QTDE').AsFloat := QtdeDevolvendo;
+    cdsItemSet.FieldByName('QTDE_BAIXA').AsFloat := lQtdeBaixa;
+    cdsItemSet.FieldByName('NOVA_QTDE_DISP').AsFloat := lNovaQtde;
+  end
+  else
+  begin
+    cdsItemSet.Append;
+    cdsItemSet.FieldByName('TIPO').AsString := cdsItens.FieldByName('TIPO').AsString;
+    cdsItemSet.FieldByName('ID').AsInteger := cdsItens.FieldByName('ID').AsInteger;
+    cdsItemSet.FieldByName('ORDEM').AsInteger := cdsItens.FieldByName('ORDEM').AsInteger;
+    cdsItemSet.FieldByName('ID_PROD').AsInteger := cdsItens.FieldByName('ID_PRODUTO').AsInteger;
+    cdsItemSet.FieldByName('QTDE').AsFloat := QtdeDevolvendo;
+    cdsItemSet.FieldByName('QTDE_BAIXA').AsFloat := lQtdeBaixa;
+    cdsItemSet.FieldByName('NOVA_QTDE_DISP').AsFloat := lNovaQtde;
   end;
+  cdsItemSet.Post;
+
+  VDevolucao := VDevolucao + RoundABNT(QtdeDevolvendo * VlUnitario, -2);
+  pnlQtde.Visible := False;
 end;
 
 procedure TFrm_PDVDevItem.dbgrdItensDblClick(Sender: TObject);
@@ -157,6 +222,7 @@ begin
 
   FVlUnitario := (cdsItens.FieldByName('VL_TOTAL').AsCurrency / cdsItens.FieldByName('QTDE').AsFloat);
   FQtdeDisponivel := cdsItens.FieldByName('QTDE_DISPONIVEL').AsFloat;
+  FIDProduto := cdsItens.FieldByName('ID_PRODUTO').AsInteger;
   edtQtde.Text := '0';
   pnlQtde.Visible := True;
   edtQtde.SetFocus;
@@ -170,7 +236,6 @@ begin
   if (not TryStrToFloat(edtQtde.Text, lValue)) then
     lValue := 0;
   FQtdeDevolvendo := lValue;
-  VDevolucao := RoundABNT(QtdeDevolvendo*VlUnitario,-2);
 end;
 
 procedure TFrm_PDVDevItem.edtQtdeKeyPress(Sender: TObject; var Key: Char);
@@ -178,6 +243,9 @@ begin
   inherited;
   if not (Key in ['0'..'9', ',', #8, #13]) then
     Key := #0; //apenas numero e virgula
+
+  if Key = #13 then
+    actOk.Execute;
 end;
 
 procedure TFrm_PDVDevItem.Executar(aTipo: string; aID: integer);
@@ -199,13 +267,23 @@ const
         '            PM.TIPO = A.TIPO) '+
         '      left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) '+
         '      where A.TIPO = %s and '+
-        '            A.ID = %s)';
+        '            A.ID = %s and '+
+        '            A.QTDE_DISPONIVEL > 0)';
 begin
   VDevolucao := 0;
+  cdsItemSet.Close;
+  cdsItemSet.CreateDataSet;
+
   cdsItens.IndexFieldNames := 'ordem';
   cdsItens.Close;
   cdsItens.Data := DM.LerDataSet(Format(SQL,[QuotedStr(aTipo),aID.ToString]));
-//  UMakeReadWrite.MakeReadWrite(cdsItensSALDO);
+  if cdsItens.IsEmpty then
+    pnlDevolvidos.BringToFront
+  else
+  begin
+    pnlDevolvidos.SendToBack;
+    UMakeReadWrite.MakeReadWrite(cdsItensSALDO);
+  end;
 end;
 
 procedure TFrm_PDVDevItem.SetVDevolucao(const Value: Currency);

@@ -227,6 +227,7 @@ type
     fIdVendedor: integer;
     FOrcamentoId: integer;
     FOrcLiberado: Boolean;
+    FCreditoUtilizado: Currency;
     { Private declarations }
     procedure TelaCheia() ;
 
@@ -260,6 +261,7 @@ type
     procedure CarregaOrcamento();
     procedure SetOrcamentoId(const Value: integer);
     procedure AtualizaOrcamento();
+    procedure AtualizaCreditoCliente();
   public
     { Public declarations }
     IdCliente : Integer ;
@@ -268,6 +270,7 @@ type
     property IdVendedor : integer read fIdVendedor write setIdVendedor;
     property OrcamentoID: integer read FOrcamentoId write SetOrcamentoId;
     property OrcLiberado: Boolean read FOrcLiberado;
+    property CreditoUtilizado: Currency read FCreditoUtilizado;
     constructor CreateChild(AOwner : TComponent) ;
   end;
 
@@ -541,6 +544,7 @@ begin
         aIDCondPagto := 0;
         gIdCliente := IdCliente.ToString;
         aCliemDebito := False;
+        ValorCredito := StrToCurrDef(Self.lblCredito.Caption,0);
 
         if not OrcLiberado then
           if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
@@ -591,6 +595,11 @@ begin
               cdsReceber.FieldByName('id_conta').AsString := '1'; //Conta PDV
               cdsReceber.FieldByName('id_historico').AsInteger := VoltaHistorico(cdsPagamentosFORMAPAGTO.AsString);
               cdsReceber.FieldByName('baixa_id_caixa').AsInteger := IdCaixa;
+
+              if (cdsPagamentos.FieldByName('FORMAPAGTO').AsString = 'CREDITO') then
+              begin
+                FCreditoUtilizado := cdsPagamentos.FieldByName('VALOR').AsCurrency;
+              end;
             end;
 
             cdsReceberUSUARIO_EMISSAO.AsString := DM.UsuarioDataHora;
@@ -713,6 +722,13 @@ begin
   finally
     FreeAndNil(Frm_PDV_Vendedor);
   end;
+end;
+
+procedure TfrmVendaMain.AtualizaCreditoCliente;
+const
+  SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
+begin
+  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
 end;
 
 procedure TfrmVendaMain.AtualizaOrcamento;
@@ -1192,6 +1208,8 @@ procedure TfrmVendaMain.FecharVenda(aID : Integer; aTipo : string; aCondPagto : 
 var
   Vl_TotProduto, Vl_TotGeral, Vl_TotDesconto: Currency;
   aMaster, aDetail, aReceber: OleVariant;
+  lIdCliente, lIdOrcamento: Integer;
+  lCreditoUtilizado: Currency;
 begin
   if aID < 1 then
     Exit;
@@ -1199,6 +1217,10 @@ begin
   Vl_TotProduto := 0;
   Vl_TotGeral := 0;
   Vl_TotDesconto := 0;
+
+  lIdCliente := 0;
+  lIdOrcamento := 0;
+  lCreditoUtilizado := 0;
 
   {Carrega tabela Detail}
   try
@@ -1280,14 +1302,22 @@ begin
   if cdsReceber.ChangeCount > 0 then
     aReceber := cdsReceber.Delta;
 
-  if DM.SMCadastroClient.setFechaVenda(DM.BancoDados,
+  if DM.SMOrcamento.setFechaVenda(DM.BancoDados,
                                         VarArrayOf([aMaster, aDetail, aReceber]),
                                         cdsMasterID.AsString, cdsMasterTIPO.AsString) then
   begin
-    if OrcamentoID > 0 then
-      AtualizaOrcamento;
+    if (OrcamentoID > 0) then
+      lIdOrcamento := OrcamentoID;
+    if (CreditoUtilizado > 0) then
+    begin
+      lIdCliente := IdCliente;
+      lCreditoUtilizado := CreditoUtilizado;
+    end;
+    if ((lIdOrcamento > 0) or (lIdCliente > 0)) then
+      DM.SMOrcamento.setAtualizarTabelas(DM.BancoDados, lIdOrcamento, lIdCliente, lCreditoUtilizado);
+
     if aImprimir then
-      Imprimir() ;
+      Imprimir();
     ZerarCDS;
     LimpaEdtsLbls;
     AtualizaTotais;
@@ -1711,6 +1741,8 @@ begin
     Result := 3;
   if pFPagto = 'CARTAO DE DEBITO' then
     Result := 2;
+  if pFPagto = 'CREDITO' then
+    Result := 99;
 end;
 
 function TfrmVendaMain.VoltaPK(aTipo: string): TRetornoPK;
@@ -1800,6 +1832,7 @@ begin
   IdCliente := -1 ;
   IdCaixa   := -1;
   FOrcLiberado := False;
+  FCreditoUtilizado := 0;
 end;
 
 end.

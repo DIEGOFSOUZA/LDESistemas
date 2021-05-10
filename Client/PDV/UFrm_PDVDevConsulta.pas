@@ -96,7 +96,7 @@ begin
   begin
     lJustificativa := InputBox('JUSTIFICATIVA', 'Informe a Justificativa do cancelamento.', '');
 
-    if DM.SMCadastroClient.setCancelarVenda(DM.BancoDados, cdsVenda.FieldByName('ID').AsInteger, '0', lJustificativa, DM.UsuarioDataHora) then
+    if DM.SMOrcamento.setCancelarVenda(DM.BancoDados, cdsVenda.FieldByName('ID').AsInteger, '0', lJustificativa, DM.UsuarioDataHora) then
     begin
       actFiltrar.Execute;
     end;
@@ -165,9 +165,7 @@ begin
     with Frm_PDVDevItem do
     begin
       Executar(cdsVenda.FieldByName('TIPO').AsString, cdsVenda.FieldByName('ID').AsInteger);
-
       ShowModal;
-
     end;
   finally
     FreeAndNil(Frm_PDVDevItem);

@@ -243,9 +243,12 @@ end^
 
 SET TERM ; ^
 
-
 CREATE INDEX NOTA_ENTRADA_IDX_NNF
 ON NOTA_ENTRADA (N_NF);
+
+
+
+
 
 
 

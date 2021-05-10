@@ -573,6 +573,7 @@ begin
            'where b.ID_CONTA = 1 '+
            'and b.BAIXA_ID_CAIXA = '+mIDCaixa+
            ' and b.ID_HISTORICO <> 47 '+//desconto
+           ' and b.ID_HISTORICO <> 99 '+//Credito(gerado via devolucao)
 
            ' union all '+
 

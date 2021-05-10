@@ -313,7 +313,7 @@ begin
         Continue;
       end;
 
-      lNumDoc := cdsGrid.FieldByName('TIPO').AsString + '|' + cdsGrid.FieldByName('ID').AsString + '|' + cdsGrid.FieldByName('ORDEM').AsString;
+      lNumDoc := cdsGrid.FieldByName('TIPO').AsString+cdsGrid.FieldByName('ID').AsString+cdsGrid.FieldByName('ORDEM').AsString;
 
       Titulo := DMACBr.ACBrBoleto.CriarTituloNaLista;
 

@@ -7,6 +7,27 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
   ExplicitHeight = 550
   PixelsPerInch = 96
   TextHeight = 13
+  object pnlDevolvidos: TPanel [0]
+    Left = 0
+    Top = 30
+    Width = 883
+    Height = 520
+    Align = alClient
+    Caption = 'ITENS J'#193' DEVOLVIDOS.'
+    Color = 10461087
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 1
+    ExplicitLeft = -6
+    ExplicitTop = 103
+    ExplicitWidth = 881
+    ExplicitHeight = 398
+  end
   inherited pnlTitulo: TPanel
     Width = 883
     ExplicitWidth = 883
@@ -24,7 +45,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
       ExplicitHeight = 30
     end
   end
-  object pnlFundo: TPanel [1]
+  object pnlFundo: TPanel [2]
     Left = 0
     Top = 30
     Width = 883
@@ -32,7 +53,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     Align = alClient
     Color = 14803681
     ParentBackground = False
-    TabOrder = 1
+    TabOrder = 2
     object pnlRodape: TPanel
       Left = 1
       Top = 399
@@ -379,6 +400,8 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 1
+          ExplicitLeft = 415
+          ExplicitTop = 17
           object pnlQtde: TPanel
             Left = 2
             Top = 138
@@ -428,7 +451,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
             end
             object pnlOk: TPanel
               Left = 4
-              Top = 70
+              Top = 66
               Width = 78
               Height = 30
               BevelOuter = bvNone
@@ -547,7 +570,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label9: TLabel
-          Left = 180
+          Left = 108
           Top = 204
           Width = 66
           Height = 17
@@ -573,7 +596,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           ParentFont = False
         end
         object Label11: TLabel
-          Left = 180
+          Left = 280
           Top = 260
           Width = 56
           Height = 17
@@ -674,7 +697,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         object DBEdit5: TDBEdit
           Left = 20
           Top = 225
-          Width = 150
+          Width = 80
           Height = 25
           DataField = 'CEP'
           DataSource = dsItens
@@ -687,9 +710,9 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           TabOrder = 4
         end
         object DBEdit6: TDBEdit
-          Left = 180
+          Left = 108
           Top = 225
-          Width = 180
+          Width = 252
           Height = 25
           DataField = 'ENDERECO'
           DataSource = dsItens
@@ -704,7 +727,7 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
         object DBEdit7: TDBEdit
           Left = 20
           Top = 281
-          Width = 150
+          Width = 251
           Height = 25
           DataField = 'BAIRRO'
           DataSource = dsItens
@@ -717,9 +740,9 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           TabOrder = 6
         end
         object DBEdit8: TDBEdit
-          Left = 180
+          Left = 280
           Top = 281
-          Width = 180
+          Width = 80
           Height = 25
           DataField = 'NUMERO'
           DataSource = dsItens
@@ -902,6 +925,66 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     end
     object cdsItensQTDE_DISPONIVEL: TCurrencyField
       FieldName = 'QTDE_DISPONIVEL'
+    end
+  end
+  object cdsItemSet: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'TIPO'
+        DataType = ftString
+        Size = 1
+      end
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ORDEM'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PROD'
+        DataType = ftInteger
+      end
+      item
+        Name = 'QTDE'
+        DataType = ftFloat
+      end
+      item
+        Name = 'QTDE_BAIXA'
+        DataType = ftFloat
+      end
+      item
+        Name = 'NOVA_QTDE_DISP'
+        DataType = ftFloat
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 510
+    Top = 265
+    object cdsItemSetTIPO: TStringField
+      FieldName = 'TIPO'
+      Size = 1
+    end
+    object cdsItemSetID: TIntegerField
+      FieldName = 'ID'
+    end
+    object cdsItemSetORDEM: TIntegerField
+      FieldName = 'ORDEM'
+    end
+    object cdsItemSetID_PROD: TIntegerField
+      FieldName = 'ID_PROD'
+    end
+    object cdsItemSetQTDE: TFloatField
+      FieldName = 'QTDE'
+    end
+    object cdsItemSetQTDE_BAIXA: TFloatField
+      FieldName = 'QTDE_BAIXA'
+    end
+    object cdsItemSetNOVA_QTDE_DISP: TFloatField
+      FieldName = 'NOVA_QTDE_DISP'
     end
   end
 end

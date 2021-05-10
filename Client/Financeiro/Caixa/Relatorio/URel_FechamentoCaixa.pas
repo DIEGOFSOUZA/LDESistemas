@@ -250,7 +250,7 @@ begin
   else if pFormaPagto = '3' then
     Result := DM.dsConsulta2.FieldByName('VL_CCREDITO').AsFloat
   else if pFormaPagto = '2' then
-    Result := DM.dsConsulta2.FieldByName('VL_CDEBITO').AsFloat ;
+    Result := DM.dsConsulta2.FieldByName('VL_CDEBITO').AsFloat;
 end;
 
 function TRel_FechamentoCaixa.GetVlComputado(pFormaPagto: string): Extended;

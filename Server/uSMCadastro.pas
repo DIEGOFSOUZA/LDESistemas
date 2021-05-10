@@ -115,12 +115,6 @@ type
     function setNatOperacao(const BD: string; pCodigo: integer; const Dados: OleVariant): OleVariant;
     function getNatOperacao(const BD: string; pCodigo: integer): OleVariant;
 
-    {PDV - Frente Loja}
-    function setFechaVenda(const BD: string; Dados: OleVariant; pID, pTipo : string): Boolean;
-    function setCancelarVenda(const BD: string; pID : Integer; pTipo,pMotivo,pUsuario : string) : Boolean ;
-
-    {Financeiro}
-
     {Contas a Receber}
     function getCondPagto(const BD : string; pID : Integer) : OleVariant ;
     function setCondPagto(const BD : string; pID : Integer; const Dados : OleVariant) : OleVariant ;
@@ -143,7 +137,7 @@ const
                  'FROM RDB$RELATION_FIELDS a '+
                  'left join RDB$FIELDS b on (b.RDB$FIELD_NAME = a.RDB$FIELD_SOURCE) '+
                  'WHERE a.RDB$RELATION_NAME = %s '+ {Tabela}
-                 'and b.RDB$COMPUTED_SOURCE is null '+       {Ignora Campo calculado}
+                 'and b.RDB$COMPUTED_SOURCE is null '+ {Ignora Campo calculado}
                  'ORDER BY RDB$FIELD_POSITION '+
                  ') '+
                  'select list(trim(nome_do_campo),'','') nome_campo '+
@@ -1012,60 +1006,6 @@ begin
   end;
 end;
 
-function TSMCadastro.setFechaVenda(const BD: string; Dados: OleVariant; pID, pTipo : string): Boolean;
-var
-  txt: string;
-  DM: TServerDM;
-  CampoID, CampoTipo: TCampoValor;
-begin
-  try
-    try
-      DM := TServerDM.Create(BD);
-
-      {Tabela Master}
-      if Dados[0] <> Null then
-      begin
-        txt := GetString(BD, Format(SQL_Fields, [QuotedStr('PDV_MASTER')]), 'nome_campo');
-
-        CampoID.Campo := 'ID';
-        CampoID.Valor := pID;
-
-        CampoTipo.Campo := 'TIPO';
-        CampoTipo.Valor := pTipo;
-
-        DM.GravarTabelaSimples(True, 'PDV_MASTER', txt, Dados[0], [CampoID, CampoTipo], [], True);
-      end;
-
-     {Tabela Detail}
-      if Dados[1] <> null then
-      begin
-        txt := GetString(BD, Format(SQL_Fields, [QuotedStr('PDV_ITENS')]), 'nome_campo');
-        DM.GravarTabelaSimples(False, 'PDV_ITENS', txt, Dados[1], [CampoID, CampoTipo], [], False);
-      end;
-
-     {Tabela Receber}
-      if Dados[2] <> null then
-      begin
-        txt := GetString(BD, Format(SQL_Fields, [QuotedStr('PDV_RECEBER')]), 'nome_campo');
-        DM.GravarTabelaSimples(False, 'PDV_RECEBER', txt, Dados[2], [CampoID, CampoTipo], [], False);
-      end;
-
-      DM.Commit;
-
-      Result := True;
-    except
-      on E: Exception do
-      begin
-        Result := False;
-        raise Exception.Create('Servidor' + #13 + E.Message);
-      end;
-    end;
-  finally
-    DM.FecharConexao();
-    FreeAndNil(DM);
-  end;
-end;
-
 function TSMCadastro.setCaixa(const BD : string; setTipo : string; IDCaixa : integer;
                         usuario : string; FormaPagto : string;Valor : Currency;
                         Obs_AbertFech, obsEntSaida : string) : Boolean;
@@ -1184,51 +1124,6 @@ begin                         {setTipo = ABERTURA|FECHAMENTO|ENT/SAIDA|REABETURA
     end;
   finally
     DM.FecharConexao ;
-    FreeAndNil(DM);
-  end;
-end;
-
-function TSMCadastro.setCancelarVenda(const BD: string; pID: Integer; pTipo,
-  pMotivo, pUsuario: string): Boolean;
-const
-      SQL_MASTER = 'update PDV_MASTER a '+
-                   'set a.STATUS = ''CANCELADA'','+
-                   '    a.MOTIVO_CANCELAMENTO = %s,'+
-                   '    a.USUARIO_CANCELAMENTO = %s '+
-                   'where a.TIPO = %s '+
-                   'and a.ID = %s' ;
-
-      SQL_ITENS = 'DELETE FROM PDV_ITENS a '+
-                  'where a.TIPO = %s '+
-                  'and a.ID = %s'    ;
-
-      SQL_RECEBER = 'DELETE FROM PDV_RECEBER a '+
-                    'where a.TIPO = %s '+
-                    'and a.ID = %s' ;
-var
-  DM: TServerDM;
-begin
-  DM := TServerDM.Create(BD);
-  try
-
-    try
-      DM.Executar(Format(SQL_MASTER, [QuotedStr(pMotivo), QuotedStr(pUsuario),
-                                      QuotedStr(pTipo), IntToStr(pID)]));
-
-//      DM.Executar(Format(SQL_ITENS, [QuotedStr(pTipo), IntToStr(pID)]));
-
-//      DM.Executar(Format(SQL_RECEBER, [QuotedStr(pTipo), IntToStr(pID)]));
-
-      Result := True;
-    except
-      on E: Exception do
-      begin
-        Result := False ;
-        raise Exception.Create('Servidor' + #13 + E.Message);
-      end;
-    end;
-  finally
-    DM.FecharConexao();
     FreeAndNil(DM);
   end;
 end;
