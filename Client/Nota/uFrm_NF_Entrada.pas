@@ -443,6 +443,7 @@ type
     procedure cbbUMClick(Sender: TObject);
     procedure actGravarExecute(Sender: TObject);
     procedure dbpsqsClassPesquisa(Sender: TObject; var Retorno: string);
+    procedure cdsBeforePost(DataSet: TDataSet);
   private
     FvUnitario: Double;
     FQtde: Double;
@@ -959,6 +960,12 @@ begin
   cds.FieldByName('VST').AsCurrency := 0;
 end;
 
+procedure TFrm_NF_Entrada.cdsBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  cds.FieldByName('EMISSAO').AsDateTime := dtpEmissao.Date;
+end;
+
 procedure TFrm_NF_Entrada.cdsVDESCChange(Sender: TField);
 begin
   inherited;
@@ -1218,6 +1225,7 @@ begin
   cds.Data := DM.SMNotaClient.getNotaEntrada(DM.BancoDados, -1);
   SubTotal := 0;
   pgc1.TabIndex := 0;
+  dtpEmissao.Date := Date;
 end;
 
 procedure TFrm_NF_Entrada.Gravar();

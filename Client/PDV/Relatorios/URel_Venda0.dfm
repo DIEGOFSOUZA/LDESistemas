@@ -1,22 +1,21 @@
 inherited Rel_Venda0: TRel_Venda0
-  Width = 734
-  Height = 461
-  HorzScrollBar.Position = 120
-  VertScrollBar.Position = 179
+  Width = 990
+  Height = 616
+  HorzScrollBar.Position = 671
   AutoScroll = True
   Caption = 'Rel_Venda0'
   Visible = False
-  ExplicitWidth = 734
-  ExplicitHeight = 461
+  ExplicitWidth = 990
+  ExplicitHeight = 616
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    Left = 714
-    Top = -117
+    Left = 163
+    Top = 62
     DataSource = dsItens
     ShowProgress = False
-    ExplicitLeft = 714
-    ExplicitTop = -117
+    ExplicitLeft = 163
+    ExplicitTop = 62
     object RLBand1: TRLBand
       Left = 38
       Top = 38
@@ -201,6 +200,25 @@ inherited Rel_Venda0: TRel_Venda0
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
+        end
+        object rlblVendaCancelada: TRLLabel
+          Left = 4
+          Top = 87
+          Width = 380
+          Height = 21
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'VENDA CANCELADA'
+          Color = clBlack
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -16
+          Font.Name = 'Segoe UI Black'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+          Visible = False
         end
       end
     end
@@ -1078,8 +1096,8 @@ inherited Rel_Venda0: TRel_Venda0
     end
   end
   object Rel_Orcamento: TRLReport
-    Left = -112
-    Top = -117
+    Left = -663
+    Top = 62
     Width = 794
     Height = 1123
     DataSource = sOrItem
@@ -1794,25 +1812,26 @@ inherited Rel_Venda0: TRel_Venda0
       'OTAL,'#13#10'e.NOME_RAZAO,e.ENDERECO,e.NUMERO,e.BAIRRO,e.CEP,e.CIDADE,' +
       'e.UF,e.CPF_CNPJ,'#13#10'e.DDD_FONE||'#39'-'#39'||e.TELEFONE1 telefone,e.DDD_CE' +
       'L||'#39'-'#39'||e.CEL celular,e.EMAIL,e.RG_INSC,'#13#10'd.ID venda,d.EMISSAO,d' +
-      '.ID_VENDEDOR||'#39' - '#39'||f.NOME vendedor,'#13#10'cast(iif(h.percent_acresc' +
-      'imo > 0,h.descricao||'#39' - '#39'||h.percent_acrescimo||'#39'%'#39',h.descricao' +
-      ') as varchar(100)) crediario,'#13#10'a.TIPO,a.ID,'#13#10'cast( (select list(' +
-      'upper(x.FORMA_PAGTO)||'#39': '#39'||'#39'R$ '#39'||x.VALOR,'#39'  '#39') from PDV_RECEBE' +
-      'R x where x.forma_pagto <> '#39'CREDIARIO'#39' and x.tipo = a.TIPO and x' +
-      '.ID = a.ID ) as varchar(500) ) formas_pagto,'#13#10'cast( (select sum(' +
-      'y.VALOR) from PDV_RECEBER y where y.forma_pagto <> '#39'DESCONTO'#39' an' +
-      'd y.tipo = a.TIPO and y.ID = a.ID) as numeric(10,2) )tot_pagar'#13#10 +
-      'from PDV_ITENS a'#13#10'left outer join PRODUTO b on (b.CODIGO = a.ID_' +
-      'PRODUTO)'#13#10'left outer join UNIDADE c on (c.CODIGO = b.COD_UNIDADE' +
-      ')'#13#10'left outer join PDV_MASTER d on (d.ID = a.ID and d.TIPO = a.T' +
-      'IPO)'#13#10'left outer join CLIENTE e on (e.CODIGO = d.ID_CLIENTE)'#13#10'le' +
-      'ft outer join FUNCIONARIO f on (f.CODIGO = d.ID_VENDEDOR)'#13#10'left ' +
-      'outer join CONDPAGTO h on (h.CODIGO = d.ID_CREDIARIO)'#13#10'where 1 =' +
-      ' 2'#13#10
+      '.STATUS,d.ID_VENDEDOR||'#39' - '#39'||f.NOME vendedor,'#13#10'cast(iif(h.perce' +
+      'nt_acrescimo > 0,h.descricao||'#39' - '#39'||h.percent_acrescimo||'#39'%'#39',h.' +
+      'descricao) as varchar(100)) crediario,'#13#10'a.TIPO,a.ID,'#13#10'cast( (sel' +
+      'ect list(upper(x.FORMA_PAGTO)||'#39': '#39'||'#39'R$ '#39'||x.VALOR,'#39'  '#39') from P' +
+      'DV_RECEBER x where x.forma_pagto <> '#39'CREDIARIO'#39' and x.tipo = a.T' +
+      'IPO and x.ID = a.ID ) as varchar(500) ) formas_pagto,'#13#10'cast( (se' +
+      'lect sum(y.VALOR) from PDV_RECEBER y where y.forma_pagto <> '#39'DES' +
+      'CONTO'#39' and y.tipo = a.TIPO and y.ID = a.ID) as numeric(10,2) )to' +
+      't_pagar'#13#10'from PDV_ITENS a'#13#10'left outer join PRODUTO b on (b.CODIG' +
+      'O = a.ID_PRODUTO)'#13#10'left outer join UNIDADE c on (c.CODIGO = b.CO' +
+      'D_UNIDADE)'#13#10'left outer join PDV_MASTER d on (d.ID = a.ID and d.T' +
+      'IPO = a.TIPO)'#13#10'left outer join CLIENTE e on (e.CODIGO = d.ID_CLI' +
+      'ENTE)'#13#10'left outer join FUNCIONARIO f on (f.CODIGO = d.ID_VENDEDO' +
+      'R)'#13#10'left outer join CONDPAGTO h on (h.CODIGO = d.ID_CREDIARIO)'#13#10 +
+      'where 1 = 2'#13#10
     Params = <>
     ProviderName = 'DSPLer1'
+    RemoteServer = DM.DSProviderConnection1
     OnCalcFields = cdsItensCalcFields
-    Left = 576
+    Left = 560
     Top = 32
     object cdsItensQTDE: TCurrencyField
       FieldName = 'QTDE'
@@ -1953,11 +1972,15 @@ inherited Rel_Venda0: TRel_Venda0
       DisplayFormat = '#,##0.00'
       Calculated = True
     end
+    object cdsItensSTATUS: TStringField
+      FieldName = 'STATUS'
+      ReadOnly = True
+    end
   end
   object dsItens: TDataSource
     DataSet = cdsItens
-    Left = 608
-    Top = 32
+    Left = 560
+    Top = 88
   end
   object cdsReceber: TClientDataSet
     Aggregates = <>
@@ -1981,8 +2004,8 @@ inherited Rel_Venda0: TRel_Venda0
   end
   object dsReceber: TDataSource
     DataSet = cdsReceber
-    Left = 672
-    Top = 32
+    Left = 648
+    Top = 104
   end
   object dsOrItem: TClientDataSet
     Aggregates = <>

@@ -1063,29 +1063,29 @@ const
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
 {$REGION 'Trecho Producao'}
-//  Result.Fechado := False ;
-//  Result.ID := 0;
-//
-//  DM.dsConsulta.Close ;
-//  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
-//
-//  if DM.dsConsulta.IsEmpty then
-//  begin
-//    Result.Fechado := True ;
-//    Exit ;
-//  end
-//  else if DM.dsConsulta.FieldByName('status').AsString = 'F' then
-//  begin
-//    Result.Fechado := True ;
-//    Exit ;
-//  end;
-//
-//  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
+  Result.Fechado := False ;
+  Result.ID := 0;
+
+  DM.dsConsulta.Close ;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
+
+  if DM.dsConsulta.IsEmpty then
+  begin
+    Result.Fechado := True ;
+    Exit ;
+  end
+  else if DM.dsConsulta.FieldByName('status').AsString = 'F' then
+  begin
+    Result.Fechado := True ;
+    Exit ;
+  end;
+
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
 {$ENDREGION}
 
 {$REGION 'Trecho teste'}
-  Result.Fechado := False;
-  Result.ID := 280;
+//  Result.Fechado := False;
+//  Result.ID := 280;
 {$ENDREGION}
 end;
 

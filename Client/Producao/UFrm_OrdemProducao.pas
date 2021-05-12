@@ -746,7 +746,11 @@ end;
 
 function TFrm_OrdemProducao.ValidarInsertItens: Boolean;
 const
-  SQL1 = 'select b.ID_MATPRIMA,b.QTDE ' + 'from PRODUTO_COMPOSICAO b ' + 'where b.ID_PRODUTO = %s';
+  SQL1 = 'select B.ID_MATPRIMA, B.QTDE, P.QTDE_ESTOQUE ESTOQUE '+
+         'from PRODUTO_COMPOSICAO B '+
+         'left join PRODUTO P on (P.CODIGO = B.ID_MATPRIMA) '+
+         'where B.ID_PRODUTO = %s '+
+         'order by p.qtde_estoque'; //ordenacao para validar caso o 1º item da lista esteja negativo no estoque
   SQL2 = 'select p.situacao from produto p where p.codigo = %s';
 var
   Temp: TClientDataSet;
@@ -786,10 +790,17 @@ begin
   try
     Temp := TClientDataSet.Create(nil);
     Temp.Data := DM.LerDataSet(Format(SQL1, [edpProduto.Campo.Text])); {Busca Ficha Tecnica do Produto(composicao)}
-    if Temp.IsEmpty then
+    if (Temp.IsEmpty) then
     begin
       Result := False;
       TMensagem.Atencao('Composição do Produto não encontrada.' + #13#10 + 'Por favor adeque o Produto para devida saida da Matéria-Prima.');
+    end;
+
+    Temp.First;
+    if (Temp.FieldByName('estoque').AsFloat <= 0) then
+    begin
+      Result := False;
+      TMensagem.Atencao('Foi encontrado Insumo(s) com estoque abaixo do necessário para a produção.');
     end;
   finally
     FreeAndNil(Temp);

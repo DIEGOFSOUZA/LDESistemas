@@ -48,6 +48,7 @@ type
     cdsVendaNOME_RAZAO: TStringField;
     pnlFiltrar: TPanel;
     btnFiltrar: TSpeedButton;
+    cdsVendaSTATUS: TStringField;
     procedure cbbFIltroChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actTrocaExecute(Sender: TObject);
@@ -92,6 +93,12 @@ begin
     Exit;
   end;
 
+  if (cdsVenda.FieldByName('STATUS').AsString = 'CANCELADA') then
+  begin
+    TMensagem.Atencao('Venda já foi cancelada.');
+    Exit;
+  end;
+
   if TMensagem.Pergunta('Deseja realmente cancelar este cupom?') then
   begin
     lJustificativa := InputBox('JUSTIFICATIVA', 'Informe a Justificativa do cancelamento.', '');
@@ -109,11 +116,11 @@ var
 begin
   inherited;
   lCupom := '0';
-  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao ' +
+  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.status ' +
           'from pdv_master pm ' +
           'left join cliente c on (c.codigo=pm.id_cliente) ' +
           'where pm.tipo = ''0'' '+
-          'and pm.status = ''EFETUADA'' ';
+          'and c.cliente_default = ''N'' ';
   if cbbFIltro.ItemIndex = 0 then
   begin
     lSQL := lSQL + ' and pm.emissao = ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.DateTime));

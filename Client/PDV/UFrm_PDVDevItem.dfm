@@ -23,10 +23,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
     ParentBackground = False
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = -6
-    ExplicitTop = 103
-    ExplicitWidth = 881
-    ExplicitHeight = 398
   end
   inherited pnlTitulo: TPanel
     Width = 883
@@ -400,8 +396,6 @@ inherited Frm_PDVDevItem: TFrm_PDVDevItem
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitLeft = 415
-          ExplicitTop = 17
           object pnlQtde: TPanel
             Left = 2
             Top = 138

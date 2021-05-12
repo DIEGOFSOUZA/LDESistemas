@@ -434,9 +434,9 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
   object cdsVenda: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao'#13#10'from p' +
-      'dv_master pm'#13#10'left join cliente c on (c.codigo=pm.id_cliente)'#13#10'w' +
-      'here 1=2'
+      'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.stat' +
+      'us'#13#10'from pdv_master pm'#13#10'left join cliente c on (c.codigo=pm.id_c' +
+      'liente)'#13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
@@ -466,6 +466,9 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
       FieldName = 'NOME_RAZAO'
       ReadOnly = True
       Size = 100
+    end
+    object cdsVendaSTATUS: TStringField
+      FieldName = 'STATUS'
     end
   end
 end

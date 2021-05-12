@@ -171,7 +171,7 @@ end;
 
 procedure TFrm_PDVDevItem.actOkExecute(Sender: TObject);
 var
-  lQtdeBaixa,lNovaQtde: Extended;
+  lQtdeBaixa,lNovaQtde,lQtdeJaDevolvida: Extended;
 begin
   inherited;
   if (QtdeDevolvendo > QtdeDisponivel) then
@@ -183,8 +183,9 @@ begin
   end;
 
   cdsItens.Locate('id_produto',IDProduto,[]);
+  lQtdeJaDevolvida := StrToFloat(Copy(cdsItens.FieldByName('SALDO').AsString,1,Pos('/',cdsItens.FieldByName('SALDO').AsString)-1));
   cdsItens.Edit;
-  cdsItensSALDO.AsString := FormatFloat('##0',QtdeDevolvendo) +
+  cdsItens.FieldByName('SALDO').AsString := FormatFloat('##0',lQtdeJaDevolvida+QtdeDevolvendo) +
                             '/'+cdsItens.FieldByName('QTDE').AsInteger.ToString;
   cdsItens.Post;
 

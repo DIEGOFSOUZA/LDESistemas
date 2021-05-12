@@ -1,31 +1,33 @@
 inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
   BorderStyle = bsNone
   Caption = 'Frm_ContasaReceber_Baixa'
-  ClientHeight = 271
+  ClientHeight = 300
   ClientWidth = 630
   Visible = False
   OnShow = FormShow
   ExplicitWidth = 630
-  ExplicitHeight = 271
+  ExplicitHeight = 300
   PixelsPerInch = 96
   TextHeight = 13
   object pnlFundo: TPanel
     Left = 0
     Top = 0
     Width = 630
-    Height = 271
+    Height = 300
     Align = alClient
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
+    ExplicitHeight = 271
     object pnlDados: TPanel
       Left = 1
       Top = 1
       Width = 518
-      Height = 269
+      Height = 298
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitHeight = 269
       object pnlTitulo: TPanel
         Left = 0
         Top = 0
@@ -232,13 +234,14 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
         Left = 0
         Top = 136
         Width = 518
-        Height = 128
-        Align = alTop
+        Height = 162
+        Align = alClient
         BevelOuter = bvNone
         Color = 14803681
         ParentBackground = False
         TabOrder = 1
         TabStop = True
+        ExplicitHeight = 128
         object Label1: TLabel
           Left = 0
           Top = 0
@@ -276,11 +279,39 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Layout = tlCenter
         end
         object Label9: TLabel
-          Left = 179
-          Top = 94
+          Left = 347
+          Top = 125
           Width = 54
           Height = 17
           Caption = 'Valor R$*'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          Layout = tlCenter
+        end
+        object Label10: TLabel
+          Left = 9
+          Top = 125
+          Width = 58
+          Height = 17
+          Caption = 'JUROS R$'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          Layout = tlCenter
+        end
+        object Label11: TLabel
+          Left = 163
+          Top = 125
+          Width = 93
+          Height = 17
+          Caption = 'DESCONTOS R$'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -390,9 +421,9 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           TabStop = True
         end
         object edtValorBaixa: TEdit
-          Left = 237
-          Top = 91
-          Width = 79
+          Left = 405
+          Top = 122
+          Width = 107
           Height = 25
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -400,7 +431,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 3
+          TabOrder = 5
           OnKeyPress = edtValorBaixaKeyPress
         end
         object dtpBaixa: TDateTimePicker
@@ -419,19 +450,50 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           ParentFont = False
           TabOrder = 2
         end
+        object edtJuros: TEdit
+          Left = 71
+          Top = 122
+          Width = 79
+          Height = 25
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 3
+          OnChange = edtJurosChange
+          OnKeyPress = edtValorBaixaKeyPress
+        end
+        object edtDescontos: TEdit
+          Left = 260
+          Top = 122
+          Width = 79
+          Height = 25
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 4
+          OnChange = edtDescontosChange
+          OnKeyPress = edtValorBaixaKeyPress
+        end
       end
     end
     object pnlAcoes: TPanel
       Left = 519
       Top = 1
       Width = 110
-      Height = 269
+      Height = 298
       Align = alRight
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
       TabStop = True
+      ExplicitHeight = 269
       object pnlCancelar: TPanel
         Left = 5
         Top = 131
@@ -475,6 +537,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Height = 40
           Action = actEfetuarBaixa
           Align = alClient
+          Caption = 'RECEBER'
           Flat = True
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite

@@ -188,6 +188,8 @@ type
     rlblEmpresaFone: TRLLabel;
     RLBand15: TRLBand;
     rlblImpresso: TRLLabel;
+    cdsItensSTATUS: TStringField;
+    rlblVendaCancelada: TRLLabel;
     procedure RLBand1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLDBText2BeforePrint(Sender: TObject; var AText: string;
       var PrintIt: Boolean);
@@ -328,10 +330,9 @@ const SQL = 'select a.QTDE,a.UM unidade,b.NOME descri_produto,'+
             'cast(a.VL_TOTAL  as double precision)VL_TOTAL,'+
             'e.NOME_RAZAO,e.ENDERECO,e.NUMERO,e.BAIRRO,e.CEP,e.CIDADE,e.UF,e.CPF_CNPJ,'+
             'e.DDD_FONE||''-''||e.TELEFONE1 telefone,e.DDD_CEL||''-''||e.CEL celular,e.EMAIL,e.RG_INSC,'+
-            'd.ID venda,d.EMISSAO,f.NOME vendedor,'+
+            'd.ID venda,d.EMISSAO,d.STATUS,f.NOME vendedor,'+
             'cast(iif(h.percent_acrescimo > 0,h.descricao||'' - ''||h.percent_acrescimo,h.descricao) as varchar(100)) crediario,a.TIPO,a.ID,'+
             'cast( (select list(upper(x.FORMA_PAGTO)||'': ''||''R$ ''||x.VALOR,''  '') from PDV_RECEBER x where x.forma_pagto <> ''CREDIARIO'' and x.tipo = a.TIPO and x.ID = a.ID ) as varchar(500) ) formas_pagto,'+
-//            'cast((select sum(y.VALOR) from PDV_RECEBER y where y.forma_pagto <> ''DESCONTO'' and y.tipo = a.TIPO and y.ID = a.ID)as numeric(10,2) ) tot_pagar '+
             'cast((select p.VL_TOTAL from PRO_TOT_DUPLICATAS(a.TIPO,a.ID) p)as numeric(10,2) ) tot_pagar '+
             'from PDV_ITENS a '+
             'left outer join PRODUTO b on (b.CODIGO = a.ID_PRODUTO) '+
@@ -344,7 +345,7 @@ const SQL = 'select a.QTDE,a.UM unidade,b.NOME descri_produto,'+
 
       SQL2 = 'select cast( (a.VALOR+coalesce(b.valor,0)) as numeric(10,2))valor,a.DT_VENC '+
              'from PDV_RECEBER a '+
-             'left outer join PDV_RECEBER_PARCIAL b on (b.TIPO = a.TIPO and b.ID = a.ID and b.ORDEM=a.ORDEM)'+
+             'left join PDV_RECEBER_PARCIAL b on (b.TIPO = a.TIPO and b.ID = a.ID and b.ORDEM=a.ORDEM)'+
              'where a.FORMA_PAGTO = ''CREDIARIO'' '+
              'and a.TIPO = %S and a.ID = %s';
 begin
@@ -394,6 +395,8 @@ begin
   rlblVendaEmissao.Caption := 'Nº '+FormatFloat('000000',cdsItensID.AsInteger)+ ' - '+
                               FormatDateTime('dd/mm/yyyy',cdsItensEMISSAO.AsDateTime) ;
   rlblImpressao.Caption := 'IMPRESSÃO  '+FormatDateTime('dd/mm/yyyy - hh:mm:ss',Now) ;
+
+  rlblVendaCancelada.Visible := cdsItens.FieldByName('STATUS').AsString = 'CANCELADA';
 end;
 
 procedure TRel_Venda0.RLBand7BeforePrint(Sender: TObject; var PrintIt: Boolean);
