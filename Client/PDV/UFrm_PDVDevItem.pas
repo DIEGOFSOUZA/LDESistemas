@@ -136,6 +136,11 @@ var
   lCaixa: TCaixa;
 begin
   inherited;
+  if (VDevolucao <= 0) then
+  begin
+    actSair.Execute;
+  end;
+
   if (cbbOpcao.ItemIndex < 1) then
   begin
     TMensagem.Atencao('Selecione o que deseja: Vale ao Cliente ou Devolucao do dinheiro');
@@ -145,9 +150,14 @@ begin
   if (cbbOpcao.ItemIndex = 2) then //Devolucao do dinheiro
   begin
     lCaixa := CaixaFechado;
-    if lCaixa.Fechado then
+    if (lCaixa.Fechado) then
     begin
       TMensagem.Informacao('Devolução de valor não é possível. Caixa Fechado.');
+      Abort;
+    end
+    else if (lCaixa.ValorEmCaixa < VDevolucao) then
+    begin
+      TMensagem.Informacao('Devolução de valor não é possível. Saldo em caixa é insuficiente.');
       Abort;
     end
     else

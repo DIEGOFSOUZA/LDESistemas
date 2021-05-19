@@ -12,6 +12,7 @@ type
   TCaixa = record
     Fechado : Boolean ;
     ID : integer ;
+    ValorEmCaixa: Currency;
   end;
 
 type
@@ -1056,15 +1057,20 @@ end;
 
 function CaixaFechado() : TCaixa ;
 const
-  SQL = 'select a.ID IDCAIXA, a.ABERTO_FECHADO status ' +
-        'from CAIXA a ' +
-        'left outer join CAIXA_ABERT_FECH b on (b.ID_CAIXA = a.ID) ' +
+  SQL = 'select A.ID IDCAIXA, A.ABERTO_FECHADO STATUS,'+
+        '       (select sum(C.VALOR) VALOR '+
+        '        from CAIXA_ENT_SAI C '+
+        '        where C.FORMA_PAGTO = ''DINHEIRO'' and '+
+        '               C.ID_CAIXA = A.ID) valor '+
+        'from CAIXA A '+
+        'left join CAIXA_ABERT_FECH B on (B.ID_CAIXA = A.ID) '+
         'where a.ABERTO_FECHADO = ''A'' '+
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
 {$REGION 'Trecho Producao'}
   Result.Fechado := False ;
   Result.ID := 0;
+  Result.ValorEmCaixa := 0;
 
   DM.dsConsulta.Close ;
   DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
@@ -1081,11 +1087,13 @@ begin
   end;
 
   Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
+  Result.ValorEmCaixa := DM.dsConsulta.FieldByName('valor').AsCurrency ;
 {$ENDREGION}
 
 {$REGION 'Trecho teste'}
 //  Result.Fechado := False;
-//  Result.ID := 280;
+//  Result.ID := 290;
+//  Result.ValorEmCaixa := 0;
 {$ENDREGION}
 end;
 

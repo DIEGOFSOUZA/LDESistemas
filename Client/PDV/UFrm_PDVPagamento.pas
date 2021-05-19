@@ -349,6 +349,7 @@ end;
 procedure TFrm_PDVPagamento.actVoltarExecute(Sender: TObject);
 begin
   inherited;
+  aRetorno := 'CANCELAR';
   Close;
 end;
 
@@ -379,7 +380,7 @@ begin
     if not Validar then
       Abort;
 
-    if FormaPagto = 'CREDIARIO' then
+    if (FormaPagto = 'CREDIARIO') then
     begin
       if not ValidaLimiteCredito(gIdCliente, StrToFloat(edtValor.Text)) then
         Abort;

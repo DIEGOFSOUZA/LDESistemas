@@ -196,7 +196,7 @@ type
     cdsMasterID_HISTORICO: TIntegerField;
     cdsMasterSTATUS: TStringField;
     cdsItensDESC_MAXIMO: TFMTBCDField;
-    cdsDetailQTDE_DISPONVEL: TCurrencyField;
+    cdsDetailQTDE_DISPONIVEL: TCurrencyField;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -532,6 +532,7 @@ begin
     try
       with Frm_PDVPagamento do
       begin
+        aRetorno := 'CANCELAR';
         ValorTotal := cdsItenstotal.Value;
         aTotVenda := cdsItenstotal.Value;
         ValorRestante := cdsItenstotal.Value;
@@ -1237,7 +1238,7 @@ begin
       cdsDetailUM.AsString := cdsItensUNIDADE.AsString ;
       cdsDetailQTDE.AsFloat := cdsItensQTDE.AsFloat;
       cdsDetailQTDE_BAIXA.AsFloat := cdsItensQTDE_BAIXA.AsFloat ;
-      cdsDetailQTDE_DISPONVEL.AsFloat := cdsItensQTDE.AsFloat;
+      cdsDetailQTDE_DISPONIVEL.AsFloat := cdsItensQTDE.AsFloat;
       cdsDetailVL_UNITARIO.AsCurrency := cdsItensPRECO_VENDA.AsCurrency;
       cdsDetailVL_DESCONTO.AsCurrency := cdsItensVL_DESCONTO.AsCurrency;
       cdsDetailVL_TOTAL.AsCurrency := cdsItenssubtotal.AsCurrency;

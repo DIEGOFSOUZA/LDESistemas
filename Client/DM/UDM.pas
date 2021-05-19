@@ -70,6 +70,14 @@ type
 end;
 
 type
+  TVersao = record
+    SistemaRelease : string ;
+    SistemaBuild : string ;
+    BDRelease : string ;
+    BDBuild : string ;
+  end;
+
+type
   TConexao = record
     Servidor : string ;
     Banco : string ;
@@ -114,6 +122,7 @@ type
     fSMPedido: TSM_PedidoClient;
     fSMProducao: TSMProducaoClient;
     fSMProduto: TSMProdutoClient;
+    fVersao: TVersao;
     function GetSMClient: TSMClient;
   public
     { Public declarations }
@@ -151,6 +160,7 @@ type
     function GetFloat(pSQL,pCampoRetorno : string) : Double ;
 
     property Empresa : TEmpresa read fEmpresa ;
+    property SistemaVersao : TVersao read fVersao ;
     property AConexao: TConexao read FConexao;
     property BancoDados : string read fBancoDados ;
     procedure CarregaEmpresa() ;
@@ -163,7 +173,7 @@ var
 implementation
 
 uses
-  UPdr_Configuracao, u_Mensagem;
+  UPdr_Configuracao, u_Mensagem, UConstantes;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -230,7 +240,8 @@ begin
   try
     Aux.Data := LerDataSet('select a.CNPJ,a.INSC,a.RAZAO,a.FANTASIA,'+
                            'a.ENDERECO,a.NUMERO,a.BAIRRO,a.CIDADE,'+
-                           'a.UF,a.FONE,a.CEL,a.EMAIL,a.CEP '+
+                           'a.UF,a.FONE,a.CEL,a.EMAIL,a.CEP,'+
+                           '(select c.db_versao from control c)db_versao '+
                            'from EMPRESA a ');
     fEmpresa.Fantasia := Aux.FieldByName('fantasia').AsString;
     fEmpresa.RazaoSocial := Aux.FieldByName('razao').AsString;
@@ -248,6 +259,11 @@ begin
 //    fEmpresa.GravarXML   := Trim(Aux.FieldByName('GravarXML').AsString) ;
 //    fEmpresa.Certificado := Trim(Aux.FieldByName('Certificado').AsString) ;
 //    fEmpresa.Certificado_Senha := Trim(Aux.FieldByName('Certificado_Senha').AsString) ;
+
+    fVersao.BDRelease := Aux.FieldByName('db_versao').AsString;
+    fVersao.BDBuild := '0';
+    fVersao.SistemaRelease := UConstantes.Release;
+    fVersao.SistemaBuild := UConstantes.Build;
   finally
     FreeAndNil(Aux);
   end;

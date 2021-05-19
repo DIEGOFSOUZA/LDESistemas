@@ -8,6 +8,14 @@ const
   cor02 = $006B2F00;
   cor03 = $00E1E2E1;
 
+  //Versao do Sistema
+  Release = '36';
+  Build =   '0';
+
+  //Versao BD
+  BDRelease = '2';
+  BDBuild =   '0';
+
 implementation
 
 end.

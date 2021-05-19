@@ -1672,6 +1672,7 @@ object frmVendaMain: TfrmVendaMain
     Aggregates = <>
     CommandText = 'select a.* from PDV_ITENS a where 1 = 2'
     Params = <>
+    ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
     Left = 240
     Top = 205
@@ -1707,9 +1708,6 @@ object frmVendaMain: TfrmVendaMain
     end
     object cdsDetailQTDE_BAIXA: TCurrencyField
       FieldName = 'QTDE_BAIXA'
-    end
-    object cdsDetailQTDE_DISPONVEL: TCurrencyField
-      FieldName = 'QTDE_DISPONVEL'
     end
     object cdsDetailVL_DESCONTO: TBCDField
       FieldName = 'VL_DESCONTO'
@@ -1753,6 +1751,9 @@ object frmVendaMain: TfrmVendaMain
       FieldName = 'VL_IMPOSTO'
       Precision = 18
       Size = 2
+    end
+    object cdsDetailQTDE_DISPONIVEL: TCurrencyField
+      FieldName = 'QTDE_DISPONIVEL'
     end
   end
   object cdsReceber: TClientDataSet
