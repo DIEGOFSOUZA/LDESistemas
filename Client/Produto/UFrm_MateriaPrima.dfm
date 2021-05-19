@@ -279,6 +279,10 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Caption = 'FORNECEDOR'
               ImageIndex = 1
               TabVisible = False
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlFornecedores: TPanel
                 Left = 0
                 Top = 0
@@ -293,6 +297,10 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsFragmentacao: TTabSheet
               Caption = 'VENDA FRAGMENTADA'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlFundoFragm: TPanel
                 Left = 0
                 Top = 0
@@ -346,7 +354,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   object Label28: TLabel
                     Left = 0
                     Top = 0
-                    Width = 653
+                    Width = 378
                     Height = 17
                     Align = alTop
                     Caption = 'Venda fracionada, informe abaixo a condi'#231#227'o de fragmenta'#231#227'o'
@@ -357,12 +365,11 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                     Font.Style = [fsBold]
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 378
                   end
                   object Label29: TLabel
                     Left = 0
                     Top = 17
-                    Width = 653
+                    Width = 375
                     Height = 17
                     Align = alTop
                     Caption = 'EXEMPLO: 1 Litro = 1000ml / 1 Caixa = 10 pacotes / 1 Saco = 50Kg'
@@ -373,7 +380,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                     Font.Style = []
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 375
                   end
                 end
                 object pnlFragmentacao: TPanel
@@ -578,6 +584,10 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsHistPreco: TTabSheet
               Caption = 'HIST'#211'RICO DE PRE'#199'O'
               ImageIndex = 5
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0
@@ -751,6 +761,10 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsFiscal: TTabSheet
               Caption = 'FISCAL'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlFundoFiscal: TPanel
                 Left = 0
                 Top = 0

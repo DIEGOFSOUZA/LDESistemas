@@ -42,6 +42,10 @@ type
     actEfetuarBaixa: TAction;
     actVoltar: TAction;
     dtpBaixa: TDateTimePicker;
+    Label10: TLabel;
+    edtJuros: TEdit;
+    Label11: TLabel;
+    edtDescontos: TEdit;
     procedure edtValorBaixaKeyPress(Sender: TObject; var Key: Char);
     procedure edpsqsContaPesquisa(Sender: TObject; var Retorno: string);
     procedure edpsqsHistoricoPesquisa(Sender: TObject; var Retorno: string);
@@ -49,6 +53,8 @@ type
     procedure actEfetuarBaixaExecute(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actVoltarExecute(Sender: TObject);
+    procedure edtJurosChange(Sender: TObject);
+    procedure edtDescontosChange(Sender: TObject);
   private
     fGetTitDuplicata: string;
     fGetTitCliente: string;
@@ -60,11 +66,17 @@ type
     fGetTitValor: Currency;
     fRetorno: string;
     fIdCaixa: string;
+    FVlJuros: Currency;
+    FValor: Currency;
+    FVlDescontos: Currency;
 
-    function GerarParcial(pVlTitulo, pVlPago: Currency): Boolean;
+    function GerarParcial(pVlPago: Currency): Boolean;
     procedure PagtoParcial(pVlPago, pVlDiferenca: Currency);
     procedure Baixa();
     function Validar(): Boolean;
+    procedure SetVlJuros(const Value: Currency);
+    procedure SetValor(const Value: Currency);
+    procedure SetVlDescontos(const Value: Currency);
   public
     var
       Historico, Conta: string;
@@ -76,6 +88,9 @@ type
     {Baixa}
     property IdCaixa: string read fIdCaixa;
     property Retorno:string read fRetorno;
+    property VlJuros: Currency read FVlJuros write SetVlJuros;
+    property VlDescontos: Currency read FVlDescontos write SetVlDescontos;
+    property Valor: Currency read FValor write SetValor;
   end;
 
 var
@@ -113,8 +128,12 @@ begin
   fGetTitVenda := DM.dsConsulta.FieldByName('id').AsInteger;
   fGetTitDuplicata := DM.dsConsulta.FieldByName('ordem').AsString;
 
+  VlJuros := 0;
+  VlDescontos := 0;
+  Valor := DM.dsConsulta.FieldByName('valor').AsCurrency;
+
   dtpBaixa.Date := Date;
-  edtValorBaixa.Text := FormatCurr('##0.00',DM.dsConsulta.FieldByName('valor').AsCurrency);
+
 end;
 
 procedure TFrm_ContasaReceber_Baixa.actEfetuarBaixaExecute(Sender: TObject);
@@ -133,7 +152,7 @@ begin
 //      else
 //        Conta := 'null';
 
-      if not GerarParcial(TitValor, StrToFloat(edtValorBaixa.Text)) then
+      if not GerarParcial(StrToFloat(edtValorBaixa.Text)) then
         Baixa();
     finally
       Close;
@@ -154,6 +173,8 @@ var
 begin
   lSQL := 'update PDV_RECEBER a ' +
           'set a.DT_BAIXA = '+ QuotedStr(FormatDateTime('dd.mm.yyyy',dtpBaixa.Date))+
+          ',a.JUROS = '+ValorFormatadoFirebird( CurrToStr(FVlJuros) )+
+          ',a.DESCONTO = '+ValorFormatadoFirebird( CurrToStr(FVlDescontos) )+
           ',a.VL_PAGO = '+ValorFormatadoFirebird(edtValorBaixa.Text)+
           ',a.USUARIO_BAIXA = '+QuotedStr(DM.UsuarioDataHora)+
           ',a.ID_HISTORICO = '+edpsqsHistorico.Campo.Text+
@@ -177,8 +198,8 @@ procedure TFrm_ContasaReceber_Baixa.PagtoParcial(pVlPago, pVlDiferenca: Currency
 var
   lSQL: string;
 begin
-  lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO, ' +
-          'ORDEM, DT_VENC, VALOR, USUARIO_EMISSAO, DT_BAIXA, VL_PAGO, ' +
+  lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO,' +
+          'ORDEM, DT_VENC, VALOR, USUARIO_EMISSAO, DT_BAIXA, VL_PAGO, JUROS, DESCONTO,' +
           'USUARIO_BAIXA, ID_HISTORICO,ID_CONTA,ID_CAIXA) ' + //BAIXA_FORMA_PAGTO,
           'VALUES ( ' +
           '0'+
@@ -191,6 +212,8 @@ begin
           ','+QuotedStr(DM.UsuarioDataHora)+
           ','+QuotedStr(FormatDateTime('dd.mm.yyyy',dtpBaixa.Date)) +
           ','+ValorFormatadoFirebird(CurrToStr(pVlPago))+
+          ','+ValorFormatadoFirebird(CurrToStr(FVlJuros))+
+          ','+ValorFormatadoFirebird(CurrToStr(FVlDescontos))+
           ','+QuotedStr(DM.UsuarioDataHora) +
           ','+edpsqsHistorico.Campo.Text +
           ','+QuotedStr(edpsqsConta.Campo.Text) +
@@ -211,6 +234,24 @@ begin
       fRetorno := 'Erro: ' + e.Message;
     end;
   end;
+end;
+
+procedure TFrm_ContasaReceber_Baixa.SetValor(const Value: Currency);
+begin
+  FValor := Value;
+  edtValorBaixa.Text := FormatCurr('##0.00',FValor);
+end;
+
+procedure TFrm_ContasaReceber_Baixa.SetVlDescontos(const Value: Currency);
+begin
+  FVlDescontos := Value;
+  SetValor((TitValor+FVlJuros)-FVlDescontos);
+end;
+
+procedure TFrm_ContasaReceber_Baixa.SetVlJuros(const Value: Currency);
+begin
+  FVlJuros := Value;
+  SetValor((TitValor+FVlJuros)-FVlDescontos);
 end;
 
 procedure TFrm_ContasaReceber_Baixa.btnCancelarClick(Sender: TObject);
@@ -234,6 +275,28 @@ begin
   Retorno := Consulta.Historico(1,'DUPLICATA RECEBIDA').ToString;
 end;
 
+procedure TFrm_ContasaReceber_Baixa.edtDescontosChange(Sender: TObject);
+var
+  lValue: Currency;
+begin
+  inherited;
+  if (not TryStrToCurr(edtDescontos.Text, lValue)) then
+    VlDescontos := 0
+  else
+    VlDescontos := lValue;
+end;
+
+procedure TFrm_ContasaReceber_Baixa.edtJurosChange(Sender: TObject);
+var
+  lValue: Currency;
+begin
+  inherited;
+  if (not TryStrToCurr(edtJuros.Text, lValue)) then
+    VlJuros := 0
+  else
+    VlJuros := lValue;
+end;
+
 procedure TFrm_ContasaReceber_Baixa.edtValorBaixaKeyPress(Sender: TObject;
   var Key: Char);
 begin
@@ -249,14 +312,14 @@ begin
   edpsqsHistorico.Campo.SetFocus;
 end;
 
-function TFrm_ContasaReceber_Baixa.GerarParcial(pVlTitulo, pVlPago: Currency): Boolean;
+function TFrm_ContasaReceber_Baixa.GerarParcial(pVlPago: Currency): Boolean;
 var
   lDiferenca: Currency;
 begin
   Result := False;
-  if (pVlTitulo > pVlPago) then
+  if (FValor > pVlPago) then
   begin
-    lDiferenca := pVlTitulo - pVlPago;
+    lDiferenca := FValor - pVlPago;
     if TMensagem.Pergunta('Será gerado uma nova duplicata pendente no valor de R$ ' + FormatCurr('#,##0.00', lDiferenca) + #13#10 + 'Confirma o pagamento parcial da duplicata?') then
     begin
       Result := True;
@@ -327,13 +390,13 @@ begin
     Exit;
   end;
 
-  if (StrToCurr(edtValorBaixa.Text) > TitValor) then
-  begin
-    Result := False;
-    TMensagem.Atencao('Valor da baixa é maior que o saldo devido.');
-    edtValorBaixa.SetFocus;
-    Exit;
-  end;
+//  if (StrToCurr(edtValorBaixa.Text) > TitValor) then
+//  begin
+//    Result := False;
+//    TMensagem.Atencao('Valor da baixa é maior que o saldo devido.');
+//    edtValorBaixa.SetFocus;
+//    Exit;
+//  end;
 
 end;
 

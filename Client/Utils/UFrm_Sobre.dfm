@@ -18,10 +18,6 @@ inherited Frm_Sobre: TFrm_Sobre
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 176
-    ExplicitTop = 56
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object pnlimage: TPanel
       Left = 0
       Top = 0
@@ -254,7 +250,6 @@ inherited Frm_Sobre: TFrm_Sobre
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 204
       object Label1: TLabel
         Left = 23
         Top = 56
@@ -277,10 +272,10 @@ inherited Frm_Sobre: TFrm_Sobre
         Width = 107
         Height = 34
         AutoSize = False
-        Caption = '0.0.0.0'
+        Caption = '0.0'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -21
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
@@ -293,7 +288,7 @@ inherited Frm_Sobre: TFrm_Sobre
         Height = 34
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Vers'#227'o da banco de dados:'
+        Caption = 'Vers'#227'o da base de dados:'
         Font.Charset = ANSI_CHARSET
         Font.Color = clBlue
         Font.Height = -13
@@ -302,16 +297,16 @@ inherited Frm_Sobre: TFrm_Sobre
         ParentFont = False
         WordWrap = True
       end
-      object Label3: TLabel
+      object lblVersaoBD: TLabel
         Left = 128
         Top = 94
         Width = 107
         Height = 34
         AutoSize = False
-        Caption = '1.0.0.0'
+        Caption = '0.0'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -21
         Font.Name = 'Segoe UI'
         Font.Style = [fsBold]
         ParentFont = False
@@ -348,7 +343,6 @@ inherited Frm_Sobre: TFrm_Sobre
         Color = clInfoText
         ParentBackground = False
         TabOrder = 0
-        ExplicitTop = 157
         object pnlbtn: TPanel
           Left = 207
           Top = 3

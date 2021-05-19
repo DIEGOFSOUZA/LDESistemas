@@ -3049,6 +3049,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
     ProviderName = 'dspEntrada'
     StoreDefs = True
     AfterInsert = cdsAfterInsert
+    BeforePost = cdsBeforePost
     AfterCancel = cdsAfterCancel
     Left = 656
     Top = 180

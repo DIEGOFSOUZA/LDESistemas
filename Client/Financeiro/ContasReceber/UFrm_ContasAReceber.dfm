@@ -254,8 +254,6 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Left = 0
           Top = 0
           Caption = 'VenctoEmissao'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label1: TLabel
             Left = 51
             Top = 24
@@ -319,8 +317,6 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Left = 0
           Top = 0
           Caption = 'Cliente'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object edpCliente: TEdPesquisa
             Left = 8
             Top = 17
@@ -748,7 +744,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Height = 30
         Align = alBottom
         Alignment = taCenter
-        Caption = '(F5)'#13#10'BAIXAR'
+        Caption = '(F5)'#13#10'RECEBER'
         Color = 7024384
         Font.Charset = ANSI_CHARSET
         Font.Color = clWhite
@@ -760,7 +756,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actBaixaDuplicataExecute
-        ExplicitWidth = 44
+        ExplicitWidth = 49
       end
       object imgBaixa: TImage
         Left = 0
@@ -816,6 +812,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Top = 40
         Width = 70
         Height = 34
+        Cursor = crHandPoint
         Align = alBottom
         Alignment = taCenter
         Caption = 'GERAR'#13#10'BOLETO'
@@ -859,6 +856,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Top = 0
         Width = 70
         Height = 40
+        Cursor = crHandPoint
         Action = actGerarBoleto
         Align = alClient
         Flat = True

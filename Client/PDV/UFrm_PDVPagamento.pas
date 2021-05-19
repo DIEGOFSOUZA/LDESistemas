@@ -29,59 +29,17 @@ uses
 type
   TFrm_PDVPagamento = class(TPdr_Child)
     pnlFundo: TPanel;
-    pnlTotalPagar: TPanel;
-    pnlTotDesconto: TPanel;
-    lblTitTotPagar: TLabel;
-    lblTotPagar: TLabel;
-    lblVlRestante: TLabel;
-    pnlOpcPagamento: TPanel;
     pnlRodape: TPanel;
-    pnlDinheiro: TPanel;
-    lblOpcDinheiro: TLabel;
-    imgDinheiro: TImage;
-    pnlCartaoCredito: TPanel;
-    lblOpcCartaoCredito: TLabel;
-    pnlCartaoDebito: TPanel;
-    lblOpcCartaoDebito: TLabel;
-    imgCartaoDebito: TImage;
-    pnlCheque: TPanel;
-    lblOpcCheque: TLabel;
-    imgCheque: TImage;
-    pnlCrediario: TPanel;
-    lblOpcCrediario: TLabel;
-    imgCrediario: TImage;
-    imgCartao: TImage;
-    pnlDireita: TPanel;
     chkImprimir: TCheckBox;
-    pnlTop1: TPanel;
     imgVoltar: TImage;
     lblVoltar: TLabel;
     actlst1: TActionList;
     actVoltar: TAction;
-    pnlFinalizarVenda: TPanel;
-    lblOpcFinalizarVenda: TLabel;
-    imgFinalizarVenda: TImage;
-    pnlDesconto: TPanel;
-    lblOpcDesconto: TLabel;
-    imgDesconto: TImage;
-    Label4: TLabel;
-    edtValor: TEdit;
     cdsPagamentos: TClientDataSet;
     dsPagamentos: TDataSource;
-    pnlRestante: TPanel;
-    lblTitDesconto: TLabel;
-    lblDesconto: TLabel;
-    lblTitRestante: TLabel;
-    pnlTroco: TPanel;
-    lblTitTroco: TLabel;
-    lblTroco: TLabel;
-    imgFechar: TImage;
-    pnlTitulo: TPanel;
-    lblTitulo: TLabel;
     cdsPagamentosFORMAPAGTO: TStringField;
     cdsPagamentosVALOR: TCurrencyField;
     cdsPagamentosVENCTO: TDateField;
-    dbgrdItens: TDBGrid;
     actPagarDinheiro: TAction;
     actPagarCartaoCredito: TAction;
     actPagarCartaoDebito: TAction;
@@ -89,22 +47,23 @@ type
     actPagarCrediario: TAction;
     actDesconto: TAction;
     actFinalizaVenda: TAction;
-    pnlLimpar: TPanel;
-    lblLimpar: TLabel;
-    imgLimpar: TImage;
     actLimpar: TAction;
-    pnlAcrescimo: TPanel;
-    lblTitAcrescimo: TLabel;
-    lblVlAcrescimo: TLabel;
     cdsPagamentosVALOR_PAGO: TCurrencyField;
-    pnlValores: TPanel;
-    pnl2Reais: TPanel;
-    btn2Reais: TSpeedButton;
     act2Reais: TAction;
     act5Reais: TAction;
     act10Reais: TAction;
     act20Reais: TAction;
     act50Reais: TAction;
+    act100Reais: TAction;
+    act200Reais: TAction;
+    pnlCentro: TPanel;
+    pnlDireita: TPanel;
+    pnlTop1: TPanel;
+    Label4: TLabel;
+    edtValor: TEdit;
+    pnlValores: TPanel;
+    pnl2Reais: TPanel;
+    btn2Reais: TSpeedButton;
     Panel1: TPanel;
     btn5Reais: TSpeedButton;
     Panel2: TPanel;
@@ -115,10 +74,60 @@ type
     SpeedButton1: TSpeedButton;
     Panel5: TPanel;
     btn100Reais: TSpeedButton;
-    act100Reais: TAction;
-    act200Reais: TAction;
     Panel6: TPanel;
     SpeedButton2: TSpeedButton;
+    dbgrdItens: TDBGrid;
+    pnlOpcPagamento: TPanel;
+    pnlDinheiro: TPanel;
+    lblOpcDinheiro: TLabel;
+    imgDinheiro: TImage;
+    pnlCartaoCredito: TPanel;
+    lblOpcCartaoCredito: TLabel;
+    imgCartao: TImage;
+    pnlCartaoDebito: TPanel;
+    lblOpcCartaoDebito: TLabel;
+    imgCartaoDebito: TImage;
+    pnlCheque: TPanel;
+    lblOpcCheque: TLabel;
+    imgCheque: TImage;
+    pnlCrediario: TPanel;
+    lblOpcCrediario: TLabel;
+    imgCrediario: TImage;
+    pnlFinalizarVenda: TPanel;
+    lblOpcFinalizarVenda: TLabel;
+    imgFinalizarVenda: TImage;
+    pnlDesconto: TPanel;
+    lblOpcDesconto: TLabel;
+    imgDesconto: TImage;
+    pnlLimpar: TPanel;
+    lblLimpar: TLabel;
+    imgLimpar: TImage;
+    Panel7: TPanel;
+    Label1: TLabel;
+    pnlBotaoSair: TPanel;
+    pnlTopo: TPanel;
+    pnlTopoRestante: TPanel;
+    lblTitRestante: TLabel;
+    lblVlRestante: TLabel;
+    pnlTopoTroco: TPanel;
+    lblTitTroco: TLabel;
+    lblTroco: TLabel;
+    pnlTopoAcrescimo: TPanel;
+    lblTitAcrescimo: TLabel;
+    lblVlAcrescimo: TLabel;
+    pnlTopoDesconto: TPanel;
+    lblTitDesconto: TLabel;
+    lblDesconto: TLabel;
+    pnlTopoTotPagar: TPanel;
+    lblTitTotPagar: TLabel;
+    lblTotPagar: TLabel;
+    pnlCredito: TPanel;
+    lbl1: TLabel;
+    lblCredito: TLabel;
+    pnlUtilizarCredito: TPanel;
+    lblUtilizarCredito: TLabel;
+    imgUtilizarCredito: TImage;
+    actUtilizarCredito: TAction;
     procedure actVoltarExecute(Sender: TObject);
     procedure edtValorKeyPress(Sender: TObject; var Key: Char);
     procedure actPagarDinheiroExecute(Sender: TObject);
@@ -138,6 +147,8 @@ type
     procedure act50ReaisExecute(Sender: TObject);
     procedure act200ReaisExecute(Sender: TObject);
     procedure act100ReaisExecute(Sender: TObject);
+    procedure pnlBotaoSairClick(Sender: TObject);
+    procedure actUtilizarCreditoExecute(Sender: TObject);
   private
     fValorRestante: Currency;
     fValorTotal: Currency;
@@ -146,6 +157,7 @@ type
     fValorPago: Currency;
     fFormaPagto: string;
     fValorAcrescimo: Currency;
+    fValorCredito: Currency;
     procedure setValorRestante(const Value: Currency);
     procedure setValorTotal(const Value: Currency);
     procedure setValorDesconto(const Value: Currency);
@@ -159,6 +171,7 @@ type
     procedure setValorAcrescimo(const Value: Currency);
     function Validar(): Boolean;
     procedure AddValor(pValor: Currency);
+    procedure setValorCredito(const Value: Currency);
   public
     { Public declarations }
     aRetorno : string ;
@@ -171,12 +184,13 @@ type
     procedure IniciaComDesconto(Valor : Extended) ;
 
   published
-    property ValorRestante : Currency read fValorRestante write setValorRestante ;
-    property ValorTotal : Currency read fValorTotal write setValorTotal ;
-    property ValorPago : Currency read fValorPago write setValorPago ;
-    property ValorDesconto : Currency read fValorDesconto write setValorDesconto ;
-    property ValorTroco : Currency read fValorTroco write setValorTroco ;
-    property ValorAcrescimo : Currency read fValorAcrescimo write setValorAcrescimo ;
+    property ValorRestante: Currency read fValorRestante write setValorRestante;
+    property ValorTotal: Currency read fValorTotal write setValorTotal;
+    property ValorPago: Currency read fValorPago write setValorPago;
+    property ValorDesconto: Currency read fValorDesconto write setValorDesconto;
+    property ValorTroco: Currency read fValorTroco write setValorTroco;
+    property ValorAcrescimo: Currency read fValorAcrescimo write setValorAcrescimo;
+    property ValorCredito: Currency read fValorCredito write setValorCredito;
 
     property FormaPagto : string read fFormaPagto write setFormaPagto ;
   end;
@@ -312,9 +326,30 @@ begin
   setPanel(pnlDinheiro,'DINHEIRO');
 end;
 
+procedure TFrm_PDVPagamento.actUtilizarCreditoExecute(Sender: TObject);
+begin
+  inherited;
+  if (ValorCredito <= 0) then
+  begin
+    TMensagem.Informacao('Cliente não obtem crédito a ser utilizado.');
+    Exit;
+  end
+  else
+  begin
+    if (ValorRestante > ValorCredito) then
+      setCDSPagamentos('CREDITO', ValorCredito, Date)
+    else
+      setCDSPagamentos('CREDITO', ValorRestante, Date);
+
+
+//  setPanel(pnlUtilizarCredito,'VENDA - CREDITO DEV/TROCA');
+  end;
+end;
+
 procedure TFrm_PDVPagamento.actVoltarExecute(Sender: TObject);
 begin
   inherited;
+  aRetorno := 'CANCELAR';
   Close;
 end;
 
@@ -345,7 +380,7 @@ begin
     if not Validar then
       Abort;
 
-    if FormaPagto = 'CREDIARIO' then
+    if (FormaPagto = 'CREDIARIO') then
     begin
       if not ValidaLimiteCredito(gIdCliente, StrToFloat(edtValor.Text)) then
         Abort;
@@ -485,6 +520,12 @@ begin
   end;
 end;
 
+procedure TFrm_PDVPagamento.pnlBotaoSairClick(Sender: TObject);
+begin
+  inherited;
+  actVoltar.Execute;
+end;
+
 procedure TFrm_PDVPagamento.setFormaPagto(const Value: string);
 begin
   fFormaPagto := Value;
@@ -517,6 +558,12 @@ procedure TFrm_PDVPagamento.setValorAcrescimo(const Value: Currency);
 begin
   fValorAcrescimo := Value;
   lblVlAcrescimo.Caption := 'R$ '+FormatCurr('#,##0.00',Value) ;
+end;
+
+procedure TFrm_PDVPagamento.setValorCredito(const Value: Currency);
+begin
+  fValorCredito := Value;
+  lblCredito.Caption := 'R$ ' + FormatCurr('#,##0.00', Value);
 end;
 
 procedure TFrm_PDVPagamento.setValorDesconto(const Value: Currency);

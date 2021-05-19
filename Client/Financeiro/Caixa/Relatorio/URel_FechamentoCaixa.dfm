@@ -544,7 +544,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
         Width = 240
         Height = 16
         AutoSize = False
-        Caption = '- DESPESAS/RETIRADAS CAIXA'
+        Caption = '- DEVOLU'#199#195'O/RETIRADAS CAIXA'
         Color = 12698049
         ParentColor = False
         Transparent = False

@@ -495,7 +495,7 @@ procedure TFrm_Produto.cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
 begin
   inherited;
   if (not cds.FieldByName('CONV_QTDE').IsNull) then
-    Text := FormatFloat('##0.000',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat))
+    Text := FormatFloat('#,##0',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat))
   else
     Text := FormatFloat('##0.000',Sender.AsFloat);
 end;

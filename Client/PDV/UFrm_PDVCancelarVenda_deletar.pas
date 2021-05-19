@@ -20,7 +20,6 @@ type
     actLocalizar: TAction;
     procedure btnGravarClick(Sender: TObject);
     procedure mmo1KeyPress(Sender: TObject; var Key: Char);
-    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
     procedure actLocalizarExecute(Sender: TObject);
   private
@@ -64,21 +63,6 @@ begin
   end;
 end;
 
-procedure TFrm_PDVCancelarVenda.FormKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-var
-  aRet: TRetornoVenda;
-begin
-  inherited;
-//  if Key = VK_F2 then
-//  begin
-//    aRet := Consulta.Venda;
-//    if aRet.ID > 0 then
-//      edtVenda.Text := IntToStr(aRet.ID);
-//    edtVenda.SetFocus ;
-//  end;
-end;
-
 procedure TFrm_PDVCancelarVenda.FormShow(Sender: TObject);
 begin
   inherited;
@@ -112,7 +96,7 @@ begin
 
   aRetorno := DM.GetString(Format(SQL,[edtVenda.Text]),'status') ;
 
-  if aRetorno = 'CANCELADA' then
+  if (aRetorno = 'CANCELADA') then
   begin
     Result := False ;
     MessageDlg('Venda já esta cancelada.',mtError,[mbOK],0) ;

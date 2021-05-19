@@ -49,10 +49,8 @@ type
     lblConexao: TLabel;
     Cadastro3: TMenuItem;
     Venda2: TMenuItem;
-    CancelarVenda1: TMenuItem;
     EstoqueProdutos1: TMenuItem;
     VendasPerodoRepresentanteCliente1: TMenuItem;
-    ReimpressoComprovantedeVenda1: TMenuItem;
     FechamentodeCaixas1: TMenuItem;
     pnlLogoEmpresa: TPanel;
     imgLogoEmpresa: TImage;
@@ -86,6 +84,7 @@ type
     SANGRIAMOVIMENTAS1: TMenuItem;
     ACERTODEESTOQUE1: TMenuItem;
     AUTORIZARORAMENTO1: TMenuItem;
+    VENDAS2: TMenuItem;
     procedure Clientes1Click(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure Funcionario1Click(Sender: TObject);
@@ -106,13 +105,11 @@ type
     procedure MatriaPrima1Click(Sender: TObject);
     procedure Cadastro3Click(Sender: TObject);
     procedure Venda2Click(Sender: TObject);
-    procedure CancelarVenda1Click(Sender: TObject);
     procedure EstoqueProdutos1Click(Sender: TObject);
     procedure VendasPerodoRepresentanteCliente1Click(Sender: TObject);
     procedure ContasaReceber1Click(Sender: TObject);
     procedure AberturadeCaixa1Click(Sender: TObject);
     procedure FechamentodeCaixa1Click(Sender: TObject);
-    procedure ReimpressoComprovantedeVenda1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ContasaPagar1Click(Sender: TObject);
     procedure FechamentodeCaixas1Click(Sender: TObject);
@@ -136,6 +133,7 @@ type
     procedure SANGRIAMOVIMENTAS1Click(Sender: TObject);
     procedure ACERTODEESTOQUE1Click(Sender: TObject);
     procedure AUTORIZARORAMENTO1Click(Sender: TObject);
+    procedure VENDAS2Click(Sender: TObject);
   private
     { Private declarations }
     Ativar: Boolean;
@@ -158,13 +156,13 @@ uses
   UFrm_GrupoFornecedor, UFrm_Empresa, UFrm_Fornecedor, UFrm_Produto,
   UFrm_GrupoProdutos, UFrm_SubGrupoProdutos, UFrm_OrdemProducao,
   UFrm_MateriaPrima, UfrmVendaMain, UFrm_CondicaoPagto, UFrm_Representante,
-  UFrm_PDVCancelarVenda, URel_ListaEstoque, URel_PDV_Venda, UFrm_ContasAReceber,
+  URel_ListaEstoque, URel_PDV_Venda, UFrm_ContasAReceber,
   UFrm_CaixaAbertura, UFrm_CaixaFechamento, URel_Venda0, UFrmContasPagar,
   URel_FechamentoCaixa, UFrm_Historico, UFrm_ContaBancaria, u_Mensagem, UFrm_Sobre,
   UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque, UFrm_GrupoHistorico, UFrm_Usuario,
   uFrm_CadUnidade, UFrm_CondicoesPagto, UFrm_Pedido, uRel_VendaFormaPagto,
   uRel_VendaPeriodo, uRel_VendaPorVendedor, uRel_VendaPorItem,
-  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento;
+  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta;
 
 function Saudacao: string;
 begin
@@ -204,11 +202,6 @@ end;
 procedure TFrm_Inicial.CadastrodeUnidade1Click(Sender: TObject);
 begin
   TFrm_CadUnidade.CreateChild(Self);
-end;
-
-procedure TFrm_Inicial.CancelarVenda1Click(Sender: TObject);
-begin
-  TFrm_PDVCancelarVenda.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.CarregaLogoEmpresa;
@@ -470,24 +463,6 @@ begin
   TFrm_Ramo.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.ReimpressoComprovantedeVenda1Click(Sender: TObject);
-var
-  sVenda: string;
-begin
-  sVenda := InputBox('Comprovante de Venda', 'Informe o nº da Venda', EmptyStr);
-
-  if sVenda <> EmptyStr then
-  begin
-    if not Assigned(Rel_Venda0) then
-      Rel_Venda0 := TRel_Venda0.Create(Self);
-    try
-      Rel_Venda0.Executar(sVenda.ToInteger, '0');
-    finally
-      FreeAndNil(Rel_Venda0);
-    end;
-  end;
-end;
-
 procedure TFrm_Inicial.Sair1Click(Sender: TObject);
 begin
 //  if MessageDlg('Deseja sair do sistema?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
@@ -544,6 +519,11 @@ end;
 procedure TFrm_Inicial.Venda2Click(Sender: TObject);
 begin
   TfrmVendaMain.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.VENDAS2Click(Sender: TObject);
+begin
+  TFrm_PDVDevConsulta.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.VendasPerodoRepresentanteCliente1Click(Sender: TObject);

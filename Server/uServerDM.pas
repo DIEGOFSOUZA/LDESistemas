@@ -134,7 +134,7 @@ end;
 
 procedure TServerDM.DataModuleDestroy(Sender: TObject);
 begin
-     Conexao.Close ;
+  Conexao.Close;
 end;
 
 function TServerDM.Executar(pSQL: string): integer;
@@ -159,8 +159,7 @@ end;
 
 function TServerDM.ExecuteDirect(pSQL: string): integer;
 begin
-
-  Result := Conexao.ExecSQL(pSQL) ;
+  Result := Conexao.ExecSQL(pSQL);
 end;
 
 procedure TServerDM.FecharConexao;

@@ -1498,7 +1498,6 @@ object frmVendaMain: TfrmVendaMain
       'as numeric(10,2))desc_maximo'#13#10'from PRODUTO a'#13#10'left outer join UN' +
       'IDADE b on (b.CODIGO = a.COD_UNIDADE)'#13#10'where 1 = 2'
     Params = <>
-    ProviderName = 'DSPLer1'
     OnCalcFields = cdsItensCalcFields
     Left = 184
     Top = 95
@@ -1674,8 +1673,9 @@ object frmVendaMain: TfrmVendaMain
     CommandText = 'select a.* from PDV_ITENS a where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    Left = 184
-    Top = 255
+    RemoteServer = DM.DSProviderConnection1
+    Left = 240
+    Top = 205
     object cdsDetailID: TIntegerField
       FieldName = 'ID'
       Required = True
@@ -1752,14 +1752,16 @@ object frmVendaMain: TfrmVendaMain
       Precision = 18
       Size = 2
     end
+    object cdsDetailQTDE_DISPONIVEL: TCurrencyField
+      FieldName = 'QTDE_DISPONIVEL'
+    end
   end
   object cdsReceber: TClientDataSet
     Aggregates = <>
     CommandText = 'select a.* from PDV_RECEBER a where 1 = 2'
     Params = <>
-    ProviderName = 'DSPLer1'
-    Left = 184
-    Top = 304
+    Left = 304
+    Top = 205
     object cdsReceberID: TIntegerField
       FieldName = 'ID'
       Required = True
