@@ -254,6 +254,8 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Left = 0
           Top = 0
           Caption = 'VenctoEmissao'
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Label1: TLabel
             Left = 51
             Top = 24
@@ -317,6 +319,8 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Left = 0
           Top = 0
           Caption = 'Cliente'
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object edpCliente: TEdPesquisa
             Left = 8
             Top = 17

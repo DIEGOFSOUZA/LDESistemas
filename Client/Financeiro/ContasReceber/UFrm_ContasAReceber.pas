@@ -337,19 +337,28 @@ begin
           ValorDocumento := cdsGrid.FieldByName('VALOR').AsCurrency;
           DataDocumento := cdsGrid.FieldByName('EMISSAO').AsDateTime;
 
-          CodigoMora := '2';
-          ValorMoraJuros := 8;
+          //Protesto
+          CodigoNegativacao := cnNaoProtestar;
+          DiasDeProtesto := 7;
+
+          //Juros por dia
+          ValorMoraJuros :=  (ValorDocumento*(8/100))/DaysInMonth(Vencimento);
+          CodigoMoraJuros := cjValorDia;
           DataMoraJuros := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+
+          //Multa
+          CodigoMulta := cmPercentual;
+          PercentualMulta := 2;
+          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+
+          //Limite p pagamento
+          DataLimitePagto := IncDay(cdsGrid.FieldByName('DT_VENC').AsDateTime,90);
+
           TipoDesconto := tdNaoConcederDesconto;
           ValorDesconto := 0;
           ValorIOF := 0;
           ValorAbatimento := 0;
           SeuNumero := lNumDoc;
-          DiasDeProtesto := 7;
-//    CodigoMulta := cmPercentual;
-//    MultaValorFixo := True;
-          PercentualMulta := 2;
-          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
 
     //Segmento Q
           with Sacado do

@@ -128,15 +128,13 @@ var
 begin
   DM := TServerDM.Create(BD);
   try
-
     try
-      DM.Executar(Format(SQL_MASTER, [QuotedStr(pMotivo), QuotedStr(pUsuario),
-                                      QuotedStr(pTipo), IntToStr(pID)]));
+      DM.Executar(Format(SQL_MASTER, [QuotedStr(pMotivo), QuotedStr(pUsuario), QuotedStr(pTipo), IntToStr(pID)]));
       Result := True;
     except
       on E: Exception do
       begin
-        Result := False ;
+        Result := False;
         raise Exception.Create('Servidor' + #13 + E.Message);
       end;
     end;
