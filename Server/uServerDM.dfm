@@ -9,7 +9,7 @@ object ServerDM: TServerDM
   end
   object Conexao: TFDConnection
     Params.Strings = (
-      'Database=C:\projetos\bancos\FB30\sistema.FDB'
+      'Database=sistema'
       'User_Name=SYSDBA'
       'Password=masterkey'
       'Server=127.0.0.1'

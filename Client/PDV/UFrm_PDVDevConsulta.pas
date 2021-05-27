@@ -49,6 +49,7 @@ type
     pnlFiltrar: TPanel;
     btnFiltrar: TSpeedButton;
     cdsVendaSTATUS: TStringField;
+    cdsVendaCLIENTE_DEFAULT: TStringField;
     procedure cbbFIltroChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actTrocaExecute(Sender: TObject);
@@ -74,6 +75,8 @@ uses
 {$R *.dfm}
 
 procedure TFrm_PDVDevConsulta.actCancelarVendaExecute(Sender: TObject);
+const
+  SQL = 'select p.retorno from pro_iscrediario(%s,%s)p';
 var
   lJustificativa: string;
 begin
@@ -87,15 +90,21 @@ begin
     Exit;
   end;
 
-  if (cdsVenda.FieldByName('EMISSAO').AsDateTime <> Date) then
-  begin
-    TMensagem.Atencao('Cancelamento permitido apenas para vendas do dia.');
-    Exit;
-  end;
+//  if (cdsVenda.FieldByName('EMISSAO').AsDateTime <> Date) then
+//  begin
+//    TMensagem.Atencao('Cancelamento permitido apenas para vendas do dia.');
+//    Exit;
+//  end;
 
   if (cdsVenda.FieldByName('STATUS').AsString = 'CANCELADA') then
   begin
     TMensagem.Atencao('Venda já foi cancelada.');
+    Exit;
+  end;
+
+  if (DM.GetInteger(Format(SQL,[QuotedStr('0'),cdsVenda.FieldByName('ID').AsString]),'retorno') = 1) then
+  begin
+    TMensagem.Atencao('Cancelamento permitido para vendas efetuada totalmente no crediario e não contenha duplicata recebida.');
     Exit;
   end;
 
@@ -116,11 +125,11 @@ var
 begin
   inherited;
   lCupom := '0';
-  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.status ' +
+  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.status,c.cliente_default ' +
           'from pdv_master pm ' +
           'left join cliente c on (c.codigo=pm.id_cliente) ' +
-          'where pm.tipo = ''0'' '+
-          'and c.cliente_default = ''N'' ';
+          'where pm.tipo = ''0'' ';
+//          'and c.cliente_default = ''N'' ';
   if cbbFIltro.ItemIndex = 0 then
   begin
     lSQL := lSQL + ' and pm.emissao = ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.DateTime));

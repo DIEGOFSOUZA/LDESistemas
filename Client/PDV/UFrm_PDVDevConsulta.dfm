@@ -18,6 +18,8 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
     inherited pnlBotaoSair: TPanel
       Left = 724
       ExplicitLeft = 724
+      ExplicitTop = 0
+      ExplicitHeight = 30
     end
   end
   object pnlFundo: TPanel [1]
@@ -435,8 +437,8 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
     Aggregates = <>
     CommandText = 
       'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.stat' +
-      'us'#13#10'from pdv_master pm'#13#10'left join cliente c on (c.codigo=pm.id_c' +
-      'liente)'#13#10'where 1=2'
+      'us,c.cliente_default'#13#10'from pdv_master pm'#13#10'left join cliente c on' +
+      ' (c.codigo=pm.id_cliente)'#13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
@@ -469,6 +471,12 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
     end
     object cdsVendaSTATUS: TStringField
       FieldName = 'STATUS'
+    end
+    object cdsVendaCLIENTE_DEFAULT: TStringField
+      FieldName = 'CLIENTE_DEFAULT'
+      ReadOnly = True
+      FixedChar = True
+      Size = 1
     end
   end
 end

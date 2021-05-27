@@ -117,19 +117,60 @@ end;
 function TsmPDV.setCancelarVenda(const BD: string; pID: Integer; pTipo, pMotivo,
   pUsuario: string): Boolean;
 const
-      SQL_MASTER = 'update PDV_MASTER a '+
-                   'set a.STATUS = ''CANCELADA'','+
-                   '    a.MOTIVO_CANCELAMENTO = %s,'+
-                   '    a.USUARIO_CANCELAMENTO = %s '+
-                   'where a.TIPO = %s '+
-                   'and a.ID = %s' ;
+      SQL_MASTER =     'update PDV_MASTER a '+
+                       'set a.STATUS = ''CANCELADA'','+
+                       '    a.MOTIVO_CANCELAMENTO = %s,'+
+                       '    a.USUARIO_CANCELAMENTO = %s '+
+                       'where a.TIPO = %s '+
+                       'and a.ID = %s' ;
+
+      SQL_DELRECEBER = 'delete from pdv_receber pr '+
+                       'where pr.tipo = %s and '+
+                       'pr.id = %s';
+
+      SQL_GETITENS  = 'select pi.tipo,pi.id,pi.ordem,pi.id_produto,pi.qtde,pi.qtde_baixa '+
+                      'from pdv_itens pi '+
+                      'where pi.tipo = %s and '+
+                      'pi.id = %s '+
+                      'order by pi.ordem';
+
+
+      SQL_INSERTCANC = 'INSERT INTO PDV_CANCELAMENTO (TIPO, ID_VENDA, ORDEM, ID_PRODUTO, QTDE, QTDE_BAIXA, DATA, USUARIO) '+
+                       'VALUES (:TIPO, :ID_VENDA, :ORDEM, :ID_PRODUTO, :QTDE, :QTDE_BAIXA, :DATA, :USUARIO);';
 var
   DM: TServerDM;
+  lTemp: TClientDataSet;
+  lQuery: TFDQuery;
 begin
   DM := TServerDM.Create(BD);
+  lTemp := TClientDataSet.Create(nil);
+  lQuery := TFDQuery.Create(nil);
+  lQuery.Connection := DM.Conexao;
   try
+    lTemp.Close;
+    lTemp.Data := DM.LerDataSet(Format(SQL_GETITENS, [QuotedStr(pTipo), IntToStr(pID)]));
     try
       DM.Executar(Format(SQL_MASTER, [QuotedStr(pMotivo), QuotedStr(pUsuario), QuotedStr(pTipo), IntToStr(pID)]));
+
+      lTemp.First;
+      while not lTemp.Eof do
+      begin
+        lQuery.SQL.Clear;
+        lQuery.SQL.Add(SQL_INSERTCANC);
+        lQuery.Params.ParamByName('tipo').AsString := lTemp.FieldByName('TIPO').AsString;
+        lQuery.Params.ParamByName('id_venda').AsInteger := lTemp.FieldByName('ID').AsInteger;
+        lQuery.Params.ParamByName('ordem').AsInteger := lTemp.FieldByName('ORDEM').AsInteger;
+        lQuery.Params.ParamByName('id_produto').AsInteger := lTemp.FieldByName('ID_PRODUTO').AsInteger;
+        lQuery.Params.ParamByName('qtde').AsFloat := lTemp.FieldByName('QTDE').AsFloat;
+        lQuery.Params.ParamByName('qtde_baixa').AsFloat := lTemp.FieldByName('QTDE_BAIXA').AsFloat;
+        lQuery.Params.ParamByName('data').AsDate := Date;
+        lQuery.Params.ParamByName('usuario').AsString := pUsuario;
+        lQuery.ExecSQL;
+        lTemp.Next;
+      end;
+
+      DM.Executar(Format(SQL_DELRECEBER, [QuotedStr(pTipo), IntToStr(pID)]));
+
       Result := True;
     except
       on E: Exception do
@@ -139,6 +180,7 @@ begin
       end;
     end;
   finally
+    FreeAndNil(lTemp);
     DM.FecharConexao();
     FreeAndNil(DM);
   end;
