@@ -12,9 +12,6 @@
         <Projects Include="..\..\Backup BD\BackupBanco.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\..\AtualizaBD\prj_AtualizaBD.dproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -50,23 +47,14 @@
     <Target Name="BackupBanco:Make">
         <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj" Targets="Make"/>
     </Target>
-    <Target Name="prj_AtualizaBD">
-        <MSBuild Projects="..\..\AtualizaBD\prj_AtualizaBD.dproj"/>
-    </Target>
-    <Target Name="prj_AtualizaBD:Clean">
-        <MSBuild Projects="..\..\AtualizaBD\prj_AtualizaBD.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="prj_AtualizaBD:Make">
-        <MSBuild Projects="..\..\AtualizaBD\prj_AtualizaBD.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco;prj_AtualizaBD"/>
+        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean;prj_AtualizaBD:Clean"/>
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make;prj_AtualizaBD:Make"/>
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
