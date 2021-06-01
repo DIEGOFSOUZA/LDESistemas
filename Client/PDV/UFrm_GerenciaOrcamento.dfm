@@ -70,6 +70,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         Font.Style = []
         Options = [dgTitles, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         ParentFont = False
+        PopupMenu = pm1
         TabOrder = 0
         TitleFont.Charset = ANSI_CHARSET
         TitleFont.Color = clWindowText
@@ -386,11 +387,11 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     CommandText = 
       'SELECT a.EMISSAO,a.LIBERADO,a.SOLICITACAO justificativa,a.TIPO_L' +
       'IBERACAO motivo,'#13#10'a.USUARIO,a.USU_LIBEROU,'#13#10'b.NOME_RAZAO cliente' +
-      ',c.DESCRICAO formapagto,a.ID,'#13#10'sum(d.VTOTAL) valor'#13#10'FROM ORCAMEN' +
-      'TO a'#13#10'left outer join CLIENTE b on (b.CODIGO=a.ID_CLIENTE)'#13#10'left' +
-      ' outer join CONDPAGTO c on (c.CODIGO=a.ID_FORMAPAGTO)'#13#10'left oute' +
-      'r join ORCAMENTO_ITEM d on (d.ID_ORCAMENTO=a.ID)'#13#10'where 1=2'#13#10'gro' +
-      'up by 1,2,3,4,5,6,7,8,9;'
+      ',c.DESCRICAO formapagto,a.ID,'#13#10'sum(d.VTOTAL) valor,a.STATUS'#13#10'FRO' +
+      'M ORCAMENTO a'#13#10'left outer join CLIENTE b on (b.CODIGO=a.ID_CLIEN' +
+      'TE)'#13#10'left outer join CONDPAGTO c on (c.CODIGO=a.ID_FORMAPAGTO)'#13#10 +
+      'left outer join ORCAMENTO_ITEM d on (d.ID_ORCAMENTO=a.ID)'#13#10'where' +
+      ' 1=2'#13#10'group by 1,2,3,4,5,6,7,8,9,11;'
     FieldDefs = <
       item
         Name = 'EMISSAO'
@@ -445,6 +446,11 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
         DataType = ftFMTBcd
         Precision = 18
         Size = 5
+      end
+      item
+        Name = 'STATUS'
+        DataType = ftString
+        Size = 20
       end>
     IndexDefs = <
       item
@@ -455,6 +461,7 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
     IndexName = 'EMISSAO'
     Params = <>
     ProviderName = 'DSPLer1'
+    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 512
     Top = 326
@@ -507,10 +514,21 @@ inherited Frm_GerenciaOrcamento: TFrm_GerenciaOrcamento
       FieldName = 'ID'
       Required = True
     end
+    object cdsOrcamentosSTATUS: TStringField
+      FieldName = 'STATUS'
+    end
   end
   object dsOrcamentos: TDataSource
     DataSet = cdsOrcamentos
     Left = 616
     Top = 326
+  end
+  object pm1: TPopupMenu
+    Left = 392
+    Top = 198
+    object CancelaroOramento1: TMenuItem
+      Caption = 'Cancelar o Or'#231'amento'
+      OnClick = CancelaroOramento1Click
+    end
   end
 end

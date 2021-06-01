@@ -10,10 +10,10 @@ const
 
   //Versao do Sistema
   Release = '36';
-  Build =   '0';
+  Build =   '1';
 
   //Versao BD
-  BDRelease = '2';
+  BDRelease = '3';
   BDBuild =   '0';
 
 implementation

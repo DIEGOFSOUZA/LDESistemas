@@ -134,7 +134,6 @@ const
                       'pi.id = %s '+
                       'order by pi.ordem';
 
-
       SQL_INSERTCANC = 'INSERT INTO PDV_CANCELAMENTO (TIPO, ID_VENDA, ORDEM, ID_PRODUTO, QTDE, QTDE_BAIXA, DATA, USUARIO) '+
                        'VALUES (:TIPO, :ID_VENDA, :ORDEM, :ID_PRODUTO, :QTDE, :QTDE_BAIXA, :DATA, :USUARIO);';
 var

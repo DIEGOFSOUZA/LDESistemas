@@ -480,7 +480,7 @@ begin
       Exit;
     end;
     mIDCaixa := ds0ID.AsString;
-//    mIDCaixa := '123';
+//    mIDCaixa := '300';
 
     ds1.IndexFieldNames := 'id';
     ds1.Close ;
