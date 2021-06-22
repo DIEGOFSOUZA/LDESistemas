@@ -888,7 +888,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
                     Font.Name = 'Segoe UI'
                     Font.Style = [fsBold]
                     ParentFont = False
-                    ExplicitLeft = 6
+                    ExplicitLeft = -5
                     ExplicitTop = -5
                   end
                 end

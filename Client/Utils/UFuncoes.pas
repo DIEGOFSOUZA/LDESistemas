@@ -99,7 +99,7 @@ begin
   try
     cdsConsulta.Close;
     cdsConsulta.Data := DM.LerDataSet(Format(SQL, [aCod.ToString]));
-    if (not cdsConsulta.IsEmpty) then
+    if ((not cdsConsulta.IsEmpty) and (cdsConsulta.FieldByName('CONV_QTDE').AsFloat > 0)) then
     begin
       Result := (aQtde * cdsConsulta.FieldByName('CONV_QTDE').AsFloat);
     end;
