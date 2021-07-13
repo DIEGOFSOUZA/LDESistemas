@@ -2,11 +2,10 @@ unit uSC;
 
 interface
 
-uses System.SysUtils, System.Classes,
-  Datasnap.DSTCPServerTransport,
-  Datasnap.DSHTTPCommon, Datasnap.DSHTTP,
-  Datasnap.DSServer, Datasnap.DSCommonServer,
-  Datasnap.DSAuth, IPPeerServer;
+uses
+  System.SysUtils, System.Classes, Datasnap.DSTCPServerTransport,
+  Datasnap.DSHTTPCommon, Datasnap.DSHTTP, Datasnap.DSServer,
+  Datasnap.DSCommonServer, Datasnap.DSAuth, IPPeerServer;
 
 type
   TSC = class(TDataModule)
@@ -21,22 +20,14 @@ type
     dsrvrclsPedVenda: TDSServerClass;
     dsrvrclsProducao: TDSServerClass;
     dsrvrclsProduto: TDSServerClass;
-    procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure DSServerClassCadastroGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsNotaEntradaGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsOrcamentoGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsPedVendaGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
-    procedure dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass;
-      var PersistentClass: TPersistentClass);
+    procedure DSServerClass1GetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure DSServerClassCadastroGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsNotaEntradaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsOrcamentoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsPedVendaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
   private
     { Private declarations }
   public
@@ -50,53 +41,46 @@ implementation
 
 {$R *.dfm}
 
-uses Winapi.Windows, uSM, uSMCadastro, USMNota, USM_PDV, uSM_Financeiro, uSM_Pedido, uSMProducao, USMProduto;
+uses
+  Winapi.Windows, uSM, uSMCadastro, USMNota, USM_PDV, uSM_Financeiro, uSM_Pedido,
+  uSMProducao, USMProduto;
 
-procedure TSC.dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSM_Financeiro.TSM_Financeiro;
 end;
 
-procedure TSC.dsrvrclsNotaEntradaGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsNotaEntradaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := USMNota.TSMNota;
 end;
 
-procedure TSC.dsrvrclsOrcamentoGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsOrcamentoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := USM_PDV.TsmPDV;
 end;
 
-procedure TSC.dsrvrclsPedVendaGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsPedVendaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSM_Pedido.TSM_Pedido;
 end;
 
-procedure TSC.dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSMProducao.TSMProducao;
 end;
 
-procedure TSC.dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := USMProduto.TSMProduto;
 end;
 
-procedure TSC.DSServerClass1GetClass(
-  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+procedure TSC.DSServerClass1GetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSM.TSM;
 end;
 
-
-procedure TSC.DSServerClassCadastroGetClass(DSServerClass: TDSServerClass;
-  var PersistentClass: TPersistentClass);
+procedure TSC.DSServerClassCadastroGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := uSMCadastro.TSMCadastro;
 end;

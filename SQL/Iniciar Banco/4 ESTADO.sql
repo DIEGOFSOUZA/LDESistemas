@@ -1,0 +1,56 @@
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('SP', 'São Paulo', 18, 35);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('RJ', 'Rio de Janeiro', 12, 33);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('AC', 'Acre', 7, 12);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('AL', 'Alagoas', 7, 27);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('AP', 'Amapá', 7, 16);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('AM', 'Amazonas', 0, 13);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('BA', 'Bahia', 7, 29);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('CE', 'Ceará', 7, 23);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('DF', 'Distrito Federal', 7, 53);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('ES', 'Espirito Santo', 7, 32);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('GO', 'Goiais', 7, 52);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('MA', 'Maranhão', 7, 21);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('MG', 'Minas Gerais', 12, 31);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('MS', 'Mato Grosso do Sul', 7, 50);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('MT', 'Mato Grosso', 7, 51);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('PA', 'Pará', 7, 15);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('PB', 'Paraiba', 7, 25);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('PE', 'Pernambuco', 7, 26);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('PI', 'Piauí', 7, 22);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('PR', 'Paraná', 12, 41);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('RN', 'Rio Grande do Norte', 7, 24);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('RO', 'Rondonia', 7, 11);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('RR', 'Roraima', 7, 14);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('RS', 'Rio Grande do Sul', 12, 43);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('SC', 'Santa Catarina', 12, 42);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('SE', 'Sergipe', 7, 28);
+INSERT INTO ESTADO (SIGLA, NOME, ALIQ, CODIBGE)
+            VALUES ('TO', 'Tocantins', 7, 17);
+
+COMMIT WORK;

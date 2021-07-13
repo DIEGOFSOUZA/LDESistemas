@@ -2,29 +2,30 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
   BorderStyle = bsNone
   BorderWidth = 2
   Caption = 'FrmBaixaContaPagar'
-  ClientHeight = 396
+  ClientHeight = 383
   ClientWidth = 446
   Visible = False
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   ExplicitWidth = 450
-  ExplicitHeight = 400
+  ExplicitHeight = 387
   PixelsPerInch = 96
   TextHeight = 13
   object pnlFundo: TPanel
     Left = 0
     Top = 0
     Width = 446
-    Height = 396
+    Height = 383
     Align = alClient
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
+    ExplicitHeight = 396
     object pnlTitulo: TPanel
       Left = 1
       Top = 1
       Width = 444
-      Height = 136
+      Height = 128
       Align = alTop
       BevelOuter = bvNone
       Color = clWhite
@@ -218,13 +219,14 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
     end
     object pnlBotao: TPanel
       Left = 1
-      Top = 351
+      Top = 338
       Width = 444
       Height = 44
       Align = alBottom
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
+      ExplicitTop = 333
       object pnlCancelar: TPanel
         Left = 244
         Top = 2
@@ -277,52 +279,35 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
-          ExplicitTop = 1
+          ExplicitLeft = -6
+          ExplicitTop = -1
         end
       end
     end
     object pnlBaixa: TPanel
       Left = 1
-      Top = 137
+      Top = 129
       Width = 444
       Height = 209
       Align = alTop
       BevelOuter = bvNone
       Color = clWhite
+      Enabled = False
       ParentBackground = False
       TabOrder = 1
       TabStop = True
-      object Label1: TLabel
+      ExplicitTop = 137
+      object pnlDadosBaixa: TPanel
         Left = 0
         Top = 0
         Width = 444
-        Height = 22
-        Align = alTop
-        AutoSize = False
-        Caption = '  Dados da baixa'
-        Color = 10114859
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWhite
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = [fsBold, fsItalic]
-        ParentColor = False
-        ParentFont = False
-        Transparent = False
-        Layout = tlCenter
-        ExplicitTop = -2
-        ExplicitWidth = 386
-      end
-      object pnlDadosBaixa: TPanel
-        Left = 0
-        Top = 22
-        Width = 444
-        Height = 139
+        Height = 159
         Align = alTop
         TabOrder = 0
+        ExplicitTop = -2
         object Label8: TLabel
-          Left = 8
-          Top = 11
+          Left = 16
+          Top = 35
           Width = 74
           Height = 17
           Caption = 'Data pagto.*'
@@ -334,8 +319,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           ParentFont = False
         end
         object Label9: TLabel
-          Left = 161
-          Top = 11
+          Left = 169
+          Top = 35
           Width = 89
           Height = 17
           Caption = 'Valor pago R$*'
@@ -347,8 +332,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           ParentFont = False
         end
         object Label12: TLabel
-          Left = 8
-          Top = 101
+          Left = 16
+          Top = 123
           Width = 74
           Height = 17
           Caption = 'Desconto R$'
@@ -360,8 +345,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           ParentFont = False
         end
         object Label13: TLabel
-          Left = 156
-          Top = 101
+          Left = 164
+          Top = 123
           Width = 88
           Height = 17
           Caption = 'Juros/Multa R$'
@@ -372,9 +357,30 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           Font.Style = []
           ParentFont = False
         end
+        object lblTitBaixa: TLabel
+          Left = 1
+          Top = 1
+          Width = 442
+          Height = 22
+          Align = alTop
+          AutoSize = False
+          Caption = '  Dados da baixa'
+          Color = 10114859
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold, fsItalic]
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+          Layout = tlCenter
+          ExplicitLeft = 2
+          ExplicitTop = 9
+        end
         object edtValBaixa: TEdit
-          Left = 250
-          Top = 8
+          Left = 258
+          Top = 32
           Width = 91
           Height = 25
           Font.Charset = ANSI_CHARSET
@@ -387,8 +393,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           OnExit = edtValBaixaExit
         end
         object edtVlDesconto: TEdit
-          Left = 86
-          Top = 98
+          Left = 94
+          Top = 120
           Width = 66
           Height = 25
           Font.Charset = ANSI_CHARSET
@@ -402,8 +408,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           OnKeyPress = edtVlDescontoKeyPress
         end
         object edtVlJuros: TEdit
-          Left = 248
-          Top = 98
+          Left = 256
+          Top = 120
           Width = 66
           Height = 25
           Font.Charset = ANSI_CHARSET
@@ -417,8 +423,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           OnKeyPress = edtVlDescontoKeyPress
         end
         object edpsqsHistorico: TEdPesquisa
-          Left = 26
-          Top = 37
+          Left = 34
+          Top = 61
           Width = 392
           Height = 25
           PermitirBranco = Sim
@@ -467,8 +473,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           TabStop = True
         end
         object edpsqsConta: TEdPesquisa
-          Left = 44
-          Top = 67
+          Left = 52
+          Top = 91
           Width = 374
           Height = 25
           PermitirBranco = Sim
@@ -517,8 +523,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           TabStop = True
         end
         object edtDtBaixa: TMaskEdit
-          Left = 86
-          Top = 8
+          Left = 96
+          Top = 32
           Width = 72
           Height = 25
           EditMask = '!99/99/0000;1;_'
@@ -536,14 +542,15 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
       end
       object pnlCheque: TPanel
         Left = 0
-        Top = 161
+        Top = 159
         Width = 444
         Height = 39
         Align = alTop
         TabOrder = 1
+        ExplicitTop = 164
         object Label15: TLabel
-          Left = 14
-          Top = 13
+          Left = 26
+          Top = 10
           Width = 62
           Height = 17
           Caption = 'N'#186' cheque'
@@ -555,8 +562,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           ParentFont = False
         end
         object Label16: TLabel
-          Left = 195
-          Top = 13
+          Left = 207
+          Top = 10
           Width = 131
           Height = 17
           Caption = 'Data de compensa'#231#227'o'
@@ -568,8 +575,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           ParentFont = False
         end
         object edtNumCheque: TEdit
-          Left = 82
-          Top = 10
+          Left = 94
+          Top = 7
           Width = 109
           Height = 25
           TabStop = False
@@ -583,8 +590,8 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           TabOrder = 0
         end
         object edtCompensa: TMaskEdit
-          Left = 333
-          Top = 10
+          Left = 345
+          Top = 7
           Width = 72
           Height = 25
           TabStop = False
@@ -611,12 +618,11 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
     Left = 369
     Top = 271
     object actBaixar: TAction
-      Caption = 'EFETUAR'#13#10'BAIXA'
+      Caption = 'PAGAR'
       OnExecute = actBaixarExecute
     end
     object actRestaurar: TAction
       Caption = 'RESTAURAR'#13#10'A BAIXA'
-      OnExecute = actRestaurarExecute
     end
     object actCancelar: TAction
       Caption = 'VOLTAR'

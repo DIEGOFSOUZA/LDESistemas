@@ -170,8 +170,10 @@ end;
 procedure TFrm_ContasaReceber_Baixa.Baixa;
 var
   lSQL: string;
+  lJuros, lDesconto, lValor: Currency;
 begin
-  lSQL := 'update PDV_RECEBER a ' +
+  lValor := StrToCurr(edtValorBaixa.Text);
+  {lSQL := 'update PDV_RECEBER a ' +
           'set a.DT_BAIXA = '+ QuotedStr(FormatDateTime('dd.mm.yyyy',dtpBaixa.Date))+
           ',a.JUROS = '+ValorFormatadoFirebird( CurrToStr(FVlJuros) )+
           ',a.DESCONTO = '+ValorFormatadoFirebird( CurrToStr(FVlDescontos) )+
@@ -181,10 +183,14 @@ begin
           ',a.ID_CONTA = '+QuotedStr(edpsqsConta.Campo.Text)+
           ',a.BAIXA_ID_CAIXA = '+IdCaixa+
           ' where a.TIPO = ''0'' and a.ID = '+IntToStr(TitVenda)+
-          ' and a.ORDEM = '+QuotedStr(TitDuplicata);
+          ' and a.ORDEM = '+QuotedStr(TitDuplicata); }
 
   try
-    DM.ExecutarSQL(DM.BancoDados, lSQL);
+    if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,False,0,'CAR','B','0',TitVenda,TitDuplicata,
+                                        FormatDateTime('dd/mm/yyyy',dtpBaixa.Date),FVlJuros,FVlDescontos,
+                                        lValor,DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                        IdCaixa,0) then
+//    DM.ExecutarSQL(DM.BancoDados, lSQL);
     fRetorno := 'sucesso';
   except
     on e: Exception do
@@ -198,7 +204,7 @@ procedure TFrm_ContasaReceber_Baixa.PagtoParcial(pVlPago, pVlDiferenca: Currency
 var
   lSQL: string;
 begin
-  lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO,' +
+  {lSQL := 'INSERT INTO PDV_RECEBER_PARCIAL (CODIGO, ID, TIPO, FORMA_PAGTO,' +
           'ORDEM, DT_VENC, VALOR, USUARIO_EMISSAO, DT_BAIXA, VL_PAGO, JUROS, DESCONTO,' +
           'USUARIO_BAIXA, ID_HISTORICO,ID_CONTA,ID_CAIXA) ' + //BAIXA_FORMA_PAGTO,
           'VALUES ( ' +
@@ -218,15 +224,20 @@ begin
           ','+edpsqsHistorico.Campo.Text +
           ','+QuotedStr(edpsqsConta.Campo.Text) +
           ','+IdCaixa+
-          ')';
+          ')'; }
 
   try
-    DM.ExecutarSQL(DM.BancoDados, lSQL);
-    DM.ExecutarSQL(DM.BancoDados, 'update PDV_RECEBER a '+
-                                  'set a.VALOR = '+ValorFormatadoFirebird(CurrToStr(pVlDiferenca))+
-                                  'where a.TIPO = ''0'' '+
-                                  'and a.ID = ' + IntToStr(TitVenda)+
-                                  'and a.ORDEM = ' + QuotedStr(TitDuplicata));
+    if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,True,pVlDiferenca,'CAR','B',
+                                        '0',TitVenda,TitDuplicata,
+                                        FormatDateTime('dd/mm/yyyy',dtpBaixa.Date),FVlJuros,FVlDescontos,
+                                        pVlPago,DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                        IdCaixa,0) then
+//    DM.ExecutarSQL(DM.BancoDados, lSQL);
+//    DM.ExecutarSQL(DM.BancoDados, 'update PDV_RECEBER a '+
+//                                  'set a.VALOR = '+ValorFormatadoFirebird(CurrToStr(pVlDiferenca))+
+//                                  'where a.TIPO = ''0'' '+
+//                                  'and a.ID = ' + IntToStr(TitVenda)+
+//                                  'and a.ORDEM = ' + QuotedStr(TitDuplicata));
     fRetorno := 'sucesso';
   except
     on e: Exception do

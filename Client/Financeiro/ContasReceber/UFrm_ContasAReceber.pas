@@ -455,10 +455,8 @@ begin
   if ((cdsGrid.IsEmpty) or (cdsGridDT_BAIXA.IsNull)) then
     Exit;
 
-//  if not(VoltaSenha() = senha) then
   if not (DM.UserPerfil = 'Administrador') then
   begin
-//    TMensagem.Informacao('Senha incorreta.');
     TMensagem.Informacao('Perfil de usuário não permitido para restauração de baixa.');
     Exit;
   end
@@ -466,7 +464,12 @@ begin
   if TMensagem.Pergunta('Confirma a restauração de baixa da Venda: '+cdsGrid.FieldByName('ID').AsString+'|'+cdsGrid.FieldByName('ORDEM').AsString+' ?') then
   begin
     try
-      DM.ExecutarSQL(DM.BancoDados,Format(SQL,[cdsGrid.FieldByName('ID').AsString]));
+      if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,False,0,'CAR','R','0',
+                                    cdsGrid.FieldByName('ID').AsInteger,
+                                    cdsGrid.FieldByName('ORDEM').AsString,
+                                    FormatDateTime('dd/mm/yyyy',Date),0,0,
+                                    cdsGrid.FieldByName('VALOR').AsCurrency,DM.User,'','','',0) then
+//      DM.ExecutarSQL(DM.BancoDados,Format(SQL,[cdsGrid.FieldByName('ID').AsString]));
       TMensagem.Informacao('Duplicata restaurada com sucesso.');
       actFiltrar.Execute;
     except

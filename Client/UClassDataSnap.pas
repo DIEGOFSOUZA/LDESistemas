@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/05/2021 13:35:47
+// 04/07/2021 16:17:11
 //
 
 unit UClassDataSnap;
@@ -206,12 +206,14 @@ type
   private
     FsetFormaPagtoCommand: TDBXCommand;
     FgetFormaPagtoCommand: TDBXCommand;
+    FsetBaixaRestauraCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setFormaPagto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getFormaPagto(BD: string; pID: Integer): OleVariant;
+    function setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
   end;
 
   TSM_PedidoClient = class(TDSAdminClient)
@@ -1685,6 +1687,36 @@ begin
   Result := FgetFormaPagtoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSM_FinanceiroClient.setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
+begin
+  if FsetBaixaRestauraCommand = nil then
+  begin
+    FsetBaixaRestauraCommand := FDBXConnection.CreateCommand;
+    FsetBaixaRestauraCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetBaixaRestauraCommand.Text := 'TSM_Financeiro.setBaixaRestaura';
+    FsetBaixaRestauraCommand.Prepare;
+  end;
+  FsetBaixaRestauraCommand.Parameters[0].Value.SetWideString(BD);
+  FsetBaixaRestauraCommand.Parameters[1].Value.SetBoolean(pBaixaParcial);
+  FsetBaixaRestauraCommand.Parameters[2].Value.AsCurrency := pVlDiferenca;
+  FsetBaixaRestauraCommand.Parameters[3].Value.SetWideString(pReceberPagar);
+  FsetBaixaRestauraCommand.Parameters[4].Value.SetWideString(pBaixaRestaura);
+  FsetBaixaRestauraCommand.Parameters[5].Value.SetWideString(pTipo);
+  FsetBaixaRestauraCommand.Parameters[6].Value.SetInt32(pID);
+  FsetBaixaRestauraCommand.Parameters[7].Value.SetWideString(pOrdem);
+  FsetBaixaRestauraCommand.Parameters[8].Value.SetWideString(pData);
+  FsetBaixaRestauraCommand.Parameters[9].Value.AsCurrency := pJuros;
+  FsetBaixaRestauraCommand.Parameters[10].Value.AsCurrency := pDesconto;
+  FsetBaixaRestauraCommand.Parameters[11].Value.AsCurrency := pValor;
+  FsetBaixaRestauraCommand.Parameters[12].Value.SetWideString(pUsuario);
+  FsetBaixaRestauraCommand.Parameters[13].Value.SetWideString(pIdHistorico);
+  FsetBaixaRestauraCommand.Parameters[14].Value.SetWideString(pIdConta);
+  FsetBaixaRestauraCommand.Parameters[15].Value.SetWideString(pIdCaixa);
+  FsetBaixaRestauraCommand.Parameters[16].Value.SetInt32(pNumCheque);
+  FsetBaixaRestauraCommand.ExecuteUpdate;
+  Result := FsetBaixaRestauraCommand.Parameters[17].Value.GetBoolean;
+end;
+
 constructor TSM_FinanceiroClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1699,6 +1731,7 @@ destructor TSM_FinanceiroClient.Destroy;
 begin
   FsetFormaPagtoCommand.DisposeOf;
   FgetFormaPagtoCommand.DisposeOf;
+  FsetBaixaRestauraCommand.DisposeOf;
   inherited;
 end;
 
