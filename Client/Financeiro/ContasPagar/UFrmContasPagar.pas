@@ -1,4 +1,4 @@
-unit UFrmContasPagar; ajustar relatorio
+unit UFrmContasPagar; //ajustar relatorio
 
 interface
 

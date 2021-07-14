@@ -779,8 +779,8 @@ begin
 
       lblClienteNome.Caption := cdsTemp.FieldByName('NOME_RAZAO').AsString;
       lblCPFCNPJ.Caption := cdsTemp.FieldByName('CPF_CNPJ').AsString;
-      lblDebito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_debito').AsFloat);
-      lblCredito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_credito').AsFloat);
+      lblDebito.Caption := FormatCurr('##0.00',cdsTemp.FieldByName('vl_debito').AsCurrency);
+      lblCredito.Caption := FormatCurr('##0.00',cdsTemp.FieldByName('vl_credito').AsCurrency);
 
       if (not OrcLiberado) then
         if ValidaDebitoCliente(IdCliente) > 5 then
