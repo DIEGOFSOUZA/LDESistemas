@@ -860,6 +860,10 @@ inherited Frm_Produto: TFrm_Produto
             TabStop = False
             object tsEstoque: TTabSheet
               Caption = 'ESTOQUE'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlEstoque: TPanel
                 Left = 0
                 Top = 0
@@ -1075,6 +1079,10 @@ inherited Frm_Produto: TFrm_Produto
             object tsComposicao: TTabSheet
               Caption = 'COMPOSI'#199#195'O'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlComposicao: TPanel
                 Left = 0
                 Top = 0
@@ -1327,7 +1335,7 @@ inherited Frm_Produto: TFrm_Produto
                         object lblUnitario: TLabel
                           Left = 0
                           Top = 23
-                          Width = 80
+                          Width = 38
                           Height = 25
                           Align = alBottom
                           Alignment = taCenter
@@ -1338,7 +1346,6 @@ inherited Frm_Produto: TFrm_Produto
                           Font.Name = 'Segoe UI Semibold'
                           Font.Style = [fsBold]
                           ParentFont = False
-                          ExplicitWidth = 38
                         end
                       end
                     end
@@ -1541,6 +1548,10 @@ inherited Frm_Produto: TFrm_Produto
             object tsFragmentacao: TTabSheet
               Caption = 'VENDA FRAGMENTADA'
               ImageIndex = 2
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlFundoFragm: TPanel
                 Left = 0
                 Top = 0
@@ -1594,7 +1605,7 @@ inherited Frm_Produto: TFrm_Produto
                   object Label28: TLabel
                     Left = 0
                     Top = 0
-                    Width = 653
+                    Width = 378
                     Height = 17
                     Align = alTop
                     Caption = 'Venda fracionada, informe abaixo a condi'#231#227'o de fragmenta'#231#227'o'
@@ -1605,12 +1616,11 @@ inherited Frm_Produto: TFrm_Produto
                     Font.Style = [fsBold]
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 378
                   end
                   object Label29: TLabel
                     Left = 0
                     Top = 17
-                    Width = 653
+                    Width = 375
                     Height = 17
                     Align = alTop
                     Caption = 'EXEMPLO: 1 Litro = 1000ml / 1 Caixa = 10 pacotes / 1 Saco = 50Kg'
@@ -1621,7 +1631,6 @@ inherited Frm_Produto: TFrm_Produto
                     Font.Style = []
                     ParentFont = False
                     Layout = tlCenter
-                    ExplicitWidth = 375
                   end
                 end
                 object pnlFragmentacao: TPanel
@@ -1826,6 +1835,10 @@ inherited Frm_Produto: TFrm_Produto
             object tsHistPrecoVenda: TTabSheet
               Caption = 'HIST'#211'RICO DE PRE'#199'O'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0
@@ -1998,6 +2011,10 @@ inherited Frm_Produto: TFrm_Produto
             object tsFiscal: TTabSheet
               Caption = 'FISCAL'
               ImageIndex = 4
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlFundoFiscal: TPanel
                 Left = 0
                 Top = 0

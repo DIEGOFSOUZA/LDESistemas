@@ -357,7 +357,7 @@ procedure TFrm_Produto.actMovimentarExecute(Sender: TObject);
 begin
   inherited;
   if ValidarMovimentacao then
-    if DM.SMProducao.setMovimento(DM.BancoDados, DM.User, cds.FieldByName('codigo').AsInteger,
+    if DM.SMProducao.setMovimento(DM.BancoDados, DM.Usuario.login, cds.FieldByName('codigo').AsInteger,
           StrToFloat(edtQtdeMov.Text), VoltaQtde(StrToFloat(edtQtdeMov.Text)),cds.FieldByName('COD_UNIDADE').AsInteger, cbbTpMov.Text,
           cds.FieldByName('NOME').AsString) then
     begin
@@ -644,8 +644,8 @@ begin
   inherited;
   ResetaCDS ;
   pgc1.TabIndex := 0;
-  pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
-  pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
+  pnlDescMaximo.Enabled := DM.Usuario.Perfil = 'Administrador';
+  pnlMovimentar.Enabled := DM.Usuario.Perfil = 'Administrador';
 end;
 
 procedure TFrm_Produto.Gravar();

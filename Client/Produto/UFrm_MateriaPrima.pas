@@ -242,7 +242,7 @@ procedure TFrm_MateriaPrima.actMovimentarExecute(Sender: TObject);
 begin
   inherited;
   if ValidarMovimentacao then
-    if DM.SMProducao.setMovimento(DM.BancoDados, DM.User,
+    if DM.SMProducao.setMovimento(DM.BancoDados, DM.Usuario.login,
       cds.FieldByName('codigo').AsInteger, StrToFloat(edtQtdeMov.Text),
       VoltaQtde(StrToFloat(edtQtdeMov.Text)),
       cds.FieldByName('COD_UNIDADE').AsInteger, cbbTpMov.Text,
@@ -449,8 +449,8 @@ begin
   inherited;
   ResetaCDS ;
   pgc1.TabIndex := 0 ;
-  pnlDescMaximo.Enabled := DM.UserPerfil = 'Administrador';
-  pnlMovimentar.Enabled := DM.UserPerfil = 'Administrador';
+  pnlDescMaximo.Enabled := DM.Usuario.Perfil = 'Administrador';
+  pnlMovimentar.Enabled := DM.Usuario.Perfil = 'Administrador';
 end;
 
 procedure TFrm_MateriaPrima.Gravar;

@@ -455,7 +455,7 @@ begin
   if ((cdsGrid.IsEmpty) or (cdsGridDT_BAIXA.IsNull)) then
     Exit;
 
-  if not (DM.UserPerfil = 'Administrador') then
+  if not (DM.Usuario.Perfil = 'Administrador') then
   begin
     TMensagem.Informacao('Perfil de usuário não permitido para restauração de baixa.');
     Exit;
@@ -468,7 +468,7 @@ begin
                                     cdsGrid.FieldByName('ID').AsInteger,
                                     cdsGrid.FieldByName('ORDEM').AsString,
                                     FormatDateTime('dd/mm/yyyy',Date),0,0,
-                                    cdsGrid.FieldByName('VALOR').AsCurrency,DM.User,'','','',0) then
+                                    cdsGrid.FieldByName('VALOR').AsCurrency,DM.Usuario.login,'','','',0) then
 //      DM.ExecutarSQL(DM.BancoDados,Format(SQL,[cdsGrid.FieldByName('ID').AsString]));
       TMensagem.Informacao('Duplicata restaurada com sucesso.');
       actFiltrar.Execute;

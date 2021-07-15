@@ -9,11 +9,11 @@ const
   cor03 = $00E1E2E1;
 
   //Versao do Sistema
-  Release = '36';
-  Build =   '2';
+  Release = '37';
+  Build =   '0';
 
   //Versao BD
-  BDRelease = '3';
+  BDRelease = '4';
   BDBuild =   '0';
 
 implementation

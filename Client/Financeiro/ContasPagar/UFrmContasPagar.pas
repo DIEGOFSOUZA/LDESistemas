@@ -361,7 +361,7 @@ begin
   if ((dsPagar.IsEmpty) or (dsPagar.FieldByName('BAIXADA').AsString = 'NÃO')) then
     Exit;
 
-  if not (DM.UserPerfil = 'Administrador') then
+  if not (DM.Usuario.Perfil = 'Administrador') then
   begin
     TMensagem.Informacao('Perfil de usuário não permitido para restauração de baixa.');
     Exit;
@@ -373,7 +373,7 @@ begin
                                         dsPagar.FieldByName('NDUP').AsString,
                                         FormatDateTime('dd/mm/yyyy', Date), 0, 0,
                                         dsPagar.FieldByName('VDUP').AsCurrency,
-                                        DM.User, '', '', '', 0) then
+                                        DM.Usuario.login, '', '', '', 0) then
     begin
       TMensagem.Informacao('Duplicata restaurada com sucesso.');
       actPesquisar.Execute;

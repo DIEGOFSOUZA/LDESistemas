@@ -246,7 +246,7 @@ begin
 //  lValor := StrToFloatDef(StringReplace(edtDinheiroSaldo.Text,'.',EmptyStr,[rfReplaceAll]),0);
 
   if DM.SMCadastroClient.setCaixa(DM.BancoDados, 'FECHAMENTO', ds0ID.AsInteger,
-     DM.User, 'DINHEIRO', GetValor(edtDinheiroSaldo.Text), sObs, EmptyStr) then
+     DM.Usuario.login, 'DINHEIRO', GetValor(edtDinheiroSaldo.Text), sObs, EmptyStr) then
   begin
     TMensagem.Informacao('Fechamento de Caixa efetuado com sucesso!');
     Limpar();

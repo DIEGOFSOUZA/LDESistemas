@@ -65,7 +65,7 @@ begin
     fValor := lFormata.vlFloat;
 
   //Abre o caixa do Dia
-  if DM.SMCadastroClient.setCaixa(DM.BancoDados, 'ABERTURA', 0, DM.User, 'DINHEIRO', fValor, mmo1.Lines.Text, EmptyStr) then
+  if DM.SMCadastroClient.setCaixa(DM.BancoDados, 'ABERTURA', 0, DM.Usuario.login, 'DINHEIRO', fValor, mmo1.Lines.Text, EmptyStr) then
   begin
     MessageDlg('Abertura de Caixa efetuada com sucesso!', mtInformation, [mbOK], 0);
     ValidaCaixaAberto();
@@ -87,7 +87,7 @@ end;
 procedure TFrm_CaixaAbertura.FormCreate(Sender: TObject);
 begin
   inherited;
-  edtUsuario.Text := DM.User ;
+  edtUsuario.Text := DM.Usuario.login ;
   edtDataHora.Text := FormatDateTime('dd/mm/yyyy | hh:mm:ss',Now);
 end;
 

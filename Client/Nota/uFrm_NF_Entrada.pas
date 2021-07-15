@@ -934,7 +934,7 @@ begin
   cds.FieldByName('ID').AsInteger := 0;
   cds.FieldByName('TIPO_NOTA').AsString := 'NF-E';
   cds.FieldByName('TIPO').AsString := 'SAIDA';
-  cds.FieldByName('ID_USUARIO').AsInteger := DM.UserID;
+  cds.FieldByName('ID_USUARIO').AsInteger := DM.Usuario.ID;
 
   dtpEmissao.Date := Date;
   cds.FieldByName('EMISSAO').AsDateTime := Date;
@@ -942,7 +942,7 @@ begin
   cds.FieldByName('NAT_OPERACAO').AsString := 'COMPRA DENTRO DO ESTADO';
   dbmmoLog.Lines.Add('Data: '+FormatDateTime('dd/mm/yyyy',date));
   dbmmoLog.Lines.Add('Horario: '+FormatDateTime('hh:mm:ss',Now));
-  dbmmoLog.Lines.Add('Usuário: '+DM.User);
+  dbmmoLog.Lines.Add('Usuário: '+DM.Usuario.login);
 
   //Aba totais
   cds.FieldByName('TOTPRODUTO').AsCurrency := 0;

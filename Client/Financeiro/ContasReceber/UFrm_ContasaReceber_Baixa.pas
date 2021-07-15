@@ -188,7 +188,7 @@ begin
   try
     if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,False,0,'CAR','B','0',TitVenda,TitDuplicata,
                                         FormatDateTime('dd/mm/yyyy',dtpBaixa.Date),FVlJuros,FVlDescontos,
-                                        lValor,DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                        lValor,DM.Usuario.login,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
                                         IdCaixa,0) then
 //    DM.ExecutarSQL(DM.BancoDados, lSQL);
     fRetorno := 'sucesso';
@@ -230,7 +230,7 @@ begin
     if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,True,pVlDiferenca,'CAR','B',
                                         '0',TitVenda,TitDuplicata,
                                         FormatDateTime('dd/mm/yyyy',dtpBaixa.Date),FVlJuros,FVlDescontos,
-                                        pVlPago,DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                        pVlPago,DM.Usuario.login,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
                                         IdCaixa,0) then
 //    DM.ExecutarSQL(DM.BancoDados, lSQL);
 //    DM.ExecutarSQL(DM.BancoDados, 'update PDV_RECEBER a '+

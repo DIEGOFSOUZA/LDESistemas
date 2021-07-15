@@ -4430,7 +4430,7 @@ object Frm_Inicial: TFrm_Inicial
   object mm1: TMainMenu
     Left = 56
     Top = 40
-    object Cadastros1: TMenuItem
+    object MenuCadastros: TMenuItem
       Caption = '&CADASTROS'
       object Contabilidade1: TMenuItem
         Caption = 'Contabilidade'
@@ -4439,168 +4439,168 @@ object Frm_Inicial: TFrm_Inicial
           Caption = 'Natureza Opera'#231#227'o'
         end
       end
-      object Funcionario1: TMenuItem
+      object MenuCad_Funcionario: TMenuItem
         Caption = 'FUNCION'#193'RIO'
-        OnClick = Funcionario1Click
+        OnClick = MenuCad_FuncionarioClick
       end
-      object Usurio1: TMenuItem
+      object MenuCad_Usuario: TMenuItem
         Caption = 'USU'#193'RIO'
-        OnClick = Usurio1Click
+        OnClick = MenuCad_UsuarioClick
       end
-      object Empresa1: TMenuItem
+      object MenuCad_Empresa: TMenuItem
         Caption = 'EMPRESA'
-        OnClick = Empresa1Click
+        OnClick = MenuCad_EmpresaClick
       end
-      object Sair1: TMenuItem
+      object MenuCad_Sair: TMenuItem
         Caption = '&SAIR'
-        OnClick = Sair1Click
+        OnClick = MenuCad_SairClick
       end
     end
-    object Produtos3: TMenuItem
+    object MenuProduto: TMenuItem
       Caption = 'PRODUTO'
-      object Produtos1: TMenuItem
+      object MenuProd_Produto: TMenuItem
         Caption = 'PRODUTOS'
-        OnClick = Produtos1Click
+        OnClick = MenuProd_ProdutoClick
       end
-      object MatriaPrima1: TMenuItem
+      object MenuProd_Insumo: TMenuItem
         Caption = 'INSUMO (MAT'#201'RIA-PRIMA)'
-        OnClick = MatriaPrima1Click
+        OnClick = MenuProd_InsumoClick
       end
-      object CadastrodeUnidade1: TMenuItem
+      object MenuProd_Unidade: TMenuItem
         Caption = 'UNIDADES DE MEDIDA'
-        OnClick = CadastrodeUnidade1Click
+        OnClick = MenuProd_UnidadeClick
       end
-      object GrupodeProdutos1: TMenuItem
+      object MenuProd_Grupo: TMenuItem
         Caption = 'GRUPO DE PRODUTO'
-        OnClick = GrupodeProdutos1Click
+        OnClick = MenuProd_GrupoClick
       end
-      object SubgrupoProdutos1: TMenuItem
+      object MenuProd_Subgrupo: TMenuItem
         Caption = 'SUB GRUPO DE PRODUTO'
-        OnClick = SubgrupoProdutos1Click
+        OnClick = MenuProd_SubgrupoClick
       end
     end
-    object Compras1: TMenuItem
+    object MenuCompra: TMenuItem
       Caption = 'COMPRA'
-      object Grupos1: TMenuItem
+      object MenuCompra_Grupo: TMenuItem
         Caption = 'GRUPO DE FORNECEDOR'
-        OnClick = Grupos1Click
+        OnClick = MenuCompra_GrupoClick
       end
-      object Cadastro2: TMenuItem
+      object MenuCompra_Fornecedor: TMenuItem
         Caption = 'FORNECEDOR'
-        OnClick = Cadastro2Click
+        OnClick = MenuCompra_FornecedorClick
       end
-      object NOTAFISCALENTRADA1: TMenuItem
+      object MenuCompra_NFEntrada: TMenuItem
         Caption = 'NOTA FISCAL - ENTRADA'
-        OnClick = NOTAFISCALENTRADA1Click
+        OnClick = MenuCompra_NFEntradaClick
       end
     end
-    object Venda1: TMenuItem
+    object MenuVenda: TMenuItem
       Caption = 'VENDA'
-      object FrenteLoja1: TMenuItem
+      object MenuVenda_PDV: TMenuItem
         Caption = 'PDV'
-        object Venda2: TMenuItem
+        object MenuVenda_PDV_GeraOrcamento: TMenuItem
           Caption = 'GERAR VENDA/OR'#199'AMENTO'
-          OnClick = Venda2Click
+          OnClick = MenuVenda_PDV_GeraOrcamentoClick
         end
-        object AberturadeCaixa1: TMenuItem
+        object MenuVenda_PDV_AbreCaixa: TMenuItem
           Caption = 'ABERTURA DE CAIXA'
-          OnClick = AberturadeCaixa1Click
+          OnClick = MenuVenda_PDV_AbreCaixaClick
         end
-        object FechamentodeCaixa1: TMenuItem
+        object MenuVenda_PDV_FechaCaixa: TMenuItem
           Caption = 'FECHAMENTO DE CAIXA'
-          OnClick = FechamentodeCaixa1Click
+          OnClick = MenuVenda_PDV_FechaCaixaClick
         end
-        object AUTORIZARORAMENTO1: TMenuItem
+        object MenuVenda_PDV_AutorizaOrcamento: TMenuItem
           Caption = 'AUTORIZAR OR'#199'AMENTO'
-          OnClick = AUTORIZARORAMENTO1Click
+          OnClick = MenuVenda_PDV_AutorizaOrcamentoClick
         end
-        object VENDAS2: TMenuItem
+        object MenuVenda_PDV_Vendas: TMenuItem
           Caption = 'VENDAS'
-          OnClick = VENDAS2Click
+          OnClick = MenuVenda_PDV_VendasClick
         end
       end
-      object Pedidos1: TMenuItem
+      object MenuVenda_Pedido: TMenuItem
         Caption = 'PEDIDOS'
-        OnClick = Pedidos1Click
+        OnClick = MenuVenda_PedidoClick
       end
-      object Clientes1: TMenuItem
+      object MenuVenda_Cliente: TMenuItem
         Caption = 'CLIENTE'
-        OnClick = Clientes1Click
+        OnClick = MenuVenda_ClienteClick
       end
-      object Cadastro3: TMenuItem
+      object MenuVenda_Representante: TMenuItem
         Caption = 'REPRESENTANTE'
-        OnClick = Cadastro3Click
+        OnClick = MenuVenda_RepresentanteClick
       end
-      object IPOSDEPAGAMENTO1: TMenuItem
+      object MenuVenda_TipoPagto: TMenuItem
         Caption = 'TIPOS DE PAGAMENTOS'
-        OnClick = IPOSDEPAGAMENTO1Click
+        OnClick = MenuVenda_TipoPagtoClick
       end
-      object FormasPagamento2: TMenuItem
+      object MenuVenda_FormaPagto: TMenuItem
         Caption = 'FORMA DE PAGAMENTO'
         Visible = False
-        OnClick = FormasPagamento2Click
+        OnClick = MenuVenda_FormaPagtoClick
       end
-      object Cidades1: TMenuItem
+      object MenuVenda_Cidade: TMenuItem
         Caption = 'CIDADE'
-        OnClick = Cidades1Click
+        OnClick = MenuVenda_CidadeClick
       end
     end
-    object Movimentaes1: TMenuItem
+    object MenuProducao: TMenuItem
       Caption = 'PRODU'#199#194'O'
-      object Fabricao1: TMenuItem
+      object MenuProducao_GeraOrdem: TMenuItem
         Caption = 'GERAR ORDEM DE PRODUC'#195'O'
-        OnClick = Fabricao1Click
+        OnClick = MenuProducao_GeraOrdemClick
       end
-      object ACERTODEESTOQUE1: TMenuItem
+      object MenuProducao_AcertaEstoque: TMenuItem
         Caption = 'ACERTO DE ESTOQUE'
-        OnClick = ACERTODEESTOQUE1Click
+        OnClick = MenuProducao_AcertaEstoqueClick
       end
     end
-    object Financeiro1: TMenuItem
+    object MenuFinanceiro: TMenuItem
       Caption = 'FINANCEIRO'
-      object Contasareceber2: TMenuItem
+      object MenuFinanceiro_Recebimento: TMenuItem
         Caption = 'RECEBIMENTOS'
-        object ContasaReceber1: TMenuItem
+        object MenuFinanceiro_Recebimento_AReceber: TMenuItem
           Caption = 'CONTAS A RECEBER'
-          OnClick = ContasaReceber1Click
+          OnClick = MenuFinanceiro_Recebimento_AReceberClick
         end
         object CONTASARECEBER21: TMenuItem
           Caption = 'CONTAS A RECEBER2'
           OnClick = CONTASARECEBER21Click
         end
       end
-      object Contasapagar2: TMenuItem
+      object MenuFinanceiro_Pagto: TMenuItem
         Caption = 'PAGAMENTOS'
-        object ContasaPagar1: TMenuItem
+        object MenuFinanceiro_Pagto_APagar: TMenuItem
           Caption = 'CONTAS A PAGAR'
-          OnClick = ContasaPagar1Click
+          OnClick = MenuFinanceiro_Pagto_APagarClick
         end
         object Cheque1: TMenuItem
           Caption = 'CHEQUE'
           OnClick = Cheque1Click
         end
       end
-      object Lanamentos1: TMenuItem
+      object MenuFinanceiro_Lancamento: TMenuItem
         Caption = 'LAN'#199'AMENTO EM CONTA'
-        OnClick = Lanamentos1Click
+        OnClick = MenuFinanceiro_LancamentoClick
       end
-      object Contabancria2: TMenuItem
+      object MenuFinanceiro_Conta: TMenuItem
         Caption = 'CADASTRO DE CONTA'
-        OnClick = Contabancria2Click
+        OnClick = MenuFinanceiro_ContaClick
       end
-      object Grupodehistorico1: TMenuItem
+      object MenuFinanceiro_GrupoHistorico: TMenuItem
         Caption = 'CADASTRO DE GRUPO DE HIST'#211'RICO'
-        OnClick = Grupodehistorico1Click
+        OnClick = MenuFinanceiro_GrupoHistoricoClick
       end
-      object Histrico1: TMenuItem
+      object MenuFinanceiro_Historico: TMenuItem
         Caption = 'CADASTRO DE HIST'#211'RICO'
-        OnClick = Histrico1Click
+        OnClick = MenuFinanceiro_HistoricoClick
       end
     end
-    object Expedio1: TMenuItem
+    object MenuExpedicao: TMenuItem
       Caption = 'EXPEDI'#199#194'O'
     end
-    object Segurana1: TMenuItem
+    object MenuConfiguracoes: TMenuItem
       Caption = 'CONFIGURA'#199#213'ES'
       Visible = False
       object Backup1: TMenuItem
@@ -4613,66 +4613,64 @@ object Frm_Inicial: TFrm_Inicial
         Caption = 'Usuarios/Permiss'#245'es'
       end
     end
-    object RELATRIOS2: TMenuItem
+    object MenuRelatorio: TMenuItem
       Caption = 'RELAT'#211'RIOS'
-      object FINANCEIRO3: TMenuItem
+      object MenuRel_Financeiro: TMenuItem
         Caption = 'FINANCEIRO'
       end
-      object VENDAS1: TMenuItem
+      object MenuRel_Vendas: TMenuItem
         Caption = 'VENDAS'
-        object VENDASPORPAGAMENTO1: TMenuItem
+        object MenuRel_Vendas_PorPagto: TMenuItem
           Caption = 'VENDAS POR PAGAMENTO'
-          OnClick = VENDASPORPAGAMENTO1Click
+          OnClick = MenuRel_Vendas_PorPagtoClick
         end
-        object VENDASPORPERODO1: TMenuItem
+        object MenuRel_Vendas_PorPeriodo: TMenuItem
           Caption = 'VENDAS POR PER'#205'ODO'
-          OnClick = VENDASPORPERODO1Click
+          OnClick = MenuRel_Vendas_PorPeriodoClick
         end
-        object VENDASPORVENDEDOR1: TMenuItem
+        object MenuRel_Vendas_PorVendedor: TMenuItem
           Caption = 'VENDAS POR VENDEDOR'
-          OnClick = VENDASPORVENDEDOR1Click
+          OnClick = MenuRel_Vendas_PorVendedorClick
         end
-        object VENDASTOTAISPORITEM1: TMenuItem
+        object MenuRel_Vendas_TotItem: TMenuItem
           Caption = 'VENDAS TOTAIS POR ITEM'
-          OnClick = VENDASTOTAISPORITEM1Click
+          OnClick = MenuRel_Vendas_TotItemClick
         end
       end
-      object PRODUTOS2: TMenuItem
+      object MenuRel_Produto: TMenuItem
         Caption = 'PRODUTOS'
-      end
-      object ESTOQUE1: TMenuItem
-        Caption = 'ESTOQUE'
-        object EstoqueProdutos1: TMenuItem
-          Caption = 'CONSULTAR'
-          OnClick = EstoqueProdutos1Click
+        object MenuRel_Produto_Estoque: TMenuItem
+          Caption = 'ESTOQUE'
+          OnClick = MenuRel_Produto_EstoqueClick
         end
       end
-      object CLIENTES2: TMenuItem
+      object MenuRel_Cliente: TMenuItem
         Caption = 'CLIENTES'
+        OnClick = MenuRel_ClienteClick
       end
-      object PDV1: TMenuItem
+      object MenuRel_PDV: TMenuItem
         Caption = 'PDV'
-        object Oramento1: TMenuItem
+        object MenuRel_PDV_ImprimirOrcamento: TMenuItem
           Caption = 'IMPRIMIR OR'#199'AMENTO'
-          OnClick = Oramento1Click
+          OnClick = MenuRel_PDV_ImprimirOrcamentoClick
         end
-        object VendasPerodoRepresentanteCliente1: TMenuItem
-          Caption = 'VENDAS POR PER'#205'ODO/VENDEDOR/ClCLIENTE'
-          OnClick = VendasPerodoRepresentanteCliente1Click
+        object MenuRel_PDV_VendaPerVendCli: TMenuItem
+          Caption = 'VENDAS POR PER'#205'ODO/VENDEDOR/CLIENTE'
+          OnClick = MenuRel_PDV_VendaPerVendCliClick
         end
-        object FechamentodeCaixas1: TMenuItem
+        object MenuRel_PDV_CaixaFechado: TMenuItem
           Caption = 'CAIXA FECHADO'
-          OnClick = FechamentodeCaixas1Click
+          OnClick = MenuRel_PDV_CaixaFechadoClick
         end
-        object SANGRIAMOVIMENTAS1: TMenuItem
+        object MenuRel_PDV_Sangria: TMenuItem
           Caption = 'SANGRIA - MOVIMENTA'#199#213'ES'
-          OnClick = SANGRIAMOVIMENTAS1Click
+          OnClick = MenuRel_PDV_SangriaClick
         end
       end
     end
-    object Sobre1: TMenuItem
+    object MenuSobre: TMenuItem
       Caption = 'SOBRE'
-      OnClick = Sobre1Click
+      OnClick = MenuSobreClick
     end
   end
 end

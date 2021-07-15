@@ -70,6 +70,19 @@ type
 end;
 
 type
+  TUsuario = record
+    ID : Integer;
+    Login : string;
+    Ativo : Boolean;
+    Perfil : string;
+
+    GrupoAtivo : Boolean;
+    AcessoPDV : Boolean;
+    AcessoFinanceiro : Boolean;
+    AcessoOP : Boolean;//OP = Ordem de producao
+  end;
+
+type
   TVersao = record
     SistemaRelease : string ;
     SistemaBuild : string ;
@@ -123,11 +136,11 @@ type
     fSMProducao: TSMProducaoClient;
     fSMProduto: TSMProdutoClient;
     fVersao: TVersao;
+    fUsuario: TUsuario;
     function GetSMClient: TSMClient;
   public
-    { Public declarations }
-    User,UserPerfil : string ;
-    UserID : Integer ;
+//    User,UserPerfil : string ;
+//    UserID : Integer ;
 
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -160,6 +173,7 @@ type
     function GetFloat(pSQL,pCampoRetorno : string) : Double ;
 
     property Empresa : TEmpresa read fEmpresa ;
+    property Usuario : TUsuario read fUsuario;
     property SistemaVersao : TVersao read fVersao ;
     property AConexao: TConexao read FConexao;
     property BancoDados : string read fBancoDados ;
@@ -435,7 +449,10 @@ begin
 
   tmp := TClientDataSet.Create(nil);
   try
-    txt := 'SELECT USU_ID,USU_NOME,ATIVO,PERFIL FROM USUARIO '+
+    txt := 'select U.USU_ID, U.USU_NOME, U.ATIVO, U.PERFIL, UG.ATIVO GRUPOATIVO,'+
+           'UG.ACESSO_PDV, UG.ACESSO_OP, UG.ACESSO_FINANCEIRO '+
+           'from USUARIO U '+
+           'left join USUARIO_GRUPO UG on (UG.ID = U.ID_GRUPO) '+
            'WHERE UPPER(USU_NOME) = '+QuotedStr(AnsiUpperCase(Trim(usuario)))+
            ' AND USU_SENHA = ' + QuotedStr(Trim(senha));
 
@@ -446,19 +463,29 @@ begin
     begin
       if tmp.FieldByName('ativo').AsString = 'Não' then
       begin
-        TMensagem.Informacao('Não foi possivel logar no sistema.'+#13+'Usuário está inativo');
+        TMensagem.Erro('Não foi possivel logar no sistema.'+#13+'Usuário está inativo');
       end
       else
       begin
         Result := True;
-        user := usuario;
-        UserID := tmp.FieldByName('USU_ID').AsInteger;
-        UserPerfil := tmp.FieldByName('PERFIL').AsString;
+        fUsuario.ID := tmp.FieldByName('USU_ID').AsInteger;
+        fUsuario.login := usuario;
+        fUsuario.Ativo := True;
+        fUsuario.Perfil := tmp.FieldByName('PERFIL').AsString;
+
+        //***Tabela USUARIO_GRUPO***
+        fUsuario.GrupoAtivo := (tmp.FieldByName('GRUPOATIVO').AsInteger = 1);
+        fUsuario.AcessoPDV := (tmp.FieldByName('ACESSO_PDV').AsInteger = 1);
+        fUsuario.AcessoFinanceiro := (tmp.FieldByName('ACESSO_FINANCEIRO').AsInteger = 1);
+        fUsuario.AcessoOP := (tmp.FieldByName('ACESSO_OP').AsInteger = 1);
+//        user := usuario;
+//        UserID := tmp.FieldByName('USU_ID').AsInteger;
+//        UserPerfil := tmp.FieldByName('PERFIL').AsString;
       end;
     end
     else
     begin
-      TMensagem.Informacao('Login não efetuado.' + #13#10 + 'Usuário / senha não encontrados.');
+      TMensagem.Erro('Login não efetuado.' + #13#10 + 'Usuário / senha não encontrados.');
     end;
 
   finally
@@ -500,7 +527,7 @@ end;
 
 function TDM.UsuarioDataHora: string;
 begin
-  Result := User+'|'+ FormatDateTime('dd/mm/yy|hh:MM',Now) ;
+  Result := Usuario.login+'|'+ FormatDateTime('dd/mm/yy|hh:MM',Now) ;
 end;
 
 function TDM.VerificaProdutoFabricado(codProduto: string): boolean;

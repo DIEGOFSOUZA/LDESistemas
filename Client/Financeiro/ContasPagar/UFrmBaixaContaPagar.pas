@@ -366,7 +366,7 @@ begin
   if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,False,0,'CAP','B','',
                                       IDNota.ToInteger,Duplicata,FormatDateTime('dd/mm/yyyy', StrToDateDef(edtDtBaixa.Text,Date)),
                                       StrToCurrDef(edtVlJuros.Text,0),StrToCurrDef(edtVlDesconto.Text,0),
-                                      StrToCurr(edtValBaixa.Text),DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                      StrToCurr(edtValBaixa.Text),DM.Usuario.login,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
                                       lValida.vIdCaixa,StrToIntDef(edtNumCheque.Text,0)) then
   begin
     TMensagem.Informacao('Duplicata paga com sucesso.');
@@ -433,7 +433,7 @@ begin
   if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,True,aDiferenca,'CAP','B','',
                                    IDNota.ToInteger,Duplicata,FormatDateTime('dd/mm/yyyy', StrToDateDef(edtDtBaixa.Text,Date)),
                                    StrToCurrDef(edtVlJuros.Text,0),StrToCurrDef(edtVlDesconto.Text,0),
-                                   StrToCurr(edtValBaixa.Text),DM.User,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
+                                   StrToCurr(edtValBaixa.Text),DM.Usuario.login,edpsqsHistorico.Campo.Text,edpsqsConta.Campo.Text,
                                    lValida.vIdCaixa,StrToIntDef(edtNumCheque.Text,0)) then
   begin
     TMensagem.Informacao('Pagamento parcial efetuado com sucesso.');

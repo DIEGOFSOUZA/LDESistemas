@@ -288,7 +288,7 @@ begin
   cdsID.AsInteger := 0;
   cdsEMISSAO.AsDateTime := Date;
   cdsENTRADA.AsDateTime := Date;
-  cdsID_USUARIO.AsInteger := DM.UserID;
+//  cdsID_USUARIO.AsInteger := DM.UserID;
 end;
 
 procedure TFrm_EntradaSimples.DBEdit2KeyPress(Sender: TObject; var Key: Char);
@@ -550,7 +550,7 @@ procedure TFrm_EntradaSimples.Novo;
 begin
 //  inherited;
   lblDataInclusao.Caption := 'Data da inclusão: ' + FormatDateTime('dd/mm/yyyy', Date);
-  lblUsuarioInclusao.Caption := 'Usuário: ' + DM.User;
+//  lblUsuarioInclusao.Caption := 'Usuário: ' + DM.User;
 
   cds.Close;
   cds.Data := DM.SMNotaClient.getNotaEntrada(DM.BancoDados, -1);
