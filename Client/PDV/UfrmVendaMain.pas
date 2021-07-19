@@ -9,11 +9,6 @@ uses
   Vcl.Imaging.pngimage, Vcl.Grids, Vcl.Buttons, Data.DB, Datasnap.DBClient,
   ACBrUtil, DateUtils, Vcl.Imaging.jpeg;
 
-const
-  senhaMaster1 = 'takanoadm';
-  senhaMaster2 = 'takanomaster';
-
-
 type
   TRetornoPK = record
     ID : integer ;
@@ -560,21 +555,6 @@ begin
 
         if (aRetorno = 'sucesso') then
         begin
-//          if cdsPagamentos.Locate('FORMAPAGTO', 'CREDIARIO', []) then
-//          begin
-//            if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
-//            begin
-//              lSenha := VoltaSenha('Liberar a venda');
-//              if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
-//              begin
-//                TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
-//                Exit
-//              end
-//              else
-//                fUsuarioAutorizou := lSenha;
-//            end;
-//          end;
-
           cdsPagamentos.First;
           while not cdsPagamentos.Eof do
           begin
@@ -1660,17 +1640,6 @@ begin
           Result := False;
           Exit;
         end;
-{$REGION 'solitacao de senha para liberar venda'}
-//      lSenha := VoltaSenha('Liberar a venda');
-//      if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
-//      begin
-//        TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
-//        Result := False;
-//        Exit
-//      end
-//      else
-//        fUsuarioAutorizou := lSenha;
-{$ENDREGION}
       end;
     end;
 

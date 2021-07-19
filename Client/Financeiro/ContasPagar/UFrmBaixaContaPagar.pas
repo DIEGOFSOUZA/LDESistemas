@@ -9,9 +9,6 @@ uses
   Vcl.Mask, Vcl.DBCtrls, Data.DB, UEDPesquisa, Vcl.Imaging.pngimage, Vcl.Buttons,
   Datasnap.DBClient, System.Actions, Vcl.ActnList;
 
-const
-  senha = '2020';
-
 type
   TValidar = record
     vResult: Boolean;
@@ -103,7 +100,8 @@ var
 implementation
 
 uses
-  UFrmContasPagar, UDM, u_Mensagem, UConsulta, UFrm_VoltaSenha, UFuncoes;
+  UFrmContasPagar, UDM, u_Mensagem, UConsulta, UFuncoes;
+
 
 {$R *.dfm}
 
