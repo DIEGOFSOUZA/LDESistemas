@@ -305,9 +305,9 @@ begin
         lSql := lSql + lWhere + ' c.baixa_data is not null ';
 
       lSql := lSql +
-              'union all '+
+              ' union all '+
               'select cast(''P'' as char(1)) tabela,cast(''SIM'' as char(3)) BAIXADA, A.N_NF, A.EMISSAO, x.NDUP,'+
-              '       B.RAZAO_NOME FORNECEDOR, y.DVENC, X.VALOR VDUP, X.ID_NOTAENTRADA ID_NOTA '+
+              'B.RAZAO_NOME FORNECEDOR, y.DVENC, X.VALOR VDUP, X.ID_NOTAENTRADA ID_NOTA '+
               'from nota_entrada_parcial x '+
               'left join nota_entrada_pagar y on (y.ID_NOTAENTRADA = x.id_notaentrada and y.ndup = x.ndup) '+
               'left join NOTA_ENTRADA A on (x.ID_NOTAENTRADA = A.ID) '+

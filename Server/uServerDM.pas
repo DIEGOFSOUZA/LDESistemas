@@ -124,6 +124,14 @@ begin
   Conexao.Params.Values['Server'] := Servidor;
   Conexao.Params.Values['Protocol'] := Protocolo;
   Conexao.Params.Values['Port'] := Porta;
+
+//********SaveInCloud*****************
+//  Conexao.Params.Values['Server'] := 'env-8388274.jelastic.saveincloud.net';
+//  Conexao.Params.Values['Database'] := Banco;
+//  Conexao.Params.Values['Protocol'] := Protocolo;
+//  Conexao.Params.Values['Port'] := '12503';
+//  Conexao.Params.Values['User_Name'] := 'SYSDBA';
+//  Conexao.Params.Values['Password'] := '12c5NpzjWqhKtzEVTOV2';
   try
     Conexao.Connected := True;
   except

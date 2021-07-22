@@ -101,7 +101,7 @@ type
    class function CondicoesPagto : Integer ;
 
    {Financeiro - Contas a Pagar}
-    class function Historico(aIdGrupo: integer = -1; aDescri: string = ''): Integer;
+   class function Historico(aIdGrupo: integer = -1; aDescri: string = ''): Integer;
    class function Historico_Grupo : Integer ;
    class function ContaBancaria : string ;
    class function Cheque : TCheque ;
@@ -1170,8 +1170,8 @@ begin
                    'end tipo,'+
                    'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA,'''') CONVERSAO '+
                    'from PRODUTO a ' +
-                   'left outer join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
-                   'left outer join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
+                   'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
+                   'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
   {PA = Produto acabado, MP = Materia-Prima, A=Ambos}
   if pTipo <> EmptyStr then
     InstrucaoSQL := InstrucaoSQL +
@@ -1436,7 +1436,7 @@ begin
   InstrucaoSQL := 'select a.ID,a.N_NF,a.EMISSAO,a.TOTNOTA,'+
                   'b.RAZAO_NOME FORNECEDOR '+
                   'from NOTA_ENTRADA a '+
-                  'left outer join FABRICANTE b on (b.CODIGO=a.CODFOR) ';
+                  'left join FABRICANTE b on (b.CODIGO=a.CODFOR) ';
   SetLength(mCampos,5);
 
   mCampos[0].Descricao := 'ID' ;

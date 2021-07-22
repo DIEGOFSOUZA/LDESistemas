@@ -155,19 +155,18 @@ var
 implementation
 
 {$R *.dfm}
-
 uses
-  UDM, UFrm_Cliente, UFrm_Cidades, UFrm_Func,  UFrm_Ramo,
-  UFrm_GrupoFornecedor, UFrm_Empresa, UFrm_Fornecedor, UFrm_Produto,
-  UFrm_GrupoProdutos, UFrm_SubGrupoProdutos, UFrm_OrdemProducao,
-  UFrm_MateriaPrima, UfrmVendaMain, UFrm_CondicaoPagto, UFrm_Representante,
-  URel_ListaEstoque, URel_PDV_Venda, UFrm_ContasAReceber,
-  UFrm_CaixaAbertura, UFrm_CaixaFechamento, URel_Venda0, UFrmContasPagar,
-  URel_FechamentoCaixa, UFrm_Historico, UFrm_ContaBancaria, u_Mensagem, UFrm_Sobre,
-  UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque, UFrm_GrupoHistorico, UFrm_Usuario,
-  uFrm_CadUnidade, UFrm_CondicoesPagto, UFrm_Pedido, uRel_VendaFormaPagto,
-  uRel_VendaPeriodo, uRel_VendaPorVendedor, uRel_VendaPorItem,
-  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta;
+  UDM, UFrm_Cliente, UFrm_Cidades, UFrm_Func, UFrm_Ramo, UFrm_GrupoFornecedor,
+  UFrm_Empresa, UFrm_Fornecedor, UFrm_Produto, UFrm_GrupoProdutos,
+  UFrm_SubGrupoProdutos, UFrm_OrdemProducao, UFrm_MateriaPrima, UfrmVendaMain,
+  UFrm_CondicaoPagto, UFrm_Representante, URel_ListaEstoque, URel_PDV_Venda,
+  UFrm_ContasAReceber, UFrm_CaixaAbertura, UFrm_CaixaFechamento, URel_Venda0,
+  UFrmContasPagar, URel_FechamentoCaixa, UFrm_Historico, UFrm_ContaBancaria,
+  u_Mensagem, UFrm_Sobre, UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque,
+  UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
+  UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
+  uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta;
 
 function Saudacao: string;
 begin
@@ -252,7 +251,7 @@ end;
 
 procedure TFrm_Inicial.MenuRel_ClienteClick(Sender: TObject);
 begin
-  TFrm_Cliente.CreateChild(Self);
+//  TFrm_Cliente.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuFinanceiro_ContaClick(Sender: TObject);
@@ -487,6 +486,11 @@ begin
     MenuFinanceiro_Conta.Visible := True;
     MenuFinanceiro_GrupoHistorico.Visible := True;
     MenuFinanceiro_Historico.Visible := True;
+
+    MenuCompra.Visible := True;
+    MenuCompra_Grupo.Visible := True;
+    MenuCompra_Fornecedor.Visible := True;
+    MenuCompra_NFEntrada.Visible := True;
   end;
 end;
 

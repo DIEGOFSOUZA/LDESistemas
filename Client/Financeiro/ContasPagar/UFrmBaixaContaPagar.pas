@@ -56,7 +56,7 @@ type
     edtDupl: TEdit;
     edtValor: TEdit;
     actlst1: TActionList;
-    actBaixar: TAction;
+    actPagar: TAction;
     actRestaurar: TAction;
     actCancelar: TAction;
     lblTitBaixa: TLabel;
@@ -69,7 +69,7 @@ type
     procedure edtValBaixaExit(Sender: TObject);
     procedure edpsqsHistoricoPesquisa(Sender: TObject; var Retorno: string);
     procedure edtDtBaixaExit(Sender: TObject);
-    procedure actBaixarExecute(Sender: TObject);
+    procedure actPagarExecute(Sender: TObject);
     procedure actCancelarExecute(Sender: TObject);
   private
     fVlPago: Currency;
@@ -177,6 +177,7 @@ begin
       edtValBaixa.Text := FormatCurr('##0.00', lcds.FieldByName('VDUP').AsCurrency);
       edtVlDesconto.Text := FormatCurr('##0.00', 0);
       edtVlJuros.Text := FormatCurr('##0.00', 0);
+      fVlPago := lcds.FieldByName('VDUP').AsCurrency;
     end;
 
     IDNota := aIDNota.ToString;
@@ -188,7 +189,7 @@ begin
   end;
 end;
 
-procedure TFrmBaixaContaPagar.actBaixarExecute(Sender: TObject);
+procedure TFrmBaixaContaPagar.actPagarExecute(Sender: TObject);
 var
   lVlPago: Currency;
 begin
@@ -233,9 +234,9 @@ var
   lFormata: TFormataValor;
 begin
   inherited;
-
   lFormata := ValidaFormataCurrency(edtValBaixa.Text);
   edtValBaixa.Text := lFormata.VlString;
+  fVlPago := lFormata.vlFloat;
 end;
 
 procedure TFrmBaixaContaPagar.edtVlDescontoExit(Sender: TObject);

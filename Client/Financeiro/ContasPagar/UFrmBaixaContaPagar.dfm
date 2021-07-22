@@ -20,7 +20,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 396
     object pnlTitulo: TPanel
       Left = 1
       Top = 1
@@ -226,7 +225,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitTop = 333
       object pnlCancelar: TPanel
         Left = 244
         Top = 2
@@ -269,7 +267,7 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
           Top = 0
           Width = 100
           Height = 40
-          Action = actBaixar
+          Action = actPagar
           Align = alClient
           Flat = True
           Font.Charset = ANSI_CHARSET
@@ -296,7 +294,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
       ParentBackground = False
       TabOrder = 1
       TabStop = True
-      ExplicitTop = 137
       object pnlDadosBaixa: TPanel
         Left = 0
         Top = 0
@@ -304,7 +301,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
         Height = 159
         Align = alTop
         TabOrder = 0
-        ExplicitTop = -2
         object Label8: TLabel
           Left = 16
           Top = 35
@@ -547,7 +543,6 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
         Height = 39
         Align = alTop
         TabOrder = 1
-        ExplicitTop = 164
         object Label15: TLabel
           Left = 26
           Top = 10
@@ -617,9 +612,9 @@ inherited FrmBaixaContaPagar: TFrmBaixaContaPagar
   object actlst1: TActionList
     Left = 369
     Top = 271
-    object actBaixar: TAction
+    object actPagar: TAction
       Caption = 'PAGAR'
-      OnExecute = actBaixarExecute
+      OnExecute = actPagarExecute
     end
     object actRestaurar: TAction
       Caption = 'RESTAURAR'#13#10'A BAIXA'
