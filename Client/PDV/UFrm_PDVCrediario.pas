@@ -106,7 +106,7 @@ var
 implementation
 
 uses
-  UDM, UConsulta, u_Mensagem;
+  UDM, UConsulta, u_Mensagem, UFuncoes;
 
 {$R *.dfm}
 
@@ -146,9 +146,10 @@ const SQL = 'select a.COND1,a.COND2,a.COND2,a.COND3,a.COND4,a.COND5,'+
             'where a.CODIGO = %s' ;
 var
   tmp : TClientDataSet ;
-  I, aCont: Integer;
-  aValor : Currency ;
+  I, lNumParc : Integer;
+  aValor,lCentavos : Currency ;
 begin
+  lCentavos := 0;
   if edpCondPagto.Campo.Text = EmptyStr then
   begin
     edpCondPagto.Campo.SetFocus ;
@@ -160,7 +161,7 @@ begin
   pnlRodape.Visible := True ;
   Height := 366 ;
 
-  aCont := 0 ;
+  lNumParc := 0 ;
   cdsParcelas.Close ;
   cdsParcelas.FieldDefs.Clear ;
   cdsParcelas.CreateDataSet ;
@@ -179,7 +180,7 @@ begin
       if ((tmp.FieldByName('cond' + IntToStr(I)).IsNull) or
          (tmp.FieldByName('cond' + IntToStr(I)).AsFloat < 1)) then
         Break;
-      Inc(aCont);
+      Inc(lNumParc);
     end;
 
     if ( (chkPecentual.Checked) and (tmp.FieldByName('percent_acrescimo').AsFloat > 0) ) then
@@ -190,10 +191,14 @@ begin
     else
       aValor := ValorTotal ;
 
-    aVlParcelas :=  (aValor / aCont) ;
+    aVlParcelas := RoundABNT( (aValor / lNumParc),-2) ;
+    lCentavos := ((aVlParcelas * lNumParc) - aValor);
 
-    for I := 1 to aCont do
+    for I := 1 to lNumParc do
     begin
+       if ((i = lNumParc) and (lCentavos <> 0)) then
+         aVlParcelas := aVlParcelas-lCentavos;
+
       (FindComponent('lblDT'+IntToStr(i)) as Tlabel).Caption := FormatDateBr( IncDay(Date,tmp.FieldByName('cond'+IntToStr(i)).AsInteger),'dd/mm/yy' );
       (FindComponent('edtDT'+IntToStr(i)) as TEdit).Text := 'R$ '+FormatCurr('#,##0.00',aVlParcelas) ;
 
@@ -205,6 +210,14 @@ begin
       cdsParcelasVALOR.AsCurrency := aVlParcelas ;
       cdsParcelas.Post ;
     end;
+
+//    if (lCentavos <> 0) then
+//    begin
+//      cdsParcelas.Last;
+//      cdsParcelas.Edit;
+//      cdsParcelasVALOR.AsCurrency := (aVlParcelas-lCentavos) ;
+//      cdsParcelas.Post
+//    end;
 
   finally
     FreeAndNil(tmp);

@@ -166,7 +166,7 @@ begin
 
   {$IFDEF DEBUG}
     edtUsuario.Text := 'ADMIN' ;
-    edtSenha.Text   := '123' ;
+    edtSenha.Text   := 'ldesistemas' ;
   {$ENDIF}
 
   CarregaEmpresas() ;

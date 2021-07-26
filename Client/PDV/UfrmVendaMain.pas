@@ -627,7 +627,6 @@ begin
       if not ValidaLimiteCredito(IdCliente.ToString, cdsItenstotal.Value) then
         Exit;
 
-
     if not Assigned(Frm_PDVCrediario) then
       Frm_PDVCrediario := TFrm_PDVCrediario.Create(Self);
     try
@@ -1115,7 +1114,6 @@ begin
   begin
     if edtProduto.Text = EmptyStr then
       Abort;
-
     CarregaProduto(edtProduto.Text);
   end;
 end;
@@ -1127,9 +1125,16 @@ end;
 
 procedure TfrmVendaMain.edtQtdeKeyPress(Sender: TObject; var Key: Char);
 begin
+//  if Key = #13 then
+//  begin
+//    Perform(WM_NEXTDLGCTL,0,0) ;
+//  end;
+
   if Key = #13 then
   begin
-    Perform(WM_NEXTDLGCTL,0,0) ;
+    if edtProduto.Text = EmptyStr then
+      Abort;
+    CarregaProduto(edtProduto.Text);
   end;
 
   if not (Key in ['0'..'9', ',', #8, #13]) then

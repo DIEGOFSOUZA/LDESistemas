@@ -501,6 +501,8 @@ begin
     MenuProducao.Visible := True;
     MenuProducao_GeraOrdem.Visible := True;
     MenuProducao_AcertaEstoque.Visible := True;
+
+    MenuProd_Insumo.Visible := True;
   end;
 end;
 
