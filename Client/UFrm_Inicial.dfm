@@ -4636,6 +4636,10 @@ object Frm_Inicial: TFrm_Inicial
           Caption = 'VENDAS TOTAIS POR ITEM'
           OnClick = MenuRel_Vendas_TotItemClick
         end
+        object MenuRel_Vendas_Grupo: TMenuItem
+          Caption = 'VENDA POR GRUPO'
+          OnClick = MenuRel_Vendas_GrupoClick
+        end
       end
       object MenuRel_Produto: TMenuItem
         Caption = 'PRODUTOS'

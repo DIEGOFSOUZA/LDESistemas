@@ -1,10 +1,10 @@
 inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
+  Width = 1126
+  Height = 528
   BorderStyle = bsNone
   Caption = 'Pdr_ListaRelatorio'
-  ClientHeight = 420
-  ClientWidth = 744
-  ExplicitWidth = 744
-  ExplicitHeight = 420
+  ExplicitWidth = 1126
+  ExplicitHeight = 528
   PixelsPerInch = 96
   TextHeight = 13
   object pnlFundo0: TPanel
@@ -47,7 +47,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
       Align = alTop
       Caption = 'pnlTopo'
       ShowCaption = False
-      TabOrder = 0
+      TabOrder = 1
       object pnlPeriodo: TPanel
         Left = 1
         Top = 1
@@ -97,7 +97,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
         end
         object dtp2: TDateTimePicker
           Left = 128
@@ -113,7 +113,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
           Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 2
         end
         object pnlGerar: TPanel
           Left = 269
@@ -125,7 +125,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
           Color = 7024384
           ParentBackground = False
           ShowCaption = False
-          TabOrder = 2
+          TabOrder = 0
           object imgGerar: TImage
             Left = 0
             Top = 0
@@ -296,7 +296,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
       Align = alClient
       Caption = 'pnlFundo1'
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 2
       object pnlGrid: TPanel
         Left = 1
         Top = 1
@@ -316,7 +316,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
           Color = 13337441
           ParentBackground = False
           ShowCaption = False
-          TabOrder = 0
+          TabOrder = 1
         end
         object dbgrd1: TDBGrid
           Left = 1
@@ -334,7 +334,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
           Font.Style = []
           Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -11
@@ -353,7 +353,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
         Color = 13337441
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 0
+        TabOrder = 2
         Visible = False
         object lblTitBanco: TLabel
           Left = 1
@@ -391,7 +391,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
         Font.Style = [fsBold]
         ItemIndex = 3
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 0
         Text = 'IMPRESS'#194'O'
         Visible = False
         Items.Strings = (
@@ -408,7 +408,7 @@ inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
       Height = 22
       Align = alTop
       Caption = 'pnlTitulo'
-      TabOrder = 2
+      TabOrder = 0
       object lblTitulo: TLabel
         Left = 1
         Top = 1

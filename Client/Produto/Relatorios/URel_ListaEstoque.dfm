@@ -28,22 +28,23 @@ inherited RelListaEtoque: TRelListaEtoque
       Left = 38
       Top = 84
       Width = 718
-      Height = 40
+      Height = 53
       BandType = btColumnHeader
       object RLPanel1: TRLPanel
         Left = 0
-        Top = 12
+        Top = 19
         Width = 718
-        Height = 28
+        Height = 34
         Align = faBottom
         Color = cl3DLight
         ParentColor = False
         Transparent = False
         object Label1: TLabel
-          Left = 76
-          Top = 10
-          Width = 88
-          Height = 17
+          Left = 60
+          Top = 0
+          Width = 335
+          Height = 34
+          AutoSize = False
           Caption = 'Tipo | Produto'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
@@ -52,15 +53,16 @@ inherited RelListaEtoque: TRelListaEtoque
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
+          Layout = tlBottom
+          WordWrap = True
         end
         object Label2: TLabel
-          Left = 564
-          Top = 10
-          Width = 90
-          Height = 17
-          Alignment = taRightJustify
+          Left = 481
+          Top = 0
+          Width = 70
+          Height = 34
           AutoSize = False
-          Caption = 'Qtde. estoque'
+          Caption = 'QTDE. EM ESTOQUE'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -68,14 +70,16 @@ inherited RelListaEtoque: TRelListaEtoque
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
+          WordWrap = True
         end
         object Label3: TLabel
-          Left = 658
-          Top = 10
-          Width = 55
-          Height = 17
+          Left = 559
+          Top = 0
+          Width = 70
+          Height = 34
+          Alignment = taCenter
           AutoSize = False
-          Caption = 'Unidade'
+          Caption = 'UND'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -83,12 +87,15 @@ inherited RelListaEtoque: TRelListaEtoque
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
+          Layout = tlBottom
         end
         object Label5: TLabel
           Left = 2
-          Top = 10
-          Width = 43
-          Height = 17
+          Top = 0
+          Width = 50
+          Height = 34
+          Alignment = taCenter
+          AutoSize = False
           Caption = 'C'#243'digo'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
@@ -97,15 +104,15 @@ inherited RelListaEtoque: TRelListaEtoque
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
+          Layout = tlBottom
         end
         object Label6: TLabel
-          Left = 470
-          Top = 11
-          Width = 90
-          Height = 17
-          Alignment = taRightJustify
+          Left = 403
+          Top = 0
+          Width = 70
+          Height = 34
           AutoSize = False
-          Caption = 'Qtde. m'#237'nima'
+          Caption = 'QTDE. M'#205'NIMA'
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
           Font.Height = -13
@@ -113,18 +120,37 @@ inherited RelListaEtoque: TRelListaEtoque
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
+          WordWrap = True
+        end
+        object Label7: TLabel
+          Left = 637
+          Top = 0
+          Width = 80
+          Height = 34
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'VALOR DE CUSTO R$'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Segoe UI Semibold'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+          Layout = tlBottom
+          WordWrap = True
         end
       end
     end
     object RLBand3: TRLBand
       Left = 38
-      Top = 124
+      Top = 137
       Width = 718
       Height = 22
       object RLDBText1: TRLDBText
-        Left = 76
-        Top = 1
-        Width = 383
+        Left = 60
+        Top = 0
+        Width = 335
         Height = 17
         AutoSize = False
         DataField = 'NOME'
@@ -139,9 +165,9 @@ inherited RelListaEtoque: TRelListaEtoque
         BeforePrint = RLDBText1BeforePrint
       end
       object RLDBText2: TRLDBText
-        Left = 564
-        Top = 1
-        Width = 90
+        Left = 481
+        Top = 0
+        Width = 70
         Height = 17
         Alignment = taRightJustify
         AutoSize = False
@@ -156,9 +182,9 @@ inherited RelListaEtoque: TRelListaEtoque
         Text = ''
       end
       object RLDBText3: TRLDBText
-        Left = 658
-        Top = 1
-        Width = 55
+        Left = 559
+        Top = 0
+        Width = 70
         Height = 17
         Alignment = taCenter
         AutoSize = False
@@ -174,10 +200,10 @@ inherited RelListaEtoque: TRelListaEtoque
       end
       object RLDBText4: TRLDBText
         Left = 2
-        Top = 1
+        Top = 0
         Width = 50
         Height = 17
-        Alignment = taJustify
+        Alignment = taCenter
         AutoSize = False
         DataField = 'CODIGO'
         DataSource = dsEstoque
@@ -190,9 +216,9 @@ inherited RelListaEtoque: TRelListaEtoque
         Text = ''
       end
       object RLDBText5: TRLDBText
-        Left = 470
-        Top = 1
-        Width = 90
+        Left = 403
+        Top = 0
+        Width = 70
         Height = 17
         Alignment = taRightJustify
         AutoSize = False
@@ -206,12 +232,29 @@ inherited RelListaEtoque: TRelListaEtoque
         ParentFont = False
         Text = ''
       end
+      object RLDBText6: TRLDBText
+        Left = 637
+        Top = 0
+        Width = 80
+        Height = 17
+        Alignment = taRightJustify
+        AutoSize = False
+        DataField = 'PRECO_CUSTO'
+        DataSource = dsEstoque
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        Text = ''
+      end
     end
     object RLBand4: TRLBand
       Left = 38
-      Top = 146
+      Top = 159
       Width = 718
-      Height = 43
+      Height = 62
       BandType = btSummary
       Borders.Sides = sdCustom
       Borders.DrawLeft = False
@@ -219,9 +262,9 @@ inherited RelListaEtoque: TRelListaEtoque
       Borders.DrawRight = False
       Borders.DrawBottom = False
       object RLDBResult1: TRLDBResult
-        Left = 416
-        Top = 5
-        Width = 238
+        Left = 402
+        Top = 16
+        Width = 149
         Height = 16
         Alignment = taRightJustify
         DataField = 'QTDE_ESTOQUE'
@@ -230,10 +273,50 @@ inherited RelListaEtoque: TRelListaEtoque
         Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'Arial'
-        Font.Style = []
+        Font.Style = [fsBold]
         Info = riSum
         ParentFont = False
-        Text = 'Total estoque:  '
+        Text = ''
+      end
+      object RLMemo1: TRLMemo
+        Left = 368
+        Top = 0
+        Width = 93
+        Height = 32
+        AutoSize = False
+        Behavior = [beSiteExpander]
+        Lines.Strings = (
+          'QTDE TOTAL'
+          'EM ESTOQUE')
+      end
+      object RLDBResult2: TRLDBResult
+        Left = 637
+        Top = 16
+        Width = 80
+        Height = 16
+        Alignment = taRightJustify
+        AutoSize = False
+        DataField = 'PRECO_CUSTO'
+        DataSource = dsEstoque
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Info = riSum
+        ParentFont = False
+        Text = ''
+      end
+      object RLMemo2: TRLMemo
+        Left = 567
+        Top = 0
+        Width = 65
+        Height = 32
+        AutoSize = False
+        Behavior = [beSiteExpander]
+        Lines.Strings = (
+          'CUSTO'
+          'TOTAL R$')
       end
     end
   end
@@ -243,7 +326,7 @@ inherited RelListaEtoque: TRelListaEtoque
     Width = 499
     Height = 161
     Align = alTop
-    TabOrder = 1
+    TabOrder = 0
     object pnlAcoes: TPanel
       Left = 1
       Top = 120
@@ -252,8 +335,7 @@ inherited RelListaEtoque: TRelListaEtoque
       Align = alBottom
       Color = 14803681
       ParentBackground = False
-      TabOrder = 0
-      ExplicitTop = 93
+      TabOrder = 1
       object pnlGerar: TPanel
         Left = 267
         Top = 5
@@ -364,7 +446,7 @@ inherited RelListaEtoque: TRelListaEtoque
       Height = 119
       ActivePage = ts1
       Align = alClient
-      TabOrder = 1
+      TabOrder = 0
       object ts1: TTabSheet
         Caption = 'Pesquisa por tipo'
         object pnlFiltros: TPanel
@@ -410,7 +492,7 @@ inherited RelListaEtoque: TRelListaEtoque
             Font.Style = []
             ItemIndex = 0
             ParentFont = False
-            TabOrder = 0
+            TabOrder = 1
             Text = 'Todos'
             Items.Strings = (
               'Todos'
@@ -428,15 +510,14 @@ inherited RelListaEtoque: TRelListaEtoque
               'Estoque negativo'
               'Estoque zerado'
               'Estoque m'#237'nimo atingido')
-            TabOrder = 1
+            TabOrder = 0
           end
         end
       end
       object ts2: TTabSheet
         Caption = 'Pesquisa por produto'
         ImageIndex = 1
-        ExplicitWidth = 281
-        ExplicitHeight = 165
+        ExplicitWidth = 942
         object pnl1: TPanel
           Left = 0
           Top = 0
@@ -448,10 +529,7 @@ inherited RelListaEtoque: TRelListaEtoque
           ParentBackground = False
           ShowCaption = False
           TabOrder = 0
-          ExplicitLeft = 96
-          ExplicitTop = 40
-          ExplicitWidth = 185
-          ExplicitHeight = 41
+          ExplicitWidth = 942
           object edpsqsProd: TEdPesquisa
             Left = 40
             Top = 24
@@ -502,20 +580,21 @@ inherited RelListaEtoque: TRelListaEtoque
     CommandText = 
       'SELECT PROD.codigo,prod.nome,cast(prod.qtde_estoque as double pr' +
       'ecision) qtde_estoque,'#13#10'PROD.tipo_produto, d.sigla,cast(prod.QTD' +
-      'E_MINIMA as double precision) qtde_minima'#13#10'from PRODUTO prod'#13#10'le' +
-      'ft outer join UNIDADE d on (d.CODIGO = prod.COD_UNIDADE) '#13#10'WHERE' +
-      ' 1=2'
+      'E_MINIMA as double precision) qtde_minima,'#13#10'prod.preco_custo'#13#10'fr' +
+      'om PRODUTO prod'#13#10'left join UNIDADE d on (d.CODIGO = prod.COD_UNI' +
+      'DADE)'#13#10'WHERE 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.DSProviderConnection1
-    Left = 785
-    Top = 80
+    Left = 865
+    Top = 152
     object cdsEstoqueCODIGO: TIntegerField
       FieldName = 'CODIGO'
       Origin = 'CODIGO'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
       DisplayFormat = '000'
+      EditFormat = '000'
     end
     object cdsEstoqueNOME: TStringField
       FieldName = 'NOME'
@@ -545,11 +624,15 @@ inherited RelListaEtoque: TRelListaEtoque
       ReadOnly = True
       DisplayFormat = '#,##0.000'
     end
+    object cdsEstoquePRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      DisplayFormat = '#,##0.00'
+    end
   end
   object dsEstoque: TDataSource
     DataSet = cdsEstoque
-    Left = 720
-    Top = 80
+    Left = 864
+    Top = 208
   end
   object actlstAcoes: TActionList
     Images = DM.il2

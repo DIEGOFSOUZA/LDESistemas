@@ -112,7 +112,9 @@ uses
   URel_PDV_Venda in 'PDV\Relatorios\URel_PDV_Venda.pas' {Rel_PDV_Venda},
   URel_Venda0 in 'PDV\Relatorios\URel_Venda0.pas' {Rel_Venda0},
   UFrm_PDVDevConsulta in 'PDV\UFrm_PDVDevConsulta.pas' {Frm_PDVDevConsulta},
-  UFrm_PDVDevItem in 'PDV\UFrm_PDVDevItem.pas' {Frm_PDVDevItem};
+  UFrm_PDVDevItem in 'PDV\UFrm_PDVDevItem.pas' {Frm_PDVDevItem},
+  UPdr_Relatorio2 in 'Heranca\Relatorio\UPdr_Relatorio2.pas' {Pdr_Relatorio2},
+  uRel_VendaPorGrupo in 'Relatorios\Venda\uRel_VendaPorGrupo.pas' {Rel_VendaPorGrupo};
 
 {$R *.res}
 

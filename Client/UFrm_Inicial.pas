@@ -84,6 +84,7 @@ type
     MenuProducao_AcertaEstoque: TMenuItem;
     MenuVenda_PDV_AutorizaOrcamento: TMenuItem;
     MenuVenda_PDV_Vendas: TMenuItem;
+    MenuRel_Vendas_Grupo: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -133,6 +134,7 @@ type
     procedure MenuVenda_PDV_AutorizaOrcamentoClick(Sender: TObject);
     procedure MenuVenda_PDV_VendasClick(Sender: TObject);
     procedure MenuRel_Produto_EstoqueClick(Sender: TObject);
+    procedure MenuRel_Vendas_GrupoClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -166,7 +168,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo;
 
 function Saudacao: string;
 begin
@@ -463,6 +465,7 @@ begin
   MenuRel_Vendas_PorVendedor.Visible := False;
   MenuRel_Vendas_TotItem.Visible := False;
   MenuRel_Vendas_PorPagto.Visible := False;
+  MenuRel_Vendas_Grupo.Visible := False;
   MenuRel_Produto.Visible := False;
   MenuRel_Produto_Estoque.Visible := False;
   MenuRel_Cliente.Visible := False;
@@ -538,6 +541,7 @@ begin
     MenuRel_Vendas_PorVendedor.Visible := True;
     MenuRel_Vendas_TotItem.Visible := True;
     MenuRel_Vendas_PorPagto.Visible := True;
+    MenuRel_Vendas_Grupo.Visible := True;
     MenuRel_Produto.Visible := True;
     MenuRel_Produto_Estoque.Visible := True;
     MenuRel_Cliente.Visible := True;
@@ -665,6 +669,11 @@ begin
   begin
     Result := False;
   end;
+end;
+
+procedure TFrm_Inicial.MenuRel_Vendas_GrupoClick(Sender: TObject);
+begin
+  TRel_VendaPorGrupo.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuVenda_PDV_GeraOrcamentoClick(Sender: TObject);

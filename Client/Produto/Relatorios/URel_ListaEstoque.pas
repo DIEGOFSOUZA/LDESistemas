@@ -1,6 +1,6 @@
 unit URel_ListaEstoque;
 
-interface           {H=135 W=515}
+interface           {H=165 W=499}
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
@@ -54,17 +54,21 @@ type
     ts2: TTabSheet;
     pnl1: TPanel;
     edpsqsProd: TEdPesquisa;
+    Label7: TLabel;
+    RLDBText6: TRLDBText;
+    cdsEstoquePRECO_CUSTO: TCurrencyField;
+    RLMemo1: TRLMemo;
+    RLDBResult2: TRLDBResult;
+    RLMemo2: TRLMemo;
     procedure actSairExecute(Sender: TObject);
     procedure RLDBText1BeforePrint(Sender: TObject; var AText: string; var PrintIt: Boolean);
     procedure btnGerarClick(Sender: TObject);
     procedure RelatorioBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure edpsqsProdPesquisa(Sender: TObject; var Retorno: string);
   private
-    { Private declarations }
     procedure MontaSQL();
     procedure MontaParametros();
   public
-    { Public declarations }
     procedure Executar();
   end;
 
@@ -133,9 +137,12 @@ begin
   lWhere := ' where ';
   SQL := 'SELECT a.codigo,a.nome,'+
          'cast(a.qtde_estoque as double precision)qtde_estoque,'+
-         'a.tipo_produto,d.sigla,cast(a.qtde_minima as double precision)qtde_minima '+
+         'a.tipo_produto,coalesce(e.sigla,d.sigla) sigla,'+
+         'cast(a.qtde_minima as double precision)qtde_minima,'+
+         'cast(a.preco_custo*a.qtde_estoque as double precision) preco_custo '+
          'FROM PRODUTO a '+
-         'left outer join UNIDADE d on (d.CODIGO = a.COD_UNIDADE)';
+         'left join UNIDADE d on (d.CODIGO = a.COD_UNIDADE) '+
+         'left join UNIDADE e on (e.CODIGO = A.conv_unidade) ';
 
   if pgc1.TabIndex = 0 then
   begin
