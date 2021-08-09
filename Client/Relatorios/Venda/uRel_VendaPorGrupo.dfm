@@ -1,83 +1,363 @@
 inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
   Caption = 'Rel_VendaPorGrupo'
-  ClientHeight = 644
-  ClientWidth = 826
+  ClientHeight = 185
+  ClientWidth = 729
   OnCreate = FormCreate
-  ExplicitWidth = 826
-  ExplicitHeight = 644
+  ExplicitWidth = 729
+  ExplicitHeight = 185
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    DataSource = ds1
+    DataSource = dsGrupo
     inherited RLBand10: TRLBand
-      BeforePrint = nil
+      Height = 35
+      ExplicitHeight = 35
     end
     object rlgrp1: TRLGroup
       Left = 38
-      Top = 154
+      Top = 164
       Width = 718
-      Height = 207
+      Height = 56
       DataFields = 'IDGRUPO'
       object RLBand1: TRLBand
         Left = 0
         Top = 0
         Width = 718
-        Height = 89
-        BandType = btHeader
-        Color = 14342874
+        Height = 56
+        Color = 12303291
         ParentColor = False
         Transparent = False
-        object RLDBResult1: TRLDBResult
-          Left = 32
-          Top = 24
-          Width = 174
+        BeforePrint = RLBand1BeforePrint
+        object RLDBText1: TRLDBText
+          Left = 64
+          Top = 16
+          Width = 51
           Height = 16
-          DataField = 'VENDA'
-          DataSource = ds1
-          Info = riCount
-          Text = 'TOTAL DE VENDAS: '
+          DataField = 'GRUPO'
+          DataSource = dsGrupo
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Text = ''
           Transparent = False
         end
-        object RLDBResult2: TRLDBResult
-          Left = 232
-          Top = 24
-          Width = 267
+        object RLDBText2: TRLDBText
+          Left = 136
+          Top = 40
+          Width = 70
           Height = 16
-          DataField = 'VENDA'
-          DataSource = ds1
-          Info = riCount
-          Text = 'QUANTIDADE DE ITENS VENDIDOS:'
+          AutoSize = False
+          DataField = 'QTDE_VENDA'
+          DataSource = dsGrupo
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Text = ''
           Transparent = False
         end
-        object RLDBResult3: TRLDBResult
-          Left = 232
-          Top = 56
-          Width = 237
+        object RLDBText3: TRLDBText
+          Left = 373
+          Top = 40
+          Width = 70
           Height = 16
-          DataField = 'VENDA'
-          DataSource = ds1
-          Info = riCount
-          Text = 'SOMAT'#211'RIO DAS VENDAS R$:'
+          AutoSize = False
+          DataField = 'QTDE'
+          DataSource = dsGrupo
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Text = ''
+          Transparent = False
+        end
+        object RLDBText4: TRLDBText
+          Left = 588
+          Top = 40
+          Width = 125
+          Height = 16
+          AutoSize = False
+          DataField = 'TOTAL'
+          DataSource = dsGrupo
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Text = ''
+          Transparent = False
+        end
+        object RLLabel1: TRLLabel
+          Left = 5
+          Top = 16
+          Width = 55
+          Height = 16
+          Caption = 'GRUPO:'
+          Transparent = False
+        end
+        object RLLabel2: TRLLabel
+          Left = 5
+          Top = 40
+          Width = 127
+          Height = 16
+          AutoSize = False
+          Caption = 'QTDE. DE VENDAS:'
+          Transparent = False
+        end
+        object RLLabel3: TRLLabel
+          Left = 210
+          Top = 40
+          Width = 159
+          Height = 16
+          AutoSize = False
+          Caption = 'QTDE. ITENS VENDIDOS:'
+          Transparent = False
+        end
+        object RLLabel4: TRLLabel
+          Left = 447
+          Top = 40
+          Width = 137
+          Height = 16
+          AutoSize = False
+          Caption = 'TOTAL DAS VENDAS:'
           Transparent = False
         end
       end
+    end
+    object RLSubDetail1: TRLSubDetail
+      Left = 38
+      Top = 220
+      Width = 718
+      Height = 104
+      DataSource = dsDetalhe
       object RLBand2: TRLBand
         Left = 0
-        Top = 89
+        Top = 0
         Width = 718
-        Height = 72
+        Height = 20
+        BandType = btHeader
+        Color = 12189695
+        ParentColor = False
+        Transparent = False
+        object RLLabel5: TRLLabel
+          Left = 25
+          Top = 2
+          Width = 57
+          Height = 15
+          AutoSize = False
+          Caption = 'N'#186' VENDA'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel6: TRLLabel
+          Left = 90
+          Top = 2
+          Width = 80
+          Height = 15
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'EMISS'#194'O'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel7: TRLLabel
+          Left = 178
+          Top = 2
+          Width = 220
+          Height = 15
+          AutoSize = False
+          Caption = 'CLIENTE'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel8: TRLLabel
+          Left = 406
+          Top = 2
+          Width = 120
+          Height = 15
+          AutoSize = False
+          Caption = 'VENDEDOR(A)'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel9: TRLLabel
+          Left = 534
+          Top = 2
+          Width = 60
+          Height = 15
+          AutoSize = False
+          Caption = 'QTDE.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel10: TRLLabel
+          Left = 602
+          Top = 2
+          Width = 90
+          Height = 15
+          AutoSize = False
+          Caption = 'TOTAL R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+      end
+      object RLBand3: TRLBand
+        Left = 0
+        Top = 20
+        Width = 718
+        Height = 18
+        object RLDBText5: TRLDBText
+          Left = 25
+          Top = 1
+          Width = 55
+          Height = 16
+          AutoSize = False
+          DataField = 'VENDA'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText6: TRLDBText
+          Left = 90
+          Top = 1
+          Width = 80
+          Height = 16
+          Alignment = taCenter
+          AutoSize = False
+          DataField = 'EMISSAO'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText7: TRLDBText
+          Left = 178
+          Top = 1
+          Width = 220
+          Height = 16
+          AutoSize = False
+          DataField = 'CLIENTE'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText8: TRLDBText
+          Left = 406
+          Top = 1
+          Width = 120
+          Height = 16
+          AutoSize = False
+          DataField = 'VENDEDOR'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText9: TRLDBText
+          Left = 534
+          Top = 1
+          Width = 60
+          Height = 16
+          Alignment = taRightJustify
+          AutoSize = False
+          DataField = 'QTDE'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBText10: TRLDBText
+          Left = 602
+          Top = 1
+          Width = 90
+          Height = 16
+          Alignment = taRightJustify
+          AutoSize = False
+          DataField = 'TOTAL'
+          DataSource = dsDetalhe
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          ParentFont = False
+          Text = ''
+        end
       end
     end
   end
   inherited pnlFundo: TPanel
+    inherited pnlButtons: TPanel
+      ExplicitLeft = 625
+      ExplicitTop = 22
+      ExplicitHeight = 163
+    end
     inherited pnlTitulo: TPanel
-      inherited lblTitulo: TLabel
-        OnMouseDown = nil
-      end
+      ExplicitTop = 0
     end
     inherited pnlClient: TPanel
-      ExplicitLeft = -4
-      ExplicitTop = 27
+      ExplicitLeft = 0
+      ExplicitTop = 22
       ExplicitWidth = 625
       ExplicitHeight = 163
       object Label1: TLabel
@@ -113,7 +393,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         Height = 25
         Date = 44129.000000000000000000
         Format = 'dd/MM/yyyy'
-        Time = 0.685025972219591500
+        Time = 0.685025972219591600
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -129,7 +409,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         Height = 25
         Date = 44129.000000000000000000
         Format = 'dd/MM/yyyy'
-        Time = 0.685025972219591500
+        Time = 0.685025972219591600
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -140,7 +420,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
       end
       object edpesGrupo: TEdPesquisa
         Left = 21
-        Top = 66
+        Top = 54
         Width = 379
         Height = 21
         PermitirBranco = Sim
@@ -182,14 +462,25 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         TabOrder = 2
         TabStop = True
       end
+      object chkResumo: TCheckBox
+        Left = 21
+        Top = 85
+        Width = 138
+        Height = 17
+        Caption = 'Exibir apenas o resumo'
+        TabOrder = 3
+      end
+    end
+    inherited pnlRodape: TPanel
+      ExplicitTop = 185
     end
   end
-  object ds1: TDataSource
-    DataSet = cds1
-    Left = 584
-    Top = 210
+  object dsDetalhe: TDataSource
+    DataSet = cdsDetalhe
+    Left = 536
+    Top = 258
   end
-  object cds1: TClientDataSet
+  object cdsDetalhe: TClientDataSet
     Aggregates = <>
     CommandText = 
       'select cast(sum(pi.qtde) as double precision)qtde, cast(sum(pi.q' +
@@ -207,40 +498,100 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
     RemoteServer = DM.DSProviderConnection1
     Left = 536
     Top = 210
-    object cds1QTDE: TFloatField
+    object cdsDetalheQTDE: TFloatField
       FieldName = 'QTDE'
+      Origin = 'QTDE'
+      ProviderFlags = []
       ReadOnly = True
+      DisplayFormat = '#,##0'
     end
-    object cds1TOTAL: TFloatField
+    object cdsDetalheTOTAL: TFloatField
       FieldName = 'TOTAL'
+      Origin = 'TOTAL'
+      ProviderFlags = []
       ReadOnly = True
+      DisplayFormat = '#,##0.00'
     end
-    object cds1IDGRUPO: TIntegerField
+    object cdsDetalheIDGRUPO: TIntegerField
       FieldName = 'IDGRUPO'
+      Origin = 'IDGRUPO'
+      ProviderFlags = []
       ReadOnly = True
     end
-    object cds1GRUPO: TStringField
+    object cdsDetalheGRUPO: TStringField
       FieldName = 'GRUPO'
+      Origin = 'GRUPO'
+      ProviderFlags = []
       ReadOnly = True
       Size = 45
     end
-    object cds1VENDA: TIntegerField
+    object cdsDetalheVENDA: TIntegerField
       FieldName = 'VENDA'
+      Origin = 'ID'
       Required = True
     end
-    object cds1EMISSAO: TDateField
+    object cdsDetalheEMISSAO: TDateField
       FieldName = 'EMISSAO'
+      Origin = 'EMISSAO'
       Required = True
     end
-    object cds1CLIENTE: TStringField
+    object cdsDetalheCLIENTE: TStringField
       FieldName = 'CLIENTE'
+      Origin = 'NOME_RAZAO'
+      ProviderFlags = []
       ReadOnly = True
       Size = 100
     end
-    object cds1VENDEDOR: TStringField
+    object cdsDetalheVENDEDOR: TStringField
       FieldName = 'VENDEDOR'
+      Origin = 'USU_NOME'
+      ProviderFlags = []
       ReadOnly = True
       Size = 40
     end
+  end
+  object cdsGrupo: TClientDataSet
+    Aggregates = <>
+    CommandText = 
+      'select cast(sum(pi.QTDE) as double precision) QTDE, '#13#10'cast(sum(p' +
+      'i.QTDE * P.PRECO_VENDA) as numeric(10,2)) TOTAL, '#13#10'coalesce(P.CO' +
+      'D_GRUPO, -1) IDGRUPO, coalesce(GP.DESCRI, '#39'SEM GRUPO'#39') GRUPO,'#13#10'c' +
+      'ast(0 as integer)qtde_venda'#13#10'from PDV_MASTER PM'#13#10'left join CLIEN' +
+      'TE C on (C.CODIGO = PM.ID_CLIENTE)'#13#10'left join USUARIO U on (U.ID' +
+      '_VENDEDOR = PM.ID_VENDEDOR)'#13#10'left join PDV_ITENS pi on (pi.TIPO ' +
+      '= PM.TIPO and pi.ID = PM.ID)'#13#10'left join PRODUTO P on (P.CODIGO =' +
+      ' pi.ID_PRODUTO)'#13#10'left join GRUPO_PROD GP on (GP.CODIGO = P.COD_G' +
+      'RUPO)'#13#10'where 1=2'#13#10'group by 3,4'
+    Params = <>
+    ProviderName = 'DSPLer1'
+    RemoteServer = DM.DSProviderConnection1
+    Left = 464
+    Top = 218
+    object cdsGrupoQTDE: TFloatField
+      FieldName = 'QTDE'
+      DisplayFormat = '#,##0'
+    end
+    object cdsGrupoTOTAL: TFMTBCDField
+      FieldName = 'TOTAL'
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsGrupoIDGRUPO: TIntegerField
+      FieldName = 'IDGRUPO'
+    end
+    object cdsGrupoGRUPO: TStringField
+      FieldName = 'GRUPO'
+      Size = 45
+    end
+    object cdsGrupoQTDE_VENDA: TIntegerField
+      FieldName = 'QTDE_VENDA'
+      DisplayFormat = '#,##0'
+    end
+  end
+  object dsGrupo: TDataSource
+    DataSet = cdsGrupo
+    Left = 464
+    Top = 272
   end
 end

@@ -1,10 +1,10 @@
 inherited Pdr_ListaRelatorio: TPdr_ListaRelatorio
-  Width = 1126
-  Height = 528
   BorderStyle = bsNone
   Caption = 'Pdr_ListaRelatorio'
-  ExplicitWidth = 1126
-  ExplicitHeight = 528
+  ClientHeight = 420
+  ClientWidth = 744
+  ExplicitWidth = 744
+  ExplicitHeight = 420
   PixelsPerInch = 96
   TextHeight = 13
   object pnlFundo0: TPanel

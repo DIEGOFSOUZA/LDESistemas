@@ -1,11 +1,11 @@
 inherited Rel_PDV_Venda: TRel_PDV_Venda
   BorderStyle = bsDialog
   Caption = 'RELAT'#211'RIO DE VENDAS (PDV)'
-  ClientHeight = 179
-  ClientWidth = 689
+  ClientHeight = 629
+  ClientWidth = 899
   OnCreate = FormCreate
-  ExplicitWidth = 695
-  ExplicitHeight = 208
+  ExplicitWidth = 905
+  ExplicitHeight = 658
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
@@ -533,15 +533,15 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
   object pnlFundo: TPanel [1]
     Left = 0
     Top = 0
-    Width = 689
+    Width = 899
     Height = 217
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 765
+    ExplicitWidth = 689
     object pnlFiltros: TPanel
       Left = 1
       Top = 1
-      Width = 687
+      Width = 897
       Height = 122
       Align = alTop
       Font.Charset = ANSI_CHARSET
@@ -551,6 +551,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 687
       object Label2: TLabel
         Left = 251
         Top = 63
@@ -570,7 +571,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Width = 228
         Height = 63
         BorderStyle = bsSingle
-        TabOrder = 0
+        TabOrder = 1
         object lblTitPeriodo: TLabel
           Left = 1
           Top = 1
@@ -673,7 +674,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 1
+        TabOrder = 2
         TabStop = True
       end
       object cbbTipoRel: TComboBox
@@ -689,7 +690,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Font.Style = []
         ItemIndex = 0
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
         Text = 'RESUMIDO'
         OnChange = cbbTipoRelChange
         Items.Strings = (
@@ -737,7 +738,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 3
+        TabOrder = 4
         TabStop = True
       end
       object edpsqsVendedor: TEdPesquisa
@@ -781,17 +782,18 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 4
+        TabOrder = 0
         TabStop = True
       end
     end
     object pnlAcoes: TPanel
       Left = 1
       Top = 123
-      Width = 687
+      Width = 897
       Height = 54
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 687
       object btnRelatorio: TButton
         Left = 465
         Top = 4
@@ -815,8 +817,8 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
     end
   end
   object Rel_Resumido: TRLReport [2]
-    Left = 834
-    Top = 265
+    Left = 826
+    Top = 241
     Width = 1123
     Height = 794
     DataSource = dsMaster
