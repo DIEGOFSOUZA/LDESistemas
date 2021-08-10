@@ -1,10 +1,10 @@
 inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
   Caption = 'Rel_VendaPorGrupo'
-  ClientHeight = 185
-  ClientWidth = 729
+  ClientHeight = 521
+  ClientWidth = 876
   OnCreate = FormCreate
-  ExplicitWidth = 729
-  ExplicitHeight = 185
+  ExplicitWidth = 876
+  ExplicitHeight = 521
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
@@ -393,7 +393,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         Height = 25
         Date = 44129.000000000000000000
         Format = 'dd/MM/yyyy'
-        Time = 0.685025972219591600
+        Time = 0.685025972219591500
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -409,7 +409,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         Height = 25
         Date = 44129.000000000000000000
         Format = 'dd/MM/yyyy'
-        Time = 0.685025972219591600
+        Time = 0.685025972219591500
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -495,7 +495,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
       '7,8;'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
+    RemoteServer = DM.dspRLer
     Left = 536
     Top = 210
     object cdsDetalheQTDE: TFloatField
@@ -564,7 +564,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
       'RUPO)'#13#10'where 1=2'#13#10'group by 3,4'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
+    RemoteServer = DM.dspRLer
     Left = 464
     Top = 218
     object cdsGrupoQTDE: TFloatField

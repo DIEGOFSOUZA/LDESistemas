@@ -133,9 +133,6 @@ inherited Pdr_Relatorio2: TPdr_Relatorio2
       Height = 163
       Align = alRight
       TabOrder = 2
-      ExplicitLeft = 608
-      ExplicitTop = 0
-      ExplicitHeight = 185
       object btnGerarRelatorio: TButton
         Left = 2
         Top = 61
@@ -160,7 +157,6 @@ inherited Pdr_Relatorio2: TPdr_Relatorio2
       Align = alTop
       Caption = 'pnlTitulo'
       TabOrder = 0
-      ExplicitTop = 8
       object lblTitulo: TLabel
         Left = 1
         Top = 1
@@ -179,6 +175,7 @@ inherited Pdr_Relatorio2: TPdr_Relatorio2
         ParentFont = False
         Transparent = False
         Layout = tlCenter
+        OnMouseMove = lblTituloMouseMove
         ExplicitWidth = 20
         ExplicitHeight = 740
       end
@@ -214,10 +211,6 @@ inherited Pdr_Relatorio2: TPdr_Relatorio2
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitLeft = 248
-      ExplicitTop = 72
-      ExplicitWidth = 185
-      ExplicitHeight = 41
     end
     object pnlRodape: TPanel
       Left = 0
@@ -227,7 +220,6 @@ inherited Pdr_Relatorio2: TPdr_Relatorio2
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 184
     end
   end
   object actlst1: TActionList

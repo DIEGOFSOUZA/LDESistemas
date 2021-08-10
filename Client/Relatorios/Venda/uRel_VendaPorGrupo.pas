@@ -153,11 +153,14 @@ end;
 procedure TRel_VendaPorGrupo.FormCreate(Sender: TObject);
 begin
   inherited;
-  lblTitulo.Caption := 'VENDAS POR GRUPO DE PRODUTO';
+  lblTitulo.Caption := '  VENDAS POR GRUPO DE PRODUTO';
   rlblTitRelatorio.Caption := 'VENDAS POR GRUPO DE PRODUTO';
   dtp1.Date := Date;
   dtp2.Date := Date;
   dtp1.SetFocus;
+
+  Self.ClientHeight := 185;
+  Self.ClientWidth  := 729;
 end;
 
 procedure TRel_VendaPorGrupo.RLBand1BeforePrint(Sender: TObject;

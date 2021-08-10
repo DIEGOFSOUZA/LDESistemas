@@ -32,6 +32,8 @@ type
     procedure actGerarRelatorioExecute(Sender: TObject);
     procedure actSairExecute(Sender: TObject);
     procedure imgFecharClick(Sender: TObject);
+    procedure lblTituloMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
   private
     { Private declarations }
   public
@@ -64,6 +66,14 @@ procedure TPdr_Relatorio2.imgFecharClick(Sender: TObject);
 begin
   inherited;
   actSair.Execute;
+end;
+
+procedure TPdr_Relatorio2.lblTituloMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+const
+  sc_DragMove = $f012;
+begin
+  ReleaseCapture;
+  Perform(wm_SysCommand, sc_DragMove, 0);
 end;
 
 procedure TPdr_Relatorio2.RLBand9BeforePrint(Sender: TObject;

@@ -4671,6 +4671,13 @@ object Frm_Inicial: TFrm_Inicial
           OnClick = MenuRel_PDV_SangriaClick
         end
       end
+      object MenuRel_Compra: TMenuItem
+        Caption = 'COMPRA'
+        object MenuRel_Compra_NFPorClassif: TMenuItem
+          Caption = 'N.F. POR CLASSIFICA'#199#195'O'
+          OnClick = MenuRel_Compra_NFPorClassifClick
+        end
+      end
     end
     object MenuSobre: TMenuItem
       Caption = 'SOBRE'

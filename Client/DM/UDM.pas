@@ -101,7 +101,7 @@ type
 type
   TDM = class(TDataModule)
     Conexao: TSQLConnection;
-    DSProviderConnection1: TDSProviderConnection;
+    dspRLer: TDSProviderConnection;
     PngImageList1: TPngImageList;
     il1: TImageList;
     il2: TImageList;

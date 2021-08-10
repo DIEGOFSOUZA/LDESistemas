@@ -85,6 +85,8 @@ type
     MenuVenda_PDV_AutorizaOrcamento: TMenuItem;
     MenuVenda_PDV_Vendas: TMenuItem;
     MenuRel_Vendas_Grupo: TMenuItem;
+    MenuRel_Compra: TMenuItem;
+    MenuRel_Compra_NFPorClassif: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -135,6 +137,7 @@ type
     procedure MenuVenda_PDV_VendasClick(Sender: TObject);
     procedure MenuRel_Produto_EstoqueClick(Sender: TObject);
     procedure MenuRel_Vendas_GrupoClick(Sender: TObject);
+    procedure MenuRel_Compra_NFPorClassifClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -168,7 +171,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao;
 
 function Saudacao: string;
 begin
@@ -254,6 +257,11 @@ end;
 procedure TFrm_Inicial.MenuRel_ClienteClick(Sender: TObject);
 begin
 //  TFrm_Cliente.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuRel_Compra_NFPorClassifClick(Sender: TObject);
+begin
+  TRel_NFEntradaPorClassificacao.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuFinanceiro_ContaClick(Sender: TObject);
@@ -474,6 +482,9 @@ begin
   MenuRel_PDV_VendaPerVendCli.Visible := False;
   MenuRel_PDV_CaixaFechado.Visible := False;
   MenuRel_PDV_Sangria.Visible := False;
+
+  MenuRel_Compra.Visible := False;
+  MenuRel_Compra_NFPorClassif.Visible := False;
 end;
 
 procedure TFrm_Inicial.LiberaFINANCEIRO(aFinanceiro:Boolean);
@@ -494,6 +505,9 @@ begin
     MenuCompra_Grupo.Visible := True;
     MenuCompra_Fornecedor.Visible := True;
     MenuCompra_NFEntrada.Visible := True;
+
+    MenuRel_Compra.Visible := True;
+    MenuRel_Compra_NFPorClassif.Visible := True;
   end;
 end;
 
