@@ -87,6 +87,7 @@ type
     MenuRel_Vendas_Grupo: TMenuItem;
     MenuRel_Compra: TMenuItem;
     MenuRel_Compra_NFPorClassif: TMenuItem;
+    MenuRel_Cliente_SemCompra: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -138,6 +139,7 @@ type
     procedure MenuRel_Produto_EstoqueClick(Sender: TObject);
     procedure MenuRel_Vendas_GrupoClick(Sender: TObject);
     procedure MenuRel_Compra_NFPorClassifClick(Sender: TObject);
+    procedure MenuRel_Cliente_SemCompraClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -171,7 +173,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou;
 
 function Saudacao: string;
 begin
@@ -257,6 +259,11 @@ end;
 procedure TFrm_Inicial.MenuRel_ClienteClick(Sender: TObject);
 begin
 //  TFrm_Cliente.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuRel_Cliente_SemCompraClick(Sender: TObject);
+begin
+  TRel_ClienteNaoComprou.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuRel_Compra_NFPorClassifClick(Sender: TObject);
@@ -476,7 +483,10 @@ begin
   MenuRel_Vendas_Grupo.Visible := False;
   MenuRel_Produto.Visible := False;
   MenuRel_Produto_Estoque.Visible := False;
+
   MenuRel_Cliente.Visible := False;
+  MenuRel_Cliente_SemCompra.Visible := False;
+
   MenuRel_PDV.Visible := False;
   MenuRel_PDV_ImprimirOrcamento.Visible := False;
   MenuRel_PDV_VendaPerVendCli.Visible := False;
@@ -545,7 +555,10 @@ begin
     MenuVenda_PDV_FechaCaixa.Visible := True;
     MenuVenda_PDV_AutorizaOrcamento.Visible := True;
     MenuVenda_PDV_Vendas.Visible := True;
+
     MenuVenda_Cliente.Visible := True;
+    MenuRel_Cliente_SemCompra.Visible := True;
+
     MenuVenda_TipoPagto.Visible := True;
     MenuVenda_Cidade.Visible := True;
 

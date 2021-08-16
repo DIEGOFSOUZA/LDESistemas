@@ -22,6 +22,48 @@ ON USUARIO (ID_VENDEDOR);
 CREATE INDEX NOTA_ENTRADA_IDXDTENTRADA
 ON NOTA_ENTRADA (ENTRADA);
 
+ALTER TABLE CLIENTE
+    ADD DATA_ULTIMACOMPRA DATE;
+
+CREATE INDEX CLIENTE_IDX_DTULTCOMPRA
+ON CLIENTE (DATA_ULTIMACOMPRA);
+
+SET TERM ^ ;
+
+CREATE trigger tri_ai_pdvmaster_dtcompra for pdv_master
+active after insert position 0
+
+as
+begin
+  update CLIENTE C
+  set C.DATA_ULTIMACOMPRA = current_date
+  where C.CODIGO = new.ID_CLIENTE;
+end^
+
+SET TERM ; ^
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure PRO_ULTIMAVENDA (
+    ID_CLIENTE integer not null)
+returns (
+    DT_ULTIMACOMPRA date,
+    VALOR numeric(15,2))
+as
+begin
+  for select first 1 PM.EMISSAO, PM.VL_TOTAL
+      from PDV_MASTER PM
+      where PM.ID_CLIENTE = :id_cliente
+      order by PM.EMISSAO desc
+      into :dt_ultimacompra, :valor
+      do
+        suspend;
+end^
+
+SET TERM ; ^
+
+	
+
 
 
 

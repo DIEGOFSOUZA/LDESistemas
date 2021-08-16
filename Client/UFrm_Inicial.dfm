@@ -4651,6 +4651,10 @@ object Frm_Inicial: TFrm_Inicial
       object MenuRel_Cliente: TMenuItem
         Caption = 'CLIENTES'
         OnClick = MenuRel_ClienteClick
+        object MenuRel_Cliente_SemCompra: TMenuItem
+          Caption = 'CLIENTE SEM COMPRA'
+          OnClick = MenuRel_Cliente_SemCompraClick
+        end
       end
       object MenuRel_PDV: TMenuItem
         Caption = 'PDV'

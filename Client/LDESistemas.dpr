@@ -115,7 +115,8 @@ uses
   UFrm_PDVDevItem in 'PDV\UFrm_PDVDevItem.pas' {Frm_PDVDevItem},
   UPdr_Relatorio2 in 'Heranca\Relatorio\UPdr_Relatorio2.pas' {Pdr_Relatorio2},
   uRel_VendaPorGrupo in 'Relatorios\Venda\uRel_VendaPorGrupo.pas' {Rel_VendaPorGrupo},
-  URel_NFEntradaPorClassificacao in 'Relatorios\NFEntrada\URel_NFEntradaPorClassificacao.pas' {Rel_NFEntradaPorClassificacao};
+  URel_NFEntradaPorClassificacao in 'Relatorios\NFEntrada\URel_NFEntradaPorClassificacao.pas' {Rel_NFEntradaPorClassificacao},
+  URel_ClienteNaoComprou in 'Cadastros\Cliente\Relatorio\URel_ClienteNaoComprou.pas' {Rel_ClienteNaoComprou};
 
 {$R *.res}
 
