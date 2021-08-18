@@ -62,6 +62,46 @@ end^
 
 SET TERM ; ^
 
+SET TERM ^ ;
+
+CREATE trigger tri_bu_produto_composicao_total for produto_composicao
+active before update position 0
+AS
+begin
+  new.custo_total = cast(new.qtde * new.custo_unit as numeric(10,2));
+end^
+
+SET TERM ; ^
+
+
+SET TERM ^ ;
+
+CREATE OR ALTER trigger tri_bu_prodhistprecocusto for produto
+active before update position 0
+
+as
+begin
+  execute procedure PRO_HIST_PRECOCUSTO('U', new.CODIGO, new.PRECO_CUSTO,
+      substring(new.ULTIMA_ALTERACAO from 1 for (position('|', new.ULTIMA_ALTERACAO) - 1)), null);
+
+  if (old.PRECO_CUSTO <> new.PRECO_CUSTO) then
+  begin
+    update PRODUTO_COMPOSICAO PC
+    set PC.CUSTO_UNIT = (select cast((coalesce(new.PRECO_CUSTO, 0) / coalesce(P.CONV_QTDE, 1)) as numeric(15,2))
+                         from PRODUTO P
+                         where P.CODIGO = new.CODIGO)
+    where PC.ID_MATPRIMA = new.CODIGO;
+  end
+end^
+
+SET TERM ; ^
+
+
+
+
+
+
+
 	
 
 

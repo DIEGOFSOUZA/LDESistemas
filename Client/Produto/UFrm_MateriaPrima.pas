@@ -673,7 +673,7 @@ begin
     Exit;
   end;
 
-  if (dbedtPRECO_ATACADO.Text <> '') then
+  if ((dbedtPRECO_ATACADO.Text <> '') and (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0)) then
   begin
     if not (StrToFloatDef(dbedtQTDE_MIN_ATACADO.Text, 0) > 0) then
     begin
