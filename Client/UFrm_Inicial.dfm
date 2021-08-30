@@ -46,7 +46,7 @@ object Frm_Inicial: TFrm_Inicial
         Left = 497
         Top = 1
         Width = 379
-        Height = 18
+        Height = 17
         Align = alRight
         Alignment = taRightJustify
         Caption = 'Boa Tarde EDUARDO, hoje '#233' quinta-feira,10 de Outubro de 2019'
@@ -60,7 +60,6 @@ object Frm_Inicial: TFrm_Inicial
         ParentFont = False
         Transparent = True
         Layout = tlBottom
-        ExplicitHeight = 17
       end
       object lblConexao: TLabel
         Left = 21

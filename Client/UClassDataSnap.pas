@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 04/07/2021 16:17:11
+// 25/08/2021 13:09:42
 //
 
 unit UClassDataSnap;
@@ -252,6 +252,16 @@ type
     destructor Destroy; override;
     function setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProduto(BD: string; pID: Integer): OleVariant;
+  end;
+
+  TSM_SaveInCloudClient = class(TDSAdminClient)
+  private
+    FClienteLiberadoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function ClienteLiberado(aCpfCnpj: string): Boolean;
   end;
 
 implementation
@@ -1898,6 +1908,36 @@ destructor TSMProdutoClient.Destroy;
 begin
   FsetProdutoCommand.DisposeOf;
   FgetProdutoCommand.DisposeOf;
+  inherited;
+end;
+
+function TSM_SaveInCloudClient.ClienteLiberado(aCpfCnpj: string): Boolean;
+begin
+  if FClienteLiberadoCommand = nil then
+  begin
+    FClienteLiberadoCommand := FDBXConnection.CreateCommand;
+    FClienteLiberadoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FClienteLiberadoCommand.Text := 'TSM_SaveInCloud.ClienteLiberado';
+    FClienteLiberadoCommand.Prepare;
+  end;
+  FClienteLiberadoCommand.Parameters[0].Value.SetWideString(aCpfCnpj);
+  FClienteLiberadoCommand.ExecuteUpdate;
+  Result := FClienteLiberadoCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSM_SaveInCloudClient.Destroy;
+begin
+  FClienteLiberadoCommand.DisposeOf;
   inherited;
 end;
 

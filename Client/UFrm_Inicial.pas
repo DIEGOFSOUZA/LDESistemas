@@ -173,7 +173,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes;
 
 function Saudacao: string;
 begin
@@ -682,20 +682,24 @@ const
 var
   lCliente: string;
 begin
-  Result := True;
-  lCliente := DM.GetString(SQL,'cliente_lde');
+  Result := False;
+  if DM.SMSaveInCloud.ClienteLiberado(OnlyDigit(DM.Empresa.CNPJ)) then
+    Result := True;
 
-  if (lCliente <> '') then
-  begin
-    lCliente := Criptografia.DecodificarString(lCliente,Criptografia.CodificarString(DM.Empresa.CNPJ,''));
-    lCliente := SplitString(lCliente,'|')[1];
-    if (StrToDate(lCliente)< Date) then
-      Result := False;
-  end
-  else
-  begin
-    Result := False;
-  end;
+//  Result := True;
+//  lCliente := DM.GetString(SQL,'cliente_lde');
+//
+//  if (lCliente <> '') then
+//  begin
+//    lCliente := Criptografia.DecodificarString(lCliente,Criptografia.CodificarString(DM.Empresa.CNPJ,''));
+//    lCliente := SplitString(lCliente,'|')[1];
+//    if (StrToDate(lCliente)< Date) then
+//      Result := False;
+//  end
+//  else
+//  begin
+//    Result := False;
+//  end;
 end;
 
 procedure TFrm_Inicial.MenuRel_Vendas_GrupoClick(Sender: TObject);

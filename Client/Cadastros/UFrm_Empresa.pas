@@ -175,7 +175,9 @@ implementation
 
 {$R *.dfm}
 
-uses UConsulta, UDM, UConsultaCNPJ, UMakeReadWrite, u_Mensagem, UCriptografia, UFrm_VoltaSenha;
+uses
+  UConsulta, UDM, UConsultaCNPJ, UMakeReadWrite, u_Mensagem, UCriptografia,
+  UFrm_VoltaSenha, UFuncoes;
 
 procedure TFrm_Empresa.actExcLogoMarcaExecute(Sender: TObject);
 begin

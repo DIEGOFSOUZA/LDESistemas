@@ -2651,4 +2651,10 @@ object DM: TDM
     Left = 248
     Top = 80
   end
+  object dspRSaveInCloud: TDSProviderConnection
+    ServerClassName = 'TSMSaveInCloud'
+    SQLConnection = Conexao
+    Left = 249
+    Top = 140
+  end
 end

@@ -139,7 +139,7 @@ begin
          'cast(a.qtde_estoque as double precision)qtde_estoque,'+
          'a.tipo_produto,coalesce(e.sigla,d.sigla) sigla,'+
          'cast(a.qtde_minima as double precision)qtde_minima,'+
-         'cast(a.preco_custo*a.qtde_estoque as double precision) preco_custo '+
+         'cast(iif(a.conv_qtde>0,(a.preco_custo/a.conv_qtde),a.preco_custo)*a.qtde_estoque as double precision) preco_custo '+
          'FROM PRODUTO a '+
          'left join UNIDADE d on (d.CODIGO = a.COD_UNIDADE) '+
          'left join UNIDADE e on (e.CODIGO = A.conv_unidade) ';

@@ -517,7 +517,7 @@ inherited RelListaEtoque: TRelListaEtoque
       object ts2: TTabSheet
         Caption = 'Pesquisa por produto'
         ImageIndex = 1
-        ExplicitWidth = 942
+        ExplicitWidth = 941
         object pnl1: TPanel
           Left = 0
           Top = 0
@@ -529,7 +529,7 @@ inherited RelListaEtoque: TRelListaEtoque
           ParentBackground = False
           ShowCaption = False
           TabOrder = 0
-          ExplicitWidth = 942
+          ExplicitWidth = 941
           object edpsqsProd: TEdPesquisa
             Left = 40
             Top = 24
@@ -585,7 +585,6 @@ inherited RelListaEtoque: TRelListaEtoque
       'DADE)'#13#10'WHERE 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 865
     Top = 152
     object cdsEstoqueCODIGO: TIntegerField

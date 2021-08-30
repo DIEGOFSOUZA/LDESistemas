@@ -116,6 +116,7 @@ type
     dspRPedido: TDSProviderConnection;
     dspRProducao: TDSProviderConnection;
     dspRProduto: TDSProviderConnection;
+    dspRSaveInCloud: TDSProviderConnection;
     procedure DataModuleCreate(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string;
@@ -137,6 +138,7 @@ type
     fSMProduto: TSMProdutoClient;
     fVersao: TVersao;
     fUsuario: TUsuario;
+    fSMSaveInCloud: TSM_SaveInCloudClient;
     function GetSMClient: TSMClient;
   public
 //    User,UserPerfil : string ;
@@ -153,6 +155,7 @@ type
     property SMPedido : TSM_PedidoClient read fSMPedido ;
     property SMProducao : TSMProducaoClient read fSMProducao ;
     property SMProduto : TSMProdutoClient read fSMProduto ;
+    property SMSaveInCloud : TSM_SaveInCloudClient read fSMSaveInCloud ;
     property ArquivoConfiguracao : string read fArquivoConfiguracao write fArquivoConfiguracao ;
 
     function UsuarioDataHora() : string ;
@@ -230,13 +233,13 @@ begin
       fSMPedido := TSM_PedidoClient.Create(Conexao.DBXConnection);
       fSMProducao := TSMProducaoClient.Create(Conexao.DBXConnection);
       fSMProduto := TSMProdutoClient.Create(Conexao.DBXConnection);
+      fSMSaveInCloud := TSM_SaveInCloudClient.Create(Conexao.DBXConnection);
     end;
   except
     on e: Exception do
     begin
       TMensagem.Erro('Erro: Servidor off-line. Contate o suporte.');
     end;
-
   end;
 end;
 
@@ -353,6 +356,7 @@ begin
   FreeAndNil(fSMPedido);
   FreeAndNil(fSMProducao);
   FreeAndNil(fSMProduto);
+  FreeAndNil(fSMSaveInCloud);
 end;
 
 function TDM.GetSMClient: TSMClient;
@@ -385,55 +389,9 @@ function TDM.LerConfig(sArq: string): Boolean;
 var
   tmp: TConfiguracaoSistema;
 begin
-//  FechaConexao;
 //
-//  fArquivoConfiguracao := pNomeArquivo;
-//
-//  tmp := getConfiguracao(pNomeArquivo);
-//
-//  fBancoDados := tmp.BancoDados;
-//  Conexao.Params.Values[TDBXPropertyNames.HostName] := tmp.Servidor;
-//  Conexao.Params.Values[TDBXPropertyNames.CommunicationProtocol] := tmp.Protocolo;
-//  Conexao.Params.Values[TDBXPropertyNames.Port] := IntToStr(tmp.Porta);
-
-  //***********Tempo de Espera de Resposta do Servidor********
-  //Conexao.Params.Values[TDBXPropertyNames.CommunicationTimeout] := '10000' ;
 end;
-//var
-//  aConf: TiniFile;
-//  servidor, protocolo, porta, banco: string;
-//begin
-//  Result := False ;
-//
-//  if FileExists(sArq) then
-//  begin
-//    try
-//      aConf := TIniFile.Create(sArq);
-//      servidor := aConf.ReadString('CONFIGURACAO', 'servidor', servidor);
-//      protocolo := aConf.ReadString('CONFIGURACAO', 'protocolo', protocolo);
-//      porta := aConf.ReadString('CONFIGURACAO', 'porta', porta);
-//      BancoDados := aConf.ReadString('CONFIGURACAO', 'banco', banco);
-//
-//      Conexao.Params.Values[TDBXPropertyNames.HostName] := servidor;
-//      Conexao.Params.Values[TDBXPropertyNames.CommunicationProtocol] := protocolo;
-//      Conexao.Params.Values[TDBXPropertyNames.Port] := porta;
-//      Result := True;
-//
-//      FConexao.Servidor := servidor ;
-//      FConexao.Banco := BancoDados ;
-//      FConexao.Porta := porta ;
-//      FConexao.Protocolo := protocolo ;
-//    except
-//      begin
-//        Result := False;
-//        MessageDlg('Erro: Arquivo de Configuração não encontrado.', mtError, [mbOK], 0);
-//      end;
-//
-//    end;
-//  end
-//  else
-//    MessageDlg('Erro: Arquivo de Configuração não encontrado.', mtError, [mbOK], 0);
-//end;
+
 
 function TDM.LerDataSet(pSQL: string): OleVariant;
 begin

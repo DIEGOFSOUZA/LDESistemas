@@ -20,6 +20,7 @@ type
     dsrvrclsPedVenda: TDSServerClass;
     dsrvrclsProducao: TDSServerClass;
     dsrvrclsProduto: TDSServerClass;
+    dsrvrclsSaveInCloud: TDSServerClass;
     procedure DSServerClass1GetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure DSServerClassCadastroGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsrvrclsNotaEntradaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
@@ -28,6 +29,8 @@ type
     procedure dsrvrclsPedVendaGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsrvrclsProducaoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
     procedure dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+    procedure dsrvrclsSaveInCloudGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
   private
     { Private declarations }
   public
@@ -43,7 +46,7 @@ implementation
 
 uses
   Winapi.Windows, uSM, uSMCadastro, USMNota, USM_PDV, uSM_Financeiro, uSM_Pedido,
-  uSMProducao, USMProduto;
+  uSMProducao, USMProduto, uSM_SaveInCloud;
 
 procedure TSC.dsrvrclsFormaPagtoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
@@ -73,6 +76,12 @@ end;
 procedure TSC.dsrvrclsProdutoGetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := USMProduto.TSMProduto;
+end;
+
+procedure TSC.dsrvrclsSaveInCloudGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := uSM_SaveInCloud.TSM_SaveInCloud;
 end;
 
 procedure TSC.DSServerClass1GetClass(DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);

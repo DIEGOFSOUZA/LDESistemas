@@ -16,7 +16,9 @@ uses
   uSMProducao in 'Producao\uSMProducao.pas' {SMProducao: TDSServerModule},
   USM0 in 'Heranca\USM0.pas' {SM0: TDataModule},
   USMProduto in 'Produto\USMProduto.pas' {SMProduto: TDataModule},
-  uServerDM in 'uServerDM.pas' {ServerDM: TDataModule};
+  uServerDM in 'uServerDM.pas' {ServerDM: TDataModule},
+  uDM_SaveInCloud in 'SaveInCloud\uDM_SaveInCloud.pas' {DM_SaveInCloud: TDataModule},
+  uSM_SaveInCloud in 'SaveInCloud\uSM_SaveInCloud.pas' {SM_SaveInCloud: TDataModule};
 
 {$R *.res}
 
@@ -24,6 +26,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TServerDM, ServerDM);
+  Application.CreateForm(TDM_SaveInCloud, DM_SaveInCloud);
   Application.CreateForm(TFrm_Principal, Frm_Principal);
   Application.Run;
 end.
