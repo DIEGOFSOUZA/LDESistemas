@@ -1851,7 +1851,7 @@ object Frm_Login: TFrm_Login
       BevelOuter = bvNone
       Caption = 'pnlLabels'
       ShowCaption = False
-      TabOrder = 0
+      TabOrder = 1
       object lbl2: TLabel
         Left = 9
         Top = 0
@@ -1953,7 +1953,7 @@ object Frm_Login: TFrm_Login
       BevelOuter = bvNone
       Caption = 'pnlLabels'
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 0
       object lblTitEmp: TLabel
         Left = 15
         Top = 9

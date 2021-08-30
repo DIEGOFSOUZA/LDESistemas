@@ -1539,7 +1539,7 @@ inherited Frm_Produto: TFrm_Produto
               end
             end
             object tsFragmentacao: TTabSheet
-              Caption = 'VENDA FRAGMENTADA'
+              Caption = 'FRAGMENTA'#199#195'O'
               ImageIndex = 2
               object pnlFundoFragm: TPanel
                 Left = 0
@@ -1826,6 +1826,10 @@ inherited Frm_Produto: TFrm_Produto
             object tsHistPrecoVenda: TTabSheet
               Caption = 'HIST'#211'RICO DE PRE'#199'O'
               ImageIndex = 3
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0

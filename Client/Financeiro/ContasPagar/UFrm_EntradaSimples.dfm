@@ -17,8 +17,6 @@ inherited Frm_EntradaSimples: TFrm_EntradaSimples
     ExplicitWidth = 972
     inherited pnlFundo1: TPanel
       Width = 889
-      ExplicitLeft = 82
-      ExplicitTop = 1
       ExplicitWidth = 889
       inherited Panel4: TPanel
         Width = 887
@@ -465,7 +463,6 @@ inherited Frm_EntradaSimples: TFrm_EntradaSimples
     Top = 344
   end
   inherited cds: TClientDataSet
-    Active = True
     Params = <
       item
         DataType = ftInteger
@@ -844,7 +841,6 @@ inherited Frm_EntradaSimples: TFrm_EntradaSimples
     end
   end
   object dsParcela: TClientDataSet
-    Active = True
     Aggregates = <>
     DataSetField = cdsfdqryEntrada_Pagar
     Params = <>

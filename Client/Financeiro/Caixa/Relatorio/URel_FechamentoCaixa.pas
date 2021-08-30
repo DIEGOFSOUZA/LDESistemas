@@ -97,6 +97,8 @@ type
     rlblMantDin: TRLLabel;
     RLLabel51: TRLLabel;
     rlblMantChq: TRLLabel;
+    Panel1: TPanel;
+    pnlTit: TPanel;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
     procedure lblGeraRelatorioClick(Sender: TObject);

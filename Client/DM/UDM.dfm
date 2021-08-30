@@ -24,7 +24,7 @@ object DM: TDM
     Top = 16
     UniqueId = '{0AB9AE97-D7F3-4B8A-951A-B589D0441070}'
   end
-  object DSProviderConnection1: TDSProviderConnection
+  object dspRLer: TDSProviderConnection
     ServerClassName = 'TSM'
     SQLConnection = Conexao
     Left = 57
@@ -2650,5 +2650,11 @@ object DM: TDM
     SQLConnection = Conexao
     Left = 248
     Top = 80
+  end
+  object dspRSaveInCloud: TDSProviderConnection
+    ServerClassName = 'TSMSaveInCloud'
+    SQLConnection = Conexao
+    Left = 249
+    Top = 140
   end
 end

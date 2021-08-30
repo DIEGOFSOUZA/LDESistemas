@@ -81,7 +81,7 @@ begin
   end;
 
   if not DM.SMCadastroClient.setCaixa(DM.BancoDados, 'REABERTURA', iCaixa,
-       DM.User, 'DINHEIRO', fValor, mmo1.Lines.Text, EmptyStr) then
+       DM.Usuario.login, 'DINHEIRO', fValor, mmo1.Lines.Text, EmptyStr) then
   begin
     TMensagem.Erro('Erro: Gravação não efetuada.');
   end

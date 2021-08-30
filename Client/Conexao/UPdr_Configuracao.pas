@@ -10,7 +10,7 @@ uses
   Vcl.ExtCtrls;
 
 const
-  mSenha = 'Takano2020';
+  mSenha = '99723932';
 
 type
   TConfiguracaoSistema = record

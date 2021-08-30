@@ -18,7 +18,6 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 271
     object pnlDados: TPanel
       Left = 1
       Top = 1
@@ -27,7 +26,6 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 269
       object pnlTitulo: TPanel
         Left = 0
         Top = 0
@@ -241,7 +239,6 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
         ParentBackground = False
         TabOrder = 1
         TabStop = True
-        ExplicitHeight = 128
         object Label1: TLabel
           Left = 0
           Top = 0
@@ -493,7 +490,6 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
       ParentBackground = False
       TabOrder = 1
       TabStop = True
-      ExplicitHeight = 269
       object pnlCancelar: TPanel
         Left = 5
         Top = 131
@@ -546,8 +542,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = False
-          ExplicitLeft = -7
-          ExplicitHeight = 30
+          ExplicitLeft = 1
         end
       end
     end

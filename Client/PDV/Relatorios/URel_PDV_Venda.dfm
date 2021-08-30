@@ -537,7 +537,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
     Height = 217
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 765
+    ExplicitWidth = 899
     object pnlFiltros: TPanel
       Left = 1
       Top = 1
@@ -551,6 +551,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 897
       object Label2: TLabel
         Left = 251
         Top = 63
@@ -570,7 +571,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Width = 228
         Height = 63
         BorderStyle = bsSingle
-        TabOrder = 0
+        TabOrder = 1
         object lblTitPeriodo: TLabel
           Left = 1
           Top = 1
@@ -673,7 +674,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 1
+        TabOrder = 2
         TabStop = True
       end
       object cbbTipoRel: TComboBox
@@ -689,7 +690,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Font.Style = []
         ItemIndex = 0
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
         Text = 'RESUMIDO'
         OnChange = cbbTipoRelChange
         Items.Strings = (
@@ -737,7 +738,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 3
+        TabOrder = 4
         TabStop = True
       end
       object edpsqsVendedor: TEdPesquisa
@@ -781,7 +782,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 4
+        TabOrder = 0
         TabStop = True
       end
     end
@@ -792,6 +793,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       Height = 54
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 897
       object btnRelatorio: TButton
         Left = 465
         Top = 4
@@ -815,8 +817,8 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
     end
   end
   object Rel_Resumido: TRLReport [2]
-    Left = 834
-    Top = 265
+    Left = 826
+    Top = 241
     Width = 1123
     Height = 794
     DataSource = dsMaster
@@ -1192,7 +1194,6 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       'join FUNCIONARIO e on (e.codigo = a.ID_VENDEDOR) '#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 79
     Top = 93
     object cdsMasterTIPO: TStringField
@@ -1255,7 +1256,6 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       '1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 111
     Top = 93
     object cdsDetailTIPO: TStringField

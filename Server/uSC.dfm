@@ -68,4 +68,10 @@ object SC: TSC
     Left = 336
     Top = 144
   end
+  object dsrvrclsSaveInCloud: TDSServerClass
+    OnGetClass = dsrvrclsSaveInCloudGetClass
+    Server = DSServer1
+    Left = 336
+    Top = 208
+  end
 end

@@ -1,4 +1,4 @@
-unit URel_PDV_Venda; {Heigth = 122 / 96}
+unit URel_PDV_Venda; {CH=179 / CW=689}
 
 interface
 
@@ -343,9 +343,9 @@ procedure TRel_PDV_Venda.RLBand2BeforePrint(Sender: TObject;
 begin
   inherited;
   if aTotQtde > 0 then
-    rlblTotQtde.Caption := 'QTDE. ITENS:  '+ FormatFloat('#,##0.000',aTotQtde) ;
+    rlblTotQtde.Caption := 'QTDE. ITENS:  ' + FormatFloat('#,##0.000', aTotQtde);
   if aTotValor > 0 then
-    rlblTotValor.Caption := 'Vl. Total Liq. R$  '+ FormatFloat('#,##0.00',aTotValor) ;
+    rlblTotValor.Caption := 'Vl. Total Liq. R$  ' + FormatFloat('#,##0.00', aTotValor);
 end;
 
 procedure TRel_PDV_Venda.RLBand5BeforePrint(Sender: TObject;

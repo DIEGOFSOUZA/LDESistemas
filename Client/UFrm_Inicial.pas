@@ -11,135 +11,147 @@ uses
 type
   TFrm_Inicial = class(TForm)
     mm1: TMainMenu;
-    Cadastros1: TMenuItem;
-    Sair1: TMenuItem;
-    Clientes1: TMenuItem;
-    Funcionario1: TMenuItem;
-    Cidades1: TMenuItem;
-    Produtos1: TMenuItem;
-    CadastrodeUnidade1: TMenuItem;
-    Grupos1: TMenuItem;
-    Empresa1: TMenuItem;
-    Cadastro2: TMenuItem;
-    GrupodeProdutos1: TMenuItem;
-    SubgrupoProdutos1: TMenuItem;
-    Financeiro1: TMenuItem;
-    AberturadeCaixa1: TMenuItem;
-    FechamentodeCaixa1: TMenuItem;
-    ContasaReceber1: TMenuItem;
-    ContasaPagar1: TMenuItem;
-    Movimentaes1: TMenuItem;
-    Segurana1: TMenuItem;
+    MenuCadastros: TMenuItem;
+    MenuCad_Sair: TMenuItem;
+    MenuVenda_Cliente: TMenuItem;
+    MenuCad_Funcionario: TMenuItem;
+    MenuVenda_Cidade: TMenuItem;
+    MenuProd_Produto: TMenuItem;
+    MenuProd_Unidade: TMenuItem;
+    MenuCompra_Grupo: TMenuItem;
+    MenuCad_Empresa: TMenuItem;
+    MenuCompra_Fornecedor: TMenuItem;
+    MenuProd_Grupo: TMenuItem;
+    MenuProd_Subgrupo: TMenuItem;
+    MenuFinanceiro: TMenuItem;
+    MenuVenda_PDV_AbreCaixa: TMenuItem;
+    MenuVenda_PDV_FechaCaixa: TMenuItem;
+    MenuFinanceiro_Recebimento_AReceber: TMenuItem;
+    MenuFinanceiro_Pagto_APagar: TMenuItem;
+    MenuProducao: TMenuItem;
+    MenuConfiguracoes: TMenuItem;
     Backup1: TMenuItem;
     Restaurar1: TMenuItem;
     UsuariosPermisses1: TMenuItem;
-    Pedidos1: TMenuItem;
+    MenuVenda_Pedido: TMenuItem;
     Contabilidade1: TMenuItem;
     NaturezaOperao1: TMenuItem;
-    Fabricao1: TMenuItem;
-    MatriaPrima1: TMenuItem;
-    FrenteLoja1: TMenuItem;
+    MenuProducao_GeraOrdem: TMenuItem;
+    MenuProd_Insumo: TMenuItem;
+    MenuVenda_PDV: TMenuItem;
     pnlFundo: TPanel;
-    Produtos3: TMenuItem;
-    Venda1: TMenuItem;
-    Compras1: TMenuItem;
-    Expedio1: TMenuItem;
+    MenuProduto: TMenuItem;
+    MenuVenda: TMenuItem;
+    MenuCompra: TMenuItem;
+    MenuExpedicao: TMenuItem;
     pnlRodape: TPanel;
     lblSaudacao: TLabel;
     lblConexao: TLabel;
-    Cadastro3: TMenuItem;
-    Venda2: TMenuItem;
-    EstoqueProdutos1: TMenuItem;
-    VendasPerodoRepresentanteCliente1: TMenuItem;
-    FechamentodeCaixas1: TMenuItem;
+    MenuVenda_Representante: TMenuItem;
+    MenuVenda_PDV_GeraOrcamento: TMenuItem;
+    MenuRel_PDV_VendaPerVendCli: TMenuItem;
+    MenuRel_PDV_CaixaFechado: TMenuItem;
     pnlLogoEmpresa: TPanel;
     imgLogoEmpresa: TImage;
     pnlLogoSistema: TPanel;
     imgLogoSistema: TImage;
-    FormasPagamento2: TMenuItem;
-    Histrico1: TMenuItem;
-    Contabancria2: TMenuItem;
-    Sobre1: TMenuItem;
-    Lanamentos1: TMenuItem;
-    Contasapagar2: TMenuItem;
+    MenuVenda_FormaPagto: TMenuItem;
+    MenuFinanceiro_Historico: TMenuItem;
+    MenuFinanceiro_Conta: TMenuItem;
+    MenuSobre: TMenuItem;
+    MenuFinanceiro_Lancamento: TMenuItem;
+    MenuFinanceiro_Pagto: TMenuItem;
     Cheque1: TMenuItem;
-    Contasareceber2: TMenuItem;
-    Grupodehistorico1: TMenuItem;
-    Oramento1: TMenuItem;
-    Usurio1: TMenuItem;
-    IPOSDEPAGAMENTO1: TMenuItem;
-    RELATRIOS2: TMenuItem;
-    FINANCEIRO3: TMenuItem;
-    VENDAS1: TMenuItem;
-    PRODUTOS2: TMenuItem;
-    ESTOQUE1: TMenuItem;
-    CLIENTES2: TMenuItem;
-    PDV1: TMenuItem;
-    VENDASPORPAGAMENTO1: TMenuItem;
-    VENDASPORPERODO1: TMenuItem;
-    VENDASPORVENDEDOR1: TMenuItem;
-    VENDASTOTAISPORITEM1: TMenuItem;
+    MenuFinanceiro_Recebimento: TMenuItem;
+    MenuFinanceiro_GrupoHistorico: TMenuItem;
+    MenuRel_PDV_ImprimirOrcamento: TMenuItem;
+    MenuCad_Usuario: TMenuItem;
+    MenuVenda_TipoPagto: TMenuItem;
+    MenuRelatorio: TMenuItem;
+    MenuRel_Financeiro: TMenuItem;
+    MenuRel_Vendas: TMenuItem;
+    MenuRel_Produto: TMenuItem;
+    MenuRel_Produto_Estoque: TMenuItem;
+    MenuRel_Cliente: TMenuItem;
+    MenuRel_PDV: TMenuItem;
+    MenuRel_Vendas_PorPagto: TMenuItem;
+    MenuRel_Vendas_PorPeriodo: TMenuItem;
+    MenuRel_Vendas_PorVendedor: TMenuItem;
+    MenuRel_Vendas_TotItem: TMenuItem;
     CONTASARECEBER21: TMenuItem;
-    NOTAFISCALENTRADA1: TMenuItem;
-    SANGRIAMOVIMENTAS1: TMenuItem;
-    ACERTODEESTOQUE1: TMenuItem;
-    AUTORIZARORAMENTO1: TMenuItem;
-    VENDAS2: TMenuItem;
-    procedure Clientes1Click(Sender: TObject);
-    procedure Sair1Click(Sender: TObject);
-    procedure Funcionario1Click(Sender: TObject);
+    MenuCompra_NFEntrada: TMenuItem;
+    MenuRel_PDV_Sangria: TMenuItem;
+    MenuProducao_AcertaEstoque: TMenuItem;
+    MenuVenda_PDV_AutorizaOrcamento: TMenuItem;
+    MenuVenda_PDV_Vendas: TMenuItem;
+    MenuRel_Vendas_Grupo: TMenuItem;
+    MenuRel_Compra: TMenuItem;
+    MenuRel_Compra_NFPorClassif: TMenuItem;
+    MenuRel_Cliente_SemCompra: TMenuItem;
+    procedure MenuVenda_ClienteClick(Sender: TObject);
+    procedure MenuCad_SairClick(Sender: TObject);
+    procedure MenuCad_FuncionarioClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure Clientes2Click(Sender: TObject);
-    procedure Cidades1Click(Sender: TObject);
-    procedure Produtos1Click(Sender: TObject);
+    procedure MenuRel_ClienteClick(Sender: TObject);
+    procedure MenuVenda_CidadeClick(Sender: TObject);
+    procedure MenuProd_ProdutoClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure CadastrodeUnidade1Click(Sender: TObject);
-    procedure Grupos1Click(Sender: TObject);
+    procedure MenuProd_UnidadeClick(Sender: TObject);
+    procedure MenuCompra_GrupoClick(Sender: TObject);
     procedure RamodeAtividade1Click(Sender: TObject);
-    procedure Empresa1Click(Sender: TObject);
-    procedure Cadastro2Click(Sender: TObject);
-    procedure GrupodeProdutos1Click(Sender: TObject);
-    procedure SubgrupoProdutos1Click(Sender: TObject);
-    procedure Fabricao1Click(Sender: TObject);
-    procedure MatriaPrima1Click(Sender: TObject);
-    procedure Cadastro3Click(Sender: TObject);
-    procedure Venda2Click(Sender: TObject);
-    procedure EstoqueProdutos1Click(Sender: TObject);
-    procedure VendasPerodoRepresentanteCliente1Click(Sender: TObject);
-    procedure ContasaReceber1Click(Sender: TObject);
-    procedure AberturadeCaixa1Click(Sender: TObject);
-    procedure FechamentodeCaixa1Click(Sender: TObject);
+    procedure MenuCad_EmpresaClick(Sender: TObject);
+    procedure MenuCompra_FornecedorClick(Sender: TObject);
+    procedure MenuProd_GrupoClick(Sender: TObject);
+    procedure MenuProd_SubgrupoClick(Sender: TObject);
+    procedure MenuProducao_GeraOrdemClick(Sender: TObject);
+    procedure MenuProd_InsumoClick(Sender: TObject);
+    procedure MenuVenda_RepresentanteClick(Sender: TObject);
+    procedure MenuVenda_PDV_GeraOrcamentoClick(Sender: TObject);
+    procedure MenuRel_PDV_VendaPerVendCliClick(Sender: TObject);
+    procedure MenuFinanceiro_Recebimento_AReceberClick(Sender: TObject);
+    procedure MenuVenda_PDV_AbreCaixaClick(Sender: TObject);
+    procedure MenuVenda_PDV_FechaCaixaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure ContasaPagar1Click(Sender: TObject);
-    procedure FechamentodeCaixas1Click(Sender: TObject);
-    procedure Contabancria2Click(Sender: TObject);
-    procedure Histrico1Click(Sender: TObject);
-    procedure FormasPagamento2Click(Sender: TObject);
-    procedure Sobre1Click(Sender: TObject);
-    procedure Lanamentos1Click(Sender: TObject);
+    procedure MenuFinanceiro_Pagto_APagarClick(Sender: TObject);
+    procedure MenuRel_PDV_CaixaFechadoClick(Sender: TObject);
+    procedure MenuFinanceiro_ContaClick(Sender: TObject);
+    procedure MenuFinanceiro_HistoricoClick(Sender: TObject);
+    procedure MenuVenda_FormaPagtoClick(Sender: TObject);
+    procedure MenuSobreClick(Sender: TObject);
+    procedure MenuFinanceiro_LancamentoClick(Sender: TObject);
     procedure Cheque1Click(Sender: TObject);
-    procedure Grupodehistorico1Click(Sender: TObject);
-    procedure Oramento1Click(Sender: TObject);
-    procedure Usurio1Click(Sender: TObject);
-    procedure IPOSDEPAGAMENTO1Click(Sender: TObject);
-    procedure Pedidos1Click(Sender: TObject);
-    procedure VENDASPORPAGAMENTO1Click(Sender: TObject);
-    procedure VENDASPORPERODO1Click(Sender: TObject);
-    procedure VENDASPORVENDEDOR1Click(Sender: TObject);
-    procedure VENDASTOTAISPORITEM1Click(Sender: TObject);
+    procedure MenuFinanceiro_GrupoHistoricoClick(Sender: TObject);
+    procedure MenuRel_PDV_ImprimirOrcamentoClick(Sender: TObject);
+    procedure MenuCad_UsuarioClick(Sender: TObject);
+    procedure MenuVenda_TipoPagtoClick(Sender: TObject);
+    procedure MenuVenda_PedidoClick(Sender: TObject);
+    procedure MenuRel_Vendas_PorPagtoClick(Sender: TObject);
+    procedure MenuRel_Vendas_PorPeriodoClick(Sender: TObject);
+    procedure MenuRel_Vendas_PorVendedorClick(Sender: TObject);
+    procedure MenuRel_Vendas_TotItemClick(Sender: TObject);
     procedure CONTASARECEBER21Click(Sender: TObject);
-    procedure NOTAFISCALENTRADA1Click(Sender: TObject);
-    procedure SANGRIAMOVIMENTAS1Click(Sender: TObject);
-    procedure ACERTODEESTOQUE1Click(Sender: TObject);
-    procedure AUTORIZARORAMENTO1Click(Sender: TObject);
-    procedure VENDAS2Click(Sender: TObject);
+    procedure MenuCompra_NFEntradaClick(Sender: TObject);
+    procedure MenuRel_PDV_SangriaClick(Sender: TObject);
+    procedure MenuProducao_AcertaEstoqueClick(Sender: TObject);
+    procedure MenuVenda_PDV_AutorizaOrcamentoClick(Sender: TObject);
+    procedure MenuVenda_PDV_VendasClick(Sender: TObject);
+    procedure MenuRel_Produto_EstoqueClick(Sender: TObject);
+    procedure MenuRel_Vendas_GrupoClick(Sender: TObject);
+    procedure MenuRel_Compra_NFPorClassifClick(Sender: TObject);
+    procedure MenuRel_Cliente_SemCompraClick(Sender: TObject);
   private
-    { Private declarations }
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
-    procedure EsconderMenus();
+
+    procedure SistemaBloqueado();
     function ValidaCliente(): Boolean;
+
+    procedure InibirMenus();
+
+    procedure LiberaPDV(aPDV:Boolean);
+    procedure LiberaOP(aOP:Boolean);
+    procedure LiberaFINANCEIRO(aFinanceiro:Boolean);
   public
     { Public declarations }
   end;
@@ -150,19 +162,18 @@ var
 implementation
 
 {$R *.dfm}
-
 uses
-  UDM, UFrm_Cliente, UFrm_Cidades, UFrm_Func,  UFrm_Ramo,
-  UFrm_GrupoFornecedor, UFrm_Empresa, UFrm_Fornecedor, UFrm_Produto,
-  UFrm_GrupoProdutos, UFrm_SubGrupoProdutos, UFrm_OrdemProducao,
-  UFrm_MateriaPrima, UfrmVendaMain, UFrm_CondicaoPagto, UFrm_Representante,
-  URel_ListaEstoque, URel_PDV_Venda, UFrm_ContasAReceber,
-  UFrm_CaixaAbertura, UFrm_CaixaFechamento, URel_Venda0, UFrmContasPagar,
-  URel_FechamentoCaixa, UFrm_Historico, UFrm_ContaBancaria, u_Mensagem, UFrm_Sobre,
-  UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque, UFrm_GrupoHistorico, UFrm_Usuario,
-  uFrm_CadUnidade, UFrm_CondicoesPagto, UFrm_Pedido, uRel_VendaFormaPagto,
-  uRel_VendaPeriodo, uRel_VendaPorVendedor, uRel_VendaPorItem,
-  uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria, UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta;
+  UDM, UFrm_Cliente, UFrm_Cidades, UFrm_Func, UFrm_Ramo, UFrm_GrupoFornecedor,
+  UFrm_Empresa, UFrm_Fornecedor, UFrm_Produto, UFrm_GrupoProdutos,
+  UFrm_SubGrupoProdutos, UFrm_OrdemProducao, UFrm_MateriaPrima, UfrmVendaMain,
+  UFrm_CondicaoPagto, UFrm_Representante, URel_ListaEstoque, URel_PDV_Venda,
+  UFrm_ContasAReceber, UFrm_CaixaAbertura, UFrm_CaixaFechamento, URel_Venda0,
+  UFrmContasPagar, URel_FechamentoCaixa, UFrm_Historico, UFrm_ContaBancaria,
+  u_Mensagem, UFrm_Sobre, UPdr_RelRetrato, UFrm_Lancamento, UFrm_Cheque,
+  UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
+  UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
+  uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes;
 
 function Saudacao: string;
 begin
@@ -171,35 +182,35 @@ begin
     Result := 'Bom Dia, ';
   if (time >= 0.5) and (time < 0.75) then
     Result := 'Boa Tarde, ';
-  Result := Result + DM.User + ', ';
+  Result := Result + DM.Usuario.login + ', ';
 end;
 
-procedure TFrm_Inicial.AberturadeCaixa1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_PDV_AbreCaixaClick(Sender: TObject);
 begin
   TFrm_CaixaAbertura.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.ACERTODEESTOQUE1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProducao_AcertaEstoqueClick(Sender: TObject);
 begin
   TFrm_AcertoEstoque.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.AUTORIZARORAMENTO1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_PDV_AutorizaOrcamentoClick(Sender: TObject);
 begin
   TFrm_GerenciaOrcamento.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Cadastro2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCompra_FornecedorClick(Sender: TObject);
 begin
   TFrm_Fornecedor.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Cadastro3Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_RepresentanteClick(Sender: TObject);
 begin
   TFrm_Representante.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.CadastrodeUnidade1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProd_UnidadeClick(Sender: TObject);
 begin
   TFrm_CadUnidade.CreateChild(Self);
 end;
@@ -235,32 +246,42 @@ begin
   TFrm_Cheque.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Cidades1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_CidadeClick(Sender: TObject);
 begin
   TFrm_Cidades.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Clientes1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_ClienteClick(Sender: TObject);
 begin
   TFrm_Cliente.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Clientes2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_ClienteClick(Sender: TObject);
 begin
-  TFrm_Cliente.CreateChild(Self);
+//  TFrm_Cliente.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Contabancria2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Cliente_SemCompraClick(Sender: TObject);
+begin
+  TRel_ClienteNaoComprou.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuRel_Compra_NFPorClassifClick(Sender: TObject);
+begin
+  TRel_NFEntradaPorClassificacao.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuFinanceiro_ContaClick(Sender: TObject);
 begin
   TFrm_ContaBancaria.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.ContasaPagar1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuFinanceiro_Pagto_APagarClick(Sender: TObject);
 begin
   TFrm_ContasPagar.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.ContasaReceber1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuFinanceiro_Recebimento_AReceberClick(Sender: TObject);
 begin
   TFrm_ContasAReceber.CreateChild(Self);
 end;
@@ -270,39 +291,17 @@ begin
   TFrm_PesquisaContasAReceber.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Empresa1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCad_EmpresaClick(Sender: TObject);
 begin
   TFrm_Empresa.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.EsconderMenus;
-begin
-  Produtos3.Visible := False;
-  Compras1.Visible := False;
-  Venda1.Visible := False;
-  Movimentaes1.Visible := False;
-  Financeiro1.Visible := False;
-  Expedio1.Visible := False;
-  Segurana1.Visible := False;
-  RELATRIOS2.Visible := False;
-
-  //SubMenu
-  Funcionario1.Visible := False;
-  Usurio1.Visible := False;
-
-end;
-
-procedure TFrm_Inicial.EstoqueProdutos1Click(Sender: TObject);
-begin
-  TRelListaEtoque.CreateChild(self);
-end;
-
-procedure TFrm_Inicial.Fabricao1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProducao_GeraOrdemClick(Sender: TObject);
 begin
   TFrm_OrdemProducao.CreateChild(self);
 end;
 
-procedure TFrm_Inicial.FechamentodeCaixa1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_PDV_FechaCaixaClick(Sender: TObject);
 const
   SQL = 'SELECT r.ID_CAIXA ' + 'FROM CAIXA a ' + 'left outer join CAIXA_ABERT_FECH r on (r.ID_CAIXA = a.ID) ' +
 //        'where cast(r.DT_HORA_ABERT_FECH as date) = ''today'' '+
@@ -320,7 +319,7 @@ begin
   TFrm_CaixaFechamento.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.FechamentodeCaixas1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_PDV_CaixaFechadoClick(Sender: TObject);
 begin
   if not Assigned(Rel_FechamentoCaixa) then
     Rel_FechamentoCaixa := TRel_FechamentoCaixa.Create(Self);
@@ -349,14 +348,14 @@ begin
   Caption := DM.Empresa.Fantasia;
 end;
 
-procedure TFrm_Inicial.FormasPagamento2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_FormaPagtoClick(Sender: TObject);
 begin
   TFRM_CondicaoPagto.CreateChild(self);
 end;
 
 procedure TFrm_Inicial.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Sair1.Click;
+  MenuCad_Sair.Click;
 end;
 
 procedure TFrm_Inicial.FormCreate(Sender: TObject);
@@ -375,62 +374,245 @@ begin
   CarregaLogoEmpresa();
 
   //Menus para perfil = Administrador
-  AUTORIZARORAMENTO1.Visible := (DM.UserPerfil='Administrador');
+  MenuVenda_PDV_AutorizaOrcamento.Visible := (DM.Usuario.Perfil='Administrador');
 
-  Cheque1.Visible := DM.User = 'ADMIN';
-  Pedidos1.Visible := DM.User = 'ADMIN';
-  CONTASARECEBER21.Visible := DM.User = 'ADMIN';
+  Cheque1.Visible          := (DM.Usuario.Login = 'ADMIN');
+  MenuVenda_Pedido.Visible := (DM.Usuario.Login = 'ADMIN');
+  CONTASARECEBER21.Visible := (DM.Usuario.Login = 'ADMIN');
 
   if not ValidaCliente then
-    EsconderMenus;
+  begin
+    SistemaBloqueado;
+    Exit;
+  end;
+
+  InibirMenus;
+  LiberaPDV(DM.Usuario.AcessoPDV);
+  LiberaFINANCEIRO(DM.Usuario.AcessoFinanceiro);
+  LiberaOP(DM.Usuario.AcessoOP);
 end;
 
-procedure TFrm_Inicial.Funcionario1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCad_FuncionarioClick(Sender: TObject);
 begin
   TFrm_Func.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Grupodehistorico1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuFinanceiro_GrupoHistoricoClick(Sender: TObject);
 begin
   TFrm_GrupoHistorico.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.GrupodeProdutos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProd_GrupoClick(Sender: TObject);
 begin
   TFrm_GrupoProdutos.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Grupos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCompra_GrupoClick(Sender: TObject);
 begin
   TFrm_GrupoFornecedor.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Histrico1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuFinanceiro_HistoricoClick(Sender: TObject);
 begin
   TFrm_TipoNotaEntrada.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.IPOSDEPAGAMENTO1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_TipoPagtoClick(Sender: TObject);
 begin
   TFrm_CondicoesPagto.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Lanamentos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuFinanceiro_LancamentoClick(Sender: TObject);
 begin
   TFrm_Lancamento.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.MatriaPrima1Click(Sender: TObject);
+procedure TFrm_Inicial.InibirMenus;
+begin
+  MenuCadastros.Visible := False;
+  MenuCad_Funcionario.Visible := False;
+  MenuCad_Usuario.Visible := False;
+  MenuCad_Empresa.Visible := False;
+
+  MenuProduto.Visible := False;
+  MenuProd_Produto.Visible := False;
+  MenuProd_Insumo.Visible := False;
+  MenuProd_Unidade.Visible := False;
+  MenuProd_Grupo.Visible := False;
+  MenuProd_Subgrupo.Visible := False;
+
+  MenuCompra.Visible := False;
+  MenuCompra_Grupo.Visible := False;
+  MenuCompra_Fornecedor.Visible := False;
+  MenuCompra_NFEntrada.Visible := False;
+
+  MenuVenda.Visible := False;
+  MenuVenda_PDV.Visible := False;
+  MenuVenda_PDV_GeraOrcamento.Visible := False;
+  MenuVenda_PDV_AbreCaixa.Visible := False;
+  MenuVenda_PDV_FechaCaixa.Visible := False;
+  MenuVenda_PDV_AutorizaOrcamento.Visible := False;
+  MenuVenda_PDV_Vendas.Visible := False;
+  MenuVenda_Cliente.Visible := False;
+  MenuVenda_TipoPagto.Visible := False;
+  MenuVenda_Cidade.Visible := False;
+
+  MenuProducao.Visible := False;
+  MenuProducao_GeraOrdem.Visible := False;
+  MenuProducao_AcertaEstoque.Visible := False;
+
+  MenuFinanceiro.Visible := False;
+  MenuFinanceiro_Recebimento.Visible := False;
+  MenuFinanceiro_Recebimento_AReceber.Visible := False;
+  MenuFinanceiro_Pagto.Visible := False;
+  MenuFinanceiro_Pagto_APagar.Visible := False;
+  MenuFinanceiro_Lancamento.Visible := False;
+  MenuFinanceiro_Conta.Visible := False;
+  MenuFinanceiro_GrupoHistorico.Visible := False;
+  MenuFinanceiro_Historico.Visible := False;
+
+  MenuExpedicao.Visible := False;
+
+  MenuRelatorio.Visible := False;
+  MenuRel_Financeiro.Visible := False;
+  MenuRel_Vendas.Visible := False;
+  MenuRel_Vendas_PorPeriodo.Visible := False;
+  MenuRel_Vendas_PorVendedor.Visible := False;
+  MenuRel_Vendas_TotItem.Visible := False;
+  MenuRel_Vendas_PorPagto.Visible := False;
+  MenuRel_Vendas_Grupo.Visible := False;
+  MenuRel_Produto.Visible := False;
+  MenuRel_Produto_Estoque.Visible := False;
+
+  MenuRel_Cliente.Visible := False;
+  MenuRel_Cliente_SemCompra.Visible := False;
+
+  MenuRel_PDV.Visible := False;
+  MenuRel_PDV_ImprimirOrcamento.Visible := False;
+  MenuRel_PDV_VendaPerVendCli.Visible := False;
+  MenuRel_PDV_CaixaFechado.Visible := False;
+  MenuRel_PDV_Sangria.Visible := False;
+
+  MenuRel_Compra.Visible := False;
+  MenuRel_Compra_NFPorClassif.Visible := False;
+end;
+
+procedure TFrm_Inicial.LiberaFINANCEIRO(aFinanceiro:Boolean);
+begin
+  if aFinanceiro then
+  begin
+    MenuFinanceiro.Visible := True;
+    MenuFinanceiro_Recebimento.Visible := True;
+    MenuFinanceiro_Recebimento_AReceber.Visible := True;
+    MenuFinanceiro_Pagto.Visible := True;
+    MenuFinanceiro_Pagto_APagar.Visible := True;
+    MenuFinanceiro_Lancamento.Visible := True;
+    MenuFinanceiro_Conta.Visible := True;
+    MenuFinanceiro_GrupoHistorico.Visible := True;
+    MenuFinanceiro_Historico.Visible := True;
+
+    MenuCompra.Visible := True;
+    MenuCompra_Grupo.Visible := True;
+    MenuCompra_Fornecedor.Visible := True;
+    MenuCompra_NFEntrada.Visible := True;
+
+    MenuRel_Compra.Visible := True;
+    MenuRel_Compra_NFPorClassif.Visible := True;
+  end;
+end;
+
+procedure TFrm_Inicial.LiberaOP(aOP:Boolean);
+begin
+  if aOP then
+  begin
+    MenuProducao.Visible := True;
+    MenuProducao_GeraOrdem.Visible := True;
+    MenuProducao_AcertaEstoque.Visible := True;
+
+    MenuProd_Insumo.Visible := True;
+  end;
+end;
+
+procedure TFrm_Inicial.LiberaPDV(aPDV:Boolean);
+begin
+  if aPDV then
+  begin
+    MenuCadastros.Visible := True;
+    MenuCad_Funcionario.Visible := True;
+    MenuCad_Usuario.Visible := True;
+    MenuCad_Empresa.Visible := True;
+
+    MenuProduto.Visible := True;
+    MenuProd_Produto.Visible := True;
+    MenuProd_Unidade.Visible := True;
+    MenuProd_Grupo.Visible := True;
+    MenuProd_Subgrupo.Visible := True;
+
+    MenuVenda.Visible := True;
+    MenuVenda_PDV.Visible := True;
+    MenuVenda_PDV_GeraOrcamento.Visible := True;
+    MenuVenda_PDV_AbreCaixa.Visible := True;
+    MenuVenda_PDV_FechaCaixa.Visible := True;
+    MenuVenda_PDV_AutorizaOrcamento.Visible := True;
+    MenuVenda_PDV_Vendas.Visible := True;
+
+    MenuVenda_Cliente.Visible := True;
+    MenuRel_Cliente_SemCompra.Visible := True;
+
+    MenuVenda_TipoPagto.Visible := True;
+    MenuVenda_Cidade.Visible := True;
+
+    MenuRelatorio.Visible := True;
+    MenuRel_Vendas.Visible := True;
+    MenuRel_Vendas_PorPeriodo.Visible := True;
+    MenuRel_Vendas_PorVendedor.Visible := True;
+    MenuRel_Vendas_TotItem.Visible := True;
+    MenuRel_Vendas_PorPagto.Visible := True;
+    MenuRel_Vendas_Grupo.Visible := True;
+    MenuRel_Produto.Visible := True;
+    MenuRel_Produto_Estoque.Visible := True;
+    MenuRel_Cliente.Visible := True;
+    MenuRel_PDV.Visible := True;
+    MenuRel_PDV_ImprimirOrcamento.Visible := True;
+    MenuRel_PDV_VendaPerVendCli.Visible := True;
+    MenuRel_PDV_CaixaFechado.Visible := True;
+    MenuRel_PDV_Sangria.Visible := True;
+  end;
+end;
+
+procedure TFrm_Inicial.SistemaBloqueado;
+begin
+  MenuProduto.Visible := False;
+  MenuCompra.Visible := False;
+  MenuVenda.Visible := False;
+  MenuProducao.Visible := False;
+  MenuFinanceiro.Visible := False;
+  MenuExpedicao.Visible := False;
+  MenuConfiguracoes.Visible := False;
+  MenuRelatorio.Visible := False;
+
+  //SubMenu
+  MenuCad_Funcionario.Visible := False;
+  MenuCad_Usuario.Visible := False;
+
+end;
+
+procedure TFrm_Inicial.MenuRel_Produto_EstoqueClick(Sender: TObject);
+begin
+  TRelListaEtoque.CreateChild(self);
+end;
+
+procedure TFrm_Inicial.MenuProd_InsumoClick(Sender: TObject);
 begin
   TFrm_MateriaPrima.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.NOTAFISCALENTRADA1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCompra_NFEntradaClick(Sender: TObject);
 begin
   TFrm_NF_Entrada.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Oramento1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_PDV_ImprimirOrcamentoClick(Sender: TObject);
 var
   sOrcamento: string;
 begin
@@ -448,12 +630,12 @@ begin
   end;
 end;
 
-procedure TFrm_Inicial.Pedidos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_PedidoClick(Sender: TObject);
 begin
   TFrm_Pedido.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Produtos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProd_ProdutoClick(Sender: TObject);
 begin
   TFrm_Produto.CreateChild(Self);
 end;
@@ -463,7 +645,7 @@ begin
   TFrm_Ramo.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Sair1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCad_SairClick(Sender: TObject);
 begin
 //  if MessageDlg('Deseja sair do sistema?', mtConfirmation, [mbYes, mbNo], 0) = mrNo then
 //    Application.Run
@@ -471,24 +653,24 @@ begin
   Application.Terminate;
 end;
 
-procedure TFrm_Inicial.SANGRIAMOVIMENTAS1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_PDV_SangriaClick(Sender: TObject);
 begin
   TRel_Sangria.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Sobre1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuSobreClick(Sender: TObject);
 begin
   TFrm_Sobre.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.SubgrupoProdutos1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuProd_SubgrupoClick(Sender: TObject);
 begin
   TFrm_SubGrupoProdutos.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.Usurio1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuCad_UsuarioClick(Sender: TObject);
 begin
-  if DM.UserPerfil <> 'Administrador' then
+  if (DM.Usuario.Perfil <> 'Administrador') then
     TMensagem.Informacao('Usuário sem permissão de acesso a este menu.')
   else
     TFrm_Usuario.CreateChild(Self);
@@ -500,53 +682,62 @@ const
 var
   lCliente: string;
 begin
-  Result := True;
-  lCliente := DM.GetString(SQL,'cliente_lde');
+  Result := False;
+  if DM.SMSaveInCloud.ClienteLiberado(OnlyDigit(DM.Empresa.CNPJ)) then
+    Result := True;
 
-  if (lCliente <> '') then
-  begin
-    lCliente := Criptografia.DecodificarString(lCliente,Criptografia.CodificarString(DM.Empresa.CNPJ,''));
-    lCliente := SplitString(lCliente,'|')[1];
-    if (StrToDate(lCliente)< Date) then
-      Result := False;
-  end
-  else
-  begin
-    Result := False;
-  end;
+//  Result := True;
+//  lCliente := DM.GetString(SQL,'cliente_lde');
+//
+//  if (lCliente <> '') then
+//  begin
+//    lCliente := Criptografia.DecodificarString(lCliente,Criptografia.CodificarString(DM.Empresa.CNPJ,''));
+//    lCliente := SplitString(lCliente,'|')[1];
+//    if (StrToDate(lCliente)< Date) then
+//      Result := False;
+//  end
+//  else
+//  begin
+//    Result := False;
+//  end;
 end;
 
-procedure TFrm_Inicial.Venda2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Vendas_GrupoClick(Sender: TObject);
+begin
+  TRel_VendaPorGrupo.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuVenda_PDV_GeraOrcamentoClick(Sender: TObject);
 begin
   TfrmVendaMain.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VENDAS2Click(Sender: TObject);
+procedure TFrm_Inicial.MenuVenda_PDV_VendasClick(Sender: TObject);
 begin
   TFrm_PDVDevConsulta.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VendasPerodoRepresentanteCliente1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_PDV_VendaPerVendCliClick(Sender: TObject);
 begin
   TRel_PDV_Venda.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VENDASPORPAGAMENTO1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Vendas_PorPagtoClick(Sender: TObject);
 begin
   TRel_VendaFormaPagto.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VENDASPORPERODO1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Vendas_PorPeriodoClick(Sender: TObject);
 begin
   TRel_VendaPeriodo.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VENDASPORVENDEDOR1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Vendas_PorVendedorClick(Sender: TObject);
 begin
   TRel_VendaPorVendedor.CreateChild(Self);
 end;
 
-procedure TFrm_Inicial.VENDASTOTAISPORITEM1Click(Sender: TObject);
+procedure TFrm_Inicial.MenuRel_Vendas_TotItemClick(Sender: TObject);
 begin
   TRel_VendaPorItem.CreateChild(Self);
 end;

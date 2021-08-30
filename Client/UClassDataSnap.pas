@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 10/05/2021 13:35:47
+// 25/08/2021 13:09:42
 //
 
 unit UClassDataSnap;
@@ -206,12 +206,14 @@ type
   private
     FsetFormaPagtoCommand: TDBXCommand;
     FgetFormaPagtoCommand: TDBXCommand;
+    FsetBaixaRestauraCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setFormaPagto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getFormaPagto(BD: string; pID: Integer): OleVariant;
+    function setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
   end;
 
   TSM_PedidoClient = class(TDSAdminClient)
@@ -250,6 +252,16 @@ type
     destructor Destroy; override;
     function setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProduto(BD: string; pID: Integer): OleVariant;
+  end;
+
+  TSM_SaveInCloudClient = class(TDSAdminClient)
+  private
+    FClienteLiberadoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function ClienteLiberado(aCpfCnpj: string): Boolean;
   end;
 
 implementation
@@ -1685,6 +1697,36 @@ begin
   Result := FgetFormaPagtoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSM_FinanceiroClient.setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
+begin
+  if FsetBaixaRestauraCommand = nil then
+  begin
+    FsetBaixaRestauraCommand := FDBXConnection.CreateCommand;
+    FsetBaixaRestauraCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetBaixaRestauraCommand.Text := 'TSM_Financeiro.setBaixaRestaura';
+    FsetBaixaRestauraCommand.Prepare;
+  end;
+  FsetBaixaRestauraCommand.Parameters[0].Value.SetWideString(BD);
+  FsetBaixaRestauraCommand.Parameters[1].Value.SetBoolean(pBaixaParcial);
+  FsetBaixaRestauraCommand.Parameters[2].Value.AsCurrency := pVlDiferenca;
+  FsetBaixaRestauraCommand.Parameters[3].Value.SetWideString(pReceberPagar);
+  FsetBaixaRestauraCommand.Parameters[4].Value.SetWideString(pBaixaRestaura);
+  FsetBaixaRestauraCommand.Parameters[5].Value.SetWideString(pTipo);
+  FsetBaixaRestauraCommand.Parameters[6].Value.SetInt32(pID);
+  FsetBaixaRestauraCommand.Parameters[7].Value.SetWideString(pOrdem);
+  FsetBaixaRestauraCommand.Parameters[8].Value.SetWideString(pData);
+  FsetBaixaRestauraCommand.Parameters[9].Value.AsCurrency := pJuros;
+  FsetBaixaRestauraCommand.Parameters[10].Value.AsCurrency := pDesconto;
+  FsetBaixaRestauraCommand.Parameters[11].Value.AsCurrency := pValor;
+  FsetBaixaRestauraCommand.Parameters[12].Value.SetWideString(pUsuario);
+  FsetBaixaRestauraCommand.Parameters[13].Value.SetWideString(pIdHistorico);
+  FsetBaixaRestauraCommand.Parameters[14].Value.SetWideString(pIdConta);
+  FsetBaixaRestauraCommand.Parameters[15].Value.SetWideString(pIdCaixa);
+  FsetBaixaRestauraCommand.Parameters[16].Value.SetInt32(pNumCheque);
+  FsetBaixaRestauraCommand.ExecuteUpdate;
+  Result := FsetBaixaRestauraCommand.Parameters[17].Value.GetBoolean;
+end;
+
 constructor TSM_FinanceiroClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1699,6 +1741,7 @@ destructor TSM_FinanceiroClient.Destroy;
 begin
   FsetFormaPagtoCommand.DisposeOf;
   FgetFormaPagtoCommand.DisposeOf;
+  FsetBaixaRestauraCommand.DisposeOf;
   inherited;
 end;
 
@@ -1865,6 +1908,36 @@ destructor TSMProdutoClient.Destroy;
 begin
   FsetProdutoCommand.DisposeOf;
   FgetProdutoCommand.DisposeOf;
+  inherited;
+end;
+
+function TSM_SaveInCloudClient.ClienteLiberado(aCpfCnpj: string): Boolean;
+begin
+  if FClienteLiberadoCommand = nil then
+  begin
+    FClienteLiberadoCommand := FDBXConnection.CreateCommand;
+    FClienteLiberadoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FClienteLiberadoCommand.Text := 'TSM_SaveInCloud.ClienteLiberado';
+    FClienteLiberadoCommand.Prepare;
+  end;
+  FClienteLiberadoCommand.Parameters[0].Value.SetWideString(aCpfCnpj);
+  FClienteLiberadoCommand.ExecuteUpdate;
+  Result := FClienteLiberadoCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSM_SaveInCloudClient.Destroy;
+begin
+  FClienteLiberadoCommand.DisposeOf;
   inherited;
 end;
 

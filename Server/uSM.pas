@@ -2,14 +2,15 @@ unit uSM;
 
 interface
 
-uses System.SysUtils, System.Classes, System.Json,
-     Datasnap.DSServer, Datasnap.DSAuth, DataSnap.DSProviderDataModuleAdapter,
-     FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
-     FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
-     FireDAC.Phys, FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client,
-     FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-     Datasnap.Provider, FireDAC.Comp.DataSet, Datasnap.DBClient,
-  FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Phys.IBBase;
+uses
+  System.SysUtils, System.Classes, System.Json, Datasnap.DSServer,
+  Datasnap.DSAuth, DataSnap.DSProviderDataModuleAdapter, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
+  FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
+  FireDAC.Phys.FB, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Datasnap.Provider,
+  FireDAC.Comp.DataSet, Datasnap.DBClient, FireDAC.Phys.FBDef,
+  FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Phys.IBBase;
 
 type
   TSM = class(TDSServerModule)
@@ -23,7 +24,6 @@ type
   private
     { Private declarations }
   public
-    { Public declarations }
     function LerDataSet(const BD, Txt : string ) : OleVariant ;
     function Executar(const BD, Txt : string ) : integer ;
     function TestaCominicacao : string ;
@@ -34,7 +34,8 @@ implementation
 
 {$R *.dfm}
 
-uses System.StrUtils, UServerDM;
+uses
+  System.StrUtils, UServerDM, uDM_SaveInCloud;
 
 function TSM.Executar(const BD, Txt: string): integer;
 var DM : TServerDM ;

@@ -9,11 +9,6 @@ uses
   Vcl.Imaging.pngimage, Vcl.Grids, Vcl.Buttons, Data.DB, Datasnap.DBClient,
   ACBrUtil, DateUtils, Vcl.Imaging.jpeg;
 
-const
-  senhaMaster1 = 'takanoadm';
-  senhaMaster2 = 'takanomaster';
-
-
 type
   TRetornoPK = record
     ID : integer ;
@@ -560,21 +555,6 @@ begin
 
         if (aRetorno = 'sucesso') then
         begin
-//          if cdsPagamentos.Locate('FORMAPAGTO', 'CREDIARIO', []) then
-//          begin
-//            if (ValidaDebitoCliente(IdCliente) > 5) then //há debito vencidos a mais de 5 dias
-//            begin
-//              lSenha := VoltaSenha('Liberar a venda');
-//              if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
-//              begin
-//                TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
-//                Exit
-//              end
-//              else
-//                fUsuarioAutorizou := lSenha;
-//            end;
-//          end;
-
           cdsPagamentos.First;
           while not cdsPagamentos.Eof do
           begin
@@ -646,7 +626,6 @@ begin
     if (not OrcLiberado) then
       if not ValidaLimiteCredito(IdCliente.ToString, cdsItenstotal.Value) then
         Exit;
-
 
     if not Assigned(Frm_PDVCrediario) then
       Frm_PDVCrediario := TFrm_PDVCrediario.Create(Self);
@@ -779,8 +758,8 @@ begin
 
       lblClienteNome.Caption := cdsTemp.FieldByName('NOME_RAZAO').AsString;
       lblCPFCNPJ.Caption := cdsTemp.FieldByName('CPF_CNPJ').AsString;
-      lblDebito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_debito').AsFloat);
-      lblCredito.Caption := FormatFloatBr(cdsTemp.FieldByName('vl_credito').AsFloat);
+      lblDebito.Caption := FormatCurr('##0.00',cdsTemp.FieldByName('vl_debito').AsCurrency);
+      lblCredito.Caption := FormatCurr('##0.00',cdsTemp.FieldByName('vl_credito').AsCurrency);
 
       if (not OrcLiberado) then
         if ValidaDebitoCliente(IdCliente) > 5 then
@@ -1135,7 +1114,6 @@ begin
   begin
     if edtProduto.Text = EmptyStr then
       Abort;
-
     CarregaProduto(edtProduto.Text);
   end;
 end;
@@ -1147,9 +1125,16 @@ end;
 
 procedure TfrmVendaMain.edtQtdeKeyPress(Sender: TObject; var Key: Char);
 begin
+//  if Key = #13 then
+//  begin
+//    Perform(WM_NEXTDLGCTL,0,0) ;
+//  end;
+
   if Key = #13 then
   begin
-    Perform(WM_NEXTDLGCTL,0,0) ;
+    if edtProduto.Text = EmptyStr then
+      Abort;
+    CarregaProduto(edtProduto.Text);
   end;
 
   if not (Key in ['0'..'9', ',', #8, #13]) then
@@ -1660,17 +1645,6 @@ begin
           Result := False;
           Exit;
         end;
-{$REGION 'solitacao de senha para liberar venda'}
-//      lSenha := VoltaSenha('Liberar a venda');
-//      if ((lSenha <> senhaMaster1) and (lSenha <> senhaMaster2)) then
-//      begin
-//        TMensagem.Informacao('Senha inválida. Solicitar a liberação do administrador.');
-//        Result := False;
-//        Exit
-//      end
-//      else
-//        fUsuarioAutorizou := lSenha;
-{$ENDREGION}
       end;
     end;
 

@@ -871,6 +871,10 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsEnt: TTabSheet
             Caption = 'ENTREGAS'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnlEndEnt: TPanel
               Left = 0
               Top = 0
@@ -1113,6 +1117,10 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsCorresp: TTabSheet
             Caption = 'CORRESPOND'#202'NCIAS'
             ImageIndex = 2
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnlEndCorresp: TPanel
               Left = 0
               Top = 0
@@ -1364,7 +1372,6 @@ inherited Frm_Empresa: TFrm_Empresa
   inherited cds: TClientDataSet
     CommandText = 'SELECT e.* '#13#10'FROM EMPRESA e'#13#10'WHERE 1=2;'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsAfterInsert
     Left = 464
     Top = 384
