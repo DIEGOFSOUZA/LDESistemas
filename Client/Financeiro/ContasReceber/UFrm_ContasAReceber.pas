@@ -325,7 +325,8 @@ begin
         with Titulo do
         begin
     //Segmento P
-          NossoNumero := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString;
+          NossoNumero := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString+
+                             cdsGrid.FieldByName('PARCELA').AsString;
           Carteira := '1';
           CarteiraEnvio := tceCedente;
           EspecieDoc := 'DM';

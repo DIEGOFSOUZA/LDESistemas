@@ -376,8 +376,6 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
           Left = 0
           Top = 0
           Caption = 'Doc'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 80
             Top = 23
@@ -518,7 +516,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object lblSair: TLabel
         Left = 0
         Top = 40
-        Width = 28
+        Width = 70
         Height = 34
         Align = alBottom
         Alignment = taCenter
@@ -533,6 +531,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         ParentFont = False
         Transparent = True
         OnClick = actSairExecute
+        ExplicitWidth = 28
       end
       object imgSair: TImage
         Left = 0
@@ -584,7 +583,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object lblImprimir: TLabel
         Left = 0
         Top = 57
-        Width = 60
+        Width = 70
         Height = 17
         Align = alBottom
         Alignment = taCenter
@@ -600,6 +599,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actImprimirExecute
+        ExplicitWidth = 60
       end
       object imgImprimir: TImage
         Left = 0
@@ -662,7 +662,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object lblAltVencto: TLabel
         Left = 0
         Top = 44
-        Width = 68
+        Width = 70
         Height = 30
         Align = alBottom
         Alignment = taCenter
@@ -678,6 +678,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actAlteraVenctoExecute
+        ExplicitWidth = 68
       end
       object imgAltVencto: TImage
         Left = 0
@@ -743,7 +744,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object Label11: TLabel
         Left = 0
         Top = 44
-        Width = 49
+        Width = 70
         Height = 30
         Align = alBottom
         Alignment = taCenter
@@ -759,6 +760,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actBaixaDuplicataExecute
+        ExplicitWidth = 49
       end
       object imgBaixa: TImage
         Left = 0
@@ -812,7 +814,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object Label13: TLabel
         Left = 0
         Top = 40
-        Width = 50
+        Width = 70
         Height = 34
         Cursor = crHandPoint
         Align = alBottom
@@ -829,6 +831,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actGerarBoletoExecute
+        ExplicitWidth = 50
       end
       object imgBoleto: TImage
         Left = 0
@@ -918,7 +921,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       object Label12: TLabel
         Left = 0
         Top = 44
-        Width = 63
+        Width = 70
         Height = 30
         Align = alBottom
         Alignment = taCenter
@@ -934,6 +937,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
         Transparent = True
         Layout = tlCenter
         OnClick = actFiltrarExecute
+        ExplicitWidth = 63
       end
       object btnFiltrar: TSpeedButton
         Left = 0
