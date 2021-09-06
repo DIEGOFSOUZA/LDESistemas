@@ -12,7 +12,6 @@ uses
   UPdr_Relatorio.Cabecalho in 'Heranca\Relatorio\UPdr_Relatorio.Cabecalho.pas' {Pdr_RelatorioRetratoCabecalho},
   UFrm_Login in 'UFrm_Login.pas' {Frm_Login},
   UFrm_Inicial in 'UFrm_Inicial.pas' {Frm_Inicial},
-  UClassIniciar in 'UClassIniciar.pas',
   u_Mensagem in 'Utils\u_Mensagem.pas',
   UFrm_AtualizacaoSistema in 'Conexao\UFrm_AtualizacaoSistema.pas' {Frm_AtualizacaoSistema},
   UPdr_Configuracao in 'Conexao\UPdr_Configuracao.pas' {Pdr_Configuracao},
@@ -96,7 +95,6 @@ uses
   uRel_Sangria in 'Financeiro\Caixa\Relatorio\uRel_Sangria.pas' {Rel_Sangria},
   UFrm_AcertoEstoque in 'Producao\UFrm_AcertoEstoque.pas' {Frm_AcertoEstoque},
   UPdr_Child2 in 'Heranca\UPdr_Child2.pas' {Pdr_Child2},
-  UClassDataSnap in 'UClassDataSnap.pas',
   UFrm_ClientePDV in 'PDV\UFrm_ClientePDV.pas' {Frm_ClientePDV},
   UFrm_Desconto in 'PDV\UFrm_Desconto.pas' {Frm_Desconto},
   UFrm_GeraOrcamento in 'PDV\UFrm_GeraOrcamento.pas' {Frm_GeraOrcamento},
@@ -116,7 +114,8 @@ uses
   UPdr_Relatorio2 in 'Heranca\Relatorio\UPdr_Relatorio2.pas' {Pdr_Relatorio2},
   uRel_VendaPorGrupo in 'Relatorios\Venda\uRel_VendaPorGrupo.pas' {Rel_VendaPorGrupo},
   URel_NFEntradaPorClassificacao in 'Relatorios\NFEntrada\URel_NFEntradaPorClassificacao.pas' {Rel_NFEntradaPorClassificacao},
-  URel_ClienteNaoComprou in 'Cadastros\Cliente\Relatorio\URel_ClienteNaoComprou.pas' {Rel_ClienteNaoComprou};
+  URel_ClienteNaoComprou in 'Cadastros\Cliente\Relatorio\URel_ClienteNaoComprou.pas' {Rel_ClienteNaoComprou},
+  UClassDataSnap in 'UClassDataSnap.pas';
 
 {$R *.res}
 
@@ -129,7 +128,7 @@ begin
   try
     if Iniciar() then
     begin
-      DM.CarregaEmpresa;
+//      DM.CarregaEmpresa;
       Application.CreateForm(TFrm_Inicial, Frm_Inicial);
       Application.Run;
     end;

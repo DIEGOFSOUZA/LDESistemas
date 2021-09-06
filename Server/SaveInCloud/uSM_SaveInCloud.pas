@@ -1,7 +1,6 @@
 unit uSM_SaveInCloud;
 
 interface
-
 uses
   System.SysUtils, System.Classes, Datasnap.DSProviderDataModuleAdapter,
   Datasnap.DBClient;

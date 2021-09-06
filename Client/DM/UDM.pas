@@ -147,7 +147,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property InstanceOwner: Boolean read FInstanceOwner write FInstanceOwner;
-    property SMClient: TSMClient read GetSMClient write FSMClient;
+    property SMClient: TSMClient read FSMClient;
     property SMCadastroClient : TSMCadastroClient read fSMCadastroClient ;
     property SMNotaClient : TSMNotaClient read fSMNotaClient ;
     property SMOrcamento : TsmPDVClient read fSMOrcamento ;
@@ -159,7 +159,7 @@ type
     property ArquivoConfiguracao : string read fArquivoConfiguracao write fArquivoConfiguracao ;
 
     function UsuarioDataHora() : string ;
-    function ValidaUser(usuario, senha : string) : boolean ;
+    function ValidaUser(usuario, senha: string; aExibirMSG:Boolean = true): integer;
     function ProdutoExiste(pCodProduto: string): boolean;
     function VerificaProdutoFabricado(codProduto:string):boolean;
     function LerDataSet(pSQL : string) : OleVariant ;
@@ -273,9 +273,6 @@ begin
     fEmpresa.Fone := Aux.FieldByName('fone').AsString;
     fEmpresa.Celular := Aux.FieldByName('cel').AsString;
     fEmpresa.Email := Aux.FieldByName('email').AsString;
-//    fEmpresa.GravarXML   := Trim(Aux.FieldByName('GravarXML').AsString) ;
-//    fEmpresa.Certificado := Trim(Aux.FieldByName('Certificado').AsString) ;
-//    fEmpresa.Certificado_Senha := Trim(Aux.FieldByName('Certificado_Senha').AsString) ;
 
     fVersao.BDRelease := Aux.FieldByName('db_versao').AsString;
     fVersao.BDBuild := '0';
@@ -348,8 +345,8 @@ procedure TDM.FechaConexao;
 begin
   if Conexao.Connected then
     Conexao.Close;
-  FreeAndNil(fSMCadastroClient);
   FreeAndNil(FSMClient);
+  FreeAndNil(fSMCadastroClient);
   FreeAndNil(fSMNotaClient);
   FreeAndNil(fSMOrcamento);
   FreeAndNil(fSMFormaPagto);
@@ -398,12 +395,12 @@ begin
   Result := FSMClient.LerDataSet(BancoDados,pSQL) ;
 end;
 
-function TDM.ValidaUser(usuario, senha: string): boolean;
+function TDM.ValidaUser(usuario, senha: string; aExibirMSG:Boolean = true): integer;
 var
   txt: string;
   tmp: TClientDataSet;
-begin
-  Result := False;
+begin               //0 invalido; 1 valido; 2 inativo
+  Result := 0;
 
   tmp := TClientDataSet.Create(nil);
   try
@@ -421,11 +418,12 @@ begin
     begin
       if tmp.FieldByName('ativo').AsString = 'Não' then
       begin
-        TMensagem.Erro('Não foi possivel logar no sistema.'+#13+'Usuário está inativo');
+        Result := 2;
+        TMensagem.Informacao('Usuário Inativo');
       end
       else
       begin
-        Result := True;
+        Result := 1;
         fUsuario.ID := tmp.FieldByName('USU_ID').AsInteger;
         fUsuario.login := usuario;
         fUsuario.Ativo := True;
@@ -436,21 +434,11 @@ begin
         fUsuario.AcessoPDV := (tmp.FieldByName('ACESSO_PDV').AsInteger = 1);
         fUsuario.AcessoFinanceiro := (tmp.FieldByName('ACESSO_FINANCEIRO').AsInteger = 1);
         fUsuario.AcessoOP := (tmp.FieldByName('ACESSO_OP').AsInteger = 1);
-//        user := usuario;
-//        UserID := tmp.FieldByName('USU_ID').AsInteger;
-//        UserPerfil := tmp.FieldByName('PERFIL').AsString;
       end;
-    end
-    else
-    begin
-      TMensagem.Erro('Login não efetuado.' + #13#10 + 'Usuário / senha não encontrados.');
     end;
-
   finally
     FreeAndNil(tmp);
   end;
-
-
 end;
 
 function TDM.ProdutoExiste(pCodProduto: string): boolean;

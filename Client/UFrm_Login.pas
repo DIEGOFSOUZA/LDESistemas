@@ -3,9 +3,13 @@ unit UFrm_Login;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons,
-  Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls,MidasLib;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls, MidasLib,
+  System.Actions, Vcl.ActnList;
+
+const
+  maximoTentativas = 3;
 
 type
   TLoginSenha = record
@@ -19,33 +23,46 @@ type
   TFrm_Login = class(TForm)
     lblTitulo: TLabel;
     pnlFundo: TPanel;
-    img1: TImage;
     pnlLabels: TPanel;
-    lbl2: TLabel;
-    edtUsuario: TEdit;
-    lbl3: TLabel;
-    edtSenha: TEdit;
     pnlConexao: TPanel;
     rgEmpresa: TRadioGroup;
     lblTitEmp: TLabel;
-    pnlEntrar: TPanel;
-    btnEntrar: TSpeedButton;
     pnlbtnConexao: TPanel;
     btnConexao: TSpeedButton;
+    pnlLeft: TPanel;
+    img1: TImage;
+    pnlTopLogin: TPanel;
+    lbl2: TLabel;
+    lbl3: TLabel;
+    edtUsuario: TEdit;
+    edtSenha: TEdit;
+    pnlBottonLogin: TPanel;
+    pnlEntrar: TPanel;
+    btnEntrar: TSpeedButton;
+    actlst1: TActionList;
+    actESC: TAction;
+    actEntrar: TAction;
+    actConfConexao: TAction;
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure edtSenhaChange(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure btnEntrarClick(Sender: TObject);
-    procedure btnConexaoClick(Sender: TObject);
     procedure edtSenhaKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
+    procedure actESCExecute(Sender: TObject);
+    procedure actEntrarExecute(Sender: TObject);
+    procedure actConfConexaoExecute(Sender: TObject);
   private
-    tentativas: Smallint;
+    gTentativaAtual: Smallint;
+    FRetorno: integer;
     procedure EditarConexao(pEmpresa: string);
     procedure CarregaEmpresas() ;
+    function ExisteArqConf():Boolean;
   public
-    { Public declarations }
-    Retorno : TLoginSenha ;
-    gFinalizar : Boolean;
+//    Retorno : TLoginSenha ;
+//    gFinalizar : Boolean;
+    //0 - Esc, 1 - Ok, 2 - Usuario/senha invalido
+
+    property Retorno: integer read FRetorno;
+
   end;
 
 var
@@ -66,60 +83,112 @@ function UsuarioSenha(pUsuario: string): TLoginSenha;
 var
   Aux: TFrm_Login;
 begin
-  Aux := TFrm_Login.Create(nil);
-  try
-    if pUsuario <> '' then
-      Aux.edtUsuario.Text := pUsuario;
-
-    if Aux.gFinalizar then
-    begin
-      Aux.ShowModal;
-      Result := Aux.Retorno;
-    end;
-  finally
-    FreeAndNil(Aux);
-  end;
+//  Aux := TFrm_Login.Create(nil);
+//  try
+//    if pUsuario <> '' then
+//      Aux.edtUsuario.Text := pUsuario;
+//
+//    if Aux.gFinalizar then
+//    begin
+//      Aux.ShowModal;
+//      Result := Aux.Retorno;
+//    end;
+//  finally
+//    FreeAndNil(Aux);
+//  end;
 end;
 
-procedure TFrm_Login.btnConexaoClick(Sender: TObject);
+procedure TFrm_Login.actConfConexaoExecute(Sender: TObject);
 begin
-  EditarConexao(rgEmpresa.Items[rgEmpresa.ItemIndex]+'.conf');
+  if (rgEmpresa.Items.Count > 0) then
+    EditarConexao(rgEmpresa.Items[rgEmpresa.ItemIndex] + '.conf')
+  else
+    EditarConexao('');
   CarregaEmpresas();
 end;
 
-procedure TFrm_Login.btnEntrarClick(Sender: TObject);
+procedure TFrm_Login.actEntrarExecute(Sender: TObject);
+var
+  lValidaUser: Integer;
+  lTentativa: string;
 begin
+  if (rgEmpresa.Items.Count < 1) then
+  begin
+    TMensagem.Atencao('Nenhuma empresa encontrada.');
+    Abort;
+  end;
+
+  Inc(gTentativaAtual);
+  if (gTentativaAtual > maximoTentativas) then
+  begin
+    FRetorno := 2;
+    Close;
+  end
+  else
+    lTentativa := gTentativaAtual.ToString + ' de ' + maximoTentativas.ToString;
+
   if edtUsuario.Text = '' then
   begin
     TMensagem.Atencao('Usuário tem que ser preenchido');
     edtUsuario.SetFocus;
-    Exit;
+    Abort;
   end;
   if edtSenha.Text = '' then
   begin
     TMensagem.Atencao('Senha não pode estar em branco');
     edtSenha.SetFocus;
-    Exit;
+    Abort;
   end;
-  Retorno.Usuario := edtUsuario.Text;
-  Retorno.Senha := edtSenha.Text;
-  Retorno.Empresa := rgEmpresa.Items[rgEmpresa.ItemIndex]+'.conf';
+
+  try
+    DM.ConfiguraConexao(rgEmpresa.Items[rgEmpresa.ItemIndex]+'.conf');
+    if not DM.AbrirConexao() then
+      Exit;
+
+    DM.CarregaEmpresa;
+    lValidaUser := DM.ValidaUser(edtUsuario.Text, edtSenha.Text, False);
+//    0 invalido; 1 valido; 2 inativo
+    if (lValidaUser = 0) then
+    begin
+      TMensagem.Informacao('Usuário/Senha inválido.'+#13+'Tentativa '+lTentativa);
+      edtUsuario.SetFocus;
+    end
+    else if (lValidaUser = 2) then
+    begin
+      TMensagem.Informacao('Usuário inativo.'+#13+'Tentativa '+lTentativa);
+      edtUsuario.SetFocus;
+    end
+    else
+    begin
+      FRetorno := 1;
+      Close;
+    end;
+  except
+    on e: Exception do
+    begin
+      TMensagem.Erro('Erro: Não foi possível a conexão com o banco de dados.'+#13#10+
+                      e.Message );
+    end;
+  end;
+end;
+
+procedure TFrm_Login.actESCExecute(Sender: TObject);
+begin
+  FRetorno := 0;
   Close;
 end;
 
 procedure TFrm_Login.CarregaEmpresas;
 begin
-  if ListaArquivosConf('*.conf').Count = 0 then
-  begin
-    TMensagem.Erro('Arquivo de conexão não encontrado.' + #13#10 + 'Solicite o suporte da LDE Sistemas.');
-    Application.Terminate;
-  end
-  else
+  pnlTopLogin.Enabled := False;
+
+  if (ListaArquivosConf('*.conf').Count > 0) then
   begin
       // Preencher com os arquivos disponiveis
     rgEmpresa.Items.Clear;
     rgEmpresa.Items.AddStrings(ListaArquivosConf('*.conf'));
     rgEmpresa.ItemIndex := 0;
+    pnlTopLogin.Enabled := True;
   end;
 end;
 
@@ -148,7 +217,7 @@ end;
 
 procedure TFrm_Login.edtSenhaChange(Sender: TObject);
 begin
-  btnEntrar.Enabled := (edtUsuario.Text <> '') and (edtSenha.Text <> '') ;
+  btnEntrar.Enabled := (edtUsuario.Text <> '') and (edtSenha.Text <> '');
 end;
 
 procedure TFrm_Login.edtSenhaKeyPress(Sender: TObject; var Key: Char);
@@ -157,40 +226,76 @@ begin
    btnEntrar.Click ;
 end;
 
-procedure TFrm_Login.FormCreate(Sender: TObject);
+function TFrm_Login.ExisteArqConf: Boolean;
 begin
-  Retorno.Usuario := '' ;
-  Retorno.Senha   := '' ;
-  Retorno.Ok      := False ;
-  Retorno.Empresa := '';
-
-  {$IFDEF DEBUG}
-    edtUsuario.Text := 'ADMIN' ;
-    edtSenha.Text   := 'ldesistemas' ;
-  {$ENDIF}
-
-  CarregaEmpresas() ;
-
-  DM.ArquivoConfiguracao := rgEmpresa.Items[rgEmpresa.ItemIndex]+'.conf' ;
-
-  gfinalizar := AtualizaExe() ;
-
+  Result := False;
+  rgEmpresa.Items.Clear;
+  try
+    if (ListaArquivosConf('*.conf').Count > 0) then
+    begin
+      // Preencher com os arquivos disponiveis
+      rgEmpresa.Items.AddStrings(ListaArquivosConf('*.conf'));
+      rgEmpresa.ItemIndex := 0;
+      Result := True;
+    end;
+  except
+    Result := False;
+  end;
 end;
 
 procedure TFrm_Login.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if Key = Vk_Escape then
-  begin
-    Retorno.Usuario := '';
-    Retorno.Senha := '';
-    Retorno.Empresa := '';
-
-    Close;
-  end;
+    actESC.Execute;
 
   if Key = VK_RETURN then
-    btnEntrar.Click;
+    actEntrar.Execute;
 end;
 
+procedure TFrm_Login.FormShow(Sender: TObject);
+begin
+  FRetorno := 0;
+  edtUsuario.Text := '';
+  edtSenha.Text := '';
+  gTentativaAtual := 0;
+  pnlTopLogin.Enabled := False;
+
+  if ExisteArqConf then
+  begin
+    DM.ArquivoConfiguracao := rgEmpresa.Items[rgEmpresa.ItemIndex] + '.conf';
+  {$IFDEF DEBUG}
+    edtUsuario.Text := 'ADMIN';
+    edtSenha.Text := 'ldesistemas';
+  {$ENDIF}
+
+    pnlTopLogin.Enabled := True;
+    edtUsuario.SetFocus;
+  end
+  else
+  begin
+
+  end;
+end;
+
+
+//procedure TFrm_Login.FormCreate(Sender: TObject);
+//begin
+//  Retorno.Usuario := '' ;
+//  Retorno.Senha   := '' ;
+//  Retorno.Ok      := False ;
+//  Retorno.Empresa := '';
+
+//  {$IFDEF DEBUG}
+//    edtUsuario.Text := 'ADMIN' ;
+//    edtSenha.Text   := 'ldesistemas' ;
+//  {$ENDIF}
+
+//  CarregaEmpresas() ;
+//
+//  DM.ArquivoConfiguracao := rgEmpresa.Items[rgEmpresa.ItemIndex]+'.conf' ;
+//
+//  gfinalizar := AtualizaExe() ;
+
+//end;
 end.

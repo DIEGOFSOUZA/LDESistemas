@@ -49,4 +49,24 @@ object SM: TSM
     Left = 136
     Top = 216
   end
+  object FDScript1: TFDScript
+    SQLScripts = <
+      item
+        Name = 'DDL'
+      end
+      item
+        Name = 'DML'
+      end>
+    Connection = Conexao
+    Params = <>
+    Macros = <>
+    Left = 240
+    Top = 32
+  end
+  object cdsAuxiliar: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 280
+    Top = 144
+  end
 end

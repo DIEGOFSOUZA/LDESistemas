@@ -1,7 +1,7 @@
-//
+// 
 // Created by the DataSnap proxy generator.
-// 25/08/2021 13:09:42
-//
+// 03/09/2021 16:46:02
+// 
 
 unit UClassDataSnap;
 
@@ -15,6 +15,7 @@ type
     FLerDataSetCommand: TDBXCommand;
     FExecutarCommand: TDBXCommand;
     FTestaCominicacaoCommand: TDBXCommand;
+    FUpdateBaseDadosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -22,6 +23,7 @@ type
     function LerDataSet(BD: string; Txt: string): OleVariant;
     function Executar(BD: string; Txt: string): Integer;
     function TestaCominicacao: string;
+    function UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
   end;
 
   TSMCadastroClient = class(TDSAdminClient)
@@ -309,6 +311,21 @@ begin
   Result := FTestaCominicacaoCommand.Parameters[0].Value.GetWideString;
 end;
 
+function TSMClient.UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
+begin
+  if FUpdateBaseDadosCommand = nil then
+  begin
+    FUpdateBaseDadosCommand := FDBXConnection.CreateCommand;
+    FUpdateBaseDadosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUpdateBaseDadosCommand.Text := 'TSM.UpdateBaseDados';
+    FUpdateBaseDadosCommand.Prepare;
+  end;
+  FUpdateBaseDadosCommand.Parameters[0].Value.SetWideString(aBanco);
+  FUpdateBaseDadosCommand.Parameters[1].Value.SetWideString(aCPFCNPJ);
+  FUpdateBaseDadosCommand.ExecuteUpdate;
+  Result := FUpdateBaseDadosCommand.Parameters[2].Value.GetInt32;
+end;
+
 constructor TSMClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -324,6 +341,7 @@ begin
   FLerDataSetCommand.DisposeOf;
   FExecutarCommand.DisposeOf;
   FTestaCominicacaoCommand.DisposeOf;
+  FUpdateBaseDadosCommand.DisposeOf;
   inherited;
 end;
 
@@ -1942,4 +1960,3 @@ begin
 end;
 
 end.
-
