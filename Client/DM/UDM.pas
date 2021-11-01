@@ -416,10 +416,14 @@ begin               //0 invalido; 1 valido; 2 inativo
 
     if not tmp.IsEmpty then
     begin
-      if tmp.FieldByName('ativo').AsString = 'Não' then
+      if (tmp.FieldByName('ativo').AsString = 'Não') then
       begin
         Result := 2;
+<<<<<<< HEAD
         TMensagem.Informacao('Usuário Inativo');
+=======
+//        TMensagem.Informacao('Usuário Inativo');
+>>>>>>> master
       end
       else
       begin

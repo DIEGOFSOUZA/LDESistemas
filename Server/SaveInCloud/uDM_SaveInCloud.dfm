@@ -6,11 +6,12 @@ object DM_SaveInCloud: TDM_SaveInCloud
   object conSaveInCloud: TFDConnection
     Params.Strings = (
       'Database=ldecliente'
-      'User_Name=SYSDBA'
-      'Password=masterkey'
+      'User_Name=PROGRAMADOR'
+      'Password=804661'
       'Protocol=TCPIP'
       'Server=127.0.0.1'
       'Port=3060'
+      'RoleName=R_PROGRAMADOR'
       'DriverID=FB')
     LoginPrompt = False
     Left = 52

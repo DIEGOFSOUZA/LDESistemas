@@ -41,7 +41,7 @@ function AcertaTexto  (txt : string; Tamanho : integer)           : string;
 function AcertaData   (dt: TDate)                                 : string;
 function AcertaData2  (dt : TDate)                                : string ;
 function AcertaValor  (Numero: extended; Tamanho,Decimal: integer): string;
-function TiraAcentos  (Texto: string)                             : string;
+function RemoveAccents(const AText: string): string;
 function SoNumero     (Txt : string)                              : string;
 function ValidarCEP   (const CEP: string)                         : string;
 function TextoSemPonto(txt : string)                              : string;
@@ -294,23 +294,10 @@ begin
   end ;
 end;
 
-function TiraAcentos(Texto: string): string;
-var
- Contar, Posicao: integer;
- Acentos, TiraAcentos: string;
+function RemoveAccents(const AText: string): string;
+type USAscii20127 = type AnsiString(20127);
 begin
-  Acentos     := 'áäàãâÁÄÀÃÂéëèêÉËÈÊíïìîÍÏÌÎóöòõôÓÖÒÕÔúüùûÚÜÙÛçÇ+';
-  TiraAcentos := 'aaaaaAAAAAeeeeEEEEiiiiIIIIoooooOOOOOuuuuUUUUcC ';
-  Result := '' ;
-
-  for Contar := 1 to Length(Texto) do
-  begin
-   Posicao := Pos(Copy(Texto, Contar, 1), Acentos);
-   if Posicao = 0 then
-    Result := Result + Copy(Texto, Contar, 1)
-   else
-    Result := Result + Copy(TiraAcentos, Posicao, 1);
-  end;
+  Result := string(USAscii20127(AText));
 end;
 
 function SoNumero(Txt: string): string;

@@ -1,11 +1,12 @@
 inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
   BorderStyle = bsNone
   Caption = 'Rel_FechamentoCaixa'
-  ClientHeight = 360
-  ClientWidth = 541
+  ClientHeight = 502
+  ClientWidth = 1128
   Visible = False
-  ExplicitWidth = 541
-  ExplicitHeight = 360
+  OnCreate = FormCreate
+  ExplicitWidth = 1128
+  ExplicitHeight = 502
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
@@ -799,7 +800,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
     Width = 541
     Height = 360
     Caption = 'Panel1'
-    TabOrder = 1
+    TabOrder = 0
     object pnlAcoes: TPanel
       Left = 422
       Top = 31
@@ -808,7 +809,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       Align = alRight
       Color = clWhite
       ParentBackground = False
-      TabOrder = 0
+      TabOrder = 2
       object imgFiltrar: TImage
         Left = 6
         Top = 96
@@ -947,7 +948,6 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 0
       object Label1: TLabel
         Left = 32
         Top = 10
@@ -1075,7 +1075,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       AutoSize = True
       BevelOuter = bvNone
       Caption = 'pnlTit'
-      TabOrder = 2
+      TabOrder = 0
       object lblTitulo: TLabel
         Left = 0
         Top = 0

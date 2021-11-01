@@ -10,12 +10,29 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
   inherited Relatorio: TRLReport
     DataSource = dsGrupo
     inherited RLBand10: TRLBand
-      Height = 35
-      ExplicitHeight = 35
+      Height = 44
+      BeforePrint = RLBand10BeforePrint
+      ExplicitHeight = 44
+      object rlmFiltro: TRLMemo
+        Left = 32
+        Top = 24
+        Width = 641
+        Height = 16
+        AutoSize = False
+        Behavior = [beSiteExpander]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        Lines.Strings = (
+          'Per'#237'odo de: 20/09/2021 a 20/09/2021')
+        ParentFont = False
+      end
     end
     object rlgrp1: TRLGroup
       Left = 38
-      Top = 164
+      Top = 173
       Width = 718
       Height = 56
       DataFields = 'IDGRUPO'
@@ -134,7 +151,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
     end
     object RLSubDetail1: TRLSubDetail
       Left = 38
-      Top = 220
+      Top = 229
       Width = 718
       Height = 104
       DataSource = dsDetalhe
@@ -347,19 +364,7 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
     end
   end
   inherited pnlFundo: TPanel
-    inherited pnlButtons: TPanel
-      ExplicitLeft = 625
-      ExplicitTop = 22
-      ExplicitHeight = 163
-    end
-    inherited pnlTitulo: TPanel
-      ExplicitTop = 0
-    end
     inherited pnlClient: TPanel
-      ExplicitLeft = 0
-      ExplicitTop = 22
-      ExplicitWidth = 625
-      ExplicitHeight = 163
       object Label1: TLabel
         Left = 21
         Top = 0
@@ -470,9 +475,6 @@ inherited Rel_VendaPorGrupo: TRel_VendaPorGrupo
         Caption = 'Exibir apenas o resumo'
         TabOrder = 3
       end
-    end
-    inherited pnlRodape: TPanel
-      ExplicitTop = 185
     end
   end
   object dsDetalhe: TDataSource

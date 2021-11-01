@@ -3,10 +3,11 @@ unit uRel_VendaPorGrupo;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Relatorio2, System.Actions,
-  Vcl.ActnList, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls, RLReport,
-  Vcl.ComCtrls, UEDPesquisa, Data.DB, Datasnap.DBClient;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  UPdr_Relatorio2, System.Actions, Vcl.ActnList, Vcl.Imaging.pngimage,
+  Vcl.ExtCtrls, Vcl.StdCtrls, RLReport, Vcl.ComCtrls, UEDPesquisa, Data.DB,
+  Datasnap.DBClient;
 
 type
   TRel_VendaPorGrupo = class(TPdr_Relatorio2)
@@ -58,10 +59,12 @@ type
     RLDBText9: TRLDBText;
     RLDBText10: TRLDBText;
     chkResumo: TCheckBox;
+    rlmFiltro: TRLMemo;
     procedure FormCreate(Sender: TObject);
     procedure edpesGrupoPesquisa(Sender: TObject; var Retorno: string);
     procedure actGerarRelatorioExecute(Sender: TObject);
     procedure RLBand1BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLBand10BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
     { Private declarations }
   public
@@ -161,6 +164,14 @@ begin
 
   Self.ClientHeight := 185;
   Self.ClientWidth  := 729;
+end;
+
+procedure TRel_VendaPorGrupo.RLBand10BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+  inherited;
+  rlmFiltro.Lines.Clear;
+  rlmFiltro.Lines.Add('Período de: '+FormatDateTime('dd/mm/yyyy',dtp1.Date)+' a '+FormatDateTime('dd/mm/yyyy',dtp2.Date));
 end;
 
 procedure TRel_VendaPorGrupo.RLBand1BeforePrint(Sender: TObject;

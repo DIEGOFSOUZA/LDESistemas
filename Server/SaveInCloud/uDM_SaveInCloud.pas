@@ -45,12 +45,21 @@ implementation
 constructor TDM_SaveInCloud.Create;
 begin
   inherited Create(nil);
-//  conSaveInCloud.Params.Values['Server'] := 'env-8388274.jelastic.saveincloud.net';
-//  conSaveInCloud.Params.Values['Database'] := Banco;
-//  conSaveInCloud.Params.Values['Protocol'] := Protocolo;
-//  conSaveInCloud.Params.Values['Port'] := '12503';
-//  conSaveInCloud.Params.Values['User_Name'] := 'SYSDBA';
-//  conSaveInCloud.Params.Values['Password'] := '12c5NpzjWqhKtzEVTOV2';
+  conSaveInCloud.Params.Values['Server'] := 'env-8388274.jelastic.saveincloud.net';
+  conSaveInCloud.Params.Values['Database'] := 'ldecliente';
+  conSaveInCloud.Params.Values['Protocol'] := 'TCPIP';
+  conSaveInCloud.Params.Values['Port'] := '12503';
+  conSaveInCloud.Params.Values['User_Name'] := 'SYSDBA';
+  conSaveInCloud.Params.Values['Password'] := '12c5NpzjWqhKtzEVTOV2';
+
+//  conSaveInCloud.Params.Values['Database']   := 'ldecliente';
+//  conSaveInCloud.Params.Values['User_Name']  := 'SYSDBA';
+//  conSaveInCloud.Params.Values['Password']   := 'X5U$w7GQRku6';
+//  conSaveInCloud.Params.Values['Protocol']   := 'TCPIP';
+//  conSaveInCloud.Params.Values['Server']     := '127.0.0.1';
+//  conSaveInCloud.Params.Values['Port']       := '3060';
+//  conSaveInCloud.Params.Values['SQLDialect'] := '3';
+
   try
     conSaveInCloud.Connected := True;
   except

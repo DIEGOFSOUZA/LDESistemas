@@ -76,17 +76,6 @@ begin
   lTotRecebido := 0;
   lTotPeriodo := 0;
 
-  {SQL :='select cast(iif(a.FORMA_PAGTO = ''CREDIARIO'',''CREDIARIO'',b.DESCRICAO) as varchar(60)) forma,'+
-        'cast(iif(a.FORMA_PAGTO = ''CREDIARIO'',d.DESCRICAO,''A VISTA'') as varchar(50)) condicao,'+
-        'cast(sum(a.VALOR) as numeric(10,2))valor '+
-        'from PDV_RECEBER a '+
-        'left outer join HISTORICO b on (b.ID = a.ID_HISTORICO) '+
-        'left outer join PDV_MASTER c on (c.TIPO = a.TIPO and c.ID = a.ID) '+
-        'left outer join CONDPAGTO d on (d.CODIGO = c.ID_CREDIARIO) '+
-        'where c.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
-                           ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-        ' group by 1,2'; }
-
   SQL := 'with RET_CONDICAO as '+
          '( '+
          'select cast(iif(c.FORMA_PAGTO = ''CREDIARIO'',''CREDIARIO'',b.DESCRICAO) as varchar(60)) forma,'+

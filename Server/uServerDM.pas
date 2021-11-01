@@ -101,13 +101,12 @@ end;
 
 constructor TServerDM.Create(pBancoDados: string);
 var
-  Servidor, Banco, Protocolo, Porta: string;
+  Servidor, Banco, Porta: string;
   mPos: integer;
 begin
   inherited Create(nil);
   fBancoDados := pBancoDados;
-  Protocolo := 'TCPIP';
-  Porta := '3060'; //FB 2.5 = 3050  FB 3 = 3060
+  Porta := '3060';
   mPos := Pos(':', pBancoDados);
   if mPos > 0 then
   begin
@@ -120,10 +119,16 @@ begin
     Banco := pBancoDados;
   end;
 
-  Conexao.Params.Values['Database'] := Banco;
-  Conexao.Params.Values['Server'] := Servidor;
-  Conexao.Params.Values['Protocol'] := Protocolo;
-  Conexao.Params.Values['Port'] := Porta;
+  Conexao.Params.Values['Database']   := Banco;
+  Conexao.Params.Values['Protocol']   := 'TCPIP';
+  Conexao.Params.Values['Server']     := Servidor;
+  Conexao.Params.Values['Port']       := Porta;
+  Conexao.Params.Values['SQLDialect'] := '3';
+
+  Conexao.Params.Values['User_Name']  := 'SISTEMA';
+  Conexao.Params.Values['Password']   := 'ldesistemas';
+  Conexao.Params.Values['RoleName']   := 'R_SISTEMA';
+
 
 //********SaveInCloud*****************
 //  Conexao.Params.Values['Server'] := 'env-8388274.jelastic.saveincloud.net';

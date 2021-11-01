@@ -2,8 +2,9 @@ unit UConectar;
 
 interface
 
-uses System.SysUtils, Winapi.ShellApi, Winapi.Windows,
-     System.Win.Registry,Vcl.Dialogs;
+uses
+  System.SysUtils, Winapi.ShellApi, Winapi.Windows, System.Win.Registry,
+  Vcl.Dialogs;
 
 function AtualizaExe() : Boolean;
 function Iniciar() : boolean ;
@@ -18,21 +19,30 @@ uses
 
 function Iniciar() : boolean ;
 begin
-  Result := False ;
+  Result := True ;
 
+<<<<<<< HEAD
 //  if not Login() then
 //    Exit;
 
+=======
+>>>>>>> master
   if not Assigned(Frm_Login) then
     Frm_Login := TFrm_Login.Create(nil);
   try
     Frm_Login.ShowModal;
 
+<<<<<<< HEAD
     ShowMessage(Frm_Login.Retorno.ToString);
+=======
+    if Frm_Login.Retorno <> 1 then
+      Result := False;
+>>>>>>> master
   finally
     FreeAndNil(Frm_Login);
   end;
 
+<<<<<<< HEAD
   try
   //Update Base de dados
 //    DM.SMClient.UpdateBaseDados(DM.BancoDados, OnlyDigit(DM.Empresa.CNPJ));
@@ -43,6 +53,21 @@ begin
 //    Result := True;
   except
 //    Result := False;
+=======
+  if Result then
+  begin
+    try
+      //update Banco
+      DM.SMClient.UpdateBaseDados(DM.BancoDados, OnlyDigit(DM.Empresa.CNPJ));
+
+      //update Sistema
+//      AtualizaExe;
+
+//    Result := True;
+    except
+//    Result := False;
+    end;
+>>>>>>> master
   end;
 
 //  Result := Login() ;
