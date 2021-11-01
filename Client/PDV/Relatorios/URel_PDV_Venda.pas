@@ -227,6 +227,8 @@ begin
   pnlFiltros.Height := 96 ;
   dtp1.Date := Date ;
   dtp2.Date := Date ;
+  Self.ClientHeight := 179;
+  Self.ClientWidth := 689;
 end;
 
 procedure TRel_PDV_Venda.MontaDetalhe(stipo, sID: string);
@@ -293,20 +295,28 @@ begin
   gTotBruto := 0 ;
   rlblTotQtde.Caption := EmptyStr ;
 
-  SQLVenda := 'select a.TIPO,a.ID,a.EMISSAO,cast(a.VL_PRODUTO as numeric(10,2)) vl_bruto,'+
-              'cast((a.VL_PRODUTO - coalesce(h.VL_PAGO,0)) as numeric(10,2)) vl_liquido,a.status,'+
-              'b.NOME_RAZAO cliente,e.USU_NOME VENDEDORA,'+
-              'cast( (select list(upper(f.FORMA_PAGTO)||'': ''||''R$ ''||f.VALOR,''  '') from PDV_RECEBER f where f.tipo = a.TIPO and f.ID = a.ID) as varchar(500) ) formas_pagto '+
-              'from PDV_MASTER a '+
-              'left outer join CLIENTE b on (b.codigo = a.ID_CLIENTE) '+
-              'left outer join USUARIO e on (e.ID_VENDEDOR = a.ID_VENDEDOR) '+
-              'left outer join PDV_RECEBER h on (h.tipo = a.tipo and h.id = a.id and h.forma_pagto = ''DESCONTO'') '+
-              'where a.EMISSAO between '+QuotedStr(FormatDateTime('dd.mm.yyyy',dtp1.Date))+ ' and '+
-                                         QuotedStr(FormatDateTime('dd.mm.yyyy',dtp2.Date)) ;
+//  SQLVenda := 'select a.TIPO,a.ID,a.EMISSAO,cast(a.VL_PRODUTO as numeric(10,2)) vl_bruto,'+
+//              'cast((a.VL_PRODUTO - coalesce(h.VL_PAGO,0)) as numeric(10,2)) vl_liquido,a.status,'+
+//              'b.NOME_RAZAO cliente,e.USU_NOME VENDEDORA,'+
+//              'cast( (select list(upper(f.FORMA_PAGTO)||'': ''||''R$ ''||f.VALOR,''  '') from PDV_RECEBER f where f.tipo = a.TIPO and f.ID = a.ID) as varchar(500) ) formas_pagto '+
+//              'from PDV_MASTER a '+
+//              'left outer join CLIENTE b on (b.codigo = a.ID_CLIENTE) '+
+//              'left outer join USUARIO e on (e.ID_VENDEDOR = a.ID_VENDEDOR) '+
+//              'left outer join PDV_RECEBER h on (h.tipo = a.tipo and h.id = a.id and h.forma_pagto = ''DESCONTO'') '+
+  SQLVenda := 'select PM.ID, PM.TIPO, PM.EMISSAO, cast(PM.VL_PRODUTO as numeric(10,2)) VL_BRUTO, PM.STATUS, B.NOME_RAZAO CLIENTE,'+
+              '       E.USU_NOME VENDEDORA, coalesce(sum(iif(PR.ID_HISTORICO in (47, 99), 0, PR.VALOR)), 0) VL_LIQUIDO,'+
+              '       cast(coalesce(list(upper(PR.FORMA_PAGTO) || '': '' || ''R$ '' || PR.VALOR, ''  ''), ''VENDA CANCELADA'') as varchar(500)) FORMAS_PAGTO '+
+              'from PDV_MASTER PM '+
+              'left join PDV_RECEBER PR on (PR.TIPO = PM.TIPO and '+
+              '      PR.ID = PM.ID) '+
+              'left join CLIENTE B on (B.CODIGO = PM.ID_CLIENTE) '+
+              'left join USUARIO E on (E.ID_VENDEDOR = PM.ID_VENDEDOR) '+
+              'where pm.EMISSAO between '+QuotedStr(FormatDateTime('dd.mm.yyyy',dtp1.Date))+ ' and '+
+                                          QuotedStr(FormatDateTime('dd.mm.yyyy',dtp2.Date)) ;
 
   if ((edpsqsVendedor.Campo.Text <> EmptyStr) and
       (edpsqsVendedor.Campo.Text <> '0'))then
-    SQLVenda := SQLVenda + ' and a.id_vendedor = '+edpsqsVendedor.Campo.Text ;
+    SQLVenda := SQLVenda + ' and pmid_vendedor = '+edpsqsVendedor.Campo.Text ;
   if ((edpCliente.Campo.Text <> EmptyStr) and
        (edpCliente.Campo.Text <> '0'))then
     SQLVenda := SQLVenda + ' and b.codigo = '+edpCliente.Campo.Text ;
@@ -317,7 +327,7 @@ begin
       SQLVenda := SQLVenda + ' and h.id_produto = '+edpProduto.Campo.Text ;
   end;
 
-  SQLVenda := SQLVenda + ' group by 1,2,3,4,5,6,7,8' ;
+  SQLVenda := SQLVenda + ' group by 1, 2, 3, 4, 5, 6, 7' ;
 
   cdsMaster.IndexFieldNames := 'tipo;id' ;
   cdsMaster.Close ;

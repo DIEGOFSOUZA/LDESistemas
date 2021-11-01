@@ -3,7 +3,7 @@
         <ProjectGuid>{A6BA2BE4-1CE8-4748-B6AA-8F703253641B}</ProjectGuid>
         <MainSource>LDESistemas.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <TargetedPlatforms>38017</TargetedPlatforms>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
@@ -116,17 +116,10 @@
         <DCC_DcuOutput>c:\apagar\DCUs</DCC_DcuOutput>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-<<<<<<< HEAD
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2.35.5;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
-        <VerInfo_Build>5</VerInfo_Build>
-        <VerInfo_Release>35</VerInfo_Release>
-        <VerInfo_MinorVer>2</VerInfo_MinorVer>
-=======
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.3.36.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName)</VerInfo_Keys>
         <VerInfo_Build>1</VerInfo_Build>
         <VerInfo_Release>36</VerInfo_Release>
         <VerInfo_MinorVer>3</VerInfo_MinorVer>
->>>>>>> diego
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -183,7 +176,6 @@
         <DCCReference Include="UFrm_Inicial.pas">
             <Form>Frm_Inicial</Form>
         </DCCReference>
-        <DCCReference Include="UClassIniciar.pas"/>
         <DCCReference Include="Utils\u_Mensagem.pas"/>
         <DCCReference Include="Conexao\UFrm_AtualizacaoSistema.pas">
             <Form>Frm_AtualizacaoSistema</Form>
@@ -409,7 +401,6 @@
             <Form>Pdr_Child2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="UClassDataSnap.pas"/>
         <DCCReference Include="PDV\UFrm_ClientePDV.pas">
             <Form>Frm_ClientePDV</Form>
             <FormType>dfm</FormType>
@@ -490,6 +481,7 @@
             <Form>Rel_ClienteNaoComprou</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UClassDataSnap.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -191,7 +191,7 @@ inherited Pdr_Configuracao: TPdr_Configuracao
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 5
         Text = 'sistema'
         OnKeyPress = edNomeArquivoKeyPress
       end
@@ -241,7 +241,7 @@ inherited Pdr_Configuracao: TPdr_Configuracao
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 2
         Text = '127.0.0.1'
         OnKeyPress = edNomeArquivoKeyPress
       end

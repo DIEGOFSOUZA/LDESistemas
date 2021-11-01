@@ -16,6 +16,9 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
         end
       end
       inherited pnlVisualizar: TPanel
+        inherited Label3: TLabel
+          Width = 85
+        end
         inherited pnlVisualizaBotao: TPanel
           inherited imgVisualizar: TImage
             ExplicitTop = 80
@@ -577,7 +580,6 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
       'NDPAGTO d on (d.CODIGO = c.ID_CREDIARIO)'#13#10'where 1=2'#13#10'group by 1,' +
       '2'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 120
     object dsGridFORMA: TStringField
       DisplayLabel = 'Forma de Pagamento'

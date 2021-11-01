@@ -105,6 +105,7 @@ type
     procedure imgFiltrarClick(Sender: TObject);
     procedure dbgrd1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     gTotBaixa,gTotPrazo,gTotSangria : Extended ;
@@ -241,6 +242,13 @@ begin
   rlblEmpFantasia.Caption := DM.Empresa.Fantasia ;
   rlblNomeRelatorio.Caption := '   FECHAMENTO DE CAIXA' ;
   Relatorio.PreviewModal ;
+end;
+
+procedure TRel_FechamentoCaixa.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Self.ClientHeight := 360;
+  Self.ClientWidth := 541;
 end;
 
 function TRel_FechamentoCaixa.GetVlApurado(pFormaPagto: string): Extended;
@@ -540,10 +548,6 @@ begin
     fDifDinheiro := fApuDinheiro-fCompDinheiro;
 
     fDifTot := fDifCC+fDifCD+fDifCheque+fDifDinheiro;
-
-//    esta no evento da banda
-//    fVap := DM.GetFloat(Format(SQLTotCred,[QuotedStr(
-//                      FormatDateTime('dd.mm.yyyy',ds1.FieldByName('DT_HORA_ABERT_FECH').AsDateTime))]),'tot_cred');
 
     dsConsulta3.Locate('tipo','ABERTURA CAIXA',[]);
     fSIni := dsConsulta3.FieldByName('valor').AsCurrency;
