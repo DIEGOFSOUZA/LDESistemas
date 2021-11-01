@@ -43,28 +43,15 @@ object SM: TSM
       item
         Name = 'DML'
       end>
-<<<<<<< HEAD
-    Connection = Conexao
-    Params = <>
-    Macros = <>
-    Left = 240
-    Top = 32
-=======
     Params = <>
     Macros = <>
     Left = 248
     Top = 80
->>>>>>> master
   end
   object cdsAuxiliar: TClientDataSet
     Aggregates = <>
     Params = <>
-<<<<<<< HEAD
-    Left = 280
-    Top = 144
-=======
     Left = 248
     Top = 152
->>>>>>> master
   end
 end

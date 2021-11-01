@@ -1,12 +1,7 @@
-// 
+//
 // Created by the DataSnap proxy generator.
-<<<<<<< HEAD
-// 03/09/2021 16:46:02
-// 
-=======
 // 23/09/2021 09:44:04
 //
->>>>>>> master
 
 unit UClassDataSnap;
 
@@ -20,10 +15,7 @@ type
     FLerDataSetCommand: TDBXCommand;
     FExecutarCommand: TDBXCommand;
     FTestaCominicacaoCommand: TDBXCommand;
-<<<<<<< HEAD
-=======
     FBancoInManutencaoCommand: TDBXCommand;
->>>>>>> master
     FUpdateBaseDadosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -32,10 +24,7 @@ type
     function LerDataSet(BD: string; Txt: string): OleVariant;
     function Executar(BD: string; Txt: string): Integer;
     function TestaCominicacao: string;
-<<<<<<< HEAD
-=======
     function BancoInManutencao(aBD: string): Boolean;
->>>>>>> master
     function UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
   end;
 
@@ -324,8 +313,6 @@ begin
   Result := FTestaCominicacaoCommand.Parameters[0].Value.GetWideString;
 end;
 
-<<<<<<< HEAD
-=======
 function TSMClient.BancoInManutencao(aBD: string): Boolean;
 begin
   if FBancoInManutencaoCommand = nil then
@@ -340,7 +327,6 @@ begin
   Result := FBancoInManutencaoCommand.Parameters[1].Value.GetBoolean;
 end;
 
->>>>>>> master
 function TSMClient.UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
 begin
   if FUpdateBaseDadosCommand = nil then
@@ -371,10 +357,7 @@ begin
   FLerDataSetCommand.DisposeOf;
   FExecutarCommand.DisposeOf;
   FTestaCominicacaoCommand.DisposeOf;
-<<<<<<< HEAD
-=======
   FBancoInManutencaoCommand.DisposeOf;
->>>>>>> master
   FUpdateBaseDadosCommand.DisposeOf;
   inherited;
 end;
@@ -1994,3 +1977,4 @@ begin
 end;
 
 end.
+

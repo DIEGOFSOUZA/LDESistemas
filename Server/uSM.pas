@@ -12,11 +12,7 @@ uses
   FireDAC.Comp.DataSet, Datasnap.DBClient, FireDAC.Phys.FBDef,
   FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.Phys.IBBase,
   FireDAC.Phys.IBWrapper, FireDAC.Comp.ScriptCommands, FireDAC.Stan.Util,
-<<<<<<< HEAD
-  FireDAC.Comp.Script, UServerDM, uDM_SaveInCloud;
-=======
   FireDAC.Comp.Script, UServerDM, uDM_SaveInCloud, System.Math;
->>>>>>> master
 type
   TSM = class(TDSServerModule)
     DSPLer1: TDataSetProvider;
@@ -29,27 +25,13 @@ type
     cdsAuxiliar: TClientDataSet;
   private
     function ExisteAtualizacao(aCpfCnpj: string): Boolean;
-<<<<<<< HEAD
-    function CriarBKP(): Boolean;
-=======
     function CriarBKP(aBD: string): string;
     function RestauraBKP(aBD: string; aBkp: string): Boolean;
->>>>>>> master
     function SetBancoManutencao(aValue: Integer): Boolean;
     function AtualizaBanco(aIdScript: Integer): Boolean;
   public
     Dados: TServerDM;
     DadosCloud: TDM_SaveInCloud;
-<<<<<<< HEAD
-
-    var
-      VLocalBD, VCloudBD: Integer;
-
-    function LerDataSet(const BD, Txt : string ) : OleVariant ;
-    function Executar(const BD, Txt : string ) : integer ;
-    function TestaCominicacao : string ;
-    function UpdateBaseDados(const aBanco: string; aCPFCNPJ:string): Integer;
-=======
     var
       VLocalBD, VCloudBD: Integer;
     function LerDataSet(const BD, Txt: string): OleVariant;
@@ -57,7 +39,6 @@ type
     function TestaCominicacao: string;
     function BancoInManutencao(const aBD: string): Boolean;
     function UpdateBaseDados(const aBanco: string; aCPFCNPJ: string): Integer;
->>>>>>> master
   end;
 
 implementation
@@ -122,10 +103,6 @@ const
                'where c.cpf_cnpj = %s;';
 begin
   Result := False;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
   try
     cdsAuxiliar.Close;
     cdsAuxiliar.Data := DadosCloud.GetSQL(Format(SQL_VCloud, [QuotedStr(aCpfCnpj)]));
@@ -153,11 +130,8 @@ const
   SQL = 'select p.script_ddl ddl, p.script_dml dml '+
         'from pro_get_script(%s)p';
 begin
-<<<<<<< HEAD
-=======
   Result := True;
 
->>>>>>> master
   cdsAuxiliar.Close;
   cdsAuxiliar.Data := Dados.LerDataSet(Format(SQL, [aIdScript.ToString]));
 
@@ -189,63 +163,12 @@ begin
       end;
       FDScript1.ValidateAll;
       FDScript1.ExecuteAll;
-<<<<<<< HEAD
-//      with FDScript1 do
-//      begin
-//        SQLScripts.Clear;
-//        SQLScripts.Add;
-//
-//        if not cdsAuxiliar.FieldByName('ddl').IsNull then
-//        begin
-//          with SQLScripts[0].SQL do
-//          begin
-//            Add(cdsAuxiliar.FieldByName('ddl').AsString);
-//          end;
-//          ValidateAll;
-//          ExecuteAll;
-//        end;
-//
-//        SQLScripts.Clear;
-//        SQLScripts.Add;
-//        if not cdsAuxiliar.FieldByName('dml').IsNull then
-//        begin
-//           with SQLScripts[1].SQL do
-//          begin
-//            Add(cdsAuxiliar.FieldByName('dml').AsString);
-//          end;
-//          ValidateAll;
-//          ExecuteAll;
-//        end;
-//      end;
-=======
->>>>>>> master
     except
       Result := False;
     end;
   end;
 end;
 
-<<<<<<< HEAD
-function TSM.CriarBKP: Boolean;
-var
-  lFDBkp: TFDFBNBackup;
-  lFDDriver : TFDPhysFBDriverLink;
-begin
-  lFDDriver := TFDPhysFBDriverLink.Create(nil);
-  lFDBkp := TFDFBNBackup.Create(nil);
-  try
-    with lFDBkp do
-    begin
-      DriverLink := lFDDriver;
-      UserName := 'SYSDBA';
-      Password := 'masterkey';
-      Host := '127.0.0.1';
-      Protocol := ipTCPIP;
-      Database := 'takano';
-      BackupFile := 'C:\Executaveis\LDE\Client\Win32\Debug\bkp\banco\takano.fbk';
-      Level := 0;
-      Backup;
-=======
 function TSM.BancoInManutencao(const aBD: string): Boolean;
 const
   SQL = 'select coalesce(c.em_manutencao,0) avalue from control c';
@@ -306,7 +229,6 @@ begin
       Result := lFDBkp.BackupFile;
     except
       Result := '';
->>>>>>> master
     end;
   finally
     FreeAndNil(lFDBkp);
@@ -314,11 +236,6 @@ begin
   end;
 end;
 
-<<<<<<< HEAD
-function TSM.UpdateBaseDados(const aBanco: string; aCPFCNPJ: string): Integer;
-var
-  i: Integer;
-=======
 function TSM.RestauraBKP(aBD: string; aBkp: string): Boolean;
 var
   lFDRestore: TFDFBNRestore;
@@ -362,7 +279,6 @@ function TSM.UpdateBaseDados(const aBanco: string; aCPFCNPJ: string): Integer;
 var
   i: Integer;
   lFileBkp: string;
->>>>>>> master
 begin
   // 0 - Atualizacao nao efetuada
   // 1 - Banco já esta atualizado
@@ -378,14 +294,6 @@ begin
     end;
 
     try
-<<<<<<< HEAD
-      CriarBKP ;
-      SetBancoManutencao(1);
-      for I := VLocalBD+1 to VCloudBD do
-      begin
-        AtualizaBanco(i);
-      end;
-=======
       lFileBkp := CriarBKP(aBanco);
       if (lFileBkp = '') then
       begin
@@ -408,7 +316,6 @@ begin
         SetBancoManutencao(0);
       end;
 
->>>>>>> master
       Result := 2;
     except
 

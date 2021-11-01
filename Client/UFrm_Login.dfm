@@ -126,10 +126,6 @@ object Frm_Login: TFrm_Login
           ParentFont = False
           PasswordChar = '*'
           TabOrder = 1
-<<<<<<< HEAD
-          OnChange = edtSenhaChange
-=======
->>>>>>> master
           OnKeyDown = FormKeyDown
           OnKeyPress = edtSenhaKeyPress
         end
@@ -144,12 +140,6 @@ object Frm_Login: TFrm_Login
         Caption = 'pnlBottonLogin'
         ShowCaption = False
         TabOrder = 1
-<<<<<<< HEAD
-        ExplicitLeft = 72
-        ExplicitTop = 128
-        ExplicitWidth = 185
-=======
->>>>>>> master
         object pnlEntrar: TPanel
           Left = 11
           Top = 6
@@ -258,12 +248,6 @@ object Frm_Login: TFrm_Login
       BevelOuter = bvNone
       ShowCaption = False
       TabOrder = 0
-<<<<<<< HEAD
-      ExplicitLeft = 80
-      ExplicitTop = 48
-      ExplicitHeight = 41
-=======
->>>>>>> master
       object img1: TImage
         Left = 24
         Top = 14

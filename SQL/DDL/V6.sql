@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 ﻿--Alteracoes em firebird.conf
 -- descomentar as linhas
 --  AuthServer = Srp
@@ -23,7 +21,6 @@
 --Efetuar o procedimento acima para o banco takano tambem.
 --**********************************************************************************************
 
->>>>>>> master
 DROP TABLE CONTROL;
 
 CREATE TABLE CONTROL (
@@ -48,14 +45,9 @@ begin
 
    EXECUTE STATEMENT sql
    ON EXTERNAL '127.0.0.1/3060:C:\projetos\bancos\FB30\ldecliente.fdb'
-<<<<<<< HEAD
-   AS USER 'SYSDBA'
-   PASSWORD 'masterkey'
-=======
    AS USER 'SISTEMA'
    PASSWORD 'ldesistemas'
    ROLE 'R_SISTEMA'
->>>>>>> master
    INTO :script_ddl,:script_dml;
 
   suspend;
@@ -63,8 +55,6 @@ end^
 
 SET TERM ; ^
 
-<<<<<<< HEAD
-=======
 SET TERM ^ ;
 
 CREATE OR ALTER procedure PRO_RECEBER_VLLIQ (
@@ -212,6 +202,5 @@ grant R_SISTEMA to SISTEMA;
 
 
 
->>>>>>> master
 
 
