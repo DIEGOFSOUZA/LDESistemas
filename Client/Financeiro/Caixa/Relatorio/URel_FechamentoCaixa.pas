@@ -99,6 +99,43 @@ type
     rlblMantChq: TRLLabel;
     Panel1: TPanel;
     pnlTit: TPanel;
+    RelREcebidos: TRLReport;
+    RLBand4: TRLBand;
+    RLPanel1: TRLPanel;
+    RLLabel38: TRLLabel;
+    RLPanel2: TRLPanel;
+    RLSystemInfo4: TRLSystemInfo;
+    RLSystemInfo5: TRLSystemInfo;
+    RLSystemInfo6: TRLSystemInfo;
+    RLLabel40: TRLLabel;
+    RLBand5: TRLBand;
+    RLBand6: TRLBand;
+    RLLabel45: TRLLabel;
+    RLLabel47: TRLLabel;
+    RLLabel50: TRLLabel;
+    RLLabel52: TRLLabel;
+    RLLabel53: TRLLabel;
+    RLLabel54: TRLLabel;
+    RLLabel55: TRLLabel;
+    RLLabel56: TRLLabel;
+    RLDBText1: TRLDBText;
+    dsRecebidos: TDataSource;
+    cdsRecebidos: TClientDataSet;
+    cdsRecebidosID: TIntegerField;
+    cdsRecebidosORDEM: TStringField;
+    cdsRecebidosVL_PAGO: TFMTBCDField;
+    cdsRecebidosUSUARIO: TStringField;
+    cdsRecebidosCONTA: TStringField;
+    cdsRecebidosEMISSAO: TDateField;
+    cdsRecebidosNOME_RAZAO: TStringField;
+    RLDBText2: TRLDBText;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    RLDBText5: TRLDBText;
+    RLDBText6: TRLDBText;
+    RLDBText7: TRLDBText;
+    RLDBText8: TRLDBText;
+    cdsRecebidosFORMA_PAGTO: TStringField;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
     procedure lblGeraRelatorioClick(Sender: TObject);
@@ -106,6 +143,7 @@ type
     procedure dbgrd1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
+    procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
     { Private declarations }
     gTotBaixa,gTotPrazo,gTotSangria : Extended ;
@@ -146,6 +184,7 @@ type
     procedure MontaParametros(pIdCaixa : string);
 
     procedure MontaSQLGrid();
+    procedure MontaSQLRecebidos(aIDCaixa: string);
 
   public
     //coluna vl computado
@@ -239,6 +278,7 @@ begin
 
   MontaSQL(pIDCaixa) ;
   MontaParametros(pIdCaixa) ;
+  MontaSQLRecebidos(pIDCaixa);
   rlblEmpFantasia.Caption := DM.Empresa.Fantasia ;
   rlblNomeRelatorio.Caption := '   FECHAMENTO DE CAIXA' ;
   Relatorio.PreviewModal ;
@@ -619,6 +659,42 @@ begin
   end;
 end;
 
+procedure TRel_FechamentoCaixa.MontaSQLRecebidos(aIDCaixa: string);
+const
+  SQL = 'select B.ID, B.ORDEM, B.VL_PAGO, H.DESCRICAO FORMA_PAGTO,'+
+        '       substring(B.USUARIO_BAIXA from 1 for position(''|'' in B.USUARIO_BAIXA) - 1) USUARIO, CB.BCO_NOME CONTA,'+
+        '       PM.EMISSAO, C.NOME_RAZAO '+
+        'from PDV_RECEBER B '+
+        'left join PDV_MASTER PM on (PM.ID = B.ID and '+
+        '      PM.TIPO = B.TIPO) '+
+        'left join CONTA_BANCARIA CB on (CB.ID = B.ID_CONTA) '+
+        'left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) '+
+        'left join HISTORICO H on (H.ID = B.ID_HISTORICO) '+
+        'where B.ID_HISTORICO <> 47 and '+
+        '      B.DT_BAIXA = (select cast(C.DT_HORA_ABERT_FECH as date)'+
+        '                    from CAIXA_ABERT_FECH C'+
+        '                    where C.TIPO = ''A'' and'+
+        '                          C.ID_CAIXA = %s) '+
+        'union all '+
+        'select B.ID, B.ORDEM, B.VL_PAGO, H.DESCRICAO FORMA_PAGTO,'+
+        '       substring(B.USUARIO_BAIXA from 1 for position(''|'' in B.USUARIO_BAIXA) - 1) USUARIO, CB.BCO_NOME CONTA,'+
+        '       PM.EMISSAO, C.NOME_RAZAO '+
+        'from PDV_RECEBER_PARCIAL B '+
+        'left join PDV_MASTER PM on (PM.ID = B.ID and '+
+        '      PM.TIPO = B.TIPO) '+
+        'left join CONTA_BANCARIA CB on (CB.ID = B.ID_CONTA) '+
+        'left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) '+
+        'left join HISTORICO H on (H.ID = B.ID_HISTORICO) '+
+        'where B.DT_BAIXA = (select cast(C.DT_HORA_ABERT_FECH as date) '+
+        '                    from CAIXA_ABERT_FECH C'+
+        '                    where C.TIPO = ''A'' and'+
+        '                          C.ID_CAIXA = %s) '+
+        'order by 1';
+begin
+  cdsRecebidos.Close ;
+  cdsRecebidos.Data := DM.LerDataSet(Format(SQL,[aIDCaixa,aIDCaixa])) ;
+end;
+
 procedure TRel_FechamentoCaixa.RLBand3BeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
@@ -727,6 +803,13 @@ begin
 
   RLMemo1.Lines.Clear;
   RLMemo1.Lines.Text := DM.dsConsulta2.FieldByName('OBS').AsString;
+end;
+
+procedure TRel_FechamentoCaixa.RLBand4BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+  inherited;
+  RLLabel38.Caption := DM.Empresa.Fantasia ;
 end;
 
 end.

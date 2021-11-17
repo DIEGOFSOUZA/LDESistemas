@@ -10,12 +10,11 @@ object ServerDM: TServerDM
   object Conexao: TFDConnection
     Params.Strings = (
       'Database=sistema'
-      'User_Name=PROGRAMADOR'
-      'Password=804661'
+      'User_Name=SYSDBA'
+      'Password=X5U$w7GQRku6'
       'Server=127.0.0.1'
       'Port=3060'
       'Protocol=TCPIP'
-      'RoleName=R_PROGRAMADOR'
       'DriverID=FB')
     FetchOptions.AssignedValues = [evItems, evCache]
     FetchOptions.Items = [fiBlobs, fiDetails]

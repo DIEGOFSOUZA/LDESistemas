@@ -80,7 +80,7 @@ type
   public
     var
       Historico, Conta: string;
-    procedure Executar(aTipo: string; aId: integer; aOrdem: string);
+    procedure Executar(aTipo: string; aId: integer; aOrdem: string; aVisualizar: Boolean = False);
             {Titulo}
     property TitVenda: integer read fGetTitVenda;
     property TitDuplicata: string read fGetTitDuplicata;
@@ -103,13 +103,17 @@ uses
 
 {$R *.dfm}
 
-procedure TFrm_ContasaReceber_Baixa.Executar(aTipo: string; aId: integer; aOrdem: string);
+procedure TFrm_ContasaReceber_Baixa.Executar(aTipo: string; aId: integer; aOrdem: string; aVisualizar: Boolean = False);
 const
-  SQL = 'select A.ID, A.ORDEM, A.DT_VENC, A.VALOR, PM.EMISSAO, B.NOME_RAZAO CLIENTE '+
+  SQL = 'select A.ID, A.ORDEM, A.DT_VENC, A.VALOR, PM.EMISSAO, B.NOME_RAZAO CLIENTE,'+
+        'A.ID_HISTORICO, H.DESCRICAO HISTORICO,'+
+        'A.ID_CONTA, C.BCO_NOME, A.DT_BAIXA, A.JUROS, A.DESCONTO, A.VL_PAGO '+
         'from PDV_RECEBER A '+
         'join PDV_MASTER PM on (PM.TIPO = A.TIPO and '+
         '      PM.ID = A.ID) '+
         'join CLIENTE B on (B.CODIGO = PM.ID_CLIENTE) '+
+        'left join HISTORICO H on (H.ID = A.ID_HISTORICO) '+
+        'left join CONTA_BANCARIA C on (C.ID = A.ID_CONTA) '+
         'where A.TIPO = %s and '+
         '      A.ID   = %s and '+
         '   A.ORDEM   = %s';
@@ -128,12 +132,28 @@ begin
   fGetTitVenda := DM.dsConsulta.FieldByName('id').AsInteger;
   fGetTitDuplicata := DM.dsConsulta.FieldByName('ordem').AsString;
 
-  VlJuros := 0;
-  VlDescontos := 0;
-  Valor := DM.dsConsulta.FieldByName('valor').AsCurrency;
+  if not aVisualizar then
+  begin
+    VlJuros := 0;
+    VlDescontos := 0;
+    Valor := DM.dsConsulta.FieldByName('valor').AsCurrency;
 
-  dtpBaixa.Date := Date;
+    dtpBaixa.Date := Date;
+  end
+  else
+  begin
+    pnlDados.Enabled := False;
+    actEfetuarBaixa.Enabled := False;
 
+    edpsqsHistorico.Campo.Text := DM.dsConsulta.FieldByName('id_historico').AsString;
+    edpsqsHistorico.Mostrar.Text := DM.dsConsulta.FieldByName('historico').AsString;
+    edpsqsConta.Campo.Text := DM.dsConsulta.FieldByName('id_conta').AsString;
+    edpsqsConta.Mostrar.Text := DM.dsConsulta.FieldByName('bco_nome').AsString;
+    dtpBaixa.Date := DM.dsConsulta.FieldByName('dt_baixa').AsDateTime;
+    edtJuros.Text := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('juros').AsCurrency);
+    edtDescontos.Text := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('desconto').AsCurrency);
+    edtValorBaixa.Text := FormatCurr('#,##0.00',DM.dsConsulta.FieldByName('vl_pago').AsCurrency);
+  end;
 end;
 
 procedure TFrm_ContasaReceber_Baixa.actEfetuarBaixaExecute(Sender: TObject);
@@ -319,7 +339,7 @@ end;
 procedure TFrm_ContasaReceber_Baixa.FormShow(Sender: TObject);
 begin
   inherited;
-  dtpBaixa.Date := Date;
+//  dtpBaixa.Date := Date;
   edpsqsHistorico.Campo.SetFocus;
 end;
 
@@ -401,13 +421,12 @@ begin
     Exit;
   end;
 
-//  if (StrToCurr(edtValorBaixa.Text) > TitValor) then
-//  begin
-//    Result := False;
-//    TMensagem.Atencao('Valor da baixa é maior que o saldo devido.');
-//    edtValorBaixa.SetFocus;
-//    Exit;
-//  end;
+  if ((edpsqsHistorico.Campo.Text = '52') and (DM.Usuario.Perfil <> 'Administrador')) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Perfil de usuário não permitido para recebimento via boleto bancário.');
+    Exit;
+  end;
 
 end;
 
