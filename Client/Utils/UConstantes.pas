@@ -10,11 +10,11 @@ const
 
   //Versao do Sistema
   Release = '38';
-  Build =   '1';
+  Build =   '2';
 
-  //Versao BD
-  BDRelease = '5';
-  BDBuild =   '0';
+  //Versao BD - busca versao do banco
+//  BDRelease = '5';
+//  BDBuild =   '0';
 
 implementation
 

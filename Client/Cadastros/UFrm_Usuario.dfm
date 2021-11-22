@@ -30,6 +30,7 @@ inherited Frm_Usuario: TFrm_Usuario
       inherited Panel4: TPanel
         Top = 207
         Width = 878
+        TabOrder = 1
         ExplicitTop = 207
         ExplicitWidth = 878
       end
@@ -41,7 +42,7 @@ inherited Frm_Usuario: TFrm_Usuario
         Align = alClient
         Color = 14803681
         ParentBackground = False
-        TabOrder = 1
+        TabOrder = 0
         object Label1: TLabel
           Left = 13
           Top = 0
@@ -240,7 +241,7 @@ inherited Frm_Usuario: TFrm_Usuario
             'Operador PDV'
             'Vendedor')
           ParentFont = False
-          TabOrder = 3
+          TabOrder = 4
         end
         object DBComboBox3: TDBComboBox
           Left = 360
@@ -259,7 +260,7 @@ inherited Frm_Usuario: TFrm_Usuario
             'Sim'
             'N'#227'o')
           ParentFont = False
-          TabOrder = 4
+          TabOrder = 5
         end
         object DBComboBox4: TDBComboBox
           Left = 486
@@ -278,7 +279,7 @@ inherited Frm_Usuario: TFrm_Usuario
             'Sim'
             'N'#227'o')
           ParentFont = False
-          TabOrder = 5
+          TabOrder = 6
           OnChange = DBComboBox4Change
         end
         object DBEdit4: TDBEdit
@@ -295,7 +296,7 @@ inherited Frm_Usuario: TFrm_Usuario
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
-          TabOrder = 6
+          TabOrder = 8
         end
         object DBEdit5: TDBEdit
           Left = 343
@@ -311,7 +312,7 @@ inherited Frm_Usuario: TFrm_Usuario
           Font.Style = []
           ParentFont = False
           PasswordChar = '*'
-          TabOrder = 7
+          TabOrder = 9
         end
         object pnlCodVenda: TPanel
           Left = 632
@@ -319,7 +320,7 @@ inherited Frm_Usuario: TFrm_Usuario
           Width = 140
           Height = 131
           BevelOuter = bvNone
-          TabOrder = 8
+          TabOrder = 3
           Visible = False
           object Label10: TLabel
             Left = 5
@@ -397,7 +398,7 @@ inherited Frm_Usuario: TFrm_Usuario
             'Sim'
             'N'#227'o')
           ParentFont = False
-          TabOrder = 9
+          TabOrder = 7
           TabStop = False
         end
       end
@@ -409,8 +410,7 @@ inherited Frm_Usuario: TFrm_Usuario
   end
   inherited cds: TClientDataSet
     CommandText = 'select a.* from USUARIO a'#13#10'where 1=2'
-    ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
+    RemoteServer = DM.dspRLer
     AfterInsert = cdsAfterInsert
     Left = 712
     Top = 208
@@ -468,6 +468,9 @@ inherited Frm_Usuario: TFrm_Usuario
       FieldName = 'ATIVO'
       FixedChar = True
       Size = 3
+    end
+    object cdsID_GRUPO: TIntegerField
+      FieldName = 'ID_GRUPO'
     end
   end
   inherited actMaster: TActionList

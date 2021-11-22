@@ -123,7 +123,6 @@ type
     cdsRecebidos: TClientDataSet;
     cdsRecebidosID: TIntegerField;
     cdsRecebidosORDEM: TStringField;
-    cdsRecebidosVL_PAGO: TFMTBCDField;
     cdsRecebidosUSUARIO: TStringField;
     cdsRecebidosCONTA: TStringField;
     cdsRecebidosEMISSAO: TDateField;
@@ -136,6 +135,10 @@ type
     RLDBText7: TRLDBText;
     RLDBText8: TRLDBText;
     cdsRecebidosFORMA_PAGTO: TStringField;
+    RLBand7: TRLBand;
+    RLDBResult1: TRLDBResult;
+    RLLabel57: TRLLabel;
+    cdsRecebidosVL_PAGO: TFMTBCDField;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
     procedure lblGeraRelatorioClick(Sender: TObject);
@@ -144,6 +147,8 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLDBResult1Compute(Sender: TObject; var Value: Variant;
+      var AText: string; var ComputeIt: Boolean);
   private
     { Private declarations }
     gTotBaixa,gTotPrazo,gTotSangria : Extended ;
@@ -810,6 +815,13 @@ procedure TRel_FechamentoCaixa.RLBand4BeforePrint(Sender: TObject;
 begin
   inherited;
   RLLabel38.Caption := DM.Empresa.Fantasia ;
+end;
+
+procedure TRel_FechamentoCaixa.RLDBResult1Compute(Sender: TObject;
+  var Value: Variant; var AText: string; var ComputeIt: Boolean);
+begin
+  inherited;
+  Value := cdsRecebidosVL_PAGO.AsCurrency;
 end;
 
 end.

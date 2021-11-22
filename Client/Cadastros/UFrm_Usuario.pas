@@ -46,6 +46,7 @@ type
     cdsATIVO: TStringField;
     Label11: TLabel;
     DBComboBox2: TDBComboBox;
+    cdsID_GRUPO: TIntegerField;
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure FormCreate(Sender: TObject);
     procedure DBComboBox4Change(Sender: TObject);
@@ -84,6 +85,7 @@ begin
   cds.FieldByName('usu_id').AsInteger := 0;
   cds.FieldByName('comissao').AsCurrency := 0;
   cds.FieldByName('ativo').AsString := 'Sim';
+  cds.FieldByName('ID_GRUPO').AsInteger := 1; //padrao(acesso total)
 end;
 
 procedure TFrm_Usuario.DBComboBox4Change(Sender: TObject);

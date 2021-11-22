@@ -5,7 +5,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
   ClientWidth = 2000
   Visible = False
   OnCreate = FormCreate
-  ExplicitLeft = -508
+  ExplicitLeft = -807
   ExplicitWidth = 2000
   ExplicitHeight = 711
   PixelsPerInch = 96
@@ -1496,6 +1496,46 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
         Text = ''
       end
     end
+    object RLBand7: TRLBand
+      Left = 38
+      Top = 151
+      Width = 1047
+      Height = 26
+      BandType = btSummary
+      Borders.Sides = sdCustom
+      Borders.DrawLeft = False
+      Borders.DrawTop = True
+      Borders.DrawRight = False
+      Borders.DrawBottom = False
+      object RLDBResult1: TRLDBResult
+        Left = 251
+        Top = 8
+        Width = 130
+        Height = 16
+        Alignment = taRightJustify
+        AutoSize = False
+        DataField = 'VL_PAGO'
+        DataSource = dsRecebidos
+        Info = riSum
+        Text = ''
+        OnCompute = RLDBResult1Compute
+      end
+      object RLLabel57: TRLLabel
+        Left = 119
+        Top = 8
+        Width = 130
+        Height = 16
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'TOTAL RECEBIDO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
   end
   inherited RLPDFFilter1: TRLPDFFilter
     Left = 364
@@ -1617,12 +1657,6 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       Required = True
       Size = 5
     end
-    object cdsRecebidosVL_PAGO: TFMTBCDField
-      FieldName = 'VL_PAGO'
-      DisplayFormat = 'R$ #,##0.00'
-      Precision = 18
-      Size = 2
-    end
     object cdsRecebidosFORMA_PAGTO: TStringField
       FieldName = 'FORMA_PAGTO'
       ReadOnly = True
@@ -1646,6 +1680,12 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       FieldName = 'NOME_RAZAO'
       ReadOnly = True
       Size = 100
+    end
+    object cdsRecebidosVL_PAGO: TFMTBCDField
+      FieldName = 'VL_PAGO'
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
     end
   end
 end
