@@ -7,7 +7,7 @@ uses
   System.Classes, System.Actions, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
   Vcl.Dialogs, Vcl.ExtCtrls, Vcl.DBGrids, Vcl.StdCtrls, Vcl.ActnList,
   Vcl.Imaging.pngimage, Vcl.Grids, Vcl.Buttons, Data.DB, Datasnap.DBClient,
-  ACBrUtil, DateUtils, Vcl.Imaging.jpeg;
+  ACBrUtil, DateUtils, Vcl.Imaging.jpeg, System.StrUtils;
 
 type
   TRetornoPK = record
@@ -141,7 +141,6 @@ type
     actPagCrediario: TAction;
     cdsMasterID_VENDEDOR: TIntegerField;
     cdsMasterID_CREDIARIO: TIntegerField;
-    Button1: TButton;
     cdsItensQTDE_BAIXA: TCurrencyField;
     cdsDetailQTDE_BAIXA: TCurrencyField;
     cdsDetailUM: TStringField;
@@ -210,7 +209,6 @@ type
     procedure actPagCartaoExecute(Sender: TObject);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
     procedure actPagCrediarioExecute(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure actDescontoItemExecute(Sender: TObject);
     procedure imgFecharClick(Sender: TObject);
     procedure actGeraOrcamentoExecute(Sender: TObject);
@@ -255,8 +253,8 @@ type
     {orçamento}
     procedure CarregaOrcamento();
     procedure SetOrcamentoId(const Value: integer);
-    procedure AtualizaOrcamento();
-    procedure AtualizaCreditoCliente();
+//    procedure AtualizaOrcamento();
+//    procedure AtualizaCreditoCliente();
   public
     { Public declarations }
     IdCliente : Integer ;
@@ -573,7 +571,7 @@ begin
 
             if (cdsPagamentos.FieldByName('FORMAPAGTO').AsString <> 'CREDIARIO') then
             begin
-              cdsReceber.FieldByName('id_conta').AsString := '1'; //Conta PDV
+              cdsReceber.FieldByName('id_conta').AsString := IfThen(cdsPagamentosID_CONTA.AsInteger > 0, cdsPagamentosID_CONTA.AsString, '1'); //Conta PDV
               cdsReceber.FieldByName('id_historico').AsInteger := VoltaHistorico(cdsPagamentosFORMAPAGTO.AsString);
               cdsReceber.FieldByName('baixa_id_caixa').AsInteger := IdCaixa;
 
@@ -585,7 +583,7 @@ begin
 
             cdsReceberUSUARIO_EMISSAO.AsString := DM.UsuarioDataHora;
 
-            if cdsReceberDT_VENC.AsDateTime = Date then
+            if (cdsReceberDT_VENC.AsDateTime = Date) then
             begin
               cdsReceberDT_BAIXA.AsDateTime := cdsPagamentosVENCTO.AsDateTime;
               cdsReceberVL_PAGO.AsCurrency := cdsPagamentosVALOR.AsCurrency;
@@ -704,19 +702,19 @@ begin
   end;
 end;
 
-procedure TfrmVendaMain.AtualizaCreditoCliente;
-const
-  SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
-begin
-  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
-end;
+//procedure TfrmVendaMain.AtualizaCreditoCliente;
+//const
+//  SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
+//begin
+//  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
+//end;
 
-procedure TfrmVendaMain.AtualizaOrcamento;
-const
-  SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
-begin
-  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
-end;
+//procedure TfrmVendaMain.AtualizaOrcamento;
+//const
+//  SQL = 'update ORCAMENTO a set a.STATUS = ''VENDIDO'' where a.ID = %s';
+//begin
+//  DM.ExecutarSQL(DM.BancoDados, Format(SQL, [IntToStr(OrcamentoID)]));
+//end;
 
 procedure TfrmVendaMain.AtualizaTotais;
 begin
@@ -732,11 +730,6 @@ begin
     lblTotItens.Caption := FormatFloat('#,##0.000', cdsItens.RecordCount);
     lblTotQtde.Caption := FormatFloat('#,##0.000', cdsItenstotal_qtde.Value);
   end;
-end;
-
-procedure TfrmVendaMain.Button1Click(Sender: TObject);
-begin
-//  Imprimir() ;
 end;
 
 procedure TfrmVendaMain.CarregaCliente(iCodigo: integer);
@@ -1718,6 +1711,8 @@ begin
     Result := 2;
   if pFPagto = 'CREDITO' then
     Result := 99;
+   if pFPagto = 'PIX' then
+    Result := 101;
 end;
 
 function TfrmVendaMain.VoltaPK(aTipo: string): TRetornoPK;

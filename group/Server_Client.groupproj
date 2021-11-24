@@ -12,6 +12,9 @@
         <Projects Include="..\..\Backup BD\BackupBanco.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="C:\ACBr\Exemplos\ACBrTEFD\POSTEF\Delphi\POSTEFServer.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="BackupBanco:Make">
         <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj" Targets="Make"/>
     </Target>
+    <Target Name="POSTEFServer">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrTEFD\POSTEF\Delphi\POSTEFServer.dproj"/>
+    </Target>
+    <Target Name="POSTEFServer:Clean">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrTEFD\POSTEF\Delphi\POSTEFServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="POSTEFServer:Make">
+        <MSBuild Projects="C:\ACBr\Exemplos\ACBrTEFD\POSTEF\Delphi\POSTEFServer.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco"/>
+        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco;POSTEFServer"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean"/>
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean;POSTEFServer:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make"/>
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make;POSTEFServer:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

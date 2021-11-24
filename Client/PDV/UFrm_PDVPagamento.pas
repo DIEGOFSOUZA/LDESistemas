@@ -128,6 +128,11 @@ type
     lblUtilizarCredito: TLabel;
     imgUtilizarCredito: TImage;
     actUtilizarCredito: TAction;
+    pnlPix: TPanel;
+    lblPix: TLabel;
+    imgPix: TImage;
+    actPix: TAction;
+    cdsPagamentosID_CONTA: TIntegerField;
     procedure actVoltarExecute(Sender: TObject);
     procedure edtValorKeyPress(Sender: TObject; var Key: Char);
     procedure actPagarDinheiroExecute(Sender: TObject);
@@ -149,6 +154,7 @@ type
     procedure act100ReaisExecute(Sender: TObject);
     procedure pnlBotaoSairClick(Sender: TObject);
     procedure actUtilizarCreditoExecute(Sender: TObject);
+    procedure actPixExecute(Sender: TObject);
   private
     fValorRestante: Currency;
     fValorTotal: Currency;
@@ -201,7 +207,7 @@ var
 implementation
 
 uses
-  UFrm_PDVCrediario, UFuncoes, u_Mensagem;
+  UFrm_PDVCrediario, UFuncoes, u_Mensagem, UFrm_Conta_Pix_PDV;
 
 {$R *.dfm}
 
@@ -326,6 +332,12 @@ begin
   setPanel(pnlDinheiro,'DINHEIRO');
 end;
 
+procedure TFrm_PDVPagamento.actPixExecute(Sender: TObject);
+begin
+  inherited;
+  setPanel(pnlPix,'PIX');
+end;
+
 procedure TFrm_PDVPagamento.actUtilizarCreditoExecute(Sender: TObject);
 begin
   inherited;
@@ -340,9 +352,6 @@ begin
       setCDSPagamentos('CREDITO', ValorCredito, Date)
     else
       setCDSPagamentos('CREDITO', ValorRestante, Date);
-
-
-//  setPanel(pnlUtilizarCredito,'VENDA - CREDITO DEV/TROCA');
   end;
 end;
 
@@ -464,11 +473,34 @@ end;
 procedure TFrm_PDVPagamento.setCDSPagamentos(aForma : string; aValor : Currency; aVencto : TDate) ;
 var
   mtot: Extended;
+  lIdConta: Integer;
 begin
-  if aForma = 'CREDIARIO' then
+  lIdConta := -1;
+  if (aForma = 'CREDIARIO') then
     cdsPagamentos.Append
   else
   begin
+    if (aForma = 'PIX') then
+    begin
+      if not Assigned(Frm_Conta_Pix_PDV) then
+        Frm_Conta_Pix_PDV := TFrm_Conta_Pix_PDV.Create(Self);
+      try
+        Frm_Conta_Pix_PDV.ShowModal;
+        lIdConta := Frm_Conta_Pix_PDV.Conta;
+      finally
+        FreeAndNil(Frm_Conta_Pix_PDV);
+      end;
+    end;
+
+    if ((aForma = 'PIX') and (lIdConta = -1)) then //nao confirmou a conta
+    begin
+      edtValor.text := EmptyStr;
+      edtValor.Enabled := False;
+      FormaPagto := EmptyStr;
+      LimparPnlMarcado;
+      Exit;
+    end;
+
     if cdsPagamentos.Locate('formapagto', aForma, []) then
       cdsPagamentos.Edit
     else
@@ -483,6 +515,7 @@ begin
 
   cdsPagamentosVALOR_PAGO.AsCurrency := aValor ;
   cdsPagamentosVENCTO.AsDateTime := aVencto;
+  cdsPagamentosID_CONTA.AsInteger := lIdConta;
   cdsPagamentos.Post;
 
   mtot := 0;

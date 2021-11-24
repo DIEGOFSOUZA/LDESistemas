@@ -84,19 +84,22 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
     end
     object pnlCentro: TPanel
       Left = 1
-      Top = 211
+      Top = 181
       Width = 632
-      Height = 438
+      Height = 468
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitTop = 211
+      ExplicitHeight = 438
       object pnlDireita: TPanel
         Left = 232
         Top = 0
         Width = 400
-        Height = 438
+        Height = 468
         Align = alClient
         TabOrder = 1
+        ExplicitHeight = 438
         object pnlTop1: TPanel
           Left = 1
           Top = 1
@@ -104,6 +107,8 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Height = 96
           Align = alTop
           TabOrder = 0
+          ExplicitLeft = 6
+          ExplicitTop = -5
           object Label4: TLabel
             Left = 132
             Top = 18
@@ -357,7 +362,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Left = 1
           Top = 97
           Width = 398
-          Height = 340
+          Height = 370
           Align = alClient
           DataSource = dsPagamentos
           DrawingStyle = gdsClassic
@@ -403,12 +408,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Left = 0
         Top = 0
         Width = 232
-        Height = 438
+        Height = 468
         Align = alLeft
         TabOrder = 0
+        ExplicitLeft = -4
         object pnlDinheiro: TPanel
           Left = 11
-          Top = 7
+          Top = 11
           Width = 210
           Height = 40
           BevelInner = bvLowered
@@ -471,13 +477,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlCartaoCredito: TPanel
           Left = 11
-          Top = 55
+          Top = 146
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 1
+          TabOrder = 3
           OnClick = actPagarCartaoCreditoExecute
           object lblOpcCartaoCredito: TLabel
             Left = 45
@@ -531,7 +537,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlCartaoDebito: TPanel
           Left = 11
-          Top = 103
+          Top = 101
           Width = 210
           Height = 40
           BevelInner = bvLowered
@@ -596,13 +602,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlCheque: TPanel
           Left = 11
-          Top = 151
+          Top = 191
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 3
+          TabOrder = 4
           OnClick = actPagarChequeExecute
           object lblOpcCheque: TLabel
             Left = 45
@@ -649,13 +655,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlCrediario: TPanel
           Left = 11
-          Top = 199
+          Top = 236
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 4
+          TabOrder = 5
           OnClick = actPagarCrediarioExecute
           object lblOpcCrediario: TLabel
             Left = 45
@@ -731,13 +737,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlFinalizarVenda: TPanel
           Left = 11
-          Top = 391
+          Top = 416
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 8
+          TabOrder = 9
           OnClick = actFinalizaVendaExecute
           object lblOpcFinalizarVenda: TLabel
             Left = 45
@@ -797,13 +803,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlDesconto: TPanel
           Left = 11
-          Top = 247
+          Top = 281
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 5
+          TabOrder = 6
           OnClick = actDescontoExecute
           object lblOpcDesconto: TLabel
             Left = 45
@@ -862,13 +868,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlLimpar: TPanel
           Left = 11
-          Top = 343
+          Top = 371
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 7
+          TabOrder = 8
           OnClick = actLimparExecute
           object lblLimpar: TLabel
             Left = 45
@@ -903,13 +909,13 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         end
         object pnlUtilizarCredito: TPanel
           Left = 11
-          Top = 293
+          Top = 326
           Width = 210
           Height = 40
           BevelInner = bvLowered
           Color = clWhite
           ParentBackground = False
-          TabOrder = 6
+          TabOrder = 7
           OnClick = actUtilizarCreditoExecute
           object lblUtilizarCredito: TLabel
             Left = 45
@@ -962,6 +968,69 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
               31392B30303A303026A642C30000001974455874536F66747761726500777777
               2E696E6B73636170652E6F72679BEE3C1A0000000049454E44AE426082}
             OnClick = actUtilizarCreditoExecute
+          end
+        end
+        object pnlPix: TPanel
+          Left = 11
+          Top = 56
+          Width = 210
+          Height = 40
+          BevelInner = bvLowered
+          Color = clWhite
+          ParentBackground = False
+          TabOrder = 1
+          OnClick = actPixExecute
+          object lblPix: TLabel
+            Left = 45
+            Top = 11
+            Width = 20
+            Height = 17
+            Caption = 'PIX'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Segoe UI Semibold'
+            Font.Style = [fsBold]
+            ParentFont = False
+            OnClick = actPixExecute
+          end
+          object imgPix: TImage
+            Left = 7
+            Top = 4
+            Width = 32
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+              00200804000000D973B27F0000000467414D410000B18F0BFC61050000000262
+              4B47440000AA8D2332000000097048597300000EE900000EE9010E33421C0000
+              000774494D4507E30A070D3A1322ACEF60000002AD4944415478DAA5955B4854
+              511486BF89A80CE9214D33D2A48708A4ECE653A993F568D44365118405529062
+              06598923925492DDB00B519145915044615816A24564446565044A699476A1D4
+              C80AB28BF6CF3833CEE4D93343AD0333E7ECBDD7B7F6BFF65AE7D8086CDB7104
+              9C6FB7050154308132E36C227B0201A259C0361EB0C6B8C24EBD156034292CD4
+              359D4FFCE49A1BB09E99DE153F28E4B319F086081AA8D5F590137A7602C278CF
+              6DCD0CD82AB2A83403EE534DB137074E403A39243095AFEED1729629BDE79966
+              0DD82909F35C774B39AB4825B4729D5C5ABC2B462AC006F6536F0D48A386487A
+              74E7509C5394D24C8C24F85B0D8DDCB0068CA28B155C618A16C573DA00B82A40
+              AD35006DB88522B934D0CD170360B6C2C49B009B95B804E5BC90643D590302D4
+              01CCE011B1EC6238DF8D806C9ED36B02D8B43C9F7EF64A699F0190AA91181300
+              CEC9319F0E9E2A551E409CCE3F4563455C0E2601D6B2436DD4A44C784EA14B75
+              D9CD01E6B04598BBAA82265E9A0171BC52AF6592E7AD8389DC234A18A8D25C4E
+              A03A705A3275AAB646E5C00398AC5E88A6D30578C7BAC0806439F6A816162962
+              A51BD0A92D7F9484241DB29D3B838074A989F0717EC6318E7052C57491C57268
+              17A2820CE99FC46EC6EA6C8EAA5B3A06016F55B4B5722C96EB05FDE73257D9DE
+              48386DEA086BFBAD2A58E201F4339F9B1AACE796AB898BB5A7248D9ACD468192
+              F8D80C48D5C8DF96C8389FA72C65A1555E210386A92FC60F81967329F41D3004
+              59A2175BE6BF4A70E6215BEDB6E97F24B4B152EF6F1F40957EF78528618C8255
+              EB6D61F70584A9BBFB429410CE619558993F208F27AAFFD024F42AFE6ABEF903
+              D278CD0B17A040AD5261DC7E947AC2C171D7BD0BF08133FA7C0DDA56F55DAC16
+              54F1CB1210A93E39A4121A10A68F6B0607FDF435B35C2D53CA2C4604AD067DDE
+              FF00644113D6F1F57C050000002574455874646174653A637265617465003230
+              31392D31302D30375431333A35383A31392B30303A303057FBFA7F0000002574
+              455874646174653A6D6F6469667900323031392D31302D30375431333A35383A
+              31392B30303A303026A642C30000001974455874536F66747761726500777777
+              2E696E6B73636170652E6F72679BEE3C1A0000000049454E44AE426082}
+            OnClick = actPixExecute
           end
         end
       end
@@ -1022,7 +1091,7 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Left = 1
       Top = 31
       Width = 632
-      Height = 180
+      Height = 150
       Align = alTop
       AutoSize = True
       BevelOuter = bvNone
@@ -1031,14 +1100,15 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Left = 0
         Top = 0
         Width = 632
-        Height = 30
+        Height = 25
+        Margins.Right = 10
         Align = alTop
         TabOrder = 0
         object lblTitRestante: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1050,14 +1120,17 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = -5
+          ExplicitTop = -3
+          ExplicitHeight = 18
         end
         object lblVlRestante: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
-          AutoSize = False
           Caption = 'R$ 0,00'
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1066,20 +1139,23 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 565
+          ExplicitWidth = 66
+          ExplicitHeight = 25
         end
       end
       object pnlTopoTroco: TPanel
         Left = 0
-        Top = 30
+        Top = 25
         Width = 632
-        Height = 30
+        Height = 25
         Align = alTop
         TabOrder = 1
         object lblTitTroco: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1091,12 +1167,14 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitHeight = 28
         end
         object lblTroco: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'R$ 0,00'
@@ -1107,20 +1185,24 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 400
+          ExplicitWidth = 230
+          ExplicitHeight = 28
         end
       end
       object pnlTopoAcrescimo: TPanel
         Left = 0
-        Top = 90
+        Top = 75
         Width = 632
-        Height = 30
+        Height = 25
         Align = alTop
         TabOrder = 3
+        ExplicitTop = 65
         object lblTitAcrescimo: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1132,12 +1214,14 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitHeight = 28
         end
         object lblVlAcrescimo: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'R$ 0,00'
@@ -1148,20 +1232,24 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 400
+          ExplicitWidth = 230
+          ExplicitHeight = 28
         end
       end
       object pnlTopoDesconto: TPanel
         Left = 0
-        Top = 150
+        Top = 125
         Width = 632
-        Height = 30
+        Height = 25
         Align = alTop
         TabOrder = 5
+        ExplicitTop = 110
         object lblTitDesconto: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1173,12 +1261,14 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitHeight = 28
         end
         object lblDesconto: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'R$ 0,00'
@@ -1189,20 +1279,24 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 400
+          ExplicitWidth = 230
+          ExplicitHeight = 28
         end
       end
       object pnlTopoTotPagar: TPanel
         Left = 0
-        Top = 60
+        Top = 50
         Width = 632
-        Height = 30
+        Height = 25
         Align = alTop
         TabOrder = 2
+        ExplicitTop = 45
         object lblTitTotPagar: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1214,12 +1308,14 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitHeight = 28
         end
         object lblTotPagar: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'R$ 0,00'
@@ -1230,20 +1326,23 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 400
+          ExplicitWidth = 230
+          ExplicitHeight = 28
         end
       end
       object pnlCredito: TPanel
         Left = 0
-        Top = 120
+        Top = 100
         Width = 632
-        Height = 30
+        Height = 25
         Align = alTop
         TabOrder = 4
         object lbl1: TLabel
           Left = 1
           Top = 1
           Width = 170
-          Height = 28
+          Height = 23
           Align = alLeft
           Alignment = taRightJustify
           AutoSize = False
@@ -1255,12 +1354,14 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitHeight = 20
         end
         object lblCredito: TLabel
-          Left = 400
+          Left = 171
           Top = 1
-          Width = 230
-          Height = 28
+          Width = 460
+          Height = 23
+          Align = alClient
           Alignment = taRightJustify
           AutoSize = False
           Caption = 'R$ 0,00'
@@ -1271,6 +1372,9 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
+          ExplicitLeft = 400
+          ExplicitWidth = 230
+          ExplicitHeight = 28
         end
       end
     end
@@ -1351,6 +1455,10 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Caption = 'actUtilizarCredito'
       OnExecute = actUtilizarCreditoExecute
     end
+    object actPix: TAction
+      Caption = 'actPix'
+      OnExecute = actPixExecute
+    end
   end
   object cdsPagamentos: TClientDataSet
     Aggregates = <>
@@ -1371,6 +1479,10 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       item
         Name = 'VALOR_PAGO'
         DataType = ftCurrency
+      end
+      item
+        Name = 'ID_CONTA'
+        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
@@ -1390,6 +1502,9 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
     object cdsPagamentosVALOR_PAGO: TCurrencyField
       FieldName = 'VALOR_PAGO'
       DisplayFormat = '#,##0.00'
+    end
+    object cdsPagamentosID_CONTA: TIntegerField
+      FieldName = 'ID_CONTA'
     end
   end
   object dsPagamentos: TDataSource

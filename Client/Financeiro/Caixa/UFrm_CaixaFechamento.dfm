@@ -380,7 +380,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 3
+        TabOrder = 4
         OnClick = imgApuracaoClick
         object imgApuracao: TImage
           Left = 8
@@ -435,7 +435,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 4
+        TabOrder = 3
         OnClick = imgAddMovimentoClick
         object imgAddMovimento: TImage
           Left = 12
@@ -492,7 +492,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
       Align = alRight
       Color = 13337441
       ParentBackground = False
-      TabOrder = 1
+      TabOrder = 2
       object lbl2: TLabel
         Left = 1
         Top = 1
@@ -866,7 +866,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
         Font.Style = [fsBold]
         ParentFont = False
         ReadOnly = True
-        TabOrder = 9
+        TabOrder = 10
         Text = '0,00'
       end
       object edtCrediario: TEdit
@@ -882,7 +882,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
         Font.Style = [fsBold]
         ParentFont = False
         ReadOnly = True
-        TabOrder = 10
+        TabOrder = 9
         Text = '0,00'
       end
       object pnlRelatorio: TPanel
@@ -1008,7 +1008,7 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
       Width = 762
       Height = 514
       Align = alClient
-      TabOrder = 2
+      TabOrder = 1
       object lbl1: TLabel
         Left = 1
         Top = 1
@@ -1112,7 +1112,6 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
       #13#10
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 201
     Top = 125
     object ds0ID: TIntegerField
@@ -1133,7 +1132,6 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
       'FROM CAIXA_ABERT_FECH r'#13#10'where 1=2;'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 249
     Top = 125
     object ds1ID: TIntegerField
@@ -1178,7 +1176,6 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
       'A_ENT_SAI r '#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 299
     Top = 125
     object ds2ID: TIntegerField
@@ -1292,7 +1289,6 @@ inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
     IndexDefs = <>
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 617
     Top = 111

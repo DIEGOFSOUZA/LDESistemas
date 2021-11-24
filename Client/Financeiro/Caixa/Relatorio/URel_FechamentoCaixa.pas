@@ -139,6 +139,10 @@ type
     RLDBResult1: TRLDBResult;
     RLLabel57: TRLLabel;
     cdsRecebidosVL_PAGO: TFMTBCDField;
+    RLLabel58: TRLLabel;
+    RLLabel59: TRLLabel;
+    RLLabel60: TRLLabel;
+    RLLabel61: TRLLabel;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
     procedure lblGeraRelatorioClick(Sender: TObject);
@@ -181,6 +185,9 @@ type
     fVRetFechDin: Currency;
     fVRetFechChq: Currency;
     fSIni: Currency;
+    fCompPix: Currency;
+    fApuPIX: Currency;
+    fDifPIX: Currency;
 
     function GetVlApurado(pFormaPagto:string):Extended ;
     function GetVlComputado(pFormaPagto:string):Extended ;
@@ -198,17 +205,20 @@ type
     property CompCC : Currency read fCompCC;
     property CompCD : Currency read fCompCD;
     property CompTot : Currency read fCompTot;
+    property CompPix : Currency read fCompPix;
     //coluna vl apurado
     property ApuDinheiro : Currency read fApuDinheiro;
     property ApuCheque : Currency read fApuCheque;
     property ApuCC : Currency read fApuCC;
     property ApuCD : Currency read fApuCD;
+    property ApuPIX : Currency read fApuPIX;
     property ApuTot : Currency read fApuTot;
     //coluna vl diferenca
     property DifDinheiro : Currency read fDifDinheiro;
     property DifCheque : Currency read fDifCheque;
     property DifCC : Currency read fDifCC;
     property DifCD : Currency read fDifCD;
+    property DifPIX : Currency read fDifPIX;
     property DifTot : Currency read fDifTot;
     //Totais
     property Vap : Currency read fVap;
@@ -224,8 +234,6 @@ type
     property VRetFechChq : Currency read fVRetFechChq;
     property DifCaixa : Currency read fDifCaixa;
     property VMantCaixa : Currency read fVMantCaixa;
-
-
     procedure Executar(pIDCaixa : string) ;
   end;
 
@@ -255,16 +263,19 @@ procedure TRel_FechamentoCaixa.Executar(pIDCaixa : string);
 begin
   fCompDinheiro := 0;
   fCompCD := 0;
+  fCompPix := 0;
   fCompCheque := 0;
   fCompCC := 0;
   fCompTot := 0;
   fApuCC := 0;
   fApuCD := 0;
+  fApuPIX := 0;
   fApuCheque := 0;
   fApuDinheiro := 0;
   fApuTot := 0;
   fDifCC := 0;
   fDifCD := 0;
+  fDifPIX := 0;
   fDifCheque := 0;
   fDifDinheiro := 0;
   fDifTot := 0;
@@ -317,7 +328,7 @@ begin
   else if pFormaPagto = '3' then
     Result := gTotCartCredito
   else if pFormaPagto = '2' then
-    Result := gTotCartDebito
+    Result := gTotCartDebito;
 end;
 
 procedure TRel_FechamentoCaixa.imgFiltrarClick(Sender: TObject);
@@ -376,7 +387,7 @@ const
   SQL1= 'select coalesce(a.VL_DINHEIRO,0)VL_DINHEIRO,coalesce(a.VL_CHEQUE,0)VL_CHEQUE,'+
         'coalesce(a.VL_CCREDITO,0)VL_CCREDITO,coalesce(a.VL_CDEBITO,0)VL_CDEBITO,'+
         'coalesce(a.VL_RETIRADO,0)VL_RETIRADO,coalesce(a.VL_RETIRADOCHEQUE,0)VL_RETIRADOCHEQUE,'+
-        'a.OBS '+
+        'coalesce(a.VL_PIX,0)VL_PIX,a.OBS '+
         'from CAIXA_APURACAO_VALORES a '+
         'where a.ID_CAIXA = %s ';
 
@@ -394,7 +405,21 @@ const
                'left outer join PDV_MASTER a on (a.ID = r.ID and a.TIPO = a.TIPO) ' +
                'where a.EMISSAO = %s '+
                'and r.forma_pagto = ''CREDIARIO''';
-//               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
+  SQLPix = 'with REC '+
+           'as (select B.VL_PAGO VALOR'+
+           '    from PDV_RECEBER B '+
+           '    where B.BAIXA_ID_CAIXA = %s and '+
+           '          B.ID_HISTORICO in (100, 101) '+
+           '    union all '+
+           '    select RP.VL_PAGO VALOR '+
+           '    from PDV_RECEBER_PARCIAL RP '+
+           '    where RP.ID_CAIXA = %s and '+
+           '          RP.ID_HISTORICO in (100, 101)) '+
+           'select sum(VALOR) COMP, coalesce((select C.VL_PIX '+
+           '                                  from CAIXA_APURACAO_VALORES C '+
+           '                                  where C.ID_CAIXA = %s), 0) APU '+
+           'from REC';
+
   pagto: array  [0..3] of string = ('1','4','3','2');
 var
   I: Integer;
@@ -438,12 +463,14 @@ begin
   {Apuracao}
   DM.dsConsulta2.Close ;
   DM.dsConsulta2.Data := DM.LerDataSet(Format(SQL1,[lIDCaixa])) ;
-//  DM.dsConsulta2.SaveToFile(ExtractFilePath(Application.ExeName)+'\'+'dsconsulta2.cds',dfBinary);
 
   {Sangria + Saldo Inicial}
   DM.dsConsulta3.Close ;
   DM.dsConsulta3.Data := DM.LerDataSet(Format(SQL2,[lIDCaixa])) ;
-//  DM.dsConsulta3.SaveToFile(ExtractFilePath(Application.ExeName)+'\'+'dsconsulta3.cds',dfBinary);
+
+  {PIX}
+  DM.dsConsulta4.Close ;
+  DM.dsConsulta4.Data := DM.LerDataSet(Format(SQLPix,[lIDCaixa,lIDCaixa,lIDCaixa])) ;
 
   ds1.Close ;
   ds1.CreateDataSet ;
@@ -507,10 +534,19 @@ begin
               end;
               fCompCheque := fCompCheque+dsConsulta.FieldByName('valor').AsCurrency;
             end;
+//            100, 101:  //PIX
+//            begin
+//              if dsConsulta.FieldByName('id_historico').AsInteger = 100 then
+//                fRap := fRap+dsConsulta.FieldByName('valor').AsCurrency
+//              else
+//              begin
+//                fVav := fVav+dsConsulta.FieldByName('valor').AsCurrency;
+//              end;
+//              fCompPix := fCompPix+dsConsulta.FieldByName('valor').AsCurrency;
+//            end;
         end;
       end
       else //debito
- //debito
       begin
         case dsConsulta.FieldByName('id_historico').AsInteger of
           0:   //sangria
@@ -543,39 +579,6 @@ begin
         end;
       end;
 
-      {$REGION 'old apagar'}
-      //Boleto nao é demonstrado no Fechamento pois segundo Eduardo cai direto na conta bancaria
-      {if (dsConsulta.FieldByName('forma_pagto').AsInteger = 5) then //'BOLETO BANCARIO'
-      begin
-        dsConsulta.Next;
-      end;
-
-      if (dsConsulta.FieldByName('tipo').AsString = '2') then //baixa duplicata
-      begin
-        gTotBaixa := gTotBaixa + dsConsulta.FieldByName('valor').AsFloat;
-      end;
-
-      if (dsConsulta.FieldByName('forma_pagto').IsNull) then //Venda a Prazo
-//          (dsConsulta.FieldByName('dt_baixa').AsDateTime <> Date)) then
-      begin
-        gTotPrazo := gTotPrazo + dsConsulta.FieldByName('valor').AsFloat;
-      end;
-
-      if dsConsulta.FieldByName('tipo').AsString = '3' then //Venda a Prazo
-      begin
-        gTotSangria := gTotSangria + dsConsulta.FieldByName('valor').AsFloat;
-      end;
-
-      if dsConsulta.FieldByName('forma_pagto').AsInteger = 1 then //'DINHEIRO'
-        gTotDinheiro := gTotDinheiro + dsConsulta.FieldByName('valor').AsFloat
-      else if dsConsulta.FieldByName('forma_pagto').AsInteger = 4 then //'CHEQUE'
-        gTotCheque := gTotCheque + dsConsulta.FieldByName('valor').AsFloat
-      else if dsConsulta.FieldByName('forma_pagto').AsInteger = 3 then //'CARTAO DE CREDITO'
-        gTotCartCredito := gTotCartCredito + dsConsulta.FieldByName('valor').AsFloat
-      else if dsConsulta.FieldByName('forma_pagto').AsInteger = 2 then //'CARTAO DE DEBITO'
-        gTotCartDebito := gTotCartDebito + dsConsulta.FieldByName('valor').AsFloat;}
-      {$ENDREGION}
-
       dsConsulta.Next;
     end;
 
@@ -584,15 +587,23 @@ begin
     fApuCD := GetVlApurado('2');
     fApuCheque := GetVlApurado('4');
 
-    fCompTot := fCompDinheiro+fCompCD+fCompCheque+fCompCC;
-    fApuTot := fApuDinheiro+fApuCD+fApuCheque+fApuCC;
+    //***PIX***
+    fCompPix := dsConsulta4.FieldByName('COMP').AsCurrency;
+    fApuPIX := dsConsulta4.FieldByName('APU').AsCurrency;
+    fDifPIX := fApuPIX-fCompPix;
+
+    fVav := fVav+fCompPix;
+
+    fCompTot := fCompDinheiro+fCompCD+fCompCheque+fCompCC+fCompPix;
+    fApuTot := fApuDinheiro+fApuCD+fApuCheque+fApuCC+fApuPIX;
 
     fDifCC := fApuCC-fCompCC;
     fDifCD := fApuCD-fCompCD;
+    fDifPIX := fApuPIX-fCompPix;
     fDifCheque := fApuCheque-fCompCheque;
     fDifDinheiro := fApuDinheiro-fCompDinheiro;
 
-    fDifTot := fDifCC+fDifCD+fDifCheque+fDifDinheiro;
+    fDifTot := fDifCC+fDifCD+fDifCheque+fDifDinheiro+fDifPIX;
 
     dsConsulta3.Locate('tipo','ABERTURA CAIXA',[]);
     fSIni := dsConsulta3.FieldByName('valor').AsCurrency;
@@ -611,6 +622,7 @@ begin
     fVRetFechDin := dsConsulta2.FieldByName('VL_RETIRADO').AsFloat;
     fVRetFechChq := dsConsulta2.FieldByName('VL_RETIRADOCHEQUE').AsFloat;
     fDifCaixa := (fApuTot-fCompTot);
+
     if fDifCaixa < 0 then
      fDifCaixa := fDifCaixa*-1;
     fVMantCaixa := fSaFinal - (DM.dsConsulta2.FieldByName('VL_RETIRADO').AsFloat + fDifCaixa)
@@ -720,6 +732,10 @@ begin
   RLLabel12.Caption := FormatFloat('#,##0.00', fCompCD);
   RLLabel16.Caption := FormatFloat('#,##0.00', fApuCD);
   RLLabel20.Caption := FormatFloat('#,##0.00', fDifCD);
+  //linha PIX
+  RLLabel59.Caption := FormatFloat('#,##0.00', fCompPix);
+  RLLabel60.Caption := FormatFloat('#,##0.00', fApuPIX);
+  RLLabel61.Caption := FormatFloat('#,##0.00', fDifPIX);
   //linha total
   RLLabel21.Caption := FormatFloat('#,##0.00', fCompTot);
   RLLabel22.Caption := FormatFloat('#,##0.00', fApuTot);
@@ -728,62 +744,6 @@ begin
   RLLabel28.Caption := 'R$ '+FormatFloat('#,##0.00', fVap);//venda prazo
   RLLabel29.Caption := 'R$ '+FormatFloat('#,##0.00', fVav);//venda vista
   RLLabel30.Caption := 'R$ '+FormatFloat('#,##0.00', fVap+fVav);//total
-
-
-  {$REGION 'old apagar'}
-  {ds1.First;
-  while not ds1.Eof do
-  begin
-    if ds1FORMA_PAGTO.AsInteger = 1 then //'DINHEIRO'
-    begin
-      RLLabel9.Caption := FormatFloat('#,##0.00', ds1VL_COMPUTADO.AsFloat);
-      RLLabel13.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat);
-      RLLabel17.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat - ds1VL_COMPUTADO.AsFloat);
-    end;
-
-    if ds1FORMA_PAGTO.AsInteger = 4 then //'CHEQUE'
-    begin
-      RLLabel10.Caption := FormatFloat('#,##0.00', ds1VL_COMPUTADO.AsFloat);
-      RLLabel14.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat);
-      RLLabel18.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat - ds1VL_COMPUTADO.AsFloat);
-    end;
-
-    if ds1FORMA_PAGTO.AsInteger = 3 then //'CARTAO DE CREDITO'
-    begin
-      RLLabel11.Caption := FormatFloat('#,##0.00', ds1VL_COMPUTADO.AsFloat);
-      RLLabel15.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat);
-      RLLabel19.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat - ds1VL_COMPUTADO.AsFloat);
-    end;
-
-    if ds1FORMA_PAGTO.AsInteger = 2 then //'CARTAO DE DEBITO'
-    begin
-      RLLabel12.Caption := FormatFloat('#,##0.00', ds1VL_COMPUTADO.AsFloat);
-      RLLabel16.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat);
-      RLLabel20.Caption := FormatFloat('#,##0.00', ds1VL_APURADO.AsFloat - ds1VL_COMPUTADO.AsFloat);
-    end;
-    lTotComp := lTotComp + ds1VL_COMPUTADO.AsFloat;
-    lTotApu := lTotApu + ds1VL_APURADO.AsFloat;
-    ds1.Next;
-  end;
-
-  lDiferenca := lTotApu - lTotComp;
-  //Totalizadores
-  RLLabel21.Caption := FormatFloat('#,##0.00', lTotComp);
-  RLLabel22.Caption := FormatFloat('#,##0.00', lTotApu);
-  RLLabel23.Caption := FormatFloat('#,##0.00', lDiferenca);
-
-  //rodape
-  RLLabel28.Caption := 'R$ '+FormatFloat('#,##0.00', gTotPrazo);//venda prazo
-  RLLabel30.Caption := 'R$ '+FormatFloat('#,##0.00', gTotBaixa);//baixa parcela
-
-  //Regra aplicada no caso de nao haver venda no caixa
-  lTotVista := (lTotComp - (gTotBaixa+gTotSangria));
-  if lTotVista < 0 then
-    lTotVista := 0
-  else
-    lTotVista := lTotVista;
-  RLLabel29.Caption := 'R$ '+FormatFloat('#,##0.00', lTotVista);//venda vista }
-  {$ENDREGION}
 
   {*************Conferencia**************}
   rlblCSaldoInicial.Caption := FormatFloat('#,##0.00', fSIni);

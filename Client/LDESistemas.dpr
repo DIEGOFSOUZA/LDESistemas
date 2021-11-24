@@ -115,7 +115,8 @@ uses
   uRel_VendaPorGrupo in 'Relatorios\Venda\uRel_VendaPorGrupo.pas' {Rel_VendaPorGrupo},
   URel_NFEntradaPorClassificacao in 'Relatorios\NFEntrada\URel_NFEntradaPorClassificacao.pas' {Rel_NFEntradaPorClassificacao},
   URel_ClienteNaoComprou in 'Cadastros\Cliente\Relatorio\URel_ClienteNaoComprou.pas' {Rel_ClienteNaoComprou},
-  UClassDataSnap in 'UClassDataSnap.pas';
+  UClassDataSnap in 'UClassDataSnap.pas',
+  UFrm_Conta_Pix_PDV in 'PDV\UFrm_Conta_Pix_PDV.pas' {Frm_Conta_Pix_PDV};
 
 {$R *.res}
 

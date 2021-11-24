@@ -1,20 +1,19 @@
 inherited Rel_Venda0: TRel_Venda0
-  Width = 990
-  Height = 616
-  HorzScrollBar.Position = 671
+  Width = 734
+  Height = 461
   AutoScroll = True
   Caption = 'Rel_Venda0'
   Visible = False
-  ExplicitWidth = 990
-  ExplicitHeight = 616
+  ExplicitWidth = 734
+  ExplicitHeight = 461
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    Left = 163
+    Left = 834
     Top = 62
     DataSource = dsItens
     ShowProgress = False
-    ExplicitLeft = 163
+    ExplicitLeft = 834
     ExplicitTop = 62
     object RLBand1: TRLBand
       Left = 38
@@ -1096,7 +1095,7 @@ inherited Rel_Venda0: TRel_Venda0
     end
   end
   object Rel_Orcamento: TRLReport
-    Left = -663
+    Left = 8
     Top = 62
     Width = 794
     Height = 1123
@@ -1829,7 +1828,6 @@ inherited Rel_Venda0: TRel_Venda0
       'where 1 = 2'#13#10
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     OnCalcFields = cdsItensCalcFields
     Left = 560
     Top = 32

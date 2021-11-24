@@ -314,12 +314,10 @@ begin
               'where pm.EMISSAO between '+QuotedStr(FormatDateTime('dd.mm.yyyy',dtp1.Date))+ ' and '+
                                           QuotedStr(FormatDateTime('dd.mm.yyyy',dtp2.Date)) ;
 
-  if ((edpsqsVendedor.Campo.Text <> EmptyStr) and
-      (edpsqsVendedor.Campo.Text <> '0'))then
-    SQLVenda := SQLVenda + ' and pmid_vendedor = '+edpsqsVendedor.Campo.Text ;
-  if ((edpCliente.Campo.Text <> EmptyStr) and
-       (edpCliente.Campo.Text <> '0'))then
-    SQLVenda := SQLVenda + ' and b.codigo = '+edpCliente.Campo.Text ;
+  if ((edpsqsVendedor.Campo.Text <> EmptyStr) and (edpsqsVendedor.Campo.Text <> '0')) then
+    SQLVenda := SQLVenda + ' and pm.id_vendedor = ' + edpsqsVendedor.Campo.Text;
+  if ((edpCliente.Campo.Text <> EmptyStr) and (edpCliente.Campo.Text <> '0')) then
+    SQLVenda := SQLVenda + ' and b.codigo = ' + edpCliente.Campo.Text;
 
   if (cbbTipoRel.ItemIndex = 1) then
   begin

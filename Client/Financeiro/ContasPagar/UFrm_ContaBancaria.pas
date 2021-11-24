@@ -24,11 +24,21 @@ type
     Label4: TLabel;
     DBEdit4: TDBEdit;
     Label5: TLabel;
+    pnlPix: TPanel;
+    Label6: TLabel;
+    DBEdit5: TDBEdit;
+    dbcbbPixTipo: TDBComboBox;
+    Label7: TLabel;
+    lbl2: TLabel;
+    cdsPIX_TIPO: TStringField;
+    cdsPIX_CHAVE: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure actExcluirExecute(Sender: TObject);
+    procedure cdsBeforePost(DataSet: TDataSet);
   private
     procedure MontaSql(pCodigo: string);
+    function Validar(): Boolean;
   public
     procedure Novo(); override;
     procedure Gravar(); override;
@@ -58,7 +68,17 @@ end;
 procedure TFrm_ContaBancaria.cdsAfterInsert(DataSet: TDataSet);
 begin
   inherited;
-  cdsID.AsInteger := 0 ;
+  cds.FieldByName('ID').AsInteger := 0 ;
+end;
+
+procedure TFrm_ContaBancaria.cdsBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  if (dbcbbPixTipo.ItemIndex = 0) then
+  begin
+    cdsPIX_TIPO.Clear;
+    cdsPIX_CHAVE.Clear;
+  end;
 end;
 
 procedure TFrm_ContaBancaria.Excluir;
@@ -87,33 +107,8 @@ procedure TFrm_ContaBancaria.Gravar;
 var
   mRetorno: OleVariant;
 begin
-  if DBEdit1.Text = EmptyStr then
-  begin
-    MessageDlg('Campo Código não informado',mtInformation,[mbOK],0);
-    DBEdit1.SetFocus ;
-    Exit ;
-  end;
-
-  if DBEdit2.Text = EmptyStr then
-  begin
-    MessageDlg('Campo Banco não informado',mtInformation,[mbOK],0);
-    DBEdit2.SetFocus ;
-    Exit ;
-  end;
-
-  if DBEdit3.Text = EmptyStr then
-  begin
-    MessageDlg('Campo Agência não informado',mtInformation,[mbOK],0);
-    DBEdit3.SetFocus ;
-    Exit ;
-  end;
-
-  if DBEdit4.Text = EmptyStr then
-  begin
-    MessageDlg('Campo Conta não informado',mtInformation,[mbOK],0);
-    DBEdit4.SetFocus ;
-    Exit ;
-  end;
+  if not Validar then
+    Abort;
 
   inherited;
   if cds.ChangeCount > 0 then
@@ -142,7 +137,47 @@ end;
 procedure TFrm_ContaBancaria.Novo;
 begin
   inherited;
-  DBEdit1.SetFocus ;
+  DBEdit1.SetFocus;
+end;
+
+function TFrm_ContaBancaria.Validar: Boolean;
+begin
+  Result := True;
+
+  if (DBEdit2.Text = EmptyStr) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Campo Banco não informado.');
+    DBEdit2.SetFocus ;
+    Exit ;
+  end;
+
+  if (DBEdit3.Text = EmptyStr) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Campo Agência não informado.');
+    DBEdit3.SetFocus ;
+    Exit ;
+  end;
+
+  if (DBEdit4.Text = EmptyStr) then
+  begin
+    Result := False;
+    TMensagem.Atencao('Campo Conta não informado');
+    DBEdit4.SetFocus ;
+    Exit ;
+  end;
+
+  if (dbcbbPixTipo.ItemIndex > -1) then
+  begin
+    if (DBEdit5.Text = EmptyStr) then
+    begin
+      Result := False;
+      TMensagem.Atencao('Campo Chave PIX não informado');
+      DBEdit5.SetFocus;
+      Exit;
+    end;
+  end;
 end;
 
 end.
