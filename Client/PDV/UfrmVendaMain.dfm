@@ -218,18 +218,22 @@ object frmVendaMain: TfrmVendaMain
         Width = 410
         Height = 631
         Align = alRight
+        BevelOuter = bvNone
         Color = 13337441
         ParentBackground = False
         TabOrder = 1
         object pnlProduto: TPanel
-          Left = 1
-          Top = 1
-          Width = 408
+          Left = 0
+          Top = 0
+          Width = 410
           Height = 101
           Align = alTop
           Color = 13337441
           ParentBackground = False
           TabOrder = 0
+          ExplicitLeft = 1
+          ExplicitTop = 1
+          ExplicitWidth = 408
           object lblProduto: TLabel
             Left = 43
             Top = 9
@@ -290,14 +294,17 @@ object frmVendaMain: TfrmVendaMain
           end
         end
         object pnlCliente: TPanel
-          Left = 1
-          Top = 102
-          Width = 408
+          Left = 0
+          Top = 101
+          Width = 410
           Height = 107
           Align = alTop
           Color = 13337441
           ParentBackground = False
           TabOrder = 1
+          ExplicitLeft = 1
+          ExplicitTop = 102
+          ExplicitWidth = 408
           object lblClienteNome: TLabel
             Left = 100
             Top = 4
@@ -501,14 +508,17 @@ object frmVendaMain: TfrmVendaMain
           end
         end
         object pnlOperacoes: TPanel
-          Left = 1
-          Top = 209
-          Width = 408
+          Left = 0
+          Top = 208
+          Width = 410
           Height = 123
           Align = alTop
           Color = 13337441
           ParentBackground = False
           TabOrder = 2
+          ExplicitLeft = 1
+          ExplicitTop = 209
+          ExplicitWidth = 408
           object pnlCancelar: TPanel
             Left = 42
             Top = 11
@@ -716,18 +726,21 @@ object frmVendaMain: TfrmVendaMain
           end
         end
         object pnlReceber: TPanel
-          Left = 1
-          Top = 332
-          Width = 408
+          Left = 0
+          Top = 331
+          Width = 410
           Height = 166
           Align = alTop
           Color = 13337441
           ParentBackground = False
           TabOrder = 3
+          ExplicitLeft = 1
+          ExplicitTop = 332
+          ExplicitWidth = 408
           object Label2: TLabel
             Left = 1
             Top = 1
-            Width = 406
+            Width = 408
             Height = 21
             Align = alTop
             AutoSize = False
@@ -934,16 +947,6 @@ object frmVendaMain: TfrmVendaMain
               OnClick = actPagCrediarioExecute
             end
           end
-        end
-        object Button1: TButton
-          Left = 48
-          Top = 520
-          Width = 75
-          Height = 25
-          Caption = 'Button1'
-          TabOrder = 4
-          Visible = False
-          OnClick = Button1Click
         end
       end
       object pnlGrid: TPanel
@@ -1673,7 +1676,6 @@ object frmVendaMain: TfrmVendaMain
     CommandText = 'select a.* from PDV_ITENS a where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 240
     Top = 205
     object cdsDetailID: TIntegerField

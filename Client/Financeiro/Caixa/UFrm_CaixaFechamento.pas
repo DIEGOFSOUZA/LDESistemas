@@ -448,8 +448,8 @@ var mIDCaixa : string ;
     fSaiDin,fSaiChe,fSaiTotal,
     fSaldoFinal,fSaldoDin : Extended;
 begin
+  Screen.Cursor := crHourGlass;
   try
-    Screen.Cursor := crHourGlass;
     {inicializa variaveis e componentes}
     mIDCaixa := '0';
     imgFechado.Visible := False ;

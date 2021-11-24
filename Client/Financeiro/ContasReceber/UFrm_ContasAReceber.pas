@@ -105,6 +105,7 @@ type
     dbgrdDuplicata: TDBGrid;
     cdsGridSELECAO: TIntegerField;
     chkSelTudo: TCheckBox;
+    actVisualizar: TAction;
     procedure edpClientePesquisa(Sender: TObject; var Retorno: string);
     procedure rgPesquisarClick(Sender: TObject);
     procedure actBaixaDuplicataExecute(Sender: TObject);
@@ -122,6 +123,8 @@ type
     procedure dbgrdDuplicataCellClick(Column: TColumn);
     procedure dbgrdDuplicataKeyPress(Sender: TObject; var Key: Char);
     procedure chkSelTudoClick(Sender: TObject);
+    procedure actVisualizarExecute(Sender: TObject);
+    procedure dbgrdDuplicataDblClick(Sender: TObject);
   private
     { Private declarations }
     procedure MontaSQL() ;
@@ -150,8 +153,6 @@ uses
 {$R *.dfm}
 
 procedure TFrm_ContasAReceber.actBaixaDuplicataExecute(Sender: TObject);
-var
-  lIdCaixa: string;
 begin
   inherited;
   if cdsGrid.IsEmpty then
@@ -185,7 +186,6 @@ begin
       end
       else
         TMensagem.Erro('Não foi possivel baixar a duplicata.' + #13#10 + Retorno);
-
     end;
   finally
     FreeAndNil(Frm_ContasaReceber_Baixa);
@@ -470,7 +470,6 @@ begin
                                     cdsGrid.FieldByName('ORDEM').AsString,
                                     FormatDateTime('dd/mm/yyyy',Date),0,0,
                                     cdsGrid.FieldByName('VALOR').AsCurrency,DM.Usuario.login,'','','',0) then
-//      DM.ExecutarSQL(DM.BancoDados,Format(SQL,[cdsGrid.FieldByName('ID').AsString]));
       TMensagem.Informacao('Duplicata restaurada com sucesso.');
       actFiltrar.Execute;
     except
@@ -483,6 +482,31 @@ procedure TFrm_ContasAReceber.actSairExecute(Sender: TObject);
 begin
   inherited;
   Close ;
+end;
+
+procedure TFrm_ContasAReceber.actVisualizarExecute(Sender: TObject);
+begin
+  inherited;
+  if cdsGrid.IsEmpty then
+    Exit ;
+
+  if cdsGridDT_BAIXA.IsNull then
+    Exit ;
+
+  if not Assigned(Frm_ContasaReceber_Baixa) then
+    Frm_ContasaReceber_Baixa := TFrm_ContasaReceber_Baixa.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    with Frm_ContasaReceber_Baixa do
+    begin
+      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger, cdsGrid.FieldByName('ORDEM').AsString,True);
+      ShowModal;
+    end;
+  finally
+    FreeAndNil(Frm_ContasaReceber_Baixa);
+    AlphaBlend := False;
+  end;
 end;
 
 procedure TFrm_ContasAReceber.dbgrdDuplicataCellClick(Column: TColumn);
@@ -498,6 +522,12 @@ begin
 //    else
 //      TotSel := TotSel + cdsgrid.FieldByName('SALDO').AsCurrency;
   end;
+end;
+
+procedure TFrm_ContasAReceber.dbgrdDuplicataDblClick(Sender: TObject);
+begin
+  inherited;
+  actVisualizar.Execute;
 end;
 
 procedure TFrm_ContasAReceber.dbgrdDuplicataDrawColumnCell(Sender: TObject;

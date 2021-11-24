@@ -117,6 +117,7 @@ type
     dspRProducao: TDSProviderConnection;
     dspRProduto: TDSProviderConnection;
     dspRSaveInCloud: TDSProviderConnection;
+    dsConsulta4: TClientDataSet;
     procedure DataModuleCreate(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string;

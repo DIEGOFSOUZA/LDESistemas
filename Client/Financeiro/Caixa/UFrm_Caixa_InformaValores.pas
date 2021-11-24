@@ -33,6 +33,8 @@ type
     edtVlRetiradoCheque: TEdit;
     pnlSalvar: TPanel;
     pnlCancel: TPanel;
+    Label7: TLabel;
+    edtCPix: TEdit;
     procedure edtDinheiroKeyPress(Sender: TObject; var Key: Char);
     procedure imgCancelarClick(Sender: TObject);
     procedure imgSalvarClick(Sender: TObject);
@@ -42,6 +44,7 @@ type
     procedure edtCCreditoExit(Sender: TObject);
     procedure edtCDebitoExit(Sender: TObject);
     procedure edtVlRetiradoExit(Sender: TObject);
+    procedure edtCPixExit(Sender: TObject);
   private
     { Private declarations }
     procedure Gravar() ;
@@ -87,6 +90,12 @@ begin
   edtCheque.Text := FormataValor(edtCheque.Text) ;
 end;
 
+procedure TFrm_Caixa_InformaValores.edtCPixExit(Sender: TObject);
+begin
+  inherited;
+  edtCPix.Text := FormataValor(edtCPix.Text) ;
+end;
+
 procedure TFrm_Caixa_InformaValores.edtDinheiroExit(Sender: TObject);
 begin
   inherited;
@@ -118,7 +127,7 @@ var
 begin
   txt := 'INSERT INTO CAIXA_APURACAO_VALORES '+
          '(ID_CAIXA, ID_CAIXA_ABERT_FECH, VL_DINHEIRO,'+
-         'VL_CHEQUE, VL_CCREDITO, VL_CDEBITO, Vl_RETIRADO,'+
+         'VL_CHEQUE, VL_CCREDITO, VL_CDEBITO, VL_PIX, Vl_RETIRADO,'+
          'Vl_RETIRADOCHEQUE, OBS) '+
          'VALUES ( '+
          idCaixa+','+
@@ -127,6 +136,7 @@ begin
          StringReplace(edtCheque.Text,',','.',[rfReplaceAll])+','+  //cheque
          StringReplace(edtCCredito.Text,',','.',[rfReplaceAll])+','+   //c credito
          StringReplace(edtCDebito.Text,',','.',[rfReplaceAll])+','+   //c debito
+         StringReplace(edtCPix.Text,',','.',[rfReplaceAll])+','+   //c debito
          StringReplace(edtVlRetirado.Text,',','.',[rfReplaceAll])+','+   //reirado dinheiro
          StringReplace(edtVlRetiradoCheque.Text,',','.',[rfReplaceAll])+','+   //reirado cheque
          QuotedStr(mmo1.Lines.Text) +

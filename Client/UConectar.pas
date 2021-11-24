@@ -36,10 +36,10 @@ begin
   begin
     try
       //update Banco
-      DM.SMClient.UpdateBaseDados(DM.BancoDados, OnlyDigit(DM.Empresa.CNPJ));
+//      DM.SMClient.UpdateBaseDados(DM.BancoDados, OnlyDigit(DM.Empresa.CNPJ));
 
       //update Sistema
-//      AtualizaExe;
+      AtualizaExe;
 
 //    Result := True;
     except

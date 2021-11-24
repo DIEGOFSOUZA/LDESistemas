@@ -550,6 +550,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      ExplicitTop = -1
       object Label2: TLabel
         Left = 251
         Top = 63
@@ -569,7 +570,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Width = 228
         Height = 63
         BorderStyle = bsSingle
-        TabOrder = 1
+        TabOrder = 0
         object lblTitPeriodo: TLabel
           Left = 1
           Top = 1
@@ -780,7 +781,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 0
+        TabOrder = 1
         TabStop = True
       end
     end
