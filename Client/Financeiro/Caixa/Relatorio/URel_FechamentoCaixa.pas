@@ -143,6 +143,7 @@ type
     RLLabel59: TRLLabel;
     RLLabel60: TRLLabel;
     RLLabel61: TRLLabel;
+    RLLabel62: TRLLabel;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
     procedure lblGeraRelatorioClick(Sender: TObject);
@@ -504,10 +505,9 @@ begin
           2, 49:  //Cartao Debito
             begin
               if dsConsulta.FieldByName('id_historico').AsInteger = 49 then
-                fRap := fRap+dsConsulta.FieldByName('valor').AsCurrency
+//                fRap := fRap+dsConsulta.FieldByName('valor').AsCurrency
               else
               begin
-//                fRav := fRav+dsConsulta.FieldByName('valor').AsCurrency;
                 fVav := fVav+dsConsulta.FieldByName('valor').AsCurrency;
               end;
               fCompCD := fCompCD+dsConsulta.FieldByName('valor').AsCurrency;
@@ -515,10 +515,9 @@ begin
           3, 50:  //Cartao Credito
             begin
               if dsConsulta.FieldByName('id_historico').AsInteger = 50 then
-                fRap := fRap+dsConsulta.FieldByName('valor').AsCurrency
+//                fRap := fRap+dsConsulta.FieldByName('valor').AsCurrency
               else
               begin
-//                fRav := fRav+dsConsulta.FieldByName('valor').AsCurrency;
                 fVav := fVav+dsConsulta.FieldByName('valor').AsCurrency;
               end;
               fCompCC := fCompCC+dsConsulta.FieldByName('valor').AsCurrency;
@@ -561,17 +560,17 @@ begin
               fCompDinheiro := fCompDinheiro - dsConsulta.FieldByName('valor').AsCurrency;
               fDesp := fDesp + dsConsulta.FieldByName('valor').AsCurrency;
             end;
-          52:
+          53:
             begin
               fCompCD := fCompCD - dsConsulta.FieldByName('valor').AsCurrency;
               fDesp := fDesp + dsConsulta.FieldByName('valor').AsCurrency;
             end;
-          53:
+          54:
             begin
               fCompCC := fCompCC - dsConsulta.FieldByName('valor').AsCurrency;
               fDesp := fDesp + dsConsulta.FieldByName('valor').AsCurrency;
             end;
-          54:
+          55:
             begin
               fCompCheque := fCompCheque - dsConsulta.FieldByName('valor').AsCurrency;
               fDesp := fDesp + dsConsulta.FieldByName('valor').AsCurrency;
@@ -621,7 +620,8 @@ begin
     fSaFinal := fSIni+fRav+fRap+fOutE-fDesp;
     fVRetFechDin := dsConsulta2.FieldByName('VL_RETIRADO').AsFloat;
     fVRetFechChq := dsConsulta2.FieldByName('VL_RETIRADOCHEQUE').AsFloat;
-    fDifCaixa := (fApuTot-fCompTot);
+    fDifCaixa := ((fCompDinheiro+fCompCheque)-(fApuDinheiro+fApuCheque));
+//    (fApuTot - (fCompTot - fCompPix));
 
     if fDifCaixa < 0 then
      fDifCaixa := fDifCaixa*-1;
@@ -764,7 +764,7 @@ begin
   rlblCDiferenca.Caption := FormatFloat('#,##0.00', fDifCaixa);
 
   rlblMantDin.Caption := FormatFloat('#,##0.00', (fCompDinheiro-fVRetFechDin)-fDifCaixa);
-  rlblMantChq.Caption := FormatFloat('#,##0.00', fCompCheque-fVRetFechChq);
+  rlblMantChq.Caption := FormatFloat('#,##0.00', (fCompCheque-fVRetFechChq));
 
   RLMemo1.Lines.Clear;
   RLMemo1.Lines.Text := DM.dsConsulta2.FieldByName('OBS').AsString;

@@ -73,7 +73,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       Left = 38
       Top = 116
       Width = 718
-      Height = 483
+      Height = 509
       BandType = btColumnHeader
       Color = clWhite
       ParentColor = False
@@ -432,7 +432,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel32: TRLLabel
         Left = 16
-        Top = 264
+        Top = 280
         Width = 240
         Height = 16
         AutoSize = False
@@ -443,7 +443,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel33: TRLLabel
         Left = 16
-        Top = 284
+        Top = 300
         Width = 240
         Height = 16
         AutoSize = False
@@ -452,7 +452,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel34: TRLLabel
         Left = 16
-        Top = 304
+        Top = 320
         Width = 240
         Height = 16
         AutoSize = False
@@ -463,7 +463,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel35: TRLLabel
         Left = 16
-        Top = 324
+        Top = 340
         Width = 240
         Height = 16
         AutoSize = False
@@ -472,7 +472,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel36: TRLLabel
         Left = 16
-        Top = 356
+        Top = 372
         Width = 240
         Height = 16
         AutoSize = False
@@ -483,7 +483,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel37: TRLLabel
         Left = 16
-        Top = 376
+        Top = 392
         Width = 240
         Height = 16
         AutoSize = False
@@ -492,7 +492,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel39: TRLLabel
         Left = 377
-        Top = 324
+        Top = 340
         Width = 160
         Height = 16
         AutoSize = False
@@ -501,7 +501,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCSaldoInicial: TRLLabel
         Left = 254
-        Top = 264
+        Top = 280
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -519,7 +519,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCAVista: TRLLabel
         Left = 254
-        Top = 284
+        Top = 300
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -535,7 +535,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCPrazo: TRLLabel
         Left = 254
-        Top = 304
+        Top = 320
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -553,7 +553,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCEntrada: TRLLabel
         Left = 254
-        Top = 324
+        Top = 340
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -569,7 +569,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCDespesas: TRLLabel
         Left = 254
-        Top = 356
+        Top = 372
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -587,7 +587,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCSaldoFinalDin: TRLLabel
         Left = 254
-        Top = 376
+        Top = 392
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -603,7 +603,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblCDiferenca: TRLLabel
         Left = 538
-        Top = 324
+        Top = 340
         Width = 177
         Height = 16
         Alignment = taRightJustify
@@ -619,7 +619,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel41: TRLLabel
         Left = 16
-        Top = 437
+        Top = 453
         Width = 95
         Height = 16
         Alignment = taRightJustify
@@ -634,7 +634,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLMemo1: TRLMemo
         Left = 16
-        Top = 457
+        Top = 473
         Width = 689
         Height = 20
         Behavior = [beSiteExpander]
@@ -647,7 +647,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblSaldoFinalChe: TRLLabel
         Left = 253
-        Top = 393
+        Top = 409
         Width = 100
         Height = 16
         Alignment = taRightJustify
@@ -663,7 +663,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel43: TRLLabel
         Left = 15
-        Top = 393
+        Top = 409
         Width = 240
         Height = 16
         AutoSize = False
@@ -672,7 +672,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel42: TRLLabel
         Left = 377
-        Top = 264
+        Top = 280
         Width = 338
         Height = 16
         Alignment = taCenter
@@ -684,7 +684,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel44: TRLLabel
         Left = 377
-        Top = 284
+        Top = 300
         Width = 160
         Height = 16
         AutoSize = False
@@ -693,7 +693,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblRetDin: TRLLabel
         Left = 538
-        Top = 284
+        Top = 300
         Width = 177
         Height = 16
         Alignment = taRightJustify
@@ -709,7 +709,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel46: TRLLabel
         Left = 377
-        Top = 304
+        Top = 320
         Width = 160
         Height = 16
         AutoSize = False
@@ -718,7 +718,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblRetChq: TRLLabel
         Left = 538
-        Top = 304
+        Top = 320
         Width = 177
         Height = 16
         Alignment = taRightJustify
@@ -734,7 +734,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel48: TRLLabel
         Left = 377
-        Top = 356
+        Top = 372
         Width = 338
         Height = 16
         Alignment = taCenter
@@ -746,7 +746,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel49: TRLLabel
         Left = 377
-        Top = 373
+        Top = 389
         Width = 160
         Height = 16
         AutoSize = False
@@ -755,7 +755,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblMantDin: TRLLabel
         Left = 538
-        Top = 373
+        Top = 389
         Width = 177
         Height = 16
         Alignment = taRightJustify
@@ -771,7 +771,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object RLLabel51: TRLLabel
         Left = 377
-        Top = 393
+        Top = 409
         Width = 160
         Height = 16
         AutoSize = False
@@ -780,7 +780,7 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
       end
       object rlblMantChq: TRLLabel
         Left = 538
-        Top = 393
+        Top = 409
         Width = 177
         Height = 16
         Alignment = taRightJustify
@@ -833,6 +833,15 @@ inherited Rel_FechamentoCaixa: TRel_FechamentoCaixa
         AutoSize = False
         Caption = '1.000,00'
         Transparent = False
+      end
+      object RLLabel62: TRLLabel
+        Left = 138
+        Top = 244
+        Width = 442
+        Height = 16
+        Caption = 
+          'Valores abaixo considera apenas recebimentos em DINHEIRO ou CHEQ' +
+          'UE'
       end
     end
   end

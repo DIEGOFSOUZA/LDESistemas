@@ -129,7 +129,6 @@ begin
   try
     if Iniciar() then
     begin
-//      DM.CarregaEmpresa;
       Application.CreateForm(TFrm_Inicial, Frm_Inicial);
       Application.Run;
     end;
