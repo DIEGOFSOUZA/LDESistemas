@@ -50,7 +50,8 @@ uses
   System.ImageList,
   System.IniFiles,Vcl.Dialogs,
 
-  PngImageList;
+  Winapi.ActiveX,
+  PngImageList, scExcelExport;
 
 type
   TEmpresa = record
@@ -118,6 +119,7 @@ type
     dspRProduto: TDSProviderConnection;
     dspRSaveInCloud: TDSProviderConnection;
     dsConsulta4: TClientDataSet;
+    scExcelExport1: TscExcelExport;
     procedure DataModuleCreate(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
     procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string;
@@ -168,6 +170,7 @@ type
     function LerConfig(sArq : string) : Boolean ;
     function AbrirConexao() : Boolean ;
     procedure FechaConexao() ;
+    procedure ExportarExcel(cds : TClientDataSet) ;
 
     function UpdateorInsert(const BD, Tabela: string; pk: string; Dados: OleVariant): Integer;
     function ExecutarSQL(pBanco: string; pSQL: string): integer;
@@ -340,6 +343,31 @@ end;
 procedure TDM.ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string; var pRetorno: OleVariant);
 begin
   pRetorno := LerDataSet(pSQL);
+end;
+
+procedure TDM.ExportarExcel(cds: TClientDataSet);
+var
+  sNomePlanilha: string;
+begin
+  if not DirectoryExists(GetCurrentDir + '\EXCEL\') then
+    ForceDirectories(GetCurrentDir + '\EXCEL\');
+
+  sNomePlanilha := InputBox('Salvar como', 'Dê o nome da Planilha: ', FormatDateTime('ddmmyyhhmmss', Now));
+
+  if sNomePlanilha = EmptyStr then
+    Exit;
+
+  try
+    CoInitialize(nil);
+    scExcelExport1.ExcelVisible := False;
+    scExcelExport1.Dataset := cds;
+    scExcelExport1.ExportDataset;
+    scExcelExport1.SaveAs(GetCurrentDir + '\EXCEL\' + sNomePlanilha, ffXLSX);
+    scExcelExport1.Disconnect;
+    MessageDlg('Arquivo gerado em: ' + GetCurrentDir + '\EXCEL\', mtInformation, [mbOK], 0);
+  finally
+    CoUninitialize;
+  end;
 end;
 
 procedure TDM.FechaConexao;

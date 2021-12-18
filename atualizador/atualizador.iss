@@ -33,6 +33,7 @@ DisableWelcomePage=True
 DisableReadyPage=True
 AllowCancelDuringInstall=False
 Uninstallable=no
+PrivilegesRequired=admin
 
 
 [Languages]

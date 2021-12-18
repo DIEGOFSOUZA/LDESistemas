@@ -181,7 +181,6 @@ type
     cdsHistCustoDATA_FIM: TDateField;
     cdsHistCustoUSUARIO: TStringField;
     cdsCALC_CUSTO_COMPOSICAO: TStringField;
-    chkCustoEstimado: TCheckBox;
     cdsGRUPO: TStringField;
     cdsSUBGRUPO: TStringField;
     cdsNCM: TStringField;
@@ -226,7 +225,6 @@ type
     procedure cdsBeforePost(DataSet: TDataSet);
     procedure cdsComposicaoProdutoID_MATPRIMAGetText(Sender: TField;
       var Text: string; DisplayText: Boolean);
-    procedure chkCustoEstimadoClick(Sender: TObject);
     procedure cdsAfterCancel(DataSet: TDataSet);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
     procedure edtQtdeClick(Sender: TObject);
@@ -302,13 +300,6 @@ begin
       cdsComposicaoProduto.FieldByName('SIGLA').AsString := lblUM.Caption;
     end;
     cdsComposicaoProduto.Post;
-
-    if (chkCustoEstimado.Checked) then
-    begin
-      CalcCustoComposicao;
-      Editar;
-      cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado;
-    end;
   end;
   Qtde := 1;
   vUnitario := 0;
@@ -342,12 +333,6 @@ begin
 
   cdsComposicaoProduto.Delete;
   CalcCustoComposicao;
-
-  if (chkCustoEstimado.Checked) then
-  begin
-    Editar;
-    cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado;
-  end;
 
   FExibirMsg := False;
   Gravar;
@@ -410,16 +395,6 @@ begin
     end;
   end;
   lblCustEstimado.Caption := FormatCurr('R$ #,##0.00',FCustoEstimado);
-
-  try
-    chkCustoEstimado.OnClick := nil;
-    if (cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString = 'S') then
-      chkCustoEstimado.Checked := True
-    else
-      chkCustoEstimado.Checked := False;
-  finally
-    chkCustoEstimado.OnClick := chkCustoEstimadoClick;
-  end;
 end;
 
 procedure TFrm_Produto.Cancelar;
@@ -456,10 +431,6 @@ procedure TFrm_Produto.cdsBeforePost(DataSet: TDataSet);
 begin
   inherited;
   cds.FieldByName('ULTIMA_ALTERACAO').AsString := DM.UsuarioDataHora;
-  if (cds.FieldByName('PRECO_CUSTO').AsCurrency <> CustoEstimado) then
-    cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString := 'N'
-  else
-    cds.FieldByName('CALC_CUSTO_COMPOSICAO').AsString := IfThen(chkCustoEstimado.Checked, 'S', 'N');
 end;
 
 procedure TFrm_Produto.cdsComposicaoProdutoID_MATPRIMAGetText(Sender: TField;
@@ -498,16 +469,6 @@ begin
     Text := FormatFloat('#,##0',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat))
   else
     Text := FormatFloat('##0.000',Sender.AsFloat);
-end;
-
-procedure TFrm_Produto.chkCustoEstimadoClick(Sender: TObject);
-begin
-  inherited;
-  Editar;
-  if chkCustoEstimado.Checked then
-    cds.FieldByName('PRECO_CUSTO').AsCurrency := CustoEstimado
-  else
-    cds.FieldByName('PRECO_CUSTO').AsCurrency := 0;
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;

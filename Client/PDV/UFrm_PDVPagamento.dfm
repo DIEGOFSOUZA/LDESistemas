@@ -90,8 +90,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 211
-      ExplicitHeight = 438
       object pnlDireita: TPanel
         Left = 232
         Top = 0
@@ -99,7 +97,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 468
         Align = alClient
         TabOrder = 1
-        ExplicitHeight = 438
         object pnlTop1: TPanel
           Left = 1
           Top = 1
@@ -107,8 +104,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
           Height = 96
           Align = alTop
           TabOrder = 0
-          ExplicitLeft = 6
-          ExplicitTop = -5
           object Label4: TLabel
             Left = 132
             Top = 18
@@ -411,7 +406,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 468
         Align = alLeft
         TabOrder = 0
-        ExplicitLeft = -4
         object pnlDinheiro: TPanel
           Left = 11
           Top = 11
@@ -1197,7 +1191,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 25
         Align = alTop
         TabOrder = 3
-        ExplicitTop = 65
         object lblTitAcrescimo: TLabel
           Left = 1
           Top = 1
@@ -1244,7 +1237,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 25
         Align = alTop
         TabOrder = 5
-        ExplicitTop = 110
         object lblTitDesconto: TLabel
           Left = 1
           Top = 1
@@ -1291,7 +1283,6 @@ inherited Frm_PDVPagamento: TFrm_PDVPagamento
         Height = 25
         Align = alTop
         TabOrder = 2
-        ExplicitTop = 45
         object lblTitTotPagar: TLabel
           Left = 1
           Top = 1

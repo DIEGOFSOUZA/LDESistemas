@@ -347,4 +347,10 @@ object SM_Pedido: TSM_Pedido
     Left = 240
     Top = 26
   end
+  object cdsLER: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 240
+    Top = 96
+  end
 end

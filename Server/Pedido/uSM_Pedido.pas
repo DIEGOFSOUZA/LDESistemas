@@ -67,11 +67,14 @@ type
     fdqryPedVendaItemPRODUTO: TStringField;
     fdqryPedVendaItemUNIDADE: TStringField;
     fdqryPedVendaPagarPAGTO: TStringField;
+    cdsLER: TClientDataSet;
   private
-    { Private declarations }
+    procedure getClientDataSet(aClientDataSet: OleVariant);
   public
     function setPedVenda(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
     function getPedVenda(const BD: string; pID: integer): OleVariant;
+
+    function setPedidoVendaI(const BD: string; aIDPedido: Integer; aPedido: OleVariant; aITens: OleVariant; aReceber: OleVariant): Boolean;
   end;
 
 implementation
@@ -89,9 +92,91 @@ uses
 
 { TSM_Pedido }
 
+procedure TSM_Pedido.getClientDataSet(aClientDataSet: OleVariant);
+begin
+  cdsLER.Close;
+  cdsLER.Data := aClientDataSet;
+end;
+
 function TSM_Pedido.getPedVenda(const BD: string; pID: integer): OleVariant;
 begin
 
+end;
+
+function TSM_Pedido.setPedidoVendaI(const BD: string; aIDPedido: Integer;
+  aPedido, aITens, aReceber: OleVariant): Boolean;
+const
+  INS_PEDIDO  = 'insert into PEDIDO_VENDA (ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO) '+
+                'values (:ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO) '+
+                'returning ID '+
+                'into :ID';
+  INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_BAIXA, VDESC, SUBTOTAL, TOTAL) '+
+                'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_BAIXA, :VDESC, :SUBTOTAL, :TOTAL)';
+  INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, ID_CONTA, ID_HISTORICO, NDUP, VDUP, VDESC, VJUROS, DVENC) '+
+                'values (:TIPO, :ID_TABELA_MASTER, :ID_CONTA, :ID_HISTORICO, :NDUP, :VDUP, :VDESC, :VJUROS, :DVENC)';
+var
+  DM: TServerDM;
+  lIDPedido: Integer;
+begin
+  DM := TServerDM.Create(BD);
+  try
+    try
+      getClientDataSet(aPedido);
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(INS_PEDIDO);
+      DM.Gravar.ParamByName('ENTREGA').AsDate := cdsLER.FieldByName('ENTREGA').AsDateTime;
+      DM.Gravar.ParamByName('ID_CLIENTE').AsInteger := cdsLER.FieldByName('ID_CLIENTE').AsInteger;
+      DM.Gravar.ParamByName('ID_VENDEDOR').AsInteger := cdsLER.FieldByName('ID_VENDEDOR').AsInteger;
+      DM.Gravar.ParamByName('OBSERVACAO').AsString := cdsLER.FieldByName('OBSERVACAO').AsString;
+      DM.Gravar.ExecSQL;
+      lIDPedido := DM.Gravar.ParamByName('ID').AsInteger;
+
+      getClientDataSet(aITens);
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(INS_ITEM);
+      cdsLER.First;
+      while not cdsLER.Eof do
+      begin
+        DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
+        DM.Gravar.ParamByName('ORDEM').AsInteger := cdsLER.FieldByName('ORDEM').AsInteger;
+        DM.Gravar.ParamByName('ID_PRODUTO').AsInteger := cdsLER.FieldByName('ID_PRODUTO').AsInteger;
+        DM.Gravar.ParamByName('VUNIT').AsCurrency := cdsLER.FieldByName('VUNIT').AsCurrency;
+        DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
+        DM.Gravar.ParamByName('UNIDADE').AsString := cdsLER.FieldByName('UNIDADE').AsString;
+        DM.Gravar.ParamByName('QTDE_BAIXA').AsFloat := cdsLER.FieldByName('QTDE_BAIXA').AsFloat;
+        DM.Gravar.ParamByName('VDESC').AsCurrency := cdsLER.FieldByName('VDESC').AsCurrency;
+        DM.Gravar.ParamByName('SUBTOTAL').AsCurrency := cdsLER.FieldByName('SUBTOTAL').AsCurrency;
+        DM.Gravar.ParamByName('TOTAL').AsCurrency := cdsLER.FieldByName('TOTAL').AsCurrency;
+        DM.Gravar.ExecSQL;
+        cdsLER.Next;
+      end;
+
+      getClientDataSet(aReceber);
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(INS_RECEBER);
+      cdsLER.First;
+      while not cdsLER.Eof do
+      begin
+        DM.Gravar.ParamByName('TIPO').AsInteger := 1;
+        DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
+        DM.Gravar.ParamByName('ID_CONTA').AsString := cdsLER.FieldByName('ID_CONTA').AsString;
+        DM.Gravar.ParamByName('ID_HISTORICO').AsInteger := cdsLER.FieldByName('ID_HISTORICO').AsInteger;
+        DM.Gravar.ParamByName('NDUP').AsInteger := cdsLER.FieldByName('NDUP').AsInteger;
+        DM.Gravar.ParamByName('VDUP').AsCurrency := cdsLER.FieldByName('VDUP').AsCurrency;
+        DM.Gravar.ParamByName('VDESC').AsCurrency := cdsLER.FieldByName('VDESC').AsCurrency;
+        DM.Gravar.ParamByName('VJUROS').AsCurrency := cdsLER.FieldByName('VJUROS').AsCurrency;
+        DM.Gravar.ParamByName('DVENC').AsDate := cdsLER.FieldByName('DVENC').AsDateTime;
+        DM.Gravar.ExecSQL;
+        cdsLER.Next;
+      end;
+
+      Result := True;
+    except
+      Result := False;
+    end;
+  finally
+    FreeAndNil(DM);
+  end;
 end;
 
 function TSM_Pedido.setPedVenda(const BD: string; pID: integer;

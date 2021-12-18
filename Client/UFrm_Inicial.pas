@@ -88,6 +88,7 @@ type
     MenuRel_Compra: TMenuItem;
     MenuRel_Compra_NFPorClassif: TMenuItem;
     MenuRel_Cliente_SemCompra: TMenuItem;
+    MenuPedido_GERENCIAR: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -125,7 +126,6 @@ type
     procedure MenuRel_PDV_ImprimirOrcamentoClick(Sender: TObject);
     procedure MenuCad_UsuarioClick(Sender: TObject);
     procedure MenuVenda_TipoPagtoClick(Sender: TObject);
-    procedure MenuVenda_PedidoClick(Sender: TObject);
     procedure MenuRel_Vendas_PorPagtoClick(Sender: TObject);
     procedure MenuRel_Vendas_PorPeriodoClick(Sender: TObject);
     procedure MenuRel_Vendas_PorVendedorClick(Sender: TObject);
@@ -140,6 +140,7 @@ type
     procedure MenuRel_Vendas_GrupoClick(Sender: TObject);
     procedure MenuRel_Compra_NFPorClassifClick(Sender: TObject);
     procedure MenuRel_Cliente_SemCompraClick(Sender: TObject);
+    procedure MenuPedido_GERENCIARClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -173,7 +174,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes, UFrm_PedidoVendaGerencia;
 
 function Saudacao: string;
 begin
@@ -188,6 +189,11 @@ end;
 procedure TFrm_Inicial.MenuVenda_PDV_AbreCaixaClick(Sender: TObject);
 begin
   TFrm_CaixaAbertura.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuPedido_GERENCIARClick(Sender: TObject);
+begin
+  TFrm_PedidoVendaGerencia.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuProducao_AcertaEstoqueClick(Sender: TObject);
@@ -495,6 +501,8 @@ begin
 
   MenuRel_Compra.Visible := False;
   MenuRel_Compra_NFPorClassif.Visible := False;
+
+  MenuPedido_GERENCIAR.Visible := False;
 end;
 
 procedure TFrm_Inicial.LiberaFINANCEIRO(aFinanceiro:Boolean);
@@ -530,6 +538,7 @@ begin
     MenuProducao_AcertaEstoque.Visible := True;
 
     MenuProd_Insumo.Visible := True;
+    MenuPedido_GERENCIAR.Visible := True;
   end;
 end;
 
@@ -594,7 +603,6 @@ begin
   //SubMenu
   MenuCad_Funcionario.Visible := False;
   MenuCad_Usuario.Visible := False;
-
 end;
 
 procedure TFrm_Inicial.MenuRel_Produto_EstoqueClick(Sender: TObject);
@@ -628,11 +636,6 @@ begin
       FreeAndNil(Rel_Venda0);
     end;
   end;
-end;
-
-procedure TFrm_Inicial.MenuVenda_PedidoClick(Sender: TObject);
-begin
-  TFrm_Pedido.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuProd_ProdutoClick(Sender: TObject);

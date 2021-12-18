@@ -1054,34 +1054,32 @@ const
         'where a.ABERTO_FECHADO = ''A'' '+
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
-{$REGION 'Trecho Producao'}
-  Result.Fechado := False ;
+{$IFDEF DEBUG}
+  Result.Fechado := False;
+  Result.ID := 442;
+  Result.ValorEmCaixa := 0;
+{$ELSE}
+  Result.Fechado := False;
   Result.ID := 0;
   Result.ValorEmCaixa := 0;
 
-  DM.dsConsulta.Close ;
-  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL, [QuotedStr(FormatDateTime('dd.mm.yyyy', Now))]));
 
   if DM.dsConsulta.IsEmpty then
   begin
-    Result.Fechado := True ;
-    Exit ;
+    Result.Fechado := True;
+    Exit;
   end
   else if DM.dsConsulta.FieldByName('status').AsString = 'F' then
   begin
-    Result.Fechado := True ;
-    Exit ;
+    Result.Fechado := True;
+    Exit;
   end;
 
-  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
-  Result.ValorEmCaixa := DM.dsConsulta.FieldByName('valor').AsCurrency ;
-{$ENDREGION}
-
-{$REGION 'Trecho teste'}
-//  Result.Fechado := False;
-//  Result.ID := 442;
-//  Result.ValorEmCaixa := 0;
-{$ENDREGION}
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger;
+  Result.ValorEmCaixa := DM.dsConsulta.FieldByName('valor').AsCurrency;
+{$ENDIF}
 end;
 
 function ValorFormatadoFirebird(pValor:string) : string;

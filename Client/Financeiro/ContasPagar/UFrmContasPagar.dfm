@@ -1085,7 +1085,6 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
     IndexName = 'IndexVenc'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 619
     Top = 209

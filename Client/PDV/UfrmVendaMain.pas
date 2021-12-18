@@ -1068,8 +1068,8 @@ end;
 
 procedure TfrmVendaMain.cdsItensCalcFields(DataSet: TDataSet);
 begin
-  cdsItenssubtotal.AsCurrency := (cdsItensQTDE.AsFloat *
-                                  cdsItensPRECO_VENDA.AsCurrency) - cdsItensVL_DESCONTO.AsFloat ;
+  cdsItenssubtotal.AsCurrency := RoundABNT( (cdsItensQTDE.AsFloat * cdsItensPRECO_VENDA.AsCurrency) -
+                                             cdsItensVL_DESCONTO.AsFloat,2);
 end;
 
 constructor TfrmVendaMain.CreateChild(AOwner: TComponent);

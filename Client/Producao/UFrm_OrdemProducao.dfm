@@ -653,7 +653,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
         Size = 1
       end>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     AfterInsert = cdsAfterInsert
     Left = 16
@@ -720,7 +719,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
       'OM LOTE_MATPRIMA a'#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 144
     Top = 16
     object cdsMatPrimaID: TIntegerField
@@ -759,7 +757,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
       ' = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsItensAfterInsert
     BeforeDelete = cdsItensBeforeDelete
     Left = 48

@@ -277,9 +277,6 @@
         <DCCReference Include="Financeiro\Caixa\Relatorio\URel_FechamentoCaixa.pas">
             <Form>Rel_FechamentoCaixa</Form>
         </DCCReference>
-        <DCCReference Include="Financeiro\ContasPagar\UFrm_NotaEntrada.pas">
-            <Form>Frm_NotaEntrada</Form>
-        </DCCReference>
         <DCCReference Include="Financeiro\ContasPagar\UFrm_Historico.pas">
             <Form>Frm_Historico</Form>
         </DCCReference>
@@ -359,9 +356,6 @@
         </DCCReference>
         <DCCReference Include="Relatorios\Venda\uRel_VendaPorItem.pas">
             <Form>Rel_VendaPorItem</Form>
-        </DCCReference>
-        <DCCReference Include="Pedido\Venda\uFrm_PedidoVenda.pas">
-            <Form>Frm_PedidoVenda</Form>
         </DCCReference>
         <DCCReference Include="Pedido\uFrm_PedidoDescontoItem.pas">
             <Form>Frm_PedidoDescontoItem</Form>
@@ -484,6 +478,22 @@
         <DCCReference Include="UClassDataSnap.pas"/>
         <DCCReference Include="PDV\UFrm_Conta_Pix_PDV.pas">
             <Form>Frm_Conta_Pix_PDV</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Pedido\Venda\UFrm_PedidoVendaGerencia.pas">
+            <Form>Frm_PedidoVendaGerencia</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Pedido\Venda\UFrmPedido_Venda.pas">
+            <Form>FrmPedido_Venda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Pedido\Venda\UFrm_PedidoVenda_NovoProduto.pas">
+            <Form>Frm_PedidoVenda_NovoProduto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Pedido\Venda\UFrm_PedidoVenda_AdicionarProduto.pas">
+            <Form>Frm_PedidoVenda_AdicionarProduto</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Debug">
