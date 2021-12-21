@@ -1163,15 +1163,15 @@ var
   mCampos: TArrayCampoConsulta;
 begin
   InstrucaoSQL := 'select a.CODIGO,a.NOME,a.PRECO_VENDA,a.QTDE_ESTOQUE,'+
-                   'case a.TIPO_PRODUTO '+
-                   '   when ''MP'' then ''Matéria-Prima'' '+
-                   '   when ''PA'' then ''Produto-Acabado'' '+
-                   '   else ''Ambos'' '+
-                   'end tipo,'+
-                   'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA,'''') CONVERSAO '+
-                   'from PRODUTO a ' +
-                   'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
-                   'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
+                  'case a.TIPO_PRODUTO '+
+                  '   when ''MP'' then ''Matéria-Prima'' '+
+                  '   when ''PA'' then ''Produto-Acabado'' '+
+                  '   else ''Ambos'' '+
+                  'end tipo,'+
+                  'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA,'''') CONVERSAO '+
+                  'from PRODUTO a ' +
+                  'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
+                  'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
   {PA = Produto acabado, MP = Materia-Prima, A=Ambos}
   if pTipo <> EmptyStr then
     InstrucaoSQL := InstrucaoSQL +

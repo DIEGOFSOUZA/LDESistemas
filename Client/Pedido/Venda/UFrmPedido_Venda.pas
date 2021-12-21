@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
   Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Mask, Vcl.DBCtrls, UDBPesquisa,
   Vcl.Imaging.pngimage, Vcl.ComCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Datasnap.DBClient;
+  Datasnap.DBClient, System.DateUtils;
 
 type
   TFrmPedido_Venda = class(TPdr_Child2)
@@ -104,6 +104,12 @@ type
     cdsPEDIDO_VENDA_ITEMTOTAL: TFMTBCDField;
     cdsPEDIDO_VENDA_ITEMPRODUTO: TStringField;
     dsItem: TDataSource;
+    cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL: TAggregateField;
+    cdsCONTAS_A_RECEBERNDUP: TIntegerField;
+    cdsCONTAS_A_RECEBERVDUP: TFMTBCDField;
+    cdsCONTAS_A_RECEBERDVENC: TDateField;
+    dsContasAReceber: TDataSource;
+    actPagtoLimpar: TAction;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -115,9 +121,28 @@ type
     procedure cdsPEDIDO_VENDAAfterInsert(DataSet: TDataSet);
     procedure dbgrdItensDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure cbbPagtoFormaEnter(Sender: TObject);
+    procedure cbbPagtoFormaChange(Sender: TObject);
+    procedure cbbPagtoParcelaChange(Sender: TObject);
+    procedure cbbPagtoParcelaEnter(Sender: TObject);
+    procedure edtPagtoValorKeyPress(Sender: TObject; var Key: Char);
+    procedure actPagtoLimparExecute(Sender: TObject);
   private
-    procedure AdicioneProduto(aIdProd: Integer; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
+    FIdParcelamento: integer;
+    FIdPagamento: integer;
+    FTotalPedio: Currency;
+    FSaldoAPagar: Currency;
+    procedure AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
+    procedure FormasDePagto();
+    procedure Parcelamento(aId: integer);
+    procedure SetTotalPedido(const Value: Currency);
+    procedure SetSaldoAPagar(const Value: Currency);
+    procedure GerarDuplicatas(aValor:Currency);
   public
+    property IdPagamento: integer read FIdPagamento write FIdPagamento;
+    property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
+    property TotalPedido: Currency read FTotalPedio write SetTotalPedido;
+    property SaldoAPagar: Currency read FSaldoAPagar write SetSaldoAPagar;
     procedure NovoPedido();
   end;
 
@@ -144,7 +169,10 @@ begin
       Unidade := '';
       ShowModal;
       if (IdProduto > 0) then
-        AdicioneProduto(IdProduto, Qtde, Unitario, Desconto, Unidade);
+      begin
+        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, Desconto, Unidade);
+        TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+      end;
     end;
 
   finally
@@ -166,9 +194,33 @@ begin
 end;
 
 procedure TFrmPedido_Venda.actPagtoGerarDuplicatasExecute(Sender: TObject);
+var
+  lValor: Currency;
 begin
   inherited;
-//
+  if (SaldoAPagar = 0)  then
+  begin
+    TMensagem.Atencao('Saldo a pagar = R$ 0,00');
+    Exit;
+  end;
+
+  if TryStrToCurr(edtPagtoValor.Text, lValor) then
+    if SaldoAPagar < lValor then
+      TMensagem.Atencao('Saldo a pagar é menor que valor informado.')
+    else
+      GerarDuplicatas(lValor);
+end;
+
+procedure TFrmPedido_Venda.actPagtoLimparExecute(Sender: TObject);
+begin
+  inherited;
+  cdsCONTAS_A_RECEBER.DisableControls;
+  try
+    cdsCONTAS_A_RECEBER.EmptyDataSet;
+
+  finally
+    cdsCONTAS_A_RECEBER.EnableControls;
+  end;
 end;
 
 procedure TFrmPedido_Venda.actPedidoCancelarExecute(Sender: TObject);
@@ -180,10 +232,18 @@ end;
 procedure TFrmPedido_Venda.actPedidoSalvarExecute(Sender: TObject);
 begin
   inherited;
-//
+  try
+    DM.SMPedido.setPedidoVendaI(DM.BancoDados,cdsPEDIDO_VENDA.FieldByName('ID').AsInteger,
+                  cdsPEDIDO_VENDA.Delta,cdsPEDIDO_VENDA_ITEM.Delta,cdsCONTAS_A_RECEBER.Delta);
+    TMensagem.Informacao('Pedido gerado com sucesso.');
+    actSair.Execute;
+  except
+    TMensagem.Erro('Pedido não gerado, tente novamente.');
+  end;
+
 end;
 
-procedure TFrmPedido_Venda.AdicioneProduto(aIdProd: Integer; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
+procedure TFrmPedido_Venda.AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
 begin
   if cdsPEDIDO_VENDA_ITEM.Locate('ID_PRODUTO', aIdProd, []) then
   begin
@@ -195,8 +255,9 @@ begin
   begin
     cdsPEDIDO_VENDA_ITEM.Append;
     cdsPEDIDO_VENDA_ITEM.FieldByName('ID_PEDIDO').AsInteger := cdsPEDIDO_VENDA.FieldByName('ID').AsInteger;
-    cdsPEDIDO_VENDA_ITEM.FieldByName('ORDEM').AsInteger := cdsPEDIDO_VENDA_ITEM.FieldByName('ORDEM').AsInteger + 1;
+    cdsPEDIDO_VENDA_ITEM.FieldByName('ORDEM').AsInteger := cdsPEDIDO_VENDA_ITEM.RecordCount + 1;
     cdsPEDIDO_VENDA_ITEM.FieldByName('ID_PRODUTO').AsInteger := aIdProd;
+    cdsPEDIDO_VENDA_ITEM.FieldByName('PRODUTO').AsString := aProduto;
     cdsPEDIDO_VENDA_ITEM.FieldByName('VUNIT').AsCurrency := aUnit;
     cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat := aQtde;
     cdsPEDIDO_VENDA_ITEM.FieldByName('UNIDADE').AsString := aUND;
@@ -208,11 +269,19 @@ begin
   cdsPEDIDO_VENDA_ITEM.Post;
 end;
 
+procedure TFrmPedido_Venda.cbbPagtoFormaEnter(Sender: TObject);
+begin
+  inherited;
+  FormasDePagto();
+end;
+
 procedure TFrmPedido_Venda.cdsPEDIDO_VENDAAfterInsert(DataSet: TDataSet);
 begin
   inherited;
+  cdsPEDIDO_VENDA.FieldByName('ID').AsInteger := 0;
   cdsPEDIDO_VENDA.FieldByName('EMISSAO').AsDateTime := Date;
-  cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date+7;
+  cdsPEDIDO_VENDA.FieldByName('ENTRADA').AsDateTime := Date;
+  cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + 7;
 end;
 
 procedure TFrmPedido_Venda.dbgrdItensDrawColumnCell(Sender: TObject;
@@ -247,17 +316,153 @@ begin
   Retorno := Consulta.Representante.ToString;
 end;
 
+procedure TFrmPedido_Venda.edtPagtoValorKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if not CharInSet(Key, [#8, #13, ',', '0'..'9']) then
+    Key := #0;
+end;
+
+procedure TFrmPedido_Venda.FormasDePagto;
+const
+  SQL = 'SELECT r.ID_PAGTOFORMA,r.DESCRI ' +
+        'FROM PAGTO_FORMA r where r.ATIVO = ''S'' ';
+begin
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(SQL);
+  if (not DM.dsConsulta.IsEmpty) then
+  begin
+    cbbPagtoForma.Items.Clear;
+    DM.dsConsulta.First;
+    while not DM.dsConsulta.Eof do
+    begin
+      cbbPagtoForma.Items.Add(DM.dsConsulta.FieldByName('descri').AsString);
+      DM.dsConsulta.Next;
+    end;
+    cbbPagtoForma.ItemIndex := -1;
+  end;
+end;
+
+procedure TFrmPedido_Venda.cbbPagtoFormaChange(Sender: TObject);
+begin
+  inherited;
+  try
+    DM.dsConsulta.Locate('descri',cbbPagtoForma.Text,[]);
+    IdPagamento := DM.dsConsulta.FieldByName('ID_PAGTOFORMA').AsInteger;
+  except
+    IdPagamento := -1;
+  end;
+end;
+
+procedure TFrmPedido_Venda.GerarDuplicatas(aValor:Currency);
+const
+  SQL = 'SELECT r.num_parcelas,'+
+        '       r.intv_parcelas,'+
+        '       r.primeira_parc,'+
+        '       r.acrescimo '+
+        'FROM PAGTO_PARCELAMENTO r '+
+        'where r.id = %s';
+var
+  lValor: Currency;
+  lAcrescimo: Extended;
+  i: Integer;
+  lVencto: TDate;
+begin
+  if FIdParcelamento = -1 then
+    Exit;
+
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[FIdParcelamento.ToString]));
+
+  lAcrescimo := ((DM.dsConsulta.FieldByName('ACRESCIMO').AsFloat*aValor)/100);
+  lValor := RoundABNT((aValor+lAcrescimo) / DM.dsConsulta.FieldByName('NUM_PARCELAS').AsInteger,2);
+  for I := 1 to DM.dsConsulta.FieldByName('NUM_PARCELAS').AsInteger do
+  begin
+    cdsCONTAS_A_RECEBER.Append;
+    cdsCONTAS_A_RECEBER.FieldByName('NDUP').AsInteger := cdsCONTAS_A_RECEBER.RecordCount+1;
+    cdsCONTAS_A_RECEBER.FieldByName('VDUP').AsCurrency := lValor;
+    if (I = 1) then
+        cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(Date, DM.dsConsulta.FieldByName('PRIMEIRA_PARC').AsInteger)
+      else
+        cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(lVencto, DM.dsConsulta.FieldByName('PRIMEIRA_PARC').AsInteger);
+      lVencto := cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime;
+    cdsCONTAS_A_RECEBER.Post;
+  end;
+  SaldoAPagar := FSaldoAPagar - aValor;
+end;
+
 procedure TFrmPedido_Venda.NovoPedido;
 begin
+  FIdPagamento := -1;
+  FIdParcelamento := -1;
+  TotalPedido := 0;
+  SaldoAPagar := 0;
   cdsPEDIDO_VENDA.Close;
   cdsPEDIDO_VENDA.CreateDataSet;
   cdsPEDIDO_VENDA_ITEM.Close;
   cdsPEDIDO_VENDA_ITEM.CreateDataSet;
-//  cdsCONTAS_A_RECEBER.Close;
-//  cdsCONTAS_A_RECEBER.CreateDataSet;
-
+  cdsCONTAS_A_RECEBER.Close;
+  cdsCONTAS_A_RECEBER.CreateDataSet;
   cdsPEDIDO_VENDA.Append;
-//  DBEdit2.SetFocus;
+
+  pgc1.TabIndex := 0;
+end;
+
+procedure TFrmPedido_Venda.Parcelamento(aId: integer);
+const
+  SQL = 'SELECT r.ID,r.DESCRI FROM PAGTO_PARCELAMENTO r '+
+        'where r.ID_PAGTOFORMA = %s';
+begin
+  if aId < 1 then
+    Exit;
+
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aId.ToString]));
+  if (not DM.dsConsulta.IsEmpty) then
+  begin
+    cbbPagtoParcela.Items.Clear;
+    DM.dsConsulta.First;
+    while not DM.dsConsulta.Eof do
+    begin
+      cbbPagtoParcela.Items.Add(DM.dsConsulta.FieldByName('descri').AsString);
+      DM.dsConsulta.Next;
+    end;
+    cbbPagtoParcela.ItemIndex := -1;
+  end;
+end;
+
+procedure TFrmPedido_Venda.cbbPagtoParcelaChange(Sender: TObject);
+begin
+  inherited;
+  try
+    DM.dsConsulta.Locate('descri',cbbPagtoParcela.Text,[]);
+    IdParcelamento := DM.dsConsulta.FieldByName('ID').AsInteger;
+  except
+    IdParcelamento := -1;
+  end;
+end;
+
+procedure TFrmPedido_Venda.SetSaldoAPagar(const Value: Currency);
+begin
+  FSaldoAPagar := Value;
+  lblPagtoTotPagar.Caption := FormatCurr('#,##0.00', Value);
+  edtPagtoValor.Text := FormatCurr('#,##0.00', Value);
+end;
+
+procedure TFrmPedido_Venda.SetTotalPedido(const Value: Currency);
+begin
+  FTotalPedio := Value;
+  lblItensSubTotal.Caption := FormatCurr('#,##0.00', Value);
+  if not cdsCONTAS_A_RECEBER.IsEmpty then
+    actPagtoLimpar.Execute;
+  SaldoAPagar := Value;
+end;
+
+procedure TFrmPedido_Venda.cbbPagtoParcelaEnter(Sender: TObject);
+begin
+  inherited;
+  Parcelamento(IdPagamento);
 end;
 
 end.

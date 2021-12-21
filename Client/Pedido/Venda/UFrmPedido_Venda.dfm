@@ -17,6 +17,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     end
     inherited pnlBotaoSair: TPanel
       Left = 998
+      Visible = False
       ExplicitLeft = 998
       ExplicitTop = 0
       ExplicitHeight = 30
@@ -39,6 +40,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Height = 177
       Align = alTop
       TabOrder = 0
+      ExplicitTop = -6
       object Label1: TLabel
         Left = 32
         Top = 11
@@ -123,6 +125,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Width = 121
         Height = 25
         TabStop = False
+        DataField = 'ID'
         DataSource = dsPEDIDO_VENDA
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -207,7 +210,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsClientePesquisa
-        TabOrder = 3
+        TabOrder = 4
         TabStop = True
       end
       object dbpsqsVendedor: TDBPesquisa
@@ -254,7 +257,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsVendedorPesquisa
-        TabOrder = 4
+        TabOrder = 5
         TabStop = True
       end
       object DBMemo1: TDBMemo
@@ -264,7 +267,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Height = 121
         DataField = 'OBSERVACAO'
         DataSource = dsPEDIDO_VENDA
-        TabOrder = 5
+        TabOrder = 3
       end
     end
     object pnlBotton: TPanel
@@ -285,6 +288,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         ParentBackground = False
         ShowCaption = False
         TabOrder = 1
+        OnClick = actPedidoSalvarExecute
         object imgGravar: TImage
           Left = 3
           Top = 0
@@ -312,6 +316,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
             FCAF1942A428C9A1D30EF54A9F8007F0156649BC6BC7DF01EDA17E19974C6F32
             0000000049454E44AE426082}
           Stretch = True
+          OnClick = actPedidoSalvarExecute
         end
         object lblGravar: TLabel
           Left = 48
@@ -329,6 +334,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           ParentFont = False
           Transparent = True
           Layout = tlCenter
+          OnClick = actPedidoSalvarExecute
         end
       end
       object pnlCancelar: TPanel
@@ -342,6 +348,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         ParentBackground = False
         ShowCaption = False
         TabOrder = 0
+        OnClick = actSairExecute
         object imgCancelar: TImage
           Left = 3
           Top = 0
@@ -379,6 +386,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
             E3B45F2A5CD098A108FC8BF61B47B27C30D4827D5A0000000049454E44AE4260
             82}
           Stretch = True
+          OnClick = actSairExecute
         end
         object lblCancelar: TLabel
           Left = 35
@@ -396,6 +404,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           ParentFont = False
           Transparent = True
           Layout = tlCenter
+          OnClick = actSairExecute
         end
       end
     end
@@ -429,7 +438,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 872
           Height = 303
-          ActivePage = tsItem
+          ActivePage = tsPagamento
           Align = alClient
           TabOrder = 0
           object tsItem: TTabSheet
@@ -502,8 +511,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Transparent = True
                     Layout = tlCenter
                     OnClick = actItemAdicionarExecute
-                    ExplicitLeft = 18
-                    ExplicitTop = 1
                     ExplicitWidth = 65
                     ExplicitHeight = 30
                   end
@@ -549,7 +556,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 ParentBackground = False
                 TabOrder = 2
                 object Label6: TLabel
-                  Left = 688
+                  Left = 568
                   Top = 2
                   Width = 87
                   Height = 17
@@ -562,10 +569,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   ParentFont = False
                 end
                 object lblItensSubTotal: TLabel
-                  Left = 777
+                  Left = 657
                   Top = 2
-                  Width = 25
+                  Width = 120
                   Height = 17
+                  AutoSize = False
                   Caption = '0,00'
                   Font.Charset = ANSI_CHARSET
                   Font.Color = clWindowText
@@ -836,6 +844,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     ParentFont = False
                     TabOrder = 0
                     Text = 'DINHEIRO'
+                    OnChange = cbbPagtoFormaChange
+                    OnEnter = cbbPagtoFormaEnter
                   end
                   object cbbPagtoParcela: TComboBox
                     Left = 7
@@ -850,6 +860,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     ParentFont = False
                     TabOrder = 1
                     Text = 'A VISTA'
+                    OnChange = cbbPagtoParcelaChange
+                    OnEnter = cbbPagtoParcelaEnter
                   end
                   object edtPagtoValor: TEdit
                     Left = 7
@@ -865,6 +877,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     ParentFont = False
                     TabOrder = 2
                     Text = '0,00'
+                    OnKeyPress = edtPagtoValorKeyPress
                   end
                 end
               end
@@ -954,6 +967,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Width = 637
                     Height = 238
                     Align = alClient
+                    DataSource = dsContasAReceber
                     DrawingStyle = gdsGradient
                     GradientEndColor = 13864803
                     Font.Charset = ANSI_CHARSET
@@ -969,6 +983,27 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     TitleFont.Height = -11
                     TitleFont.Name = 'Segoe UI'
                     TitleFont.Style = []
+                    Columns = <
+                      item
+                        Alignment = taCenter
+                        Expanded = False
+                        FieldName = 'NDUP'
+                        Title.Alignment = taCenter
+                        Visible = True
+                      end
+                      item
+                        Alignment = taCenter
+                        Expanded = False
+                        FieldName = 'DVENC'
+                        Title.Alignment = taCenter
+                        Width = 90
+                        Visible = True
+                      end
+                      item
+                        Expanded = False
+                        FieldName = 'VDUP'
+                        Visible = True
+                      end>
                   end
                 end
               end
@@ -1005,9 +1040,14 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Caption = 'actPagtoGerarDuplicatas'
       OnExecute = actPagtoGerarDuplicatasExecute
     end
+    object actPagtoLimpar: TAction
+      Caption = 'actPagtoLimpar'
+      OnExecute = actPagtoLimparExecute
+    end
   end
   object cdsPEDIDO_VENDA_ITEM: TClientDataSet
     Aggregates = <>
+    AggregatesActive = True
     CommandText = 
       'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,' +
       ' pi.UNIDADE, '#13#10'pi.QTDE_BAIXA, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, p' +
@@ -1078,15 +1118,42 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     end
     object cdsPEDIDO_VENDA_ITEMPRODUTO: TStringField
       FieldName = 'PRODUTO'
-      ReadOnly = True
       Size = 100
+    end
+    object cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL: TAggregateField
+      FieldName = 'SUBTOTAL_GERAL'
+      Active = True
+      DisplayName = ''
+      Expression = 'sum(TOTAL)'
     end
   end
   object cdsCONTAS_A_RECEBER: TClientDataSet
     Aggregates = <>
+    CommandText = 'select NDUP, VDUP, DVENC'#13#10'from CONTAS_A_RECEBER  '#13#10'where 1=2'
     Params = <>
+    ProviderName = 'DSPLer1'
+    RemoteServer = DM.dspRLer
     Left = 389
-    Top = 424
+    Top = 418
+    object cdsCONTAS_A_RECEBERNDUP: TIntegerField
+      DisplayLabel = 'PARCELA'
+      FieldName = 'NDUP'
+      Required = True
+      DisplayFormat = '00'
+    end
+    object cdsCONTAS_A_RECEBERVDUP: TFMTBCDField
+      DisplayLabel = 'VALOR (R$)'
+      FieldName = 'VDUP'
+      Required = True
+      DisplayFormat = 'R$ #,##0.00'
+      Precision = 18
+      Size = 2
+    end
+    object cdsCONTAS_A_RECEBERDVENC: TDateField
+      DisplayLabel = 'VENCIMENTO'
+      FieldName = 'DVENC'
+      Required = True
+    end
   end
   object cdsPEDIDO_VENDA: TClientDataSet
     Aggregates = <>
@@ -1137,12 +1204,17 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   end
   object dsPEDIDO_VENDA: TDataSource
     DataSet = cdsPEDIDO_VENDA
-    Left = 493
-    Top = 328
+    Left = 504
+    Top = 325
   end
   object dsItem: TDataSource
     DataSet = cdsPEDIDO_VENDA_ITEM
-    Left = 493
-    Top = 376
+    Left = 502
+    Top = 369
+  end
+  object dsContasAReceber: TDataSource
+    DataSet = cdsCONTAS_A_RECEBER
+    Left = 501
+    Top = 418
   end
 end

@@ -107,7 +107,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         ParentFont = False
       end
       object lblUnidade: TLabel
-        Left = 368
+        Left = 520
         Top = 23
         Width = 17
         Height = 17
@@ -122,7 +122,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
       object edpesMatPrima: TEdPesquisa
         Left = 23
         Top = 20
-        Width = 338
+        Width = 488
         Height = 25
         PermitirBranco = Sim
         ConsultaTabela.Tabela = 'PRODUTO'
@@ -137,7 +137,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         Titulo.Caption = ' '
         Mostrar.Left = 87
         Mostrar.Top = 0
-        Mostrar.Width = 250
+        Mostrar.Width = 400
         Mostrar.Height = 25
         Mostrar.TabStop = False
         Mostrar.Font.Charset = ANSI_CHARSET
@@ -160,6 +160,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         Campo.Font.Style = []
         Campo.ParentFont = False
         Campo.TabOrder = 0
+        Campo.OnExit = edpesMatPrimaedtCampoExit
         TabOrder = 0
         TabStop = True
       end
@@ -194,6 +195,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         ParentFont = False
         TabOrder = 2
         Text = '0,00'
+        OnExit = edtUnitarioExit
         OnKeyPress = edtQtdeKeyPress
       end
       object edtTotal: TEdit
@@ -226,6 +228,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         ParentFont = False
         TabOrder = 3
         Text = '0,00'
+        OnExit = edtDescontoExit
         OnKeyPress = edtQtdeKeyPress
       end
     end

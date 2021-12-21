@@ -109,11 +109,11 @@ const
   INS_PEDIDO  = 'insert into PEDIDO_VENDA (ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO) '+
                 'values (:ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO) '+
                 'returning ID '+
-                'into :ID';
+                '{into :ID}';
   INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_BAIXA, VDESC, SUBTOTAL, TOTAL) '+
                 'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_BAIXA, :VDESC, :SUBTOTAL, :TOTAL)';
-  INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, ID_CONTA, ID_HISTORICO, NDUP, VDUP, VDESC, VJUROS, DVENC) '+
-                'values (:TIPO, :ID_TABELA_MASTER, :ID_CONTA, :ID_HISTORICO, :NDUP, :VDUP, :VDESC, :VJUROS, :DVENC)';
+  INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, NDUP, VDUP, DVENC) '+
+                'values (:TIPO, :ID_TABELA_MASTER, :NDUP, :VDUP, :DVENC)';
 var
   DM: TServerDM;
   lIDPedido: Integer;
@@ -129,7 +129,7 @@ begin
       DM.Gravar.ParamByName('ID_VENDEDOR').AsInteger := cdsLER.FieldByName('ID_VENDEDOR').AsInteger;
       DM.Gravar.ParamByName('OBSERVACAO').AsString := cdsLER.FieldByName('OBSERVACAO').AsString;
       DM.Gravar.ExecSQL;
-      lIDPedido := DM.Gravar.ParamByName('ID').AsInteger;
+      lIDPedido := DM.Gravar.Params[4].Value;
 
       getClientDataSet(aITens);
       DM.Gravar.SQL.Clear;
@@ -152,22 +152,21 @@ begin
       end;
 
       getClientDataSet(aReceber);
-      DM.Gravar.SQL.Clear;
-      DM.Gravar.SQL.Add(INS_RECEBER);
-      cdsLER.First;
-      while not cdsLER.Eof do
+      if not cdsLER.IsEmpty then
       begin
-        DM.Gravar.ParamByName('TIPO').AsInteger := 1;
-        DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
-        DM.Gravar.ParamByName('ID_CONTA').AsString := cdsLER.FieldByName('ID_CONTA').AsString;
-        DM.Gravar.ParamByName('ID_HISTORICO').AsInteger := cdsLER.FieldByName('ID_HISTORICO').AsInteger;
-        DM.Gravar.ParamByName('NDUP').AsInteger := cdsLER.FieldByName('NDUP').AsInteger;
-        DM.Gravar.ParamByName('VDUP').AsCurrency := cdsLER.FieldByName('VDUP').AsCurrency;
-        DM.Gravar.ParamByName('VDESC').AsCurrency := cdsLER.FieldByName('VDESC').AsCurrency;
-        DM.Gravar.ParamByName('VJUROS').AsCurrency := cdsLER.FieldByName('VJUROS').AsCurrency;
-        DM.Gravar.ParamByName('DVENC').AsDate := cdsLER.FieldByName('DVENC').AsDateTime;
-        DM.Gravar.ExecSQL;
-        cdsLER.Next;
+        DM.Gravar.SQL.Clear;
+        DM.Gravar.SQL.Add(INS_RECEBER);
+        cdsLER.First;
+        while not cdsLER.Eof do
+        begin
+          DM.Gravar.ParamByName('TIPO').AsInteger := 1;
+          DM.Gravar.ParamByName('ID_TABELA_MASTER').AsInteger := lIDPedido;
+          DM.Gravar.ParamByName('NDUP').AsInteger := cdsLER.FieldByName('NDUP').AsInteger;
+          DM.Gravar.ParamByName('VDUP').AsCurrency := cdsLER.FieldByName('VDUP').AsCurrency;
+          DM.Gravar.ParamByName('DVENC').AsDate := cdsLER.FieldByName('DVENC').AsDateTime;
+          DM.Gravar.ExecSQL;
+          cdsLER.Next;
+        end;
       end;
 
       Result := True;

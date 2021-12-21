@@ -837,15 +837,11 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           Top = 1
           Width = 716
           Height = 245
-          ActivePage = tsProdutoServico
+          ActivePage = tsCobranca
           Align = alClient
           TabOrder = 0
           object tsProdutoServico: TTabSheet
             Caption = 'PRODUTOS/SERVI'#199'OS'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlItens: TPanel
               Left = 0
               Top = 8
@@ -1490,10 +1486,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsTotal: TTabSheet
             Caption = 'TOTAIS'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlTotais: TPanel
               Left = 0
               Top = 0
@@ -1873,10 +1865,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsTransportador: TTabSheet
             Caption = 'TRANSPORTADOR'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlTransportador: TPanel
               Left = 0
               Top = 0
@@ -2348,10 +2336,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsCobranca: TTabSheet
             Caption = 'COBRAN'#199'A'
             ImageIndex = 3
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlPagamento: TPanel
               Left = 0
               Top = 0
@@ -2676,10 +2660,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsAnotacao: TTabSheet
             Caption = 'ANOTA'#199#213'ES'
             ImageIndex = 4
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlAnotacao: TPanel
               Left = 0
               Top = 0

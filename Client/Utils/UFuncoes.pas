@@ -22,6 +22,13 @@ type
     Retorno: string;
   end;
 
+type
+  TDadosProduto = record
+    DESCRI: string;
+    UND: string;
+    PRECO: Currency;
+  end;
+
 var
   cdsConsulta: TClientDataSet;
 
@@ -62,7 +69,7 @@ function IsValidEmail(const Value: string): Boolean;
 function vercgc      (snrcgc:string)             : Boolean;
 function vercpf      (snrcpf:string)             : Boolean;
 
-Function ValidaData  (Dt : String; Msg: Boolean = True) : Boolean;
+function ValidaData  (Dt : String; Msg: Boolean = True) : Boolean;
 function Bissexto    (Ano : String)              : Boolean;
 function IsDigit     (Campo : String)            : Boolean;
 function IsCarac     (Campo : String)            : Boolean;
@@ -73,6 +80,7 @@ function ValidaFormataCurrency(pValor : string) : TFormataValor;
 function ValorFormatadoFirebird(pValor:string) : string;
 
 function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
+function DadosProduto(aCodigo:integer): TDadosProduto;
 
 
 {procedures}
@@ -1127,6 +1135,31 @@ begin
     Result.VlString := FormatFloat('##0.00', 0);
     Result.vlFloat := 0;
     TMensagem.Erro('Valor inválido');
+  end;
+end;
+
+function DadosProduto(aCodigo:integer): TDadosProduto;
+const
+  SQL = 'select a.NOME, a.PRECO_VENDA,coalesce(b.SIGLA,'''') UM '+
+        'from PRODUTO a '+
+        'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
+        'where a.codigo = %s';
+begin
+  Result.DESCRI := '';
+  Result.UND := '';
+  Result.PRECO := 0;
+
+  try
+    DM.dsConsulta.Close;
+    DM.dsConsulta.Data := DM.LerDataSet(Format(SQL, [aCodigo.ToString]));
+    if not DM.dsConsulta.IsEmpty then
+    begin
+      Result.DESCRI := DM.dsConsulta.FieldByName('NOME').AsString;
+      Result.UND := DM.dsConsulta.FieldByName('UM').AsString;
+      Result.PRECO := DM.dsConsulta.FieldByName('PRECO_VENDA').AsCurrency;
+    end;
+  except
+
   end;
 end;
 

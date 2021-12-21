@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 23/09/2021 09:44:04
+// 21/12/2021 13:09:05
 //
 
 unit UClassDataSnap;
@@ -224,12 +224,14 @@ type
   private
     FsetPedVendaCommand: TDBXCommand;
     FgetPedVendaCommand: TDBXCommand;
+    FsetPedidoVendaICommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setPedVenda(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getPedVenda(BD: string; pID: Integer): OleVariant;
+    function setPedidoVendaI(BD: string; aIDPedido: Integer; aPedido: OleVariant; aITens: OleVariant; aReceber: OleVariant): Boolean;
   end;
 
   TSMProducaoClient = class(TDSAdminClient)
@@ -1811,6 +1813,24 @@ begin
   Result := FgetPedVendaCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSM_PedidoClient.setPedidoVendaI(BD: string; aIDPedido: Integer; aPedido: OleVariant; aITens: OleVariant; aReceber: OleVariant): Boolean;
+begin
+  if FsetPedidoVendaICommand = nil then
+  begin
+    FsetPedidoVendaICommand := FDBXConnection.CreateCommand;
+    FsetPedidoVendaICommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetPedidoVendaICommand.Text := 'TSM_Pedido.setPedidoVendaI';
+    FsetPedidoVendaICommand.Prepare;
+  end;
+  FsetPedidoVendaICommand.Parameters[0].Value.SetWideString(BD);
+  FsetPedidoVendaICommand.Parameters[1].Value.SetInt32(aIDPedido);
+  FsetPedidoVendaICommand.Parameters[2].Value.AsVariant := aPedido;
+  FsetPedidoVendaICommand.Parameters[3].Value.AsVariant := aITens;
+  FsetPedidoVendaICommand.Parameters[4].Value.AsVariant := aReceber;
+  FsetPedidoVendaICommand.ExecuteUpdate;
+  Result := FsetPedidoVendaICommand.Parameters[5].Value.GetBoolean;
+end;
+
 constructor TSM_PedidoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1825,6 +1845,7 @@ destructor TSM_PedidoClient.Destroy;
 begin
   FsetPedVendaCommand.DisposeOf;
   FgetPedVendaCommand.DisposeOf;
+  FsetPedidoVendaICommand.DisposeOf;
   inherited;
 end;
 

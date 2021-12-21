@@ -679,16 +679,8 @@ begin
     Exit;
   end;
 
-
   lVlPago := RoundABNT(GetValor(edtPagValor.Text),-2);
   edtPagValor.OnExit(Self);
-
-//  AtualizaSaldoaPagar;
-//  if ( (SaldoAPagar = 0) or (lVlPago > SaldoAPagar) ) then
-//  begin
-//    TMensagem.Informacao('Não há Saldo a pagar / Valor maior que o Saldo a pagar.');
-//    Exit;
-//  end;
 
   if ((lVlPago > 0) and (Parcelamento.Locate('descri', cbbParcelamento.Text, []))) then
   begin

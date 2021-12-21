@@ -95,7 +95,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
       object edpesMatPrima: TEdPesquisa
         Left = 23
         Top = 20
-        Width = 338
+        Width = 488
         Height = 25
         PermitirBranco = Sim
         Titulo.Left = 0
@@ -105,7 +105,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         Titulo.Caption = ' '
         Mostrar.Left = 87
         Mostrar.Top = 0
-        Mostrar.Width = 250
+        Mostrar.Width = 400
         Mostrar.Height = 25
         Mostrar.TabStop = False
         Mostrar.Font.Charset = ANSI_CHARSET

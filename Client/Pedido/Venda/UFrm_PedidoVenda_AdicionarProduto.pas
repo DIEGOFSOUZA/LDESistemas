@@ -33,6 +33,9 @@ type
     procedure actSairExecute(Sender: TObject);
     procedure actIncluirPedidoExecute(Sender: TObject);
     procedure edtQtdeExit(Sender: TObject);
+    procedure edtUnitarioExit(Sender: TObject);
+    procedure edtDescontoExit(Sender: TObject);
+    procedure edpesMatPrimaedtCampoExit(Sender: TObject);
   private
     FTotal: Currency;
     FIdProduto: integer;
@@ -40,6 +43,7 @@ type
     FUnitario: Currency;
     FDesconto: Currency;
     FUnidade: string;
+    FProduto: string;
     procedure SetTotal(const Value: Currency);
     procedure SetUnitario(const Value: Currency);
     procedure SetDesconto(const Value: Currency);
@@ -47,9 +51,11 @@ type
     procedure SetQtde(const Value: Extended);
     procedure SetUnidade(const Value: string);
     procedure SetIdProduto(const Value: integer);
+    procedure SetProduto(const Value: string);
   public
 //    property :  read F write Set;
     property IdProduto: integer read FIdProduto write SetIdProduto;
+    property Produto:string  read FProduto write SetProduto;
     property Unidade: string read FUnidade write SetUnidade;
     property Qtde: Extended read FQtde write SetQtde;
     property Unitario: Currency read FUnitario write SetUnitario;
@@ -65,7 +71,7 @@ var
 implementation
 
 uses
-  UConsulta, UDM, u_Mensagem, ACBrValidador;
+  UConsulta, UDM, u_Mensagem, ACBrValidador, UFuncoes;
 
 {$R *.dfm}
 
@@ -77,6 +83,7 @@ begin
     Exit;
 
   FIdProduto := StrToInt(edpesMatPrima.Campo.Text);
+  FProduto := edpesMatPrima.Mostrar.Text;
   Close;
 end;
 
@@ -84,6 +91,21 @@ procedure TFrm_PedidoVenda_AdicionarProduto.actSairExecute(Sender: TObject);
 begin
   FIdProduto := -1;
   inherited;
+end;
+
+procedure TFrm_PedidoVenda_AdicionarProduto.edpesMatPrimaedtCampoExit(
+  Sender: TObject);
+begin
+  inherited;
+  with DadosProduto(StrToInt(edpesMatPrima.Campo.Text)) do
+  begin
+    edpesMatPrima.Mostrar.Text := DESCRI;
+    Unidade := UND;
+    Unitario := PRECO;
+  end;
+  Qtde := 1;
+  Desconto := 0;
+  Total := (FQtde * FUnitario);
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.edpesMatPrimaPesquisa(
@@ -109,10 +131,26 @@ begin
   end;
 end;
 
-procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeExit(Sender: TObject);
+procedure TFrm_PedidoVenda_AdicionarProduto.edtDescontoExit(Sender: TObject);
+var
+  lValor: Currency;
 begin
   inherited;
-  Qtde := StrToFloat(edtQtde.Text)
+  if TryStrToCurr(edtDesconto.Text, lValor) then
+    Desconto := lValor
+  else
+    Desconto := 0;
+end;
+
+procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeExit(Sender: TObject);
+var
+  lValor: Extended;
+begin
+  inherited;
+  if TryStrToFloat(edtQtde.Text, lValor) then
+    Qtde := lValor
+  else
+    Qtde := 1;
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeKeyPress(Sender: TObject;
@@ -121,6 +159,17 @@ begin
   inherited;
   if not CharInSet(Key, [#8, #13, ',', '0'..'9']) then
     Key := #0;
+end;
+
+procedure TFrm_PedidoVenda_AdicionarProduto.edtUnitarioExit(Sender: TObject);
+var
+  lValor: Currency;
+begin
+  inherited;
+  if TryStrToCurr(edtUnitario.Text, lValor) then
+    Unitario := lValor
+  else
+    Unitario := 0;
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.Iniciar;
@@ -132,6 +181,7 @@ procedure TFrm_PedidoVenda_AdicionarProduto.SetDesconto(const Value: Currency);
 begin
   FDesconto := Value;
   edtDesconto.Text := FormatCurr('#,##0.00',FDesconto);
+  Total := ((FQtde * FUnitario) - FDesconto);
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.SetIdProduto(const Value: integer);
@@ -139,10 +189,16 @@ begin
   FIdProduto := Value;
 end;
 
+procedure TFrm_PedidoVenda_AdicionarProduto.SetProduto(const Value: string);
+begin
+  FProduto := Value;
+end;
+
 procedure TFrm_PedidoVenda_AdicionarProduto.SetQtde(const Value: Extended);
 begin
   FQtde := Value;
   edtQtde.Text := FormatFloat('#,##0.000',FQtde);
+  Total := ((FQtde * FUnitario) - FDesconto);
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.SetTotal(const Value: Currency);
@@ -161,6 +217,7 @@ procedure TFrm_PedidoVenda_AdicionarProduto.SetUnitario(const Value: Currency);
 begin
   FUnitario := Value;
   edtUnitario.Text := FormatCurr('#,##0.00',FUnitario);
+  Total := ((FQtde * FUnitario) - FDesconto);
 end;
 
 function TFrm_PedidoVenda_AdicionarProduto.ValidarCampos: Boolean;
