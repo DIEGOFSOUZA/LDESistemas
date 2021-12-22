@@ -3,9 +3,10 @@ unit UFrm_PedidoVenda_AdicionarProduto;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
-  Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, UEDPesquisa;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  UPdr_Child2, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls,
+  UEDPesquisa;
 
 type
   TFrm_PedidoVenda_AdicionarProduto = class(TPdr_Child2)
@@ -72,6 +73,7 @@ implementation
 
 uses
   UConsulta, UDM, u_Mensagem, ACBrValidador, UFuncoes;
+
 
 {$R *.dfm}
 
@@ -142,6 +144,14 @@ begin
     Desconto := 0;
 end;
 
+procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if not CharInSet(Key, [#8, #13, ',', '0'..'9']) then
+    Key := #0;
+end;
+
 procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeExit(Sender: TObject);
 var
   lValor: Extended;
@@ -151,14 +161,6 @@ begin
     Qtde := lValor
   else
     Qtde := 1;
-end;
-
-procedure TFrm_PedidoVenda_AdicionarProduto.edtQtdeKeyPress(Sender: TObject;
-  var Key: Char);
-begin
-  inherited;
-  if not CharInSet(Key, [#8, #13, ',', '0'..'9']) then
-    Key := #0;
 end;
 
 procedure TFrm_PedidoVenda_AdicionarProduto.edtUnitarioExit(Sender: TObject);

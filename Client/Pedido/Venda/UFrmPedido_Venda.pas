@@ -32,7 +32,6 @@ type
     imgCancelar: TImage;
     lblCancelar: TLabel;
     pnlClient: TPanel;
-    pnlClientRight: TPanel;
     pnlClientCenter: TPanel;
     pgc1: TPageControl;
     tsItem: TTabSheet;
@@ -127,6 +126,7 @@ type
     procedure cbbPagtoParcelaEnter(Sender: TObject);
     procedure edtPagtoValorKeyPress(Sender: TObject; var Key: Char);
     procedure actPagtoLimparExecute(Sender: TObject);
+    procedure pgc1Changing(Sender: TObject; var AllowChange: Boolean);
   private
     FIdParcelamento: integer;
     FIdPagamento: integer;
@@ -138,6 +138,7 @@ type
     procedure SetTotalPedido(const Value: Currency);
     procedure SetSaldoAPagar(const Value: Currency);
     procedure GerarDuplicatas(aValor:Currency);
+    procedure LimparCbbs();
   public
     property IdPagamento: integer read FIdPagamento write FIdPagamento;
     property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
@@ -184,7 +185,25 @@ end;
 procedure TFrmPedido_Venda.actItemCriarExecute(Sender: TObject);
 begin
   inherited;
-//
+  if not Assigned(Frm_PedidoVenda_NovoProduto) then
+    Frm_PedidoVenda_NovoProduto := TFrm_PedidoVenda_NovoProduto.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    with Frm_PedidoVenda_NovoProduto do
+    begin
+      Iniciar;
+      ShowModal;
+      if (IdProduto > 0) then
+      begin
+        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, 0, Unidade);
+        TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+      end;
+    end;
+  finally
+    FreeAndNil(Frm_PedidoVenda_NovoProduto);
+    AlphaBlend := False;
+  end;
 end;
 
 procedure TFrmPedido_Venda.actItemExcluirExecute(Sender: TObject);
@@ -217,7 +236,7 @@ begin
   cdsCONTAS_A_RECEBER.DisableControls;
   try
     cdsCONTAS_A_RECEBER.EmptyDataSet;
-
+    SaldoAPagar := FTotalPedio;
   finally
     cdsCONTAS_A_RECEBER.EnableControls;
   end;
@@ -382,14 +401,22 @@ begin
     cdsCONTAS_A_RECEBER.Append;
     cdsCONTAS_A_RECEBER.FieldByName('NDUP').AsInteger := cdsCONTAS_A_RECEBER.RecordCount+1;
     cdsCONTAS_A_RECEBER.FieldByName('VDUP').AsCurrency := lValor;
-    if (I = 1) then
-        cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(Date, DM.dsConsulta.FieldByName('PRIMEIRA_PARC').AsInteger)
-      else
-        cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(lVencto, DM.dsConsulta.FieldByName('PRIMEIRA_PARC').AsInteger);
-      lVencto := cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime;
+    if (i = 1) then
+      cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(Date, DM.dsConsulta.FieldByName('PRIMEIRA_PARC').AsInteger)
+    else
+      cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime := IncDay(lVencto, DM.dsConsulta.FieldByName('INTV_PARCELAS').AsInteger);
+    lVencto := cdsCONTAS_A_RECEBER.FieldByName('DVENC').AsDateTime;
     cdsCONTAS_A_RECEBER.Post;
   end;
   SaldoAPagar := FSaldoAPagar - aValor;
+end;
+
+procedure TFrmPedido_Venda.LimparCbbs;
+begin
+  cbbPagtoForma.Clear;
+  cbbPagtoForma.ItemIndex := -1;
+  cbbPagtoParcela.Clear;
+  cbbPagtoParcela.ItemIndex := -1;
 end;
 
 procedure TFrmPedido_Venda.NovoPedido;
@@ -432,6 +459,14 @@ begin
   end;
 end;
 
+procedure TFrmPedido_Venda.pgc1Changing(Sender: TObject;
+  var AllowChange: Boolean);
+begin
+  inherited;
+  if (pgc1.TabIndex = 1) then
+    LimparCbbs;
+end;
+
 procedure TFrmPedido_Venda.cbbPagtoParcelaChange(Sender: TObject);
 begin
   inherited;
@@ -446,14 +481,14 @@ end;
 procedure TFrmPedido_Venda.SetSaldoAPagar(const Value: Currency);
 begin
   FSaldoAPagar := Value;
-  lblPagtoTotPagar.Caption := FormatCurr('#,##0.00', Value);
-  edtPagtoValor.Text := FormatCurr('#,##0.00', Value);
+  lblPagtoTotPagar.Caption := FormatCurr('##0.00', Value);
+  edtPagtoValor.Text := FormatCurr('##0.00', Value);
 end;
 
 procedure TFrmPedido_Venda.SetTotalPedido(const Value: Currency);
 begin
   FTotalPedio := Value;
-  lblItensSubTotal.Caption := FormatCurr('#,##0.00', Value);
+  lblItensSubTotal.Caption := FormatCurr('##0.00', Value);
   if not cdsCONTAS_A_RECEBER.IsEmpty then
     actPagtoLimpar.Execute;
   SaldoAPagar := Value;

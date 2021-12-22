@@ -107,7 +107,7 @@ inherited Frm_PedidoVenda_AdicionarProduto: TFrm_PedidoVenda_AdicionarProduto
         ParentFont = False
       end
       object lblUnidade: TLabel
-        Left = 520
+        Left = 515
         Top = 23
         Width = 17
         Height = 17

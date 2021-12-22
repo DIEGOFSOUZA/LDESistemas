@@ -697,7 +697,7 @@ begin
       if (I = 1) then
         dsPagar.FieldByName('DVENC').AsDateTime := IncDay(Date, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger)
       else
-        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger);
+        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('INTV_PARCELAS').AsInteger);
       lVencto := dsPagar.FieldByName('DVENC').AsDateTime;
       dsPagar.FieldByName('VDUP').AsCurrency := lVlParcela + lVlCentavos;
       lVlCentavos := 0;

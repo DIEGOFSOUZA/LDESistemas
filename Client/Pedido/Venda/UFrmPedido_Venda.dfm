@@ -1,24 +1,24 @@
 inherited FrmPedido_Venda: TFrmPedido_Venda
   Caption = 'FrmPedido_Venda'
   ClientHeight = 564
-  ClientWidth = 1023
+  ClientWidth = 871
   Visible = False
-  ExplicitWidth = 1023
+  ExplicitWidth = 871
   ExplicitHeight = 564
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
-    Width = 1023
-    ExplicitWidth = 1023
+    Width = 871
+    ExplicitWidth = 871
     inherited lblTitulo: TLabel
-      Width = 998
+      Width = 846
       Caption = '         PEDIDO'
       ExplicitWidth = 998
     end
     inherited pnlBotaoSair: TPanel
-      Left = 998
+      Left = 846
       Visible = False
-      ExplicitLeft = 998
+      ExplicitLeft = 846
       ExplicitTop = 0
       ExplicitHeight = 30
     end
@@ -26,7 +26,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   object pnlFundo: TPanel [1]
     Left = 0
     Top = 30
-    Width = 1023
+    Width = 871
     Height = 534
     Align = alClient
     BevelOuter = bvNone
@@ -36,11 +36,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object pnltop: TPanel
       Left = 0
       Top = 0
-      Width = 1023
+      Width = 871
       Height = 177
       Align = alTop
       TabOrder = 0
-      ExplicitTop = -6
       object Label1: TLabel
         Left = 32
         Top = 11
@@ -273,12 +272,12 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object pnlBotton: TPanel
       Left = 0
       Top = 480
-      Width = 1023
+      Width = 871
       Height = 54
       Align = alBottom
       TabOrder = 2
       object pnlGravar: TPanel
-        Left = 883
+        Left = 747
         Top = 11
         Width = 120
         Height = 32
@@ -338,7 +337,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         end
       end
       object pnlCancelar: TPanel
-        Left = 747
+        Left = 611
         Top = 11
         Width = 100
         Height = 32
@@ -411,24 +410,15 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object pnlClient: TPanel
       Left = 0
       Top = 177
-      Width = 1023
+      Width = 871
       Height = 303
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      object pnlClientRight: TPanel
-        Left = 872
-        Top = 0
-        Width = 151
-        Height = 303
-        Align = alRight
-        BevelOuter = bvNone
-        TabOrder = 1
-      end
       object pnlClientCenter: TPanel
         Left = 0
         Top = 0
-        Width = 872
+        Width = 871
         Height = 303
         Align = alClient
         BevelOuter = bvNone
@@ -436,17 +426,18 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         object pgc1: TPageControl
           Left = 0
           Top = 0
-          Width = 872
+          Width = 871
           Height = 303
-          ActivePage = tsPagamento
+          ActivePage = tsItem
           Align = alClient
           TabOrder = 0
+          OnChanging = pgc1Changing
           object tsItem: TTabSheet
             Caption = '   PRODUTO   '
             object pnlProdutoFundo: TPanel
               Left = 0
               Top = 0
-              Width = 864
+              Width = 863
               Height = 275
               Align = alClient
               Color = 14803681
@@ -455,7 +446,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               object lblTitContato: TLabel
                 Left = 1
                 Top = 1
-                Width = 862
+                Width = 861
                 Height = 20
                 Align = alTop
                 AutoSize = False
@@ -473,11 +464,12 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 OnMouseMove = lblTituloMouseMove
                 ExplicitLeft = 0
                 ExplicitTop = -5
+                ExplicitWidth = 862
               end
               object pnlProdutoTop: TPanel
                 Left = 1
                 Top = 21
-                Width = 862
+                Width = 861
                 Height = 52
                 Align = alTop
                 TabOrder = 0
@@ -527,10 +519,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   ShowCaption = False
                   TabOrder = 1
                   object lblCriarItem: TLabel
-                    Left = 22
-                    Top = 1
-                    Width = 56
-                    Height = 30
+                    Left = 0
+                    Top = 0
+                    Width = 100
+                    Height = 32
+                    Align = alClient
                     Alignment = taCenter
                     Caption = 'CRIAR'#13#10'PRODUTO'
                     Color = 7237230
@@ -543,13 +536,16 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     ParentFont = False
                     Transparent = True
                     Layout = tlCenter
+                    OnClick = actItemCriarExecute
+                    ExplicitWidth = 56
+                    ExplicitHeight = 30
                   end
                 end
               end
               object pnlProdutoBotton: TPanel
                 Left = 1
                 Top = 254
-                Width = 862
+                Width = 861
                 Height = 20
                 Align = alBottom
                 Color = 16764573
@@ -586,7 +582,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               object pnlProdutoClient: TPanel
                 Left = 1
                 Top = 73
-                Width = 862
+                Width = 861
                 Height = 181
                 Align = alClient
                 BevelOuter = bvNone
@@ -594,7 +590,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 object dbgrdItens: TDBGrid
                   Left = 0
                   Top = 0
-                  Width = 862
+                  Width = 861
                   Height = 181
                   Align = alClient
                   DataSource = dsItem
@@ -670,7 +666,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
             object pnlPagtoFundo: TPanel
               Left = 0
               Top = 0
-              Width = 864
+              Width = 863
               Height = 275
               Align = alClient
               Color = 14803681
@@ -843,7 +839,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Font.Style = [fsBold]
                     ParentFont = False
                     TabOrder = 0
-                    Text = 'DINHEIRO'
                     OnChange = cbbPagtoFormaChange
                     OnEnter = cbbPagtoFormaEnter
                   end
@@ -859,7 +854,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Font.Style = [fsBold]
                     ParentFont = False
                     TabOrder = 1
-                    Text = 'A VISTA'
                     OnChange = cbbPagtoParcelaChange
                     OnEnter = cbbPagtoParcelaEnter
                   end
@@ -884,7 +878,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               object pnlPagtoClient: TPanel
                 Left = 186
                 Top = 1
-                Width = 677
+                Width = 676
                 Height = 273
                 Align = alClient
                 BevelOuter = bvNone
@@ -892,7 +886,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 object pnlPagtoClientTop: TPanel
                   Left = 0
                   Top = 0
-                  Width = 677
+                  Width = 676
                   Height = 35
                   Align = alTop
                   TabOrder = 0
@@ -910,22 +904,24 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Font.Name = 'Segoe UI Semibold'
                     Font.Style = [fsBold]
                     ParentFont = False
+                    Visible = False
                   end
                 end
                 object pnlPagtoClientCenter: TPanel
                   Left = 0
                   Top = 35
-                  Width = 677
+                  Width = 676
                   Height = 238
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 1
                   object pnlPagtoClientRight: TPanel
-                    Left = 637
+                    Left = 424
                     Top = 0
-                    Width = 40
+                    Width = 252
                     Height = 238
                     Align = alRight
+                    BevelOuter = bvNone
                     TabOrder = 1
                     object pnlPagtoExcDup: TPanel
                       Left = 4
@@ -957,14 +953,15 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                           60C01D00000CE73E30020C91510000000049454E44AE426082}
                         ShowHint = True
                         Stretch = True
-                        ExplicitLeft = 3
+                        OnClick = actPagtoLimparExecute
+                        ExplicitLeft = 2
                       end
                     end
                   end
                   object dbgrdPagto: TDBGrid
                     Left = 0
                     Top = 0
-                    Width = 637
+                    Width = 424
                     Height = 238
                     Align = alClient
                     DataSource = dsContasAReceber
@@ -1014,7 +1011,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     end
   end
   inherited actlst1: TActionList
-    Left = 944
+    Left = 736
     Top = 88
     object actPedidoSalvar: TAction
       Caption = 'actPedidoSalvar'
