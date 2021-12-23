@@ -34,7 +34,6 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitHeight = 407
     object pnlTop: TPanel
       Left = 0
       Top = 113
@@ -42,7 +41,6 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
       Height = 137
       Align = alTop
       TabOrder = 1
-      ExplicitTop = 96
       object Label4: TLabel
         Left = 29
         Top = 25
@@ -270,7 +268,6 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
       Height = 49
       Align = alBottom
       TabOrder = 3
-      ExplicitTop = 358
       object pnlGravar: TPanel
         Left = 581
         Top = 9
@@ -302,6 +299,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
           Transparent = True
           Layout = tlCenter
           WordWrap = True
+          OnClick = actIncluirPedidoExecute
           ExplicitWidth = 71
           ExplicitHeight = 34
         end
@@ -350,8 +348,6 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 99
-      ExplicitHeight = 259
       object pnlClientBotton: TPanel
         Left = 0
         Top = 217
@@ -362,7 +358,6 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         Color = 16764573
         ParentBackground = False
         TabOrder = 2
-        ExplicitTop = 234
         object Label6: TLabel
           Left = 298
           Top = 4
@@ -455,12 +450,12 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         Align = alRight
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitHeight = 234
         object pnlPagtoExcDup: TPanel
           Left = 4
           Top = 96
           Width = 32
           Height = 32
+          Cursor = crHandPoint
           BevelOuter = bvNone
           Caption = 'pnlAddMovimentacao'
           Color = 7024384
@@ -486,6 +481,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
               60C01D00000CE73E30020C91510000000049454E44AE426082}
             ShowHint = True
             Stretch = True
+            OnClick = actLimparInsumosExecute
             ExplicitLeft = 2
           end
         end
@@ -627,6 +623,10 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
       Caption = 'actAdicionar'
       OnExecute = actAdicionarExecute
     end
+    object actLimparInsumos: TAction
+      Caption = 'actLimparInsumos'
+      OnExecute = actLimparInsumosExecute
+    end
   end
   object cdsProdutoComposicao: TClientDataSet
     Aggregates = <>
@@ -736,7 +736,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     RemoteServer = DM.dspRLer
     AfterInsert = cdsProdutoAfterInsert
     BeforePost = cdsProdutoBeforePost
-    Left = 272
+    Left = 269
     Top = 344
     object cdsProdutoNOME: TStringField
       FieldName = 'NOME'
@@ -746,7 +746,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     object cdsProdutoPRECO_VENDA: TCurrencyField
       FieldName = 'PRECO_VENDA'
       Required = True
-      DisplayFormat = '#,##0.00'
+      DisplayFormat = '##0.00'
       currency = False
     end
     object cdsProdutoCOD_UNIDADE: TIntegerField

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 21/12/2021 13:09:05
+// 23/12/2021 14:31:59
 //
 
 unit UClassDataSnap;
@@ -225,6 +225,7 @@ type
     FsetPedVendaCommand: TDBXCommand;
     FgetPedVendaCommand: TDBXCommand;
     FsetPedidoVendaICommand: TDBXCommand;
+    FsetCriaProdutoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -232,6 +233,7 @@ type
     function setPedVenda(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getPedVenda(BD: string; pID: Integer): OleVariant;
     function setPedidoVendaI(BD: string; aIDPedido: Integer; aPedido: OleVariant; aITens: OleVariant; aReceber: OleVariant): Boolean;
+    function setCriaProduto(BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
   end;
 
   TSMProducaoClient = class(TDSAdminClient)
@@ -1831,6 +1833,22 @@ begin
   Result := FsetPedidoVendaICommand.Parameters[5].Value.GetBoolean;
 end;
 
+function TSM_PedidoClient.setCriaProduto(BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
+begin
+  if FsetCriaProdutoCommand = nil then
+  begin
+    FsetCriaProdutoCommand := FDBXConnection.CreateCommand;
+    FsetCriaProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetCriaProdutoCommand.Text := 'TSM_Pedido.setCriaProduto';
+    FsetCriaProdutoCommand.Prepare;
+  end;
+  FsetCriaProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetCriaProdutoCommand.Parameters[1].Value.AsVariant := aProduto;
+  FsetCriaProdutoCommand.Parameters[2].Value.AsVariant := aProdComposicao;
+  FsetCriaProdutoCommand.ExecuteUpdate;
+  Result := FsetCriaProdutoCommand.Parameters[3].Value.GetInt32;
+end;
+
 constructor TSM_PedidoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1846,6 +1864,7 @@ begin
   FsetPedVendaCommand.DisposeOf;
   FgetPedVendaCommand.DisposeOf;
   FsetPedidoVendaICommand.DisposeOf;
+  FsetCriaProdutoCommand.DisposeOf;
   inherited;
 end;
 

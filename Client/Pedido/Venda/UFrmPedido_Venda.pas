@@ -109,6 +109,7 @@ type
     cdsCONTAS_A_RECEBERDVENC: TDateField;
     dsContasAReceber: TDataSource;
     actPagtoLimpar: TAction;
+    cdsPEDIDO_VENDAUSUARIO: TStringField;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -175,7 +176,6 @@ begin
         TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
       end;
     end;
-
   finally
     FreeAndNil(Frm_PedidoVenda_AdicionarProduto);
     AlphaBlend := False;
@@ -196,7 +196,7 @@ begin
       ShowModal;
       if (IdProduto > 0) then
       begin
-        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, 0, Unidade);
+        AdicioneProduto(IdProduto, Produto, 1, ProdutoUnitario, 0, ProdutoUnidade);
         TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
       end;
     end;
@@ -227,7 +227,10 @@ begin
     if SaldoAPagar < lValor then
       TMensagem.Atencao('Saldo a pagar é menor que valor informado.')
     else
+    begin
       GerarDuplicatas(lValor);
+      LimparCbbs;
+    end;
 end;
 
 procedure TFrmPedido_Venda.actPagtoLimparExecute(Sender: TObject);
@@ -268,7 +271,7 @@ begin
   begin
     cdsPEDIDO_VENDA_ITEM.Edit;
     cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat := cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat + aQtde;
-    cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE_BAIXA').AsFloat := cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat;
+    cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE_BAIXA').AsFloat := 0;
   end
   else
   begin
@@ -280,7 +283,7 @@ begin
     cdsPEDIDO_VENDA_ITEM.FieldByName('VUNIT').AsCurrency := aUnit;
     cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat := aQtde;
     cdsPEDIDO_VENDA_ITEM.FieldByName('UNIDADE').AsString := aUND;
-    cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE_BAIXA').AsFloat := aQtde;
+    cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE_BAIXA').AsFloat := 0;
   end;
   cdsPEDIDO_VENDA_ITEM.FieldByName('VDESC').AsCurrency := aDesc;
   cdsPEDIDO_VENDA_ITEM.FieldByName('SUBTOTAL').AsCurrency := RoundABNT((cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat * aUnit), 2);
@@ -301,6 +304,7 @@ begin
   cdsPEDIDO_VENDA.FieldByName('EMISSAO').AsDateTime := Date;
   cdsPEDIDO_VENDA.FieldByName('ENTRADA').AsDateTime := Date;
   cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + 7;
+  cdsPEDIDO_VENDA.FieldByName('USUARIO').AsString := DM.Usuario.Login;
 end;
 
 procedure TFrmPedido_Venda.dbgrdItensDrawColumnCell(Sender: TObject;

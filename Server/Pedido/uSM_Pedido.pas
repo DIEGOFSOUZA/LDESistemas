@@ -75,6 +75,7 @@ type
     function getPedVenda(const BD: string; pID: integer): OleVariant;
 
     function setPedidoVendaI(const BD: string; aIDPedido: Integer; aPedido: OleVariant; aITens: OleVariant; aReceber: OleVariant): Boolean;
+    function setCriaProduto(const BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
   end;
 
 implementation
@@ -103,11 +104,70 @@ begin
 
 end;
 
+function TSM_Pedido.setCriaProduto(const BD: string; aProduto,
+  aProdComposicao: OleVariant): Integer;
+const
+  INS_PRODUTO = 'insert into PRODUTO (NOME, PRECO_VENDA, COD_UNIDADE, QTDE_ESTOQUE, PRECO_CUSTO, TIPO_PRODUTO, DT_CADASTRO,'+
+                '                     SITUACAO, ULTIMA_ALTERACAO, CALC_CUSTO_COMPOSICAO) '+
+                'values (:NOME, :PRECO_VENDA, :COD_UNIDADE, :QTDE_ESTOQUE, :PRECO_CUSTO, :TIPO_PRODUTO, :DT_CADASTRO, :SITUACAO,'+
+                '        :ULTIMA_ALTERACAO, :CALC_CUSTO_COMPOSICAO) '+
+                'returning CODIGO '+
+                '{into :CODIGO}';
+
+  INS_PRODCOMPOSICAO = 'insert into PRODUTO_COMPOSICAO (ID_PRODUTO, ID_MATPRIMA, QTDE, CUSTO_UNIT, CUSTO_TOTAL) '+
+                       'values (:ID_PRODUTO, :ID_MATPRIMA, :QTDE, :CUSTO_UNIT, :CUSTO_TOTAL)';
+var
+  DM: TServerDM;
+  lIDProduto: Integer;
+begin
+  Result := -1;
+  DM := TServerDM.Create(BD);
+  try
+    try
+      getClientDataSet(aProduto);
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(INS_PRODUTO);
+      DM.Gravar.ParamByName('NOME').AsString := cdsLER.FieldByName('NOME').AsString;
+      DM.Gravar.ParamByName('PRECO_VENDA').AsCurrency := cdsLER.FieldByName('PRECO_VENDA').AsCurrency;
+      DM.Gravar.ParamByName('COD_UNIDADE').AsInteger := cdsLER.FieldByName('COD_UNIDADE').AsInteger;
+      DM.Gravar.ParamByName('QTDE_ESTOQUE').AsFloat := 0;
+      DM.Gravar.ParamByName('PRECO_CUSTO').AsCurrency := cdsLER.FieldByName('PRECO_CUSTO').AsCurrency;
+      DM.Gravar.ParamByName('TIPO_PRODUTO').AsString := 'PA';
+      DM.Gravar.ParamByName('DT_CADASTRO').AsDate := Date;
+      DM.Gravar.ParamByName('SITUACAO').AsString := 'ATIVO';
+      DM.Gravar.ParamByName('ULTIMA_ALTERACAO').AsString := cdsLER.FieldByName('ULTIMA_ALTERACAO').AsString;
+      DM.Gravar.ParamByName('CALC_CUSTO_COMPOSICAO').AsString := 'S';
+      DM.Gravar.ExecSQL;
+      lIDProduto := DM.Gravar.Params[10].Value;
+
+      getClientDataSet(aProdComposicao);
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(INS_PRODCOMPOSICAO);
+      cdsLER.First;
+      while not cdsLER.Eof do
+      begin
+        DM.Gravar.ParamByName('ID_PRODUTO').AsInteger := lIDProduto;
+        DM.Gravar.ParamByName('ID_MATPRIMA').AsInteger := cdsLER.FieldByName('ID_MATPRIMA').AsInteger;
+        DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
+        DM.Gravar.ParamByName('CUSTO_UNIT').AsCurrency := cdsLER.FieldByName('CUSTO_UNIT').AsCurrency;
+        DM.Gravar.ParamByName('CUSTO_TOTAL').AsCurrency := cdsLER.FieldByName('CUSTO_TOTAL').AsCurrency;
+        DM.Gravar.ExecSQL;
+        cdsLER.Next;
+      end;
+      Result := lIDProduto;
+    except
+      Result := -1;
+    end;
+  finally
+    FreeAndNil(DM);
+  end;
+end;
+
 function TSM_Pedido.setPedidoVendaI(const BD: string; aIDPedido: Integer;
   aPedido, aITens, aReceber: OleVariant): Boolean;
 const
-  INS_PEDIDO  = 'insert into PEDIDO_VENDA (ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO) '+
-                'values (:ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO) '+
+  INS_PEDIDO  = 'insert into PEDIDO_VENDA (ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO, USUARIO) '+
+                'values (:ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO, :USUARIO) '+
                 'returning ID '+
                 '{into :ID}';
   INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_BAIXA, VDESC, SUBTOTAL, TOTAL) '+
@@ -128,8 +188,9 @@ begin
       DM.Gravar.ParamByName('ID_CLIENTE').AsInteger := cdsLER.FieldByName('ID_CLIENTE').AsInteger;
       DM.Gravar.ParamByName('ID_VENDEDOR').AsInteger := cdsLER.FieldByName('ID_VENDEDOR').AsInteger;
       DM.Gravar.ParamByName('OBSERVACAO').AsString := cdsLER.FieldByName('OBSERVACAO').AsString;
+      DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;
       DM.Gravar.ExecSQL;
-      lIDPedido := DM.Gravar.Params[4].Value;
+      lIDPedido := DM.Gravar.Params[5].Value;
 
       getClientDataSet(aITens);
       DM.Gravar.SQL.Clear;

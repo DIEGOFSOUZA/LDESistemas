@@ -118,8 +118,6 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           Left = 0
           Top = 0
           Caption = 'cliente'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object edpesCliente: TEdPesquisa
             Left = 11
             Top = 25
@@ -158,8 +156,6 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           Left = 0
           Top = 0
           Caption = 'vendedor'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object edpesVendedor: TEdPesquisa
             Left = 5
             Top = 25
@@ -198,8 +194,6 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           Left = 0
           Top = 0
           Caption = 'status'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object rgStatus: TRadioGroup
             Left = 0
             Top = 0
@@ -208,10 +202,10 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
             Align = alClient
             Columns = 2
             Items.Strings = (
-              '1- DIGITADO'
-              '2 - EM PRODU'#199#194'O'
-              '3 - ENVIADO'
-              '4 - CONCLU'#205'DO')
+              'DIGITADO'
+              'APROVADO'
+              'PRODU'#199#195'O'
+              'CONCLU'#205'DO')
             TabOrder = 0
           end
         end
@@ -219,8 +213,6 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           Left = 0
           Top = 0
           Caption = 'numero'
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Label3: TLabel
             Left = 73
             Top = 26
@@ -590,6 +582,10 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
     object actAvancaStatus: TAction
       Caption = 'actAvancaStatus'
       OnExecute = actAvancaStatusExecute
+    end
+    object actPesquisar: TAction
+      Caption = 'actPesquisar'
+      OnExecute = actPesquisarExecute
     end
   end
   object cdsPedidos: TClientDataSet

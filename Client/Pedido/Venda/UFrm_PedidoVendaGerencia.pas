@@ -50,6 +50,7 @@ type
     cdsPedidosVALOR: TCurrencyField;
     actNovoPedido: TAction;
     actAvancaStatus: TAction;
+    actPesquisar: TAction;
     procedure dbgrdPedidosCellClick(Column: TColumn);
     procedure dbgrdPedidosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -57,6 +58,7 @@ type
     procedure dbgrdPedidosTitleClick(Column: TColumn);
     procedure actNovoPedidoExecute(Sender: TObject);
     procedure actAvancaStatusExecute(Sender: TObject);
+    procedure actPesquisarExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -93,6 +95,34 @@ begin
     FreeAndNil(FrmPedido_Venda);
     AlphaBlend := False;
   end;
+end;
+
+procedure TFrm_PedidoVendaGerencia.actPesquisarExecute(Sender: TObject);
+var
+  SQL: string;
+begin
+  inherited;
+  SQL := 'select cast(0 as integer) SELECAO, P.ID ID_PEDIDO, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO CLIENTE, R.NOME VENDEDOR, P.STATUS, sum(pi.TOTAL) VALOR '+
+         'from PEDIDO_VENDA P '+
+         'left join CLIENTE C on (C.CODIGO = P.ID_CLIENTE) '+
+         'left join REPRESENTANTE R on (R.CODIGO = P.ID_VENDEDOR) '+
+         'left join PEDIDO_VENDA_ITEM pi on (pi.ID_PEDIDO = P.ID) ';
+  case rgTipoPesquisa.ItemIndex of
+    0:
+      SQL := SQL + 'where p.emissao between '+QuotedStr(FormatDateTime('dd.mm.yyyy',dtp1.Date))+
+                                      ' and '+QuotedStr(FormatDateTime('dd.mm.yyyy',dtp2.Date));
+    1:
+      SQL := SQL + 'where p.id_cliente = ' + edpesCliente.Campo.Text;
+    2:
+      SQL := SQL + 'where p.id_vendedor = ' + edpesVendedor.Campo.Text;
+    3:
+      SQL := SQL + 'where p.status = ' + rgStatus.Items[rgStatus.ItemIndex];
+    4:
+      SQL := SQL + 'where p.id = ' + edtNumPed.Text;
+  end;
+  SQL := SQL + 'group by P.ID, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO, R.NOME, P.STATUS';
+
+  Parei aqui
 end;
 
 procedure TFrm_PedidoVendaGerencia.dbgrdPedidosCellClick(Column: TColumn);

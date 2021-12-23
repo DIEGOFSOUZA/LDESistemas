@@ -1198,6 +1198,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       FieldName = 'VENDEDOR'
       Size = 45
     end
+    object cdsPEDIDO_VENDAUSUARIO: TStringField
+      FieldName = 'USUARIO'
+      Size = 40
+    end
   end
   object dsPEDIDO_VENDA: TDataSource
     DataSet = cdsPEDIDO_VENDA
