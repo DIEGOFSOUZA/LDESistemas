@@ -34,5 +34,5 @@ requires
 
 contains
   scExcelExport in 'scExcelExport.pas';
-  
+
 end.

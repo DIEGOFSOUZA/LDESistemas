@@ -59,6 +59,10 @@ type
     procedure actNovoPedidoExecute(Sender: TObject);
     procedure actAvancaStatusExecute(Sender: TObject);
     procedure actPesquisarExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure rgTipoPesquisaClick(Sender: TObject);
+    procedure edpesClientePesquisa(Sender: TObject; var Retorno: string);
+    procedure edpesVendedorPesquisa(Sender: TObject; var Retorno: string);
   private
     { Private declarations }
   public
@@ -71,7 +75,7 @@ var
 implementation
 
 uses
-  System.Math, UFrmPedido_Venda;
+  System.Math, UFrmPedido_Venda, UDM, u_Mensagem, UConsulta, UMakeReadWrite;
 
 {$R *.dfm}
 
@@ -91,6 +95,7 @@ begin
   try
     FrmPedido_Venda.NovoPedido;
     FrmPedido_Venda.ShowModal;
+    actPesquisar.Execute;
   finally
     FreeAndNil(FrmPedido_Venda);
     AlphaBlend := False;
@@ -102,7 +107,9 @@ var
   SQL: string;
 begin
   inherited;
-  SQL := 'select cast(0 as integer) SELECAO, P.ID ID_PEDIDO, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO CLIENTE, R.NOME VENDEDOR, P.STATUS, sum(pi.TOTAL) VALOR '+
+  SQL := 'select cast(0 as integer) SELECAO, P.ID ID_PEDIDO, P.EMISSAO,'+
+         'P.ENTREGA, C.NOME_RAZAO CLIENTE, R.NOME VENDEDOR, P.STATUS,'+
+         'cast(sum(pi.TOTAL)as double precision) VALOR '+
          'from PEDIDO_VENDA P '+
          'left join CLIENTE C on (C.CODIGO = P.ID_CLIENTE) '+
          'left join REPRESENTANTE R on (R.CODIGO = P.ID_VENDEDOR) '+
@@ -116,13 +123,21 @@ begin
     2:
       SQL := SQL + 'where p.id_vendedor = ' + edpesVendedor.Campo.Text;
     3:
-      SQL := SQL + 'where p.status = ' + rgStatus.Items[rgStatus.ItemIndex];
+      SQL := SQL + 'where p.status = ' + QuotedStr(rgStatus.Items[rgStatus.ItemIndex]);
     4:
       SQL := SQL + 'where p.id = ' + edtNumPed.Text;
   end;
-  SQL := SQL + 'group by P.ID, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO, R.NOME, P.STATUS';
+  SQL := SQL + ' group by P.ID, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO, R.NOME, P.STATUS';
 
-  Parei aqui
+  try
+    cdsPedidos.Close;
+    cdsPedidos.Data := DM.LerDataSet(SQL);
+    MakeReadWrite(cdsPedidosSELECAO);
+    if cdsPedidos.IsEmpty then
+      TMensagem.Informacao('Nenhum pedido encontrado.');
+  except
+    TMensagem.Informacao('Pedido(s) não encontrado(s).');
+  end;
 end;
 
 procedure TFrm_PedidoVendaGerencia.dbgrdPedidosCellClick(Column: TColumn);
@@ -182,6 +197,35 @@ procedure TFrm_PedidoVendaGerencia.dbgrdPedidosTitleClick(Column: TColumn);
 begin
   inherited;
   cdsPedidos.IndexFieldNames := Column.FieldName ;
+end;
+
+procedure TFrm_PedidoVendaGerencia.edpesClientePesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.Cliente.ToString;
+end;
+
+procedure TFrm_PedidoVendaGerencia.edpesVendedorPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.Representante.ToString;
+end;
+
+procedure TFrm_PedidoVendaGerencia.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dtp1.Date := Date;
+  dtp2.Date := Date;
+  rgTipoPesquisa.ItemIndex := 0;
+  nbPesquisa.PageIndex := 0;
+end;
+
+procedure TFrm_PedidoVendaGerencia.rgTipoPesquisaClick(Sender: TObject);
+begin
+  inherited;
+  nbPesquisa.PageIndex := rgTipoPesquisa.ItemIndex;
 end;
 
 end.

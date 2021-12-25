@@ -10,7 +10,7 @@ type
     Descricao: string;
     cPreco: Currency;
     sUM, sUM_Conv: string;
-    PrecoFragmentado: Currency;
+    PrecoCusto: Currency;
   end;
 
 type
@@ -1171,7 +1171,7 @@ begin
                   '   else ''Ambos'' '+
                   'end tipo,'+
                   'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA, b.SIGLA, '''') CONVERSAO,'+
-                  'coalesce(a.CONV_PRECO,0) CONV_PRECO '+
+                  'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO '+
                   'from PRODUTO a ' +
                   'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
                   'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
@@ -1238,11 +1238,11 @@ begin
   mCampos[6].Pesquisa := False;
   mCampos[6].Retorno := True;
 
-  mCampos[7].Descricao := 'Preço Fragmentado';
+  mCampos[7].Descricao := 'Custo (R$)';
   mCampos[7].Mascara := '#,##0.00';
   mCampos[7].Mostrar := False;
-  mCampos[7].Nome := 'CONV_PRECO';
-  mCampos[7].NomeSQL := 'a.CONV_PRECO';
+  mCampos[7].Nome := 'PRECO_CUSTO';
+  mCampos[7].NomeSQL := 'a.PRECO_CUSTO';
   mCampos[7].Pesquisa := False;
   mCampos[7].Retorno := True;
 
@@ -1253,7 +1253,7 @@ begin
     Result.cPreco := StrToCurrDef(Aux.Retorno.Values['preco_venda'], 0);
     Result.sUM := Aux.Retorno.Values['UM'];
     Result.sUM_Conv := Aux.Retorno.Values['CONVERSAO'];
-    Result.PrecoFragmentado := StrToCurr(Aux.Retorno.Values['CONV_PRECO']);
+    Result.PrecoCusto := StrToCurr(Aux.Retorno.Values['PRECO_CUSTO']);
     Result.Descricao := Aux.Retorno.Values['nome'];
   finally
     FreeAndNil(Aux);

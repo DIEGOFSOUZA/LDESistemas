@@ -293,7 +293,7 @@ begin
       IdInsumo := StrToInt(edpesMatPrima.Campo.Text);
       Insumo := DESCRI;
       Unidade := UND;
-      Unitario := PRECO_FRAGMENTADO;
+      Unitario := PRECO_CUSTO;
     end;
     Qtde := 1;
     Total := (FQtde * FUnitario);
@@ -313,8 +313,8 @@ begin
       IdInsumo := aRet.iCodigo;
       Unidade := aRet.sUM_Conv;
       Qtde := 1;
-      Unitario := aRet.PrecoFragmentado;
-      Total := aRet.PrecoFragmentado;
+      Unitario := aRet.PrecoCusto;
+      Total := aRet.PrecoCusto;
       Insumo := aRet.Descricao;
     end;
   finally

@@ -27,7 +27,7 @@ type
     DESCRI: string;
     UND: string;
     PRECO: Currency;
-    PRECO_FRAGMENTADO: Currency;
+    PRECO_CUSTO: Currency;
   end;
 
 var
@@ -1142,7 +1142,7 @@ end;
 function DadosProduto(aCodigo:integer): TDadosProduto;
 const
   SQL = 'select a.NOME, a.PRECO_VENDA,coalesce(c.SIGLA, b.SIGLA, '''') UM,'+
-        'coalesce(a.CONV_PRECO,0) CONV_PRECO '+
+        'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO '+
         'from PRODUTO a '+
         'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
         'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) '+
@@ -1151,7 +1151,7 @@ begin
   Result.DESCRI := '';
   Result.UND := '';
   Result.PRECO := 0;
-  Result.PRECO_FRAGMENTADO := 0;
+  Result.PRECO_CUSTO := 0;
 
   try
     DM.dsConsulta.Close;
@@ -1161,7 +1161,7 @@ begin
       Result.DESCRI := DM.dsConsulta.FieldByName('NOME').AsString;
       Result.UND := DM.dsConsulta.FieldByName('UM').AsString;
       Result.PRECO := DM.dsConsulta.FieldByName('PRECO_VENDA').AsCurrency;
-      Result.PRECO_FRAGMENTADO := DM.dsConsulta.FieldByName('CONV_PRECO').AsCurrency;
+      Result.PRECO_CUSTO := DM.dsConsulta.FieldByName('PRECO_CUSTO').AsCurrency;
     end;
   except
 

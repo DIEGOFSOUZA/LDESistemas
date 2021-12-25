@@ -2,6 +2,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
   Caption = 'Frm_PedidoVendaGerencia'
   ClientHeight = 593
   ClientWidth = 1092
+  OnCreate = FormCreate
   ExplicitWidth = 1092
   ExplicitHeight = 593
   PixelsPerInch = 96
@@ -45,6 +46,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         Height = 71
         Align = alLeft
         Color = clWhite
+        PageIndex = 2
         ParentColor = False
         TabOrder = 1
         object TPage
@@ -124,6 +126,11 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
             Width = 376
             Height = 21
             PermitirBranco = Sim
+            ConsultaTabela.Tabela = 'CLIENTE'
+            ConsultaTabela.Pesquisa = 'CODIGO'
+            ConsultaTabela.Mostrar = 'NOME_RAZAO'
+            ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+            OnPesquisa = edpesClientePesquisa
             Titulo.Left = 0
             Titulo.Top = 3
             Titulo.Width = 41
@@ -162,6 +169,11 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
             Width = 389
             Height = 21
             PermitirBranco = Sim
+            ConsultaTabela.Tabela = 'REPRESENTANTE'
+            ConsultaTabela.Pesquisa = 'CODIGO'
+            ConsultaTabela.Mostrar = 'NOME'
+            ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+            OnPesquisa = edpesVendedorPesquisa
             Titulo.Left = 0
             Titulo.Top = 3
             Titulo.Width = 54
@@ -247,12 +259,14 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         Top = 21
         Width = 148
         Height = 32
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
         TabOrder = 2
+        OnClick = actPesquisarExecute
         object imgConsDup: TImage
           Left = 3
           Top = 0
@@ -283,6 +297,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
             8E6404D2403CB51B3F32008528FF3BEC0501C8F4141CE00F8253F821C29AFC90
             0000000049454E44AE426082}
           Stretch = True
+          OnClick = actPesquisarExecute
         end
         object lblConsDup: TLabel
           Left = 41
@@ -300,6 +315,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           ParentFont = False
           Transparent = True
           Layout = tlCenter
+          OnClick = actPesquisarExecute
         end
       end
       object rgTipoPesquisa: TRadioGroup
@@ -317,6 +333,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           'STATUS'
           'N'#218'MERO')
         TabOrder = 0
+        OnClick = rgTipoPesquisaClick
       end
     end
     object pnlRight: TPanel
@@ -532,7 +549,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           item
             Expanded = False
             FieldName = 'CLIENTE'
-            Width = 300
+            Width = 220
             Visible = True
           end
           item
@@ -553,7 +570,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           item
             Expanded = False
             FieldName = 'VENDEDOR'
-            Width = 150
+            Width = 220
             Visible = True
           end>
       end
@@ -569,6 +586,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         Font.Style = []
         ParentFont = False
         TabOrder = 1
+        Visible = False
       end
     end
   end
@@ -585,6 +603,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
     end
     object actPesquisar: TAction
       Caption = 'actPesquisar'
+      ShortCut = 113
       OnExecute = actPesquisarExecute
     end
   end
