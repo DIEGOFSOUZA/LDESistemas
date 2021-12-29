@@ -265,132 +265,127 @@ begin
   end;
 end;
 
-procedure TServerDM.GravarTabelaSimples(pAutoTransacao : boolean; Tabela, pCampos : string;
-  pDados: OleVariant; pValorChave, pPreencherCampo : Array of TCampoValor;
-  pUsarChavePKinterna : boolean) ;
-var Aux : TClientDataSet ;
-    Campos, ChavePrimaria : TStringList ;
-    ContaChave : integer ;
+procedure TServerDM.GravarTabelaSimples(pAutoTransacao: boolean; Tabela, pCampos: string; pDados: OleVariant; pValorChave, pPreencherCampo: array of TCampoValor; pUsarChavePKinterna: boolean);
+var
+  Aux: TClientDataSet;
+  Campos, ChavePrimaria: TStringList;
+  ContaChave: integer;
 
-  procedure PreencheCampo(VerificaAlteracao : boolean; pPreencherCampo : Array of TCampoValor ) ;
-  var x : integer ;
-      cp : string ;
+  procedure PreencheCampo(VerificaAlteracao: boolean; pPreencherCampo: array of TCampoValor);
+  var
+    x: integer;
+    cp: string;
   begin
-    for x := 0 to Campos.Count -1 do
+    for x := 0 to Campos.Count - 1 do
     begin
-      cp := Campos.Strings[x] ;
+      cp := Campos.Strings[x];
 
       if Aux.Fields.FindField(cp) = nil then
-        Continue ;
+        Continue;
 
       if not VerificaAlteracao then
-        begin
-          Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType ;
-          Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value ;
-        end
+      begin
+        Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType;
+        Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value;
+      end
       else
+      begin
+        if Aux.FieldByName(cp).IsBlob then
         begin
-          if Aux.FieldByName(cp).IsBlob then
-            begin
-              if not Aux.FieldByName(cp).IsNull then
-              begin
-                Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType ;
-                Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value ;
-              end;
-            end
-          else
-            begin
-              if CampoModificado(Aux.FieldByName(cp)) then
-              begin
-                Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType ;
-                Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value ;
-              end;
-            end;
+          if not Aux.FieldByName(cp).IsNull then
+          begin
+            Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType;
+            Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value;
+          end;
+        end
+        else
+        begin
+          if CampoModificado(Aux.FieldByName(cp)) then
+          begin
+            Gravar.ParamByName(cp).DataType := Aux.FieldByName(cp).DataType;
+            Gravar.ParamByName(cp).Value := Aux.FieldByName(cp).Value;
+          end;
         end;
+      end;
     end;
-    for x := 0 to Length(pPreencherCampo)-1 do
-      Gravar.ParamByName(pPreencherCampo[x].Campo).AsString := pPreencherCampo[x].Valor ;
+    for x := 0 to Length(pPreencherCampo) - 1 do
+      Gravar.ParamByName(pPreencherCampo[x].Campo).AsString := pPreencherCampo[x].Valor;
   end;
 
-  procedure PreencheChavePrimaria() ;
-  var x : integer ;
+  procedure PreencheChavePrimaria();
+  var
+    x: integer;
   begin
-    for x := 0 to ChavePrimaria.Count -1 do
+    for x := 0 to ChavePrimaria.Count - 1 do
     begin
-      Gravar.ParamByName('pk_' +ChavePrimaria.Strings[x]).Value :=
-                    Aux.FieldByName(ChavePrimaria.Strings[x]).Value ;
+      Gravar.ParamByName('pk_' + ChavePrimaria.Strings[x]).Value := Aux.FieldByName(ChavePrimaria.Strings[x]).Value;
     end;
   end;
 
 begin
-  Campos        := TStringList.Create ;
-  ChavePrimaria := TStringList.Create ;
-  Aux           := TClientDataSet.Create(nil);
+  Campos := TStringList.Create;
+  ChavePrimaria := TStringList.Create;
+  Aux := TClientDataSet.Create(nil);
   try
-    Aux.Data := pDados ;
+    Aux.Data := pDados;
 
-    Campos.Delimiter := ',' ;
-    Campos.DelimitedText := pCampos ;
+    Campos.Delimiter := ',';
+    Campos.DelimitedText := pCampos;
 
-    for ContaChave := 0 to Length(pValorChave)-1 do
-       ChavePrimaria.Add( pValorChave[ContaChave].Campo ) ;
+    for ContaChave := 0 to Length(pValorChave) - 1 do
+      ChavePrimaria.Add(pValorChave[ContaChave].Campo);
 
     try
       if pAutoTransacao then
         if not TranGravacao.Active then
-          StartTransaction ;
+          StartTransaction;
 
       while not Aux.Eof do
       begin
-
         case Aux.UpdateStatus of
           usUnmodified:
-                       begin
-                          MontaUpDate(Tabela,pCampos,ChavePrimaria);
-                          PreencheCampo(False,[]) ;
-                          PreencheChavePrimaria() ;
-                          Aux.Next ;
-                          Continue ;
-                       end ;
-            usModified:
-                       begin
-                          PreencheCampo(True,pPreencherCampo) ;
-                       end ;
-
-            usInserted:
-                       begin
-                          MontaInsert(Tabela,pCampos);
-                          PreencheCampo(False,pPreencherCampo) ;
-                          if pUsarChavePKinterna then
-                          begin
-                            for ContaChave := 0 to Length(pValorChave)-1 do
-                              Gravar.ParamByName(pValorChave[ContaChave].Campo).AsString :=
-                                  pValorChave[ContaChave].Valor ;
-                          end ;
-                       end ;
-
-             usDeleted:
-                      begin // proteção contra exclusão da tabela inteira
-                        if ChavePrimaria.Count = 0 then
-                          raise Exception.Create('Erro na exclusão... não foi achado o registro a excluir ('+Tabela+')');
-                        MontaDelete(Tabela,ChavePrimaria);
-                        PreencheChavePrimaria() ;
-                      end ;
-        end ;
-        Gravar.ExecSQL ;
-        Aux.Next ;
+            begin
+              MontaUpDate(Tabela, pCampos, ChavePrimaria);
+              PreencheCampo(False, []);
+              PreencheChavePrimaria();
+              Aux.Next;
+              Continue;
+            end;
+          usModified:
+            begin
+              PreencheCampo(True, pPreencherCampo);
+            end;
+          usInserted:
+            begin
+              MontaInsert(Tabela, pCampos);
+              PreencheCampo(False, pPreencherCampo);
+              if pUsarChavePKinterna then
+              begin
+                for ContaChave := 0 to Length(pValorChave) - 1 do
+                  Gravar.ParamByName(pValorChave[ContaChave].Campo).AsString := pValorChave[ContaChave].Valor;
+              end;
+            end;
+          usDeleted:
+            begin // proteção contra exclusão da tabela inteira
+              if ChavePrimaria.Count = 0 then
+                raise Exception.Create('Erro na exclusão... não foi achado o registro a excluir (' + Tabela + ')');
+              MontaDelete(Tabela, ChavePrimaria);
+              PreencheChavePrimaria();
+            end;
+        end;
+        Gravar.ExecSQL;
+        Aux.Next;
       end;
       if pAutoTransacao then
-        Commit ;
-
-    except on E: Exception do
+        Commit;
+    except
+      on E: Exception do
       begin
         if pAutoTransacao then
-          Rollback ;
+          Rollback;
         raise Exception.Create(e.Message);
       end;
     end;
-
   finally
     FreeAndNil(Aux);
     FreeAndNil(Campos);

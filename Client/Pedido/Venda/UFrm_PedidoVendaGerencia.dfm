@@ -348,6 +348,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         Top = 21
         Width = 148
         Height = 32
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -414,9 +415,10 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
       end
       object pnlAvancaStatus: TPanel
         Left = 19
-        Top = 85
+        Top = 83
         Width = 148
         Height = 32
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -484,6 +486,61 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
           ExplicitHeight = 15
         end
       end
+      object pnlExcluirPedido: TPanel
+        Left = 19
+        Top = 145
+        Width = 148
+        Height = 32
+        Cursor = crHandPoint
+        BevelOuter = bvNone
+        Caption = 'pnlAddMovimentacao'
+        Color = 7024384
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 2
+        OnClick = actExcluirPedidoExecute
+        object imgExcluirPedido: TImage
+          Left = 0
+          Top = 0
+          Width = 32
+          Height = 32
+          Align = alLeft
+          Picture.Data = {
+            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+            00200806000000737A7AF400000006624B474400FF00FF00FFA0BDA793000000
+            A44944415478DA63641860C038EA8021E780FFFFFF4B00A97D40AC8926751D88
+            9D1819195F50C501408BFE53D5A740404D07A0F8164FA890EF006447E0D24C08
+            10A37FD40143CB0194F2471D30EA8051078C3A60D401143B805430EA006A38E0
+            29909202621BA0194749B4DC06481D06E2A740BD32E43AA01D485590E37B24D0
+            06744035B90E6003528D401C070D09520028F41682F4031DF08B2C07D0038C3A
+            60C01D00000CE73E30020C91510000000049454E44AE426082}
+          Stretch = True
+          OnClick = actExcluirPedidoExecute
+          ExplicitLeft = 3
+        end
+        object lblExcluirPedido: TLabel
+          Left = 32
+          Top = 0
+          Width = 116
+          Height = 32
+          Align = alClient
+          Alignment = taCenter
+          Caption = 'EXCLUIR PEDIDO'
+          Color = 7237230
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+          Transparent = True
+          Layout = tlCenter
+          OnClick = actExcluirPedidoExecute
+          ExplicitWidth = 95
+          ExplicitHeight = 15
+        end
+      end
     end
     object pnlClient: TPanel
       Left = 0
@@ -525,6 +582,7 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         TitleFont.Style = []
         OnCellClick = dbgrdPedidosCellClick
         OnDrawColumnCell = dbgrdPedidosDrawColumnCell
+        OnDblClick = dbgrdPedidosDblClick
         OnKeyPress = dbgrdPedidosKeyPress
         OnTitleClick = dbgrdPedidosTitleClick
         Columns = <
@@ -605,6 +663,14 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
       Caption = 'actPesquisar'
       ShortCut = 113
       OnExecute = actPesquisarExecute
+    end
+    object actExcluirPedido: TAction
+      Caption = 'actExcluirPedido'
+      OnExecute = actExcluirPedidoExecute
+    end
+    object actEditarPedido: TAction
+      Caption = 'actEditarPedido'
+      OnExecute = actEditarPedidoExecute
     end
   end
   object cdsPedidos: TClientDataSet

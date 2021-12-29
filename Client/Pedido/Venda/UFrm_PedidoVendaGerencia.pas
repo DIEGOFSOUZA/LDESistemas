@@ -51,6 +51,11 @@ type
     actNovoPedido: TAction;
     actAvancaStatus: TAction;
     actPesquisar: TAction;
+    actExcluirPedido: TAction;
+    pnlExcluirPedido: TPanel;
+    imgExcluirPedido: TImage;
+    lblExcluirPedido: TLabel;
+    actEditarPedido: TAction;
     procedure dbgrdPedidosCellClick(Column: TColumn);
     procedure dbgrdPedidosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -63,8 +68,13 @@ type
     procedure rgTipoPesquisaClick(Sender: TObject);
     procedure edpesClientePesquisa(Sender: TObject; var Retorno: string);
     procedure edpesVendedorPesquisa(Sender: TObject; var Retorno: string);
+    procedure actExcluirPedidoExecute(Sender: TObject);
+    procedure actEditarPedidoExecute(Sender: TObject);
+    procedure dbgrdPedidosDblClick(Sender: TObject);
   private
-    { Private declarations }
+    procedure PedidosAvancaStatus();
+    function AvancaStatus(aStatus: string): string;
+    procedure ExcluirPedidos();
   public
     { Public declarations }
   end;
@@ -75,14 +85,25 @@ var
 implementation
 
 uses
-  System.Math, UFrmPedido_Venda, UDM, u_Mensagem, UConsulta, UMakeReadWrite;
+  System.Math, UFrmPedido_Venda, UDM, u_Mensagem, UConsulta, UMakeReadWrite,
+  System.StrUtils;
+
 
 {$R *.dfm}
 
 procedure TFrm_PedidoVendaGerencia.actAvancaStatusExecute(Sender: TObject);
 begin
   inherited;
-//
+  if not cdsPedidos.IsEmpty then
+    PedidosAvancaStatus;
+end;
+
+procedure TFrm_PedidoVendaGerencia.actExcluirPedidoExecute(Sender: TObject);
+begin
+  inherited;
+  if not cdsPedidos.IsEmpty then
+    if TMensagem.Pergunta('Confirma a exclusão do(s) Pedido(s) marcados?') then
+      ExcluirPedidos;
 end;
 
 procedure TFrm_PedidoVendaGerencia.actNovoPedidoExecute(Sender: TObject);
@@ -94,6 +115,23 @@ begin
   AlphaBlendValue := 128;
   try
     FrmPedido_Venda.NovoPedido;
+    FrmPedido_Venda.ShowModal;
+    actPesquisar.Execute;
+  finally
+    FreeAndNil(FrmPedido_Venda);
+    AlphaBlend := False;
+  end;
+end;
+
+procedure TFrm_PedidoVendaGerencia.actEditarPedidoExecute(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmPedido_Venda) then
+    FrmPedido_Venda := TFrmPedido_Venda.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    FrmPedido_Venda.EditarPedido(cdsPedidosID_PEDIDO.AsInteger);
     FrmPedido_Venda.ShowModal;
     actPesquisar.Execute;
   finally
@@ -140,6 +178,20 @@ begin
   end;
 end;
 
+function TFrm_PedidoVendaGerencia.AvancaStatus(aStatus: string): string;
+begin
+  case IndexStr(aStatus,['DIGITADO','APROVADO','PRODUÇÃO','CONCLUÍDO']) of
+    0:
+      Result := 'APROVADO';
+    1:
+      Result := 'PRODUÇÃO';
+    2:
+      Result := 'CONCLUÍDO';
+    3:
+      Result := 'DIGITADO';
+  end;
+end;
+
 procedure TFrm_PedidoVendaGerencia.dbgrdPedidosCellClick(Column: TColumn);
 begin
   inherited;
@@ -149,6 +201,12 @@ begin
     cdsPedidos.FieldByName('SELECAO').AsInteger := IfThen(cdsPedidos.FieldByName('SELECAO').AsInteger = 1, 0, 1);
     cdsPedidos.Post;
   end;
+end;
+
+procedure TFrm_PedidoVendaGerencia.dbgrdPedidosDblClick(Sender: TObject);
+begin
+  inherited;
+  actEditarPedido.Execute;
 end;
 
 procedure TFrm_PedidoVendaGerencia.dbgrdPedidosDrawColumnCell(Sender: TObject;
@@ -213,6 +271,35 @@ begin
   Retorno := Consulta.Representante.ToString;
 end;
 
+procedure TFrm_PedidoVendaGerencia.ExcluirPedidos;
+var
+  lPedidos: TClientDataSet;
+begin
+  cdsPedidos.DisableControls;
+  lPedidos := TClientDataSet.Create(nil);
+  try
+    lPedidos.FieldDefs.Add('ID_PEDIDO',ftInteger);
+    lPedidos.CreateDataSet;
+    cdsPedidos.First;
+    while not cdsPedidos.Eof do
+    begin
+      if (cdsPedidos.FieldByName('SELECAO').AsInteger = 1) then
+      begin
+        lPedidos.Append;
+        lPedidos.FieldByName('ID_PEDIDO').AsInteger := cdsPedidos.FieldByName('ID_PEDIDO').AsInteger;
+        lPedidos.Post;
+      end;
+      cdsPedidos.Next;
+    end;
+
+    if (DM.SMPedido.PedidoVenda_Excluir(DM.BancoDados, lPedidos.Data) = 1) then
+      actPesquisar.Execute;
+  finally
+    FreeAndNil(lPedidos);
+    cdsPedidos.EnableControls;
+  end;
+end;
+
 procedure TFrm_PedidoVendaGerencia.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -220,6 +307,39 @@ begin
   dtp2.Date := Date;
   rgTipoPesquisa.ItemIndex := 0;
   nbPesquisa.PageIndex := 0;
+end;
+
+procedure TFrm_PedidoVendaGerencia.PedidosAvancaStatus;
+var
+  lPedidos: TClientDataSet;
+begin
+  cdsPedidos.DisableControls;
+  lPedidos := TClientDataSet.Create(nil);
+  try
+    lPedidos.FieldDefs.Add('ID_PEDIDO',ftInteger);
+    lPedidos.FieldDefs.Add('STATUS',ftString,50);
+    lPedidos.FieldDefs.Add('USUARIO',ftString,30);
+    lPedidos.CreateDataSet;
+    cdsPedidos.First;
+    while not cdsPedidos.Eof do
+    begin
+      if ((cdsPedidos.FieldByName('SELECAO').AsInteger = 1) and (cdsPedidos.FieldByName('STATUS').AsString <> 'CONCLUÍDO')) then
+      begin
+        lPedidos.Append;
+        lPedidos.FieldByName('ID_PEDIDO').AsInteger := cdsPedidos.FieldByName('ID_PEDIDO').AsInteger;
+        lPedidos.FieldByName('STATUS').AsString := AvancaStatus(cdsPedidos.FieldByName('STATUS').AsString);
+        lPedidos.FieldByName('USUARIO').AsString := DM.Usuario.Login;
+        lPedidos.Post;
+      end;
+      cdsPedidos.Next;
+    end;
+
+    if (DM.SMPedido.PedidoVenda_AvancaStatus(DM.BancoDados, lPedidos.Data) = 1) then
+      actPesquisar.Execute;
+  finally
+    FreeAndNil(lPedidos);
+    cdsPedidos.EnableControls;
+  end;
 end;
 
 procedure TFrm_PedidoVendaGerencia.rgTipoPesquisaClick(Sender: TObject);

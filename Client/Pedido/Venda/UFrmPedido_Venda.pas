@@ -110,6 +110,9 @@ type
     dsContasAReceber: TDataSource;
     actPagtoLimpar: TAction;
     cdsPEDIDO_VENDAUSUARIO: TStringField;
+    cdsCONTAS_A_RECEBERTOT_PAGO: TAggregateField;
+    cdsCONTAS_A_RECEBERTIPO: TIntegerField;
+    cdsCONTAS_A_RECEBERID_TABELA_MASTER: TIntegerField;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -128,11 +131,14 @@ type
     procedure edtPagtoValorKeyPress(Sender: TObject; var Key: Char);
     procedure actPagtoLimparExecute(Sender: TObject);
     procedure pgc1Changing(Sender: TObject; var AllowChange: Boolean);
+    procedure cdsCONTAS_A_RECEBERAfterInsert(DataSet: TDataSet);
+    procedure cdsPEDIDO_VENDA_ITEMAfterInsert(DataSet: TDataSet);
   private
     FIdParcelamento: integer;
     FIdPagamento: integer;
     FTotalPedio: Currency;
     FSaldoAPagar: Currency;
+    FTipoTransacao: string;
     procedure AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
     procedure FormasDePagto();
     procedure Parcelamento(aId: integer);
@@ -145,7 +151,10 @@ type
     property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
     property TotalPedido: Currency read FTotalPedio write SetTotalPedido;
     property SaldoAPagar: Currency read FSaldoAPagar write SetSaldoAPagar;
+    property TipoTransacao: string read FTipoTransacao write FTipoTransacao;
+    procedure Iniciar();
     procedure NovoPedido();
+    procedure EditarPedido(aIDPedido: integer);
   end;
 
 var
@@ -154,7 +163,9 @@ var
 implementation
 
 uses
-  UDM, u_Mensagem, UConsulta, UFrm_PedidoVenda_AdicionarProduto, UFrm_PedidoVenda_NovoProduto, ACBrUtil;
+  UDM, u_Mensagem, UConsulta, UFrm_PedidoVenda_AdicionarProduto,
+  UFrm_PedidoVenda_NovoProduto, ACBrUtil, UMakeReadWrite;
+
 
 {$R *.dfm}
 
@@ -236,13 +247,12 @@ end;
 procedure TFrmPedido_Venda.actPagtoLimparExecute(Sender: TObject);
 begin
   inherited;
-  cdsCONTAS_A_RECEBER.DisableControls;
-  try
-    cdsCONTAS_A_RECEBER.EmptyDataSet;
-    SaldoAPagar := FTotalPedio;
-  finally
-    cdsCONTAS_A_RECEBER.EnableControls;
-  end;
+  if cdsCONTAS_A_RECEBER.IsEmpty then
+    Exit;
+
+  cdsCONTAS_A_RECEBER.Last;
+  cdsCONTAS_A_RECEBER.Delete;
+  TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
 end;
 
 procedure TFrmPedido_Venda.actPedidoCancelarExecute(Sender: TObject);
@@ -252,17 +262,39 @@ begin
 end;
 
 procedure TFrmPedido_Venda.actPedidoSalvarExecute(Sender: TObject);
+var
+  lPedidos, lItem, lReceber: OleVariant;
 begin
   inherited;
+  if (cdsPEDIDO_VENDA.State in [dsEdit, dsInsert]) then
+    cdsPEDIDO_VENDA.Post;
+
+  lPedidos := null;
+  lItem := null;
+  lReceber := null;
+
+  if cdsPEDIDO_VENDA.ChangeCount > 0 then
+    lPedidos := cdsPEDIDO_VENDA.Delta;
+  if cdsPEDIDO_VENDA_ITEM.ChangeCount > 0 then
+    lItem := cdsPEDIDO_VENDA_ITEM.Delta;
+  if cdsCONTAS_A_RECEBER.ChangeCount > 0 then
+    lReceber := cdsCONTAS_A_RECEBER.Delta;
+
   try
-    DM.SMPedido.setPedidoVendaI(DM.BancoDados,cdsPEDIDO_VENDA.FieldByName('ID').AsInteger,
-                  cdsPEDIDO_VENDA.Delta,cdsPEDIDO_VENDA_ITEM.Delta,cdsCONTAS_A_RECEBER.Delta);
-    TMensagem.Informacao('Pedido gerado com sucesso.');
+    if (TipoTransacao = 'INSERT') then
+    begin
+      DM.SMPedido.PedidoVenda_Adicionar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber]));
+      TMensagem.Informacao('Pedido gerado com sucesso.');
+    end;
+    if (TipoTransacao = 'UPDATE') then
+    begin
+      DM.SMPedido.PedidoVenda_Editar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber]));
+      TMensagem.Informacao('Pedido alterado com sucesso.');
+    end;
     actSair.Execute;
   except
-    TMensagem.Erro('Pedido não gerado, tente novamente.');
+    TMensagem.Erro('Pedido não foi gerado, tente novamente.');
   end;
-
 end;
 
 procedure TFrmPedido_Venda.AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
@@ -297,6 +329,14 @@ begin
   FormasDePagto();
 end;
 
+procedure TFrmPedido_Venda.cdsCONTAS_A_RECEBERAfterInsert(DataSet: TDataSet);
+begin
+  inherited;
+  cdsCONTAS_A_RECEBER.FieldByName('TIPO').AsInteger := 1;
+  cdsCONTAS_A_RECEBER.FieldByName('ID_TABELA_MASTER').AsInteger := cdsPEDIDO_VENDAID.AsInteger;
+//  cdsCONTAS_A_RECEBER.FieldByName('ID').AsInteger := 0;
+end;
+
 procedure TFrmPedido_Venda.cdsPEDIDO_VENDAAfterInsert(DataSet: TDataSet);
 begin
   inherited;
@@ -305,6 +345,16 @@ begin
   cdsPEDIDO_VENDA.FieldByName('ENTRADA').AsDateTime := Date;
   cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + 7;
   cdsPEDIDO_VENDA.FieldByName('USUARIO').AsString := DM.Usuario.Login;
+end;
+
+procedure TFrmPedido_Venda.cdsPEDIDO_VENDA_ITEMAfterInsert(DataSet: TDataSet);
+begin
+  inherited;
+  if not cdsCONTAS_A_RECEBER.IsEmpty then
+  begin
+    actPagtoLimpar.Execute;
+    SaldoAPagar := FTotalPedio;
+  end;
 end;
 
 procedure TFrmPedido_Venda.dbgrdItensDrawColumnCell(Sender: TObject;
@@ -423,21 +473,53 @@ begin
   cbbPagtoParcela.ItemIndex := -1;
 end;
 
-procedure TFrmPedido_Venda.NovoPedido;
+procedure TFrmPedido_Venda.Iniciar;
 begin
   FIdPagamento := -1;
   FIdParcelamento := -1;
+  pgc1.TabIndex := 0;
+end;
+
+procedure TFrmPedido_Venda.NovoPedido;
+var
+  lPedido: OleVariant;
+begin
+  Iniciar;
   TotalPedido := 0;
   SaldoAPagar := 0;
+  FTipoTransacao := 'INSERT';
+  lPedido := DM.SMPedido.PedidoVenda_Carregar(DM.BancoDados, -1);
   cdsPEDIDO_VENDA.Close;
-  cdsPEDIDO_VENDA.CreateDataSet;
   cdsPEDIDO_VENDA_ITEM.Close;
-  cdsPEDIDO_VENDA_ITEM.CreateDataSet;
   cdsCONTAS_A_RECEBER.Close;
-  cdsCONTAS_A_RECEBER.CreateDataSet;
-  cdsPEDIDO_VENDA.Append;
+  cdsPEDIDO_VENDA.Data := lPedido[0];
+  cdsPEDIDO_VENDA_ITEM.Data := lPedido[1];
+  cdsCONTAS_A_RECEBER.Data := lPedido[2];
 
-  pgc1.TabIndex := 0;
+  MakeReadWrite(cdsPEDIDO_VENDACLIENTE);
+  MakeReadWrite(cdsPEDIDO_VENDAVENDEDOR);
+  cdsPEDIDO_VENDA.Append;
+end;
+
+procedure TFrmPedido_Venda.EditarPedido(aIDPedido: integer);
+var
+  lPedido: OleVariant;
+begin
+  Iniciar;
+  FTipoTransacao := 'UPDATE';
+  lPedido := DM.SMPedido.PedidoVenda_Carregar(DM.BancoDados, aIDPedido);
+  cdsPEDIDO_VENDA.Close;
+  cdsPEDIDO_VENDA_ITEM.Close;
+  cdsCONTAS_A_RECEBER.Close;
+  cdsPEDIDO_VENDA.Data := lPedido[0];
+  cdsPEDIDO_VENDA_ITEM.Data := lPedido[1];
+  cdsCONTAS_A_RECEBER.Data := lPedido[2];
+
+  MakeReadWrite(cdsPEDIDO_VENDACLIENTE);
+  MakeReadWrite(cdsPEDIDO_VENDAVENDEDOR);
+  TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+
+  cdsPEDIDO_VENDA.Edit;
 end;
 
 procedure TFrmPedido_Venda.Parcelamento(aId: integer);
@@ -494,8 +576,9 @@ begin
   FTotalPedio := Value;
   lblItensSubTotal.Caption := FormatCurr('##0.00', Value);
   if not cdsCONTAS_A_RECEBER.IsEmpty then
-    actPagtoLimpar.Execute;
-  SaldoAPagar := Value;
+    SaldoAPagar := Value - cdsCONTAS_A_RECEBERTOT_PAGO.Value
+  else
+    SaldoAPagar := Value;
 end;
 
 procedure TFrmPedido_Venda.cbbPagtoParcelaEnter(Sender: TObject);

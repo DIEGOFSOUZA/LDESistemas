@@ -428,7 +428,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 303
-          ActivePage = tsItem
+          ActivePage = tsPagamento
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
@@ -1053,6 +1053,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
+    AfterInsert = cdsPEDIDO_VENDA_ITEMAfterInsert
+    AfterDelete = cdsPEDIDO_VENDA_ITEMAfterInsert
     Left = 389
     Top = 368
     object cdsPEDIDO_VENDA_ITEMID_PEDIDO: TIntegerField
@@ -1126,12 +1128,52 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   end
   object cdsCONTAS_A_RECEBER: TClientDataSet
     Aggregates = <>
-    CommandText = 'select NDUP, VDUP, DVENC'#13#10'from CONTAS_A_RECEBER  '#13#10'where 1=2'
+    AggregatesActive = True
+    CommandText = 
+      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO'#13#10'from CONTAS_A_' +
+      'RECEBER  '#13#10'where 1=2'
+    FieldDefs = <
+      item
+        Name = 'ID_TABELA_MASTER'
+        DataType = ftInteger
+      end
+      item
+        Name = 'NDUP'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'VDUP'
+        Attributes = [faRequired]
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'DVENC'
+        Attributes = [faRequired]
+        DataType = ftDate
+      end
+      item
+        Name = 'TIPO'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end>
+    IndexDefs = <>
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
+    StoreDefs = True
+    AfterInsert = cdsCONTAS_A_RECEBERAfterInsert
     Left = 389
     Top = 418
+    object cdsCONTAS_A_RECEBERTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Required = True
+    end
+    object cdsCONTAS_A_RECEBERID_TABELA_MASTER: TIntegerField
+      FieldName = 'ID_TABELA_MASTER'
+    end
     object cdsCONTAS_A_RECEBERNDUP: TIntegerField
       DisplayLabel = 'PARCELA'
       FieldName = 'NDUP'
@@ -1150,6 +1192,12 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       DisplayLabel = 'VENCIMENTO'
       FieldName = 'DVENC'
       Required = True
+    end
+    object cdsCONTAS_A_RECEBERTOT_PAGO: TAggregateField
+      FieldName = 'TOT_PAGO'
+      Active = True
+      DisplayName = ''
+      Expression = 'sum(vdup)'
     end
   end
   object cdsPEDIDO_VENDA: TClientDataSet
@@ -1196,10 +1244,12 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     end
     object cdsPEDIDO_VENDAVENDEDOR: TStringField
       FieldName = 'VENDEDOR'
+      ProviderFlags = []
       Size = 45
     end
     object cdsPEDIDO_VENDAUSUARIO: TStringField
       FieldName = 'USUARIO'
+      ProviderFlags = []
       Size = 40
     end
   end

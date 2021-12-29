@@ -131,23 +131,11 @@ type
 
   end;
 
-const
-    SQL_Fields = 'with Campos as( '+
-                 'SELECT a.RDB$FIELD_NAME NOME_DO_CAMPO '+
-                 'FROM RDB$RELATION_FIELDS a '+
-                 'left join RDB$FIELDS b on (b.RDB$FIELD_NAME = a.RDB$FIELD_SOURCE) '+
-                 'WHERE a.RDB$RELATION_NAME = %s '+ {Tabela}
-                 'and b.RDB$COMPUTED_SOURCE is null '+ {Ignora Campo calculado}
-                 'ORDER BY RDB$FIELD_POSITION '+
-                 ') '+
-                 'select list(trim(nome_do_campo),'','') nome_campo '+
-                 'from campos' ;
-
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
-uses uServerDM, uSM;
+uses uServerDM, uSM, uFields;
 
 {$R *.dfm}
 
@@ -1330,41 +1318,6 @@ begin
   end;
 end;
 
-
-{var
-  mCodigo: integer;
-  DM: TServerDM;
-  Campo: TCampoValor;
-begin
-  DM := TServerDM.Create(BD);
-  try
-    if pCodigo = 0 then
-      mCodigo := DM.LerDataSetInteger('select gen_id(gen_produto,1) cd from RDB$DATABASE', 'cd')
-    else
-      mCodigo := pCodigo;
-
-    Campo.Campo := 'codigo';
-    Campo.Valor := IntToStr(mCodigo);
-
-    try
-     DM.StartTransaction;
-
-     DM.GravarTabelaSimples(false,'PRODUTO','codigo,nome,preco_venda,cod_unidade,cod_cenario,'+
-                                            'qtde_estoque,preco_custo,estima_producao,peso_bruto,peso_liquido,'+
-                                            'ean_codbarra,cod_fabricante,cod_grupo,cod_subgrupo,'+
-                                            'descricao,cod_ncm,tipo_produto,qtde_minima',Dados,[Campo],[],True);
-      DM.Commit;
-
-      Result := getProduto(BD,mCodigo) ;
-    except on E: Exception do
-      raise Exception.Create('Servidor' + #13 + E.Message);
-    end;
-  finally
-    DM.FecharConexao() ;
-    FreeAndNil(DM);
-  end;
-
-end; }
 
 function TSMCadastro.setNatOperacao(const BD: string; pCodigo: integer;
   const Dados: OleVariant): OleVariant;

@@ -270,7 +270,7 @@ procedure TFrm_PedidoVenda_NovoProduto.CriarNovoProduto;
 begin
   if cdsProduto.State in [dsInsert] then
     cdsProduto.Post;
-  IdProduto := DM.SMPedido.setCriaProduto(DM.BancoDados,cdsProduto.Delta,cdsProdutoComposicao.Delta);
+  IdProduto := DM.SMPedido.PedidoVenda_CriaProduto(DM.BancoDados,cdsProduto.Delta,cdsProdutoComposicao.Delta);
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.dbpsqsUnidadePesquisa(Sender: TObject; var Retorno: string);
