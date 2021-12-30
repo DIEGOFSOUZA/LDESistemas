@@ -547,7 +547,7 @@ begin
   end
   else
   begin
-    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
+    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),Qtde);
     lPrCustoCalc := RoundABNT((FvUnitario),-2);
   end;
 

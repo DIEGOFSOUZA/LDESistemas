@@ -40,7 +40,6 @@ type
     PedidoVenda_ItensVUNIT: TFMTBCDField;
     PedidoVenda_ItensQTDE: TBCDField;
     PedidoVenda_ItensUNIDADE: TStringField;
-    PedidoVenda_ItensQTDE_BAIXA: TBCDField;
     PedidoVenda_ItensVDESC: TFMTBCDField;
     PedidoVenda_ItensSUBTOTAL: TFMTBCDField;
     PedidoVenda_ItensTOTAL: TFMTBCDField;
@@ -50,6 +49,13 @@ type
     ReceberVDUP: TFMTBCDField;
     ReceberDVENC: TDateField;
     ReceberTIPO: TIntegerField;
+    Pedido_Venda_IMG: TFDQuery;
+    dspIMG: TDataSetProvider;
+    cdsIMG: TClientDataSet;
+    Pedido_Venda_IMGID_PEDIDO: TIntegerField;
+    Pedido_Venda_IMGIMAGEM: TBlobField;
+    PedidoVenda_ItensQTDE_A_BAIXAR: TBCDField;
+    PedidoVenda_ItensQTDE_BAIXADA: TBCDField;
   private
     procedure getClientDataSet(aClientDataSet: OleVariant);
   public
@@ -149,8 +155,7 @@ begin
   end;
 end;
 
-function TSM_Pedido.PedidoVenda_Editar(const BD: string;
-  aTabelas: OleVariant): Boolean;
+function TSM_Pedido.PedidoVenda_Editar(const BD: string; aTabelas: OleVariant): Boolean;
 var
   DM: TServerDM;
 begin
@@ -159,6 +164,7 @@ begin
     Pedido_Venda.Connection := DM.Conexao;
     PedidoVenda_Itens.Connection := DM.Conexao;
     Receber.Connection := DM.Conexao;
+    Pedido_Venda_IMG.Connection := DM.Conexao;
     TranGravar.Connection := DM.Conexao;
     TranGravar.StartTransaction;
 
@@ -178,22 +184,26 @@ begin
         cdsReceber.Data := aTabelas[2];
         cdsReceber.ApplyUpdates(0);
       end;
+      if (aTabelas[3] <> Null) then
+      begin
+        cdsIMG.Data := aTabelas[3];
+        cdsIMG.ApplyUpdates(0);
+      end;
 
       TranGravar.Commit;
       Result := True;
-//      Result := getNotaEntrada(BD, pID);
     except
       on e: Exception do
       begin
         TranGravar.Rollback;
         Result := False;
-        raise Exception.Create(e.Message);
       end;
     end;
   finally
     cdsPedidoVenda.Close;
     cdsPedidoVenda_Itens.Close;
     cdsReceber.Close;
+    cdsIMG.Close;
     DM.FecharConexao;
     FreeAndNil(DM);
   end;
@@ -209,7 +219,7 @@ const
                         'left join REPRESENTANTE R on (R.CODIGO = P.ID_VENDEDOR) '+
                         'where P.ID = %s';
   SQL_PEDIDOVENDAITEM = 'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,'+
-                        'pi.UNIDADE, pi.QTDE_BAIXA, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, P.NOME PRODUTO '+
+                        'pi.UNIDADE, pi.QTDE_A_BAIXAR, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, P.NOME PRODUTO '+
                         'from PEDIDO_VENDA_ITEM pi '+
                         'left join PRODUTO P on (P.CODIGO = pi.ID_PRODUTO) '+
                         'where pi.ID_PEDIDO = %s';
@@ -217,17 +227,21 @@ const
                         'from CONTAS_A_RECEBER R '+
                         'where R.TIPO = 1 and '+
                         '      R.ID_TABELA_MASTER = %s';
+  SQL_PEDIDO_IMG      = 'select ID_PEDIDO, IMAGEM '+
+                        'from PEDIDO_VENDA_IMG '+
+                        'where ID_PEDIDO = %s';
 var
   DM: TServerDM;
-  lPedido, lItem, lReceber: OleVariant;
+  lPedido, lItem, lReceber, lImagem: OleVariant;
 begin
   DM := TServerDM.Create(BD);
   try
     try
-     lPedido := DM.LerDataSet(Format(SQL_PEDIDOVENDA, [aIDPedido.ToString]));
-     lItem := DM.LerDataSet(Format(SQL_PEDIDOVENDAITEM, [aIDPedido.ToString]));
-     lReceber := DM.LerDataSet(Format(SQL_CONTASRECEBER, [aIDPedido.ToString]));
-     Result := VarArrayOf([lPedido,lItem,lReceber]);
+      lPedido := DM.LerDataSet(Format(SQL_PEDIDOVENDA, [aIDPedido.ToString]));
+      lItem := DM.LerDataSet(Format(SQL_PEDIDOVENDAITEM, [aIDPedido.ToString]));
+      lReceber := DM.LerDataSet(Format(SQL_CONTASRECEBER, [aIDPedido.ToString]));
+      lImagem := DM.LerDataSet(Format(SQL_PEDIDO_IMG, [aIDPedido.ToString]));
+      Result := VarArrayOf([lPedido, lItem, lReceber, lImagem]);
     except
       on E: Exception do
         raise Exception.Create('Servidor Aplicativo: ' + #10 + #13 + E.Message);
@@ -298,7 +312,6 @@ begin
   end;
 end;
 
-
 function TSM_Pedido.PedidoVenda_Adicionar(const BD: string; aTabelas: OleVariant): Boolean;
 const
   INS_PEDIDO  = 'insert into PEDIDO_VENDA (EMISSAO, ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO, USUARIO) '+
@@ -306,14 +319,18 @@ const
                 'returning ID '+
                 '{into :ID}';
 
-  INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_BAIXA, VDESC, SUBTOTAL, TOTAL) '+
-                'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_BAIXA, :VDESC, :SUBTOTAL, :TOTAL)';
+  INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_A_BAIXAR, VDESC, SUBTOTAL, TOTAL) '+
+                'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_A_BAIXAR, :VDESC, :SUBTOTAL, :TOTAL)';
 
   INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, NDUP, VDUP, DVENC) '+
                 'values (:TIPO, :ID_TABELA_MASTER, :NDUP, :VDUP, :DVENC)';
+
+  INS_IMG     = 'insert into PEDIDO_VENDA_IMG (ID_PEDIDO, IMAGEM) '+
+                'values (:ID_PEDIDO, :IMAGEM)';
 var
   DM: TServerDM;
   lIDPedido: Integer;
+  lMS: TStream;
 begin
   DM := TServerDM.Create(BD);
   try
@@ -348,7 +365,7 @@ begin
           DM.Gravar.ParamByName('VUNIT').AsCurrency := cdsLER.FieldByName('VUNIT').AsCurrency;
           DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
           DM.Gravar.ParamByName('UNIDADE').AsString := cdsLER.FieldByName('UNIDADE').AsString;
-          DM.Gravar.ParamByName('QTDE_BAIXA').AsFloat := cdsLER.FieldByName('QTDE_BAIXA').AsFloat;
+          DM.Gravar.ParamByName('QTDE_A_BAIXAR').AsFloat := cdsLER.FieldByName('QTDE_A_BAIXAR').AsFloat;
           DM.Gravar.ParamByName('VDESC').AsCurrency := cdsLER.FieldByName('VDESC').AsCurrency;
           DM.Gravar.ParamByName('SUBTOTAL').AsCurrency := cdsLER.FieldByName('SUBTOTAL').AsCurrency;
           DM.Gravar.ParamByName('TOTAL').AsCurrency := cdsLER.FieldByName('TOTAL').AsCurrency;
@@ -373,6 +390,23 @@ begin
           DM.Gravar.ParamByName('DVENC').AsDate := cdsLER.FieldByName('DVENC').AsDateTime;
           DM.Gravar.ExecSQL;
           cdsLER.Next;
+        end;
+      end;
+
+      if (aTabelas[3] <> Null) then
+      begin
+        lMS := TMemoryStream.Create;
+        try
+          getClientDataSet(aTabelas[3]);
+          lMS := cdsLER.CreateBlobStream(cdsLER.FieldByName('IMAGEM'), bmRead);
+          DM.Gravar.SQL.Clear;
+          DM.Gravar.SQL.Add(INS_IMG);
+          DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
+//        DM.Gravar.Params[1].DataType := ftBlob;
+          DM.Gravar.ParamByName('IMAGEM').LoadFromStream(lMS, ftBlob);
+          DM.Gravar.ExecSQL;
+        finally
+          FreeAndNil(lMS);
         end;
       end;
       Result := True;

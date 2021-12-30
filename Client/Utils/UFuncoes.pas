@@ -80,7 +80,7 @@ function OnlyCarac   (InString : String)         : String;
 function ValidaFormataCurrency(pValor : string) : TFormataValor;
 function ValorFormatadoFirebird(pValor:string) : string;
 
-function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
+function QtdeConvertida(aCod: Integer; aQtde: Extended): Extended;
 function DadosProduto(aCodigo:integer): TDadosProduto;
 
 
@@ -94,7 +94,7 @@ uses
   UDM, u_Mensagem, UDMACBr;
 
 
-function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
+function QtdeConvertida(aCod: Integer; aQtde: Extended): Extended;
 const
   SQL = 'select P.CONV_UNIDADE, P.CONV_QTDE, P.CONV_PRECO '+
         'from PRODUTO P '+

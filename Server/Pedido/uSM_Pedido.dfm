@@ -116,7 +116,9 @@ object SM_Pedido: TSM_Pedido
       
         'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,' +
         ' pi.UNIDADE, '
-      'pi.QTDE_BAIXA, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, p.NOME PRODUTO'
+      
+        'pi.QTDE_A_BAIXAR, pi.QTDE_BAIXADA, pi.VDESC, pi.SUBTOTAL, pi.TOT' +
+        'AL, p.NOME PRODUTO'
       'from PEDIDO_VENDA_ITEM pi'
       'left join produto p on (p.codigo=pi.id_produto)'
       'where 1=2')
@@ -152,17 +154,23 @@ object SM_Pedido: TSM_Pedido
       Required = True
       Precision = 18
     end
+    object PedidoVenda_ItensQTDE_A_BAIXAR: TBCDField
+      FieldName = 'QTDE_A_BAIXAR'
+      Origin = 'QTDE_A_BAIXAR'
+      Required = True
+      Precision = 18
+    end
+    object PedidoVenda_ItensQTDE_BAIXADA: TBCDField
+      FieldName = 'QTDE_BAIXADA'
+      Origin = 'QTDE_BAIXADA'
+      Required = True
+      Precision = 18
+    end
     object PedidoVenda_ItensUNIDADE: TStringField
       FieldName = 'UNIDADE'
       Origin = 'UNIDADE'
       Required = True
       Size = 10
-    end
-    object PedidoVenda_ItensQTDE_BAIXA: TBCDField
-      FieldName = 'QTDE_BAIXA'
-      Origin = 'QTDE_BAIXA'
-      Required = True
-      Precision = 18
     end
     object PedidoVenda_ItensVDESC: TFMTBCDField
       FieldName = 'VDESC'
@@ -263,5 +271,42 @@ object SM_Pedido: TSM_Pedido
     StoreDefs = True
     Left = 272
     Top = 216
+  end
+  object Pedido_Venda_IMG: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      'select ID_PEDIDO, IMAGEM'
+      'from PEDIDO_VENDA_IMG'
+      'where 1=2  ')
+    Left = 352
+    Top = 103
+    object Pedido_Venda_IMGID_PEDIDO: TIntegerField
+      FieldName = 'ID_PEDIDO'
+      Origin = 'ID_PEDIDO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Pedido_Venda_IMGIMAGEM: TBlobField
+      FieldName = 'IMAGEM'
+      Origin = 'IMAGEM'
+    end
+  end
+  object dspIMG: TDataSetProvider
+    DataSet = Pedido_Venda_IMG
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 352
+    Top = 151
+  end
+  object cdsIMG: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspIMG'
+    StoreDefs = True
+    Left = 352
+    Top = 215
   end
 end

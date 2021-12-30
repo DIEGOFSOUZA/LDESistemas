@@ -106,7 +106,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         ParentFont = False
       end
       object Label5: TLabel
-        Left = 442
+        Left = 418
         Top = 11
         Width = 80
         Height = 17
@@ -133,7 +133,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Style = [fsBold]
         ParentFont = False
         ReadOnly = True
-        TabOrder = 0
+        TabOrder = 1
       end
       object DBEdit2: TDBEdit
         Left = 161
@@ -148,7 +148,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 2
       end
       object DBEdit3: TDBEdit
         Left = 290
@@ -163,7 +163,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
       end
       object dbpsqsCliente: TDBPesquisa
         Left = 26
@@ -209,7 +209,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsClientePesquisa
-        TabOrder = 4
+        TabOrder = 5
         TabStop = True
       end
       object dbpsqsVendedor: TDBPesquisa
@@ -256,17 +256,49 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsVendedorPesquisa
-        TabOrder = 5
+        TabOrder = 6
         TabStop = True
       end
       object DBMemo1: TDBMemo
-        Left = 442
+        Left = 418
         Top = 30
-        Width = 351
+        Width = 280
         Height = 121
         DataField = 'OBSERVACAO'
         DataSource = dsPEDIDO_VENDA
-        TabOrder = 3
+        TabOrder = 4
+      end
+      object pnlTopRight: TPanel
+        Left = 704
+        Top = 1
+        Width = 166
+        Height = 175
+        Align = alRight
+        TabOrder = 0
+        object imgPedido: TImage
+          Left = 1
+          Top = 30
+          Width = 164
+          Height = 144
+          Align = alBottom
+          Center = True
+          Proportional = True
+          ExplicitTop = 31
+        end
+        object btnImagem: TButton
+          Left = 5
+          Top = 2
+          Width = 25
+          Height = 25
+          Action = actAdicionarImagem
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 0
+        end
       end
     end
     object pnlBotton: TPanel
@@ -428,7 +460,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 303
-          ActivePage = tsPagamento
+          ActivePage = tsItem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
@@ -1011,8 +1043,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     end
   end
   inherited actlst1: TActionList
-    Left = 736
-    Top = 88
+    Left = 720
+    Top = 336
     object actPedidoSalvar: TAction
       Caption = 'actPedidoSalvar'
       OnExecute = actPedidoSalvarExecute
@@ -1041,15 +1073,19 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Caption = 'actPagtoLimpar'
       OnExecute = actPagtoLimparExecute
     end
+    object actAdicionarImagem: TAction
+      Caption = '...'
+      OnExecute = actAdicionarImagemExecute
+    end
   end
   object cdsPEDIDO_VENDA_ITEM: TClientDataSet
     Aggregates = <>
     AggregatesActive = True
     CommandText = 
       'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,' +
-      ' pi.UNIDADE, '#13#10'pi.QTDE_BAIXA, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, p' +
-      '.NOME PRODUTO'#13#10'from PEDIDO_VENDA_ITEM pi'#13#10'left join produto p on' +
-      ' (p.codigo=pi.id_produto)'#13#10'where 1=2'
+      ' pi.UNIDADE, '#13#10'pi.QTDE_A_BAIXAR, pi.VDESC, pi.SUBTOTAL, pi.TOTAL' +
+      ', p.NOME PRODUTO'#13#10'from PEDIDO_VENDA_ITEM pi'#13#10'left join produto p' +
+      ' on (p.codigo=pi.id_produto)'#13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
@@ -1084,16 +1120,16 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       DisplayFormat = '#,##0.000'
       Precision = 18
     end
+    object cdsPEDIDO_VENDA_ITEMQTDE_A_BAIXAR: TBCDField
+      FieldName = 'QTDE_A_BAIXAR'
+      Required = True
+      Precision = 18
+    end
     object cdsPEDIDO_VENDA_ITEMUNIDADE: TStringField
       DisplayLabel = 'UND'
       FieldName = 'UNIDADE'
       Required = True
       Size = 10
-    end
-    object cdsPEDIDO_VENDA_ITEMQTDE_BAIXA: TBCDField
-      FieldName = 'QTDE_BAIXA'
-      Required = True
-      Precision = 18
     end
     object cdsPEDIDO_VENDA_ITEMVDESC: TFMTBCDField
       DisplayLabel = 'DESCONTO (R$)'
@@ -1210,7 +1246,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
     AfterInsert = cdsPEDIDO_VENDAAfterInsert
-    Left = 393
+    Left = 387
     Top = 325
     object cdsPEDIDO_VENDAID: TIntegerField
       FieldName = 'ID'
@@ -1267,5 +1303,25 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     DataSet = cdsCONTAS_A_RECEBER
     Left = 501
     Top = 418
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 656
+    Top = 336
+  end
+  object cdsPEDIDO_VENDA_IMG: TClientDataSet
+    Aggregates = <>
+    CommandText = 'select ID_PEDIDO, IMAGEM'#13#10'from PEDIDO_VENDA_IMG'#13#10'where 1=2  '
+    Params = <>
+    ProviderName = 'DSPLer1'
+    RemoteServer = DM.dspRLer
+    Left = 389
+    Top = 480
+    object cdsPEDIDO_VENDA_IMGID_PEDIDO: TIntegerField
+      FieldName = 'ID_PEDIDO'
+      Required = True
+    end
+    object cdsPEDIDO_VENDA_IMGIMAGEM: TBlobField
+      FieldName = 'IMAGEM'
+    end
   end
 end
