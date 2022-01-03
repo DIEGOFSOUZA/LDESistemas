@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.Comp.Client, Data.DB, Datasnap.DBClient, Datasnap.Provider,
-  FireDAC.Comp.DataSet;
+  FireDAC.Comp.DataSet, uServerDM;
 
 type
   TSM_Pedido = class(TDSServerModule)
@@ -58,6 +58,9 @@ type
     PedidoVenda_ItensQTDE_BAIXADA: TBCDField;
   private
     procedure getClientDataSet(aClientDataSet: OleVariant);
+    procedure GeraProducao(aDM: TServerDM; aIdPedido: integer; aUsuario: string);
+    procedure BaixaProducao(aDM: TServerDM; aLote: string);
+    procedure BaixaPedido(aDM: TServerDM; aIdPedido: Integer);
   public
     function PedidoVenda_Adicionar(const BD: string; aTabelas: OleVariant): Boolean;
     function PedidoVenda_Editar(const BD: string; aTabelas: OleVariant): Boolean;
@@ -70,7 +73,7 @@ type
 implementation
 
 uses
-  uServerDM, System.Variants, uSMCadastro, uFields;
+  System.Variants, uSMCadastro, uFields;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -95,14 +98,26 @@ begin
   try
     try
       getClientDataSet(aPedidos);
-      DM.Gravar.SQL.Clear;
-      DM.Gravar.SQL.Add(SQL);
+
       cdsLER.First;
       while not cdsLER.Eof do
       begin
+        if (cdsLER.FieldByName('GERA_PRODUCAO').AsInteger = 1) then
+        begin
+          if (cdsLER.FieldByName('STATUS').AsString = 'PRODUÇÃO') then
+            GeraProducao(DM, cdsLER.FieldByName('ID_PEDIDO').AsInteger, cdsLER.FieldByName('USUARIO').AsString);
+          if (cdsLER.FieldByName('STATUS').AsString = 'CONCLUÍDO') then
+            BaixaProducao(DM, 'PEDV' + FormatFloat('0000', cdsLER.FieldByName('ID_PEDIDO').AsInteger));
+        end;
+
+        if (cdsLER.FieldByName('STATUS').AsString = 'CONCLUÍDO') then
+          BaixaPedido(DM, cdsLER.FieldByName('ID_PEDIDO').AsInteger);
+
+        DM.Gravar.SQL.Clear;
+        DM.Gravar.SQL.Add(SQL);
         DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := cdsLER.FieldByName('ID_PEDIDO').AsInteger;
         DM.Gravar.ParamByName('STATUS').AsString := cdsLER.FieldByName('STATUS').AsString;
-        DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;
+        DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;;
         DM.Gravar.ExecSQL;
         cdsLER.Next
       end;
@@ -416,6 +431,109 @@ begin
   finally
     DM.FecharConexao;
     FreeAndNil(DM);
+  end;
+end;
+
+procedure TSM_Pedido.BaixaPedido(aDM: TServerDM; aIdPedido: Integer);
+const
+  UPD_ITENS_PEDIDO = 'update PEDIDO_VENDA_ITEM ' +
+                     'set QTDE_BAIXADA = QTDE_A_BAIXAR ' +
+                     'where (ID_PEDIDO = :ID_PEDIDO)';
+begin
+  try
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(UPD_ITENS_PEDIDO);
+    aDM.Gravar.ParamByName('ID_PEDIDO').AsInteger := aIdPedido;
+    aDM.Gravar.ExecSQL;
+  except
+
+  end;
+end;
+
+procedure TSM_Pedido.BaixaProducao(aDM: TServerDM; aLote: string);
+const
+  UPD_LOTE       = 'update LOTE '+
+                   'set STATUS = ''FINALIZADO'' '+
+                   'where (LOTE = :LOTE)';
+
+  UPD_LOTE_ITENS = 'update LOTE_ITENS '+
+                   'set QTDE_FECHADA = QTDE '+
+                   'where (ID_LOTE = :ID_LOTE)';
+
+  UPD_LOTE_MP    = 'update LOTE_MATPRIMA m '+
+                   'set QTDE_FECHADA = QTDE '+
+                   'where (ID_LOTE = :ID_LOTE)';
+begin
+  try
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(UPD_LOTE);
+    aDM.Gravar.ParamByName('LOTE').AsString := aLote;
+    aDM.Gravar.ExecSQL;
+
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(UPD_LOTE_ITENS);
+    aDM.Gravar.ParamByName('ID_LOTE').AsString := aLote;
+    aDM.Gravar.ExecSQL;
+
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(UPD_LOTE_MP);
+    aDM.Gravar.ParamByName('ID_LOTE').AsString := aLote;
+    aDM.Gravar.ExecSQL;
+  except
+
+  end;
+end;
+
+procedure TSM_Pedido.GeraProducao(aDM: TServerDM; aIdPedido: integer; aUsuario: string);
+const
+  INS_LOTE      = 'insert into LOTE (LOTE, EMISSAO, OBS, STATUS, GERA_MATPRIMA, USUARIO, LOTE_ACERTO, ID_PEDIDO) '+
+                  'values(:LOTE, :EMISSAO, :OBS, :STATUS, :GERA_MATPRIMA, :USUARIO, :LOTE_ACERTO, :ID_PEDIDO)';
+
+  INS_LOTEITENS = 'insert into LOTE_ITENS (ID_LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DESCRI_ITEM) '+
+                  'select :ID_LOTE, I.ID_PRODUTO,'+
+                  '       (I.QTDE_A_BAIXAR - P.QTDE_ESTOQUE), 0, coalesce(P.CONV_UNIDADE, P.COD_UNIDADE), ''ENTRADA'', P.NOME '+
+                  'from PEDIDO_VENDA_ITEM I '+
+                  'left join PRODUTO P on (P.CODIGO = I.ID_PRODUTO) '+
+                  'where I.ID_PEDIDO = :ID_PEDIDO and '+
+                  '      P.QTDE_ESTOQUE < I.QTDE_A_BAIXAR';
+
+  INS_LOTE_MP   = 'insert into LOTE_MATPRIMA (ID_LOTE, ID_MATPRIMA, QTDE, QTDE_FECHADA) '+
+                  'select :ID_LOTE, C.ID_MATPRIMA,'+
+                  '       (C.QTDE * I.QTDE_A_BAIXAR) QTDE_MATPRIMA, cast(0 as integer) '+
+                  'from PEDIDO_VENDA_ITEM I '+
+                  'left join PRODUTO P on (P.CODIGO = I.ID_PRODUTO) '+
+                  'left join PRODUTO_COMPOSICAO C on (C.ID_PRODUTO = P.CODIGO) '+
+                  'where I.ID_PEDIDO = :ID_PEDIDO and '+
+                  '      P.QTDE_ESTOQUE < I.QTDE_A_BAIXAR and '+
+                  '      C.ID_MATPRIMA is not null '+
+                  'order by I.ORDEM';
+begin
+  try
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(INS_LOTE);
+    aDM.Gravar.ParamByName('LOTE').AsString := 'PEDV' + FormatFloat('0000', aIdPedido);
+    aDM.Gravar.ParamByName('EMISSAO').AsDate := Date;
+    aDM.Gravar.ParamByName('OBS').AsString := 'LOTE PARA ATENDER PEDIDO Nº ' + FormatFloat('0000', aIdPedido);
+    aDM.Gravar.ParamByName('STATUS').AsString := 'PENDENTE';
+    aDM.Gravar.ParamByName('GERA_MATPRIMA').AsString := 'S';
+    aDM.Gravar.ParamByName('USUARIO').AsString := aUsuario+'|'+FormatDateTime('dd/mm/yy|hh:mm',Now);
+    aDM.Gravar.ParamByName('LOTE_ACERTO').AsString := 'N';
+    aDM.Gravar.ParamByName('ID_PEDIDO').AsInteger := aIdPedido;
+    aDM.Gravar.ExecSQL;
+
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(INS_LOTEITENS);
+    aDM.Gravar.ParamByName('ID_LOTE').AsString := 'PEDV' + FormatFloat('0000', aIdPedido);
+    aDM.Gravar.ParamByName('ID_PEDIDO').AsInteger := aIdPedido;
+    aDM.Gravar.ExecSQL;
+
+    aDM.Gravar.SQL.Clear;
+    aDM.Gravar.SQL.Add(INS_LOTE_MP);
+    aDM.Gravar.ParamByName('ID_LOTE').AsString := 'PEDV' + FormatFloat('0000', aIdPedido);
+    aDM.Gravar.ParamByName('ID_PEDIDO').AsInteger := aIdPedido;
+    aDM.Gravar.ExecSQL;
+  except
+
   end;
 end;
 

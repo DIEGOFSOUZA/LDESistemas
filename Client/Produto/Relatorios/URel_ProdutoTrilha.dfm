@@ -174,7 +174,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
       ParentColor = False
       Transparent = False
       object RLLabel1: TRLLabel
-        Left = 5
+        Left = 1
         Top = 2
         Width = 64
         Height = 17
@@ -189,9 +189,9 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel2: TRLLabel
-        Left = 72
+        Left = 69
         Top = 2
-        Width = 85
+        Width = 100
         Height = 17
         Alignment = taCenter
         AutoSize = False
@@ -205,9 +205,9 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel3: TRLLabel
-        Left = 164
+        Left = 173
         Top = 19
-        Width = 108
+        Width = 110
         Height = 17
         AutoSize = False
         Caption = 'IDENTIFICA'#199#195'O'
@@ -220,7 +220,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel4: TRLLabel
-        Left = 277
+        Left = 294
         Top = 2
         Width = 85
         Height = 17
@@ -235,7 +235,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel5: TRLLabel
-        Left = 368
+        Left = 376
         Top = 19
         Width = 80
         Height = 17
@@ -251,7 +251,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel6: TRLLabel
-        Left = 452
+        Left = 460
         Top = 19
         Width = 80
         Height = 17
@@ -267,7 +267,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel7: TRLLabel
-        Left = 540
+        Left = 544
         Top = 19
         Width = 172
         Height = 17
@@ -282,7 +282,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel8: TRLLabel
-        Left = 5
+        Left = 2
         Top = 19
         Width = 63
         Height = 17
@@ -298,9 +298,9 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel9: TRLLabel
-        Left = 72
+        Left = 69
         Top = 19
-        Width = 85
+        Width = 100
         Height = 17
         Alignment = taCenter
         AutoSize = False
@@ -314,7 +314,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Transparent = False
       end
       object RLLabel10: TRLLabel
-        Left = 277
+        Left = 287
         Top = 19
         Width = 85
         Height = 17
@@ -336,7 +336,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
       Height = 23
       BeforePrint = RLBand4BeforePrint
       object RLDBText1: TRLDBText
-        Left = 5
+        Left = 2
         Top = 0
         Width = 63
         Height = 17
@@ -353,11 +353,10 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object RLDBText2: TRLDBText
-        Left = 72
+        Left = 69
         Top = 0
-        Width = 85
+        Width = 100
         Height = 17
-        Alignment = taCenter
         AutoSize = False
         DataField = 'TIPO_MOVIMENTO'
         DataSource = dsTrilha
@@ -370,7 +369,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object RLDBText3: TRLDBText
-        Left = 161
+        Left = 173
         Top = 1
         Width = 110
         Height = 17
@@ -386,7 +385,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object RLDBText4: TRLDBText
-        Left = 277
+        Left = 287
         Top = 1
         Width = 85
         Height = 17
@@ -403,7 +402,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object RLDBText5: TRLDBText
-        Left = 368
+        Left = 376
         Top = 1
         Width = 80
         Height = 17
@@ -420,7 +419,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object RLDBText7: TRLDBText
-        Left = 540
+        Left = 544
         Top = 1
         Width = 172
         Height = 17
@@ -436,7 +435,7 @@ inherited Rel_ProdutoTrilha: TRel_ProdutoTrilha
         Text = ''
       end
       object rlblSaldo: TRLLabel
-        Left = 452
+        Left = 460
         Top = 1
         Width = 80
         Height = 17

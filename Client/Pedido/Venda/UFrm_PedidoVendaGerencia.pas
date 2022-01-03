@@ -319,6 +319,7 @@ begin
     lPedidos.FieldDefs.Add('ID_PEDIDO',ftInteger);
     lPedidos.FieldDefs.Add('STATUS',ftString,50);
     lPedidos.FieldDefs.Add('USUARIO',ftString,30);
+    lPedidos.FieldDefs.Add('GERA_PRODUCAO',ftInteger);
     lPedidos.CreateDataSet;
     cdsPedidos.First;
     while not cdsPedidos.Eof do
@@ -329,6 +330,7 @@ begin
         lPedidos.FieldByName('ID_PEDIDO').AsInteger := cdsPedidos.FieldByName('ID_PEDIDO').AsInteger;
         lPedidos.FieldByName('STATUS').AsString := AvancaStatus(cdsPedidos.FieldByName('STATUS').AsString);
         lPedidos.FieldByName('USUARIO').AsString := DM.Usuario.Login;
+        lPedidos.FieldByName('GERA_PRODUCAO').AsInteger := 1;
         lPedidos.Post;
       end;
       cdsPedidos.Next;

@@ -472,6 +472,8 @@ inherited Frm_Produto: TFrm_Produto
             ParentColor = True
             ShowCaption = False
             TabOrder = 0
+            ExplicitLeft = 4
+            ExplicitTop = -2
             object Label1: TLabel
               Left = 147
               Top = 7
@@ -804,6 +806,7 @@ inherited Frm_Produto: TFrm_Produto
               Top = 4
               Width = 90
               Height = 49
+              Cursor = crHandPoint
               Caption = 'pnlTrilha'
               Color = 4868682
               ParentBackground = False
@@ -848,7 +851,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsComposicao
+            ActivePage = tsFiscal
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -1120,6 +1123,7 @@ inherited Frm_Produto: TFrm_Produto
                         Top = 1
                         Width = 60
                         Height = 48
+                        Cursor = crHandPoint
                         Align = alRight
                         BevelOuter = bvNone
                         Caption = 'pnlAdd'
@@ -1377,6 +1381,7 @@ inherited Frm_Produto: TFrm_Produto
                           Top = 8
                           Width = 25
                           Height = 25
+                          Cursor = crHandPoint
                           BevelOuter = bvNone
                           Caption = 'pnlIncluiCondPagto'
                           Color = 7024384
@@ -1763,6 +1768,7 @@ inherited Frm_Produto: TFrm_Produto
                       Top = 39
                       Width = 25
                       Height = 25
+                      Cursor = crHandPoint
                       BevelOuter = bvNone
                       Caption = 'pnlIncluiCondPagto'
                       Color = 7024384
