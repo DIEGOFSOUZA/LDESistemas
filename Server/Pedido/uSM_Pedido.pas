@@ -56,10 +56,12 @@ type
     Pedido_Venda_IMGIMAGEM: TBlobField;
     PedidoVenda_ItensQTDE_A_BAIXAR: TBCDField;
     PedidoVenda_ItensQTDE_BAIXADA: TBCDField;
+    Pedido_VendaGERAR_ORDEM_PRODUCAO: TIntegerField;
+    Pedido_Venda_IMGSEQUENCIA: TIntegerField;
   private
     procedure getClientDataSet(aClientDataSet: OleVariant);
     procedure GeraProducao(aDM: TServerDM; aIdPedido: integer; aUsuario: string);
-    procedure BaixaProducao(aDM: TServerDM; aLote: string);
+    procedure BaixaProducao(aDM: TServerDM; aLote: string; aIdPedido: integer);
     procedure BaixaPedido(aDM: TServerDM; aIdPedido: Integer);
   public
     function PedidoVenda_Adicionar(const BD: string; aTabelas: OleVariant): Boolean;
@@ -92,32 +94,39 @@ const
         'values (:ID_PEDIDO, :STATUS, :USUARIO)';
 var
   DM: TServerDM;
+  lPedido: Integer;
+  lStatus: string;
 begin
   Result := 0;
   DM := TServerDM.Create(BD);
   try
     try
       getClientDataSet(aPedidos);
-
       cdsLER.First;
       while not cdsLER.Eof do
       begin
-        if (cdsLER.FieldByName('GERA_PRODUCAO').AsInteger = 1) then
-        begin
-          if (cdsLER.FieldByName('STATUS').AsString = 'PRODUÇÃO') then
-            GeraProducao(DM, cdsLER.FieldByName('ID_PEDIDO').AsInteger, cdsLER.FieldByName('USUARIO').AsString);
-          if (cdsLER.FieldByName('STATUS').AsString = 'CONCLUÍDO') then
-            BaixaProducao(DM, 'PEDV' + FormatFloat('0000', cdsLER.FieldByName('ID_PEDIDO').AsInteger));
-        end;
+        lPedido := cdsLER.FieldByName('ID_PEDIDO').AsInteger;
+        lStatus := cdsLER.FieldByName('STATUS').AsString;
+        if ((lStatus = 'PRODUÇÃO') and (cdsLER.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger = 1)) then
+          GeraProducao(DM, lPedido, cdsLER.FieldByName('USUARIO').AsString);
+//        begin
+//          if (lStatus = 'PRODUÇÃO') then
+//            GeraProducao(DM, lPedido, cdsLER.FieldByName('USUARIO').AsString);
+//          if (lStatus = 'CONCLUÍDO') then
+//            BaixaProducao(DM, 'PEDV' + FormatFloat('0000', lPedido), lPedido);
+//        end;
 
-        if (cdsLER.FieldByName('STATUS').AsString = 'CONCLUÍDO') then
-          BaixaPedido(DM, cdsLER.FieldByName('ID_PEDIDO').AsInteger);
+        if (lStatus = 'CONCLUÍDO') then
+        begin
+          BaixaProducao(DM, 'PEDV' + FormatFloat('0000', lPedido), lPedido);
+          BaixaPedido(DM, lPedido);
+        end;
 
         DM.Gravar.SQL.Clear;
         DM.Gravar.SQL.Add(SQL);
-        DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := cdsLER.FieldByName('ID_PEDIDO').AsInteger;
-        DM.Gravar.ParamByName('STATUS').AsString := cdsLER.FieldByName('STATUS').AsString;
-        DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;;
+        DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lPedido;
+        DM.Gravar.ParamByName('STATUS').AsString := lStatus;
+        DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;
         DM.Gravar.ExecSQL;
         cdsLER.Next
       end;
@@ -135,7 +144,7 @@ procedure TSM_Pedido.getClientDataSet(aClientDataSet: OleVariant);
 begin
   cdsLER.Close;
   cdsLER.Data := aClientDataSet;
-  cdsLER.SaveToFile('C:\temp\ler.cds',dfBinary);
+//  cdsLER.SaveToFile('C:\temp\ler.cds',dfBinary);
 end;
 
 function TSM_Pedido.PedidoVenda_Excluir(const BD: string;
@@ -174,6 +183,7 @@ function TSM_Pedido.PedidoVenda_Editar(const BD: string; aTabelas: OleVariant): 
 var
   DM: TServerDM;
 begin
+  Result := False;
   DM := TServerDM.Create(BD);
   try
     Pedido_Venda.Connection := DM.Conexao;
@@ -242,7 +252,7 @@ const
                         'from CONTAS_A_RECEBER R '+
                         'where R.TIPO = 1 and '+
                         '      R.ID_TABELA_MASTER = %s';
-  SQL_PEDIDO_IMG      = 'select ID_PEDIDO, IMAGEM '+
+  SQL_PEDIDO_IMG      = 'select ID_PEDIDO, SEQUENCIA, IMAGEM '+
                         'from PEDIDO_VENDA_IMG '+
                         'where ID_PEDIDO = %s';
 var
@@ -329,8 +339,8 @@ end;
 
 function TSM_Pedido.PedidoVenda_Adicionar(const BD: string; aTabelas: OleVariant): Boolean;
 const
-  INS_PEDIDO  = 'insert into PEDIDO_VENDA (EMISSAO, ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO, USUARIO) '+
-                'values (:EMISSAO, :ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO, :USUARIO) '+
+  INS_PEDIDO  = 'insert into PEDIDO_VENDA (EMISSAO, ENTREGA, ID_CLIENTE, ID_VENDEDOR, OBSERVACAO, USUARIO, GERAR_ORDEM_PRODUCAO) '+
+                'values (:EMISSAO, :ENTREGA, :ID_CLIENTE, :ID_VENDEDOR, :OBSERVACAO, :USUARIO, :GERAR_ORDEM_PRODUCAO) '+
                 'returning ID '+
                 '{into :ID}';
 
@@ -340,13 +350,14 @@ const
   INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, NDUP, VDUP, DVENC) '+
                 'values (:TIPO, :ID_TABELA_MASTER, :NDUP, :VDUP, :DVENC)';
 
-  INS_IMG     = 'insert into PEDIDO_VENDA_IMG (ID_PEDIDO, IMAGEM) '+
-                'values (:ID_PEDIDO, :IMAGEM)';
+  INS_IMG     = 'insert into PEDIDO_VENDA_IMG (ID_PEDIDO, SEQUENCIA, IMAGEM) '+
+                'values (:ID_PEDIDO, :SEQUENCIA, :IMAGEM)';
 var
   DM: TServerDM;
   lIDPedido: Integer;
   lMS: TStream;
 begin
+  Result := False;
   DM := TServerDM.Create(BD);
   try
     try
@@ -361,8 +372,9 @@ begin
         DM.Gravar.ParamByName('ID_VENDEDOR').AsInteger := cdsLER.FieldByName('ID_VENDEDOR').AsInteger;
         DM.Gravar.ParamByName('OBSERVACAO').AsString := cdsLER.FieldByName('OBSERVACAO').AsString;
         DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;
+        DM.Gravar.ParamByName('GERAR_ORDEM_PRODUCAO').AsInteger := cdsLER.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger;
         DM.Gravar.ExecSQL;
-        lIDPedido := DM.Gravar.Params[6].Value;
+        lIDPedido := DM.Gravar.Params[7].Value;
       end;
 
 //      *****************ITENS******************************
@@ -413,13 +425,17 @@ begin
         lMS := TMemoryStream.Create;
         try
           getClientDataSet(aTabelas[3]);
-          lMS := cdsLER.CreateBlobStream(cdsLER.FieldByName('IMAGEM'), bmRead);
           DM.Gravar.SQL.Clear;
           DM.Gravar.SQL.Add(INS_IMG);
-          DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
-//        DM.Gravar.Params[1].DataType := ftBlob;
-          DM.Gravar.ParamByName('IMAGEM').LoadFromStream(lMS, ftBlob);
-          DM.Gravar.ExecSQL;
+          while not cdsLER.Eof do
+          begin
+            lMS := cdsLER.CreateBlobStream(cdsLER.FieldByName('IMAGEM'), bmRead);
+            DM.Gravar.ParamByName('ID_PEDIDO').AsInteger := lIDPedido;
+            DM.Gravar.ParamByName('SEQUENCIA').AsInteger := cdsLER.FieldByName('SEQUENCIA').AsInteger;
+            DM.Gravar.ParamByName('IMAGEM').LoadFromStream(lMS, ftBlob);
+            DM.Gravar.ExecSQL;
+            cdsLER.Next;
+          end;
         finally
           FreeAndNil(lMS);
         end;
@@ -450,7 +466,7 @@ begin
   end;
 end;
 
-procedure TSM_Pedido.BaixaProducao(aDM: TServerDM; aLote: string);
+procedure TSM_Pedido.BaixaProducao(aDM: TServerDM; aLote: string; aIdPedido: integer);
 const
   UPD_LOTE       = 'update LOTE '+
                    'set STATUS = ''FINALIZADO'' '+
@@ -463,7 +479,13 @@ const
   UPD_LOTE_MP    = 'update LOTE_MATPRIMA m '+
                    'set QTDE_FECHADA = QTDE '+
                    'where (ID_LOTE = :ID_LOTE)';
+
+  SQL = 'select l.id from lote l '+
+        'where l.id_pedido = %s';
 begin
+  if aDM.CDSIsEmpty(Format(SQL, [aIdPedido.ToString])) then
+    Exit;
+
   try
     aDM.Gravar.SQL.Clear;
     aDM.Gravar.SQL.Add(UPD_LOTE);
@@ -491,10 +513,11 @@ const
 
   INS_LOTEITENS = 'insert into LOTE_ITENS (ID_LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DESCRI_ITEM) '+
                   'select :ID_LOTE, I.ID_PRODUTO,'+
-                  '       (I.QTDE_A_BAIXAR - P.QTDE_ESTOQUE), 0, coalesce(P.CONV_UNIDADE, P.COD_UNIDADE), ''ENTRADA'', P.NOME '+
+                  '       (I.QTDE_A_BAIXAR - cast(case when P.QTDE_ESTOQUE < 0 then 0 else p.qtde_estoque end as numeric(15,3))), 0, coalesce(P.CONV_UNIDADE, P.COD_UNIDADE), ''ENTRADA'', P.NOME '+
                   'from PEDIDO_VENDA_ITEM I '+
                   'left join PRODUTO P on (P.CODIGO = I.ID_PRODUTO) '+
                   'where I.ID_PEDIDO = :ID_PEDIDO and '+
+                  '      P.TIPO_PRODUTO <> ''S'' and '+
                   '      P.QTDE_ESTOQUE < I.QTDE_A_BAIXAR';
 
   INS_LOTE_MP   = 'insert into LOTE_MATPRIMA (ID_LOTE, ID_MATPRIMA, QTDE, QTDE_FECHADA) '+
@@ -505,9 +528,21 @@ const
                   'left join PRODUTO_COMPOSICAO C on (C.ID_PRODUTO = P.CODIGO) '+
                   'where I.ID_PEDIDO = :ID_PEDIDO and '+
                   '      P.QTDE_ESTOQUE < I.QTDE_A_BAIXAR and '+
+                  '      P.TIPO_PRODUTO <> ''S'' and '+
                   '      C.ID_MATPRIMA is not null '+
                   'order by I.ORDEM';
+
+  SQL = 'select first 1 I.ID_PRODUTO '+
+        'from PEDIDO_VENDA_ITEM I '+
+        'left join PRODUTO P on (P.CODIGO = I.ID_PRODUTO) '+
+        'where I.ID_PEDIDO = %s and '+
+        '      P.TIPO_PRODUTO <> ''S'' and '+
+        '      P.QTDE_ESTOQUE < I.QTDE_A_BAIXAR';
+
 begin
+  if aDM.CDSIsEmpty(Format(SQL,[aIdPedido.ToString])) then
+    Exit;
+
   try
     aDM.Gravar.SQL.Clear;
     aDM.Gravar.SQL.Add(INS_LOTE);

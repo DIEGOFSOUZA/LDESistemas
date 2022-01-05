@@ -710,6 +710,10 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
       item
         Name = 'VALOR'
         DataType = ftCurrency
+      end
+      item
+        Name = 'GERAR_ORDEM_PRODUCAO'
+        DataType = ftInteger
       end>
     IndexDefs = <>
     Params = <>
@@ -745,6 +749,9 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
     object cdsPedidosVALOR: TCurrencyField
       FieldName = 'VALOR'
       DisplayFormat = 'R$ #,##0.00'
+    end
+    object cdsPedidosGERAR_ORDEM_PRODUCAO: TIntegerField
+      FieldName = 'GERAR_ORDEM_PRODUCAO'
     end
   end
   object dsPedidos: TDataSource

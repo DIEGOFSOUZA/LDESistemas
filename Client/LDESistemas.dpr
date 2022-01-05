@@ -118,7 +118,10 @@ uses
   UFrm_PedidoVendaGerencia in 'Pedido\Venda\UFrm_PedidoVendaGerencia.pas' {Frm_PedidoVendaGerencia},
   UFrmPedido_Venda in 'Pedido\Venda\UFrmPedido_Venda.pas' {FrmPedido_Venda},
   UFrm_PedidoVenda_NovoProduto in 'Pedido\Venda\UFrm_PedidoVenda_NovoProduto.pas' {Frm_PedidoVenda_NovoProduto},
-  UFrm_PedidoVenda_AdicionarProduto in 'Pedido\Venda\UFrm_PedidoVenda_AdicionarProduto.pas' {Frm_PedidoVenda_AdicionarProduto};
+  UFrm_PedidoVenda_AdicionarProduto in 'Pedido\Venda\UFrm_PedidoVenda_AdicionarProduto.pas' {Frm_PedidoVenda_AdicionarProduto},
+  UFrmCad_Servico in 'Produto\UFrmCad_Servico.pas' {FrmCad_Servico},
+  UPdr_Relatorio2_1 in 'Heranca\Relatorio\UPdr_Relatorio2_1.pas' {Pdr_Relatorio2_1},
+  URel_PedidoVendaA3 in 'Pedido\Venda\Relatorio\URel_PedidoVendaA3.pas' {Rel_PedidoVendaA3};
 
 {$R *.res}
 
@@ -128,6 +131,8 @@ begin
   Application.Title := 'LDE Sistemas';
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TDMACBr, DMACBr);
+  Application.CreateForm(TPdr_Relatorio2_1, Pdr_Relatorio2_1);
+  Application.CreateForm(TRel_PedidoVendaA3, Rel_PedidoVendaA3);
   try
     if Iniciar() then
     begin

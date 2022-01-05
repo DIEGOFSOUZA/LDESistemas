@@ -113,15 +113,42 @@ type
     cdsCONTAS_A_RECEBERTOT_PAGO: TAggregateField;
     cdsCONTAS_A_RECEBERTIPO: TIntegerField;
     cdsCONTAS_A_RECEBERID_TABELA_MASTER: TIntegerField;
-    actAdicionarImagem: TAction;
     OpenDialog1: TOpenDialog;
-    pnlTopRight: TPanel;
-    imgPedido: TImage;
-    btnImagem: TButton;
     cdsPEDIDO_VENDA_IMG: TClientDataSet;
     cdsPEDIDO_VENDA_IMGID_PEDIDO: TIntegerField;
     cdsPEDIDO_VENDA_IMGIMAGEM: TBlobField;
     cdsPEDIDO_VENDA_ITEMQTDE_A_BAIXAR: TBCDField;
+    dbchkGeraProducao: TDBCheckBox;
+    cdsPEDIDO_VENDAGERAR_ORDEM_PRODUCAO: TIntegerField;
+    tsImagem: TTabSheet;
+    pnlImgFundo: TPanel;
+    pnlImgTop: TPanel;
+    pnlImgBotton: TPanel;
+    pnlImg1: TPanel;
+    img1: TImage;
+    pnlImg1Top: TPanel;
+    btnImg1: TButton;
+    pnlImg2: TPanel;
+    img2: TImage;
+    pnlImg2Top: TPanel;
+    btnImg2: TButton;
+    pnlImg3: TPanel;
+    img3: TImage;
+    pnlImg3Top: TPanel;
+    btnImg3: TButton;
+    pnlImg4: TPanel;
+    img4: TImage;
+    pnlImg4Top: TPanel;
+    btnImg4: TButton;
+    pnlImg5: TPanel;
+    img5: TImage;
+    pnlImg5Top: TPanel;
+    btnImg5: TButton;
+    pnlImg6: TPanel;
+    img6: TImage;
+    pnlImg6Top: TPanel;
+    btnImg6: TButton;
+    cdsPEDIDO_VENDA_IMGSEQUENCIA: TIntegerField;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -142,7 +169,12 @@ type
     procedure pgc1Changing(Sender: TObject; var AllowChange: Boolean);
     procedure cdsCONTAS_A_RECEBERAfterInsert(DataSet: TDataSet);
     procedure cdsPEDIDO_VENDA_ITEMAfterInsert(DataSet: TDataSet);
-    procedure actAdicionarImagemExecute(Sender: TObject);
+    procedure btnImg1Click(Sender: TObject);
+    procedure btnImg2Click(Sender: TObject);
+    procedure btnImg3Click(Sender: TObject);
+    procedure btnImg4Click(Sender: TObject);
+    procedure btnImg5Click(Sender: TObject);
+    procedure btnImg6Click(Sender: TObject);
   private
     FIdParcelamento: integer;
     FIdPagamento: integer;
@@ -157,9 +189,10 @@ type
     procedure GerarDuplicatas(aValor:Currency);
     procedure LimparCbbs();
     procedure AbrirCDS(aIdPedido: integer);
+    procedure AddImagem(aSequencia: integer);
     function SelecionarIMG(): string;
-    procedure SalvarImagem(aCaminho: string);
-    procedure ExibeImagem();
+    procedure SalvarImagem(aCaminho: string;aSeq:integer);
+    procedure ExibeImagem(aSequencia: Integer);
   public
     property IdPagamento: integer read FIdPagamento write FIdPagamento;
     property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
@@ -180,19 +213,17 @@ uses
   UDM, u_Mensagem, UConsulta, UFrm_PedidoVenda_AdicionarProduto,
   UFrm_PedidoVenda_NovoProduto, ACBrUtil, UMakeReadWrite, UFuncoes;
 
-
 {$R *.dfm}
 
-procedure TFrmPedido_Venda.actAdicionarImagemExecute(Sender: TObject);
+procedure TFrmPedido_Venda.AddImagem(aSequencia: integer);
 var
   lFileName: string;
 begin
-  inherited;
   lFileName := SelecionarIMG;
   if (lFileName <> '') then
   begin
-    SalvarImagem(lFileName);
-    ExibeImagem;
+    SalvarImagem(lFileName,aSequencia);
+    ExibeImagem(aSequencia);
   end;
 end;
 
@@ -204,7 +235,7 @@ begin
     Result := OpenDialog1.FileName;
 end;
 
-procedure TFrmPedido_Venda.SalvarImagem(aCaminho: string);
+procedure TFrmPedido_Venda.SalvarImagem(aCaminho: string; aSeq: integer);
 var
   oFilestream: TFileStream;
   oMemorystream: TStream;
@@ -212,11 +243,14 @@ begin
   oFilestream := TFileStream.Create(aCaminho, fmOpenRead);
   oMemorystream := TMemoryStream.Create;
   try
-    if not cdsPEDIDO_VENDA_IMG.IsEmpty then
+    if (cdsPEDIDO_VENDA_IMG.Locate('SEQUENCIA',aSeq,[])) then
       cdsPEDIDO_VENDA_IMG.Edit
     else
+    begin
       cdsPEDIDO_VENDA_IMG.Append;
-    cdsPEDIDO_VENDA_IMGID_PEDIDO.AsInteger := cdsPEDIDO_VENDAID.AsInteger;
+      cdsPEDIDO_VENDA_IMGID_PEDIDO.AsInteger := cdsPEDIDO_VENDAID.AsInteger;
+      cdsPEDIDO_VENDA_IMGSEQUENCIA.AsInteger := aSeq;
+    end;
     cdsPEDIDO_VENDA_IMGIMAGEM.LoadFromStream(oFilestream);
     cdsPEDIDO_VENDA_IMG.Post;
   finally
@@ -225,17 +259,20 @@ begin
   end;
 end;
 
-procedure TFrmPedido_Venda.ExibeImagem;
+procedure TFrmPedido_Venda.ExibeImagem(aSequencia: Integer);
 var
   oMemorystream: TStream;
   oImage: TJPEGImage;
 begin
+  if not cdsPEDIDO_VENDA_IMG.Locate('SEQUENCIA', aSequencia, []) then
+    Exit;
+
   oMemorystream := TMemoryStream.Create;
   oImage := TJPEGImage.Create;
   try
     oMemorystream := cdsPEDIDO_VENDA_IMG.CreateBlobStream(cdsPEDIDO_VENDA_IMGIMAGEM, bmRead);
     oImage.LoadFromStream(oMemorystream);
-    imgPedido.Picture.Assign(oImage);
+    TImage(FindComponent('img' + IntToStr(aSequencia))).Picture.Assign(oImage);
   finally
     FreeAndNil(oMemorystream);
     FreeAndNil(oImage);
@@ -358,20 +395,25 @@ begin
   if cdsPEDIDO_VENDA_IMG.ChangeCount > 0 then
     lImagem := cdsPEDIDO_VENDA_IMG.Delta;
 
-  try
-    if (TipoTransacao = 'INSERT') then
+  if (TipoTransacao = 'INSERT') then
+  begin
+    if DM.SMPedido.PedidoVenda_Adicionar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber, lImagem])) then
     begin
-      DM.SMPedido.PedidoVenda_Adicionar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber, lImagem]));
       TMensagem.Informacao('Pedido gerado com sucesso.');
-    end;
-    if (TipoTransacao = 'UPDATE') then
+      actSair.Execute;
+    end
+    else
+      TMensagem.Erro('Pedido não foi gerado, tente novamente.');
+  end;
+  if (TipoTransacao = 'UPDATE') then
+  begin
+    if DM.SMPedido.PedidoVenda_Editar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber, lImagem])) then
     begin
-      DM.SMPedido.PedidoVenda_Editar(DM.BancoDados, VarArrayOf([lPedidos, lItem, lReceber, lImagem]));
       TMensagem.Informacao('Pedido alterado com sucesso.');
-    end;
-    actSair.Execute;
-  except
-    TMensagem.Erro('Pedido não foi gerado, tente novamente.');
+      actSair.Execute;
+    end
+    else
+      TMensagem.Erro('Pedido não foi gerado, tente novamente.');
   end;
 end;
 
@@ -404,6 +446,42 @@ begin
   cdsPEDIDO_VENDA_ITEM.Post;
 end;
 
+procedure TFrmPedido_Venda.btnImg1Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(1);
+end;
+
+procedure TFrmPedido_Venda.btnImg2Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(2);
+end;
+
+procedure TFrmPedido_Venda.btnImg3Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(3);
+end;
+
+procedure TFrmPedido_Venda.btnImg4Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(4);
+end;
+
+procedure TFrmPedido_Venda.btnImg5Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(5);
+end;
+
+procedure TFrmPedido_Venda.btnImg6Click(Sender: TObject);
+begin
+  inherited;
+  AddImagem(6);
+end;
+
 procedure TFrmPedido_Venda.cbbPagtoFormaEnter(Sender: TObject);
 begin
   inherited;
@@ -426,6 +504,7 @@ begin
   cdsPEDIDO_VENDA.FieldByName('ENTRADA').AsDateTime := Date;
   cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + 7;
   cdsPEDIDO_VENDA.FieldByName('USUARIO').AsString := DM.Usuario.Login;
+  cdsPEDIDO_VENDA.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger := 0;
 end;
 
 procedure TFrmPedido_Venda.cdsPEDIDO_VENDA_ITEMAfterInsert(DataSet: TDataSet);
@@ -591,13 +670,16 @@ begin
 end;
 
 procedure TFrmPedido_Venda.EditarPedido(aIDPedido: integer);
+var
+  i: Integer;
 begin
   Iniciar;
   FTipoTransacao := 'UPDATE';
   AbrirCDS(aIDPedido);
   TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
   if not cdsPEDIDO_VENDA_IMG.IsEmpty then
-    ExibeImagem;
+  for I := 1 to 6 do
+    ExibeImagem(i);
 
   cdsPEDIDO_VENDA.Edit;
 end;

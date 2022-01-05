@@ -766,6 +766,32 @@ end^
 
 SET TERM ; ^
 
+ALTER TABLE PEDIDO_VENDA
+    ADD GERAR_ORDEM_PRODUCAO INTEGER DEFAULT 0;
+
+COMMENT ON COLUMN PEDIDO_VENDA.GERAR_ORDEM_PRODUCAO IS
+'ao marcar no pedido que deseja gerar producao, o pedido ao chegar no status PRODUCAO, ira gerar lote de entrada e saida de MP para suprir a necessidade do pedido.';
+
+ALTER TABLE PRODUTO ALTER COLUMN QTDE_ESTOQUE
+SET DEFAULT 0;
+
+ALTER TABLE PEDIDO_VENDA_IMG
+    ADD SEQUENCIA INTEGER DEFAULT 1 NOT NULL;
+
+alter table PEDIDO_VENDA_IMG
+alter ID position 1;
+
+alter table PEDIDO_VENDA_IMG
+alter ID_PEDIDO position 2;
+
+alter table PEDIDO_VENDA_IMG
+alter SEQUENCIA position 3;
+
+alter table PEDIDO_VENDA_IMG
+alter IMAGEM position 4;
+
+
+
 
 
 	

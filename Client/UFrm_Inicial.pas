@@ -89,6 +89,7 @@ type
     MenuRel_Compra_NFPorClassif: TMenuItem;
     MenuRel_Cliente_SemCompra: TMenuItem;
     MenuPedido_GERENCIAR: TMenuItem;
+    MenuCadServico: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -141,6 +142,7 @@ type
     procedure MenuRel_Compra_NFPorClassifClick(Sender: TObject);
     procedure MenuRel_Cliente_SemCompraClick(Sender: TObject);
     procedure MenuPedido_GERENCIARClick(Sender: TObject);
+    procedure MenuCadServicoClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -174,7 +176,7 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes, UFrm_PedidoVendaGerencia;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico;
 
 function Saudacao: string;
 begin
@@ -295,6 +297,11 @@ end;
 procedure TFrm_Inicial.CONTASARECEBER21Click(Sender: TObject);
 begin
   TFrm_PesquisaContasAReceber.CreateChild(Self);
+end;
+
+procedure TFrm_Inicial.MenuCadServicoClick(Sender: TObject);
+begin
+  TFrmCad_Servico.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuCad_EmpresaClick(Sender: TObject);
@@ -446,6 +453,7 @@ begin
   MenuProd_Unidade.Visible := False;
   MenuProd_Grupo.Visible := False;
   MenuProd_Subgrupo.Visible := False;
+  MenuCadServico.Visible := False;
 
   MenuCompra.Visible := False;
   MenuCompra_Grupo.Visible := False;
@@ -556,6 +564,7 @@ begin
     MenuProd_Unidade.Visible := True;
     MenuProd_Grupo.Visible := True;
     MenuProd_Subgrupo.Visible := True;
+    MenuCadServico.Visible := True;
 
     MenuVenda.Visible := True;
     MenuVenda_PDV.Visible := True;

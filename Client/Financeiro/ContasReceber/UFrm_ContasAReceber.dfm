@@ -954,6 +954,10 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
   object actlstMain: TActionList
     Left = 806
     Top = 231
+    object actFiltrar: TAction
+      ShortCut = 113
+      OnExecute = actFiltrarExecute
+    end
     object actBaixaDuplicata: TAction
       ShortCut = 116
       OnExecute = actBaixaDuplicataExecute
@@ -962,26 +966,22 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       ShortCut = 118
       OnExecute = actAlteraVenctoExecute
     end
-    object actFiltrar: TAction
-      ShortCut = 113
-      OnExecute = actFiltrarExecute
-    end
-    object actSair: TAction
-      OnExecute = actSairExecute
-    end
     object actImprimir: TAction
       OnExecute = actImprimirExecute
-    end
-    object actGerarBoleto: TAction
-      OnExecute = actGerarBoletoExecute
-    end
-    object actRestaurarBaixa: TAction
-      Caption = 'actRestaurarBaixa'
-      OnExecute = actRestaurarBaixaExecute
     end
     object actVisualizar: TAction
       Caption = 'actVisualizar'
       OnExecute = actVisualizarExecute
+    end
+    object actGerarBoleto: TAction
+      OnExecute = actGerarBoletoExecute
+    end
+    object actSair: TAction
+      OnExecute = actSairExecute
+    end
+    object actRestaurarBaixa: TAction
+      Caption = 'actRestaurarBaixa'
+      OnExecute = actRestaurarBaixaExecute
     end
   end
   object cdsGrid: TClientDataSet

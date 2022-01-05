@@ -475,4 +475,80 @@ inherited SMProduto: TSMProduto
       Size = 500
     end
   end
+  object fdqryServico: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravacao
+    SQL.Strings = (
+      
+        'select P.CODIGO, P.NOME, P.PRECO_VENDA, P.COD_UNIDADE, P.PRECO_C' +
+        'USTO, P.SITUACAO, U.SIGLA'
+      'from PRODUTO P'
+      'left join UNIDADE U on (U.CODIGO = P.COD_UNIDADE)'
+      'where P.CODIGO = :ID  ')
+    Left = 272
+    Top = 56
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object fdqryServicoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object fdqryServicoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object fdqryServicoPRECO_VENDA: TCurrencyField
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      Required = True
+    end
+    object fdqryServicoCOD_UNIDADE: TIntegerField
+      FieldName = 'COD_UNIDADE'
+      Origin = 'COD_UNIDADE'
+    end
+    object fdqryServicoPRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      Origin = 'PRECO_CUSTO'
+    end
+    object fdqryServicoSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      Required = True
+      Size = 10
+    end
+    object fdqryServicoSIGLA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SIGLA'
+      Origin = 'SIGLA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+  end
+  object dspServico: TDataSetProvider
+    DataSet = fdqryServico
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 272
+    Top = 112
+  end
+  object cdsServico: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspServico'
+    StoreDefs = True
+    Left = 272
+    Top = 176
+  end
 end

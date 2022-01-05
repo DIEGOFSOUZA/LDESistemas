@@ -117,7 +117,7 @@ var
 begin
   inherited;
   try
-    aRet := Consulta.Produto(QuotedStr('PA'), 'Consulta de Produtos');
+    aRet := Consulta.Produto(QuotedStr('PA')+','+QuotedStr('S'), 'Consulta de Produto/Serviço');
     if (aRet.iCodigo > 0) then
     begin
       Retorno := aRet.iCodigo.ToString;

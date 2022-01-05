@@ -20,6 +20,7 @@ object ServerDM: TServerDM
     FetchOptions.Items = [fiBlobs, fiDetails]
     FetchOptions.Cache = [fiBlobs, fiDetails]
     ConnectedStoredUsage = []
+    Connected = True
     LoginPrompt = False
     Left = 120
     Top = 9

@@ -91,6 +91,10 @@ object SM_Pedido: TSM_Pedido
       ReadOnly = True
       Size = 45
     end
+    object Pedido_VendaGERAR_ORDEM_PRODUCAO: TIntegerField
+      FieldName = 'GERAR_ORDEM_PRODUCAO'
+      Origin = 'GERAR_ORDEM_PRODUCAO'
+    end
   end
   object dspPedido_Venda: TDataSetProvider
     DataSet = Pedido_Venda
@@ -276,7 +280,7 @@ object SM_Pedido: TSM_Pedido
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
-      'select ID_PEDIDO, IMAGEM'
+      'select ID_PEDIDO, SEQUENCIA, IMAGEM'
       'from PEDIDO_VENDA_IMG'
       'where 1=2  ')
     Left = 352
@@ -284,6 +288,12 @@ object SM_Pedido: TSM_Pedido
     object Pedido_Venda_IMGID_PEDIDO: TIntegerField
       FieldName = 'ID_PEDIDO'
       Origin = 'ID_PEDIDO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Pedido_Venda_IMGSEQUENCIA: TIntegerField
+      FieldName = 'SEQUENCIA'
+      Origin = 'SEQUENCIA'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end

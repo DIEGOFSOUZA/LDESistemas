@@ -19,8 +19,6 @@ inherited Frm_GrupoProdutos: TFrm_GrupoProdutos
     inherited Panel1: TPanel
       Width = 517
       Color = 14803681
-      ExplicitLeft = 2
-      ExplicitTop = -4
       ExplicitWidth = 517
     end
     inherited pnlFundo1: TPanel
@@ -47,8 +45,6 @@ inherited Frm_GrupoProdutos: TFrm_GrupoProdutos
         ParentBackground = False
         ShowCaption = False
         TabOrder = 0
-        ExplicitLeft = 2
-        ExplicitTop = -2
         object Label2: TLabel
           Left = 122
           Top = 10
@@ -79,7 +75,7 @@ inherited Frm_GrupoProdutos: TFrm_GrupoProdutos
         object Label1: TLabel
           Left = 20
           Top = 10
-          Width = 80
+          Width = 58
           Height = 17
           Alignment = taCenter
           Caption = 'C'#211'DIGO *'
@@ -145,7 +141,6 @@ inherited Frm_GrupoProdutos: TFrm_GrupoProdutos
   inherited cds: TClientDataSet
     CommandText = 'select * from GRUPO_PROD where codigo = 1  '
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsAfterInsert
     Left = 432
     Top = 160

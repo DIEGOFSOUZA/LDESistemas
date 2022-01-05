@@ -56,6 +56,7 @@ type
     imgExcluirPedido: TImage;
     lblExcluirPedido: TLabel;
     actEditarPedido: TAction;
+    cdsPedidosGERAR_ORDEM_PRODUCAO: TIntegerField;
     procedure dbgrdPedidosCellClick(Column: TColumn);
     procedure dbgrdPedidosDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -75,8 +76,9 @@ type
     procedure PedidosAvancaStatus();
     function AvancaStatus(aStatus: string): string;
     procedure ExcluirPedidos();
+    function IsContasAReceber(aIDPedido: integer): Boolean;
   public
-    { Public declarations }
+    FExibeMensagemReceber: Boolean;
   end;
 
 var
@@ -96,6 +98,11 @@ begin
   inherited;
   if not cdsPedidos.IsEmpty then
     PedidosAvancaStatus;
+  if FExibeMensagemReceber then
+  begin
+    FExibeMensagemReceber := False;
+    TMensagem.Atencao('Alguns dos Pedido(s) selecionado não avançou de status por não ter a forma de pagamento informada.');
+  end;
 end;
 
 procedure TFrm_PedidoVendaGerencia.actExcluirPedidoExecute(Sender: TObject);
@@ -147,7 +154,8 @@ begin
   inherited;
   SQL := 'select cast(0 as integer) SELECAO, P.ID ID_PEDIDO, P.EMISSAO,'+
          'P.ENTREGA, C.NOME_RAZAO CLIENTE, R.NOME VENDEDOR, P.STATUS,'+
-         'cast(sum(pi.TOTAL)as double precision) VALOR '+
+         'cast(sum(pi.TOTAL)as double precision) VALOR,'+
+         'P.GERAR_ORDEM_PRODUCAO '+
          'from PEDIDO_VENDA P '+
          'left join CLIENTE C on (C.CODIGO = P.ID_CLIENTE) '+
          'left join REPRESENTANTE R on (R.CODIGO = P.ID_VENDEDOR) '+
@@ -165,7 +173,8 @@ begin
     4:
       SQL := SQL + 'where p.id = ' + edtNumPed.Text;
   end;
-  SQL := SQL + ' group by P.ID, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO, R.NOME, P.STATUS';
+  SQL := SQL + ' group by P.ID, P.EMISSAO, P.ENTREGA, C.NOME_RAZAO, R.NOME, P.STATUS,'+
+               'P.GERAR_ORDEM_PRODUCAO ';
 
   try
     cdsPedidos.Close;
@@ -309,9 +318,23 @@ begin
   nbPesquisa.PageIndex := 0;
 end;
 
+function TFrm_PedidoVendaGerencia.IsContasAReceber(aIDPedido: integer): Boolean;
+const
+  SQL = 'select c.id from contas_a_receber c '+
+        'where c.tipo = 1 and '+
+        'c.id_tabela_master = %s';
+begin
+  Result := False;
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aIDPedido.ToString]));
+  if not DM.dsConsulta.IsEmpty then
+    Result := True;
+end;
+
 procedure TFrm_PedidoVendaGerencia.PedidosAvancaStatus;
 var
   lPedidos: TClientDataSet;
+  lProximoStatus: string;
 begin
   cdsPedidos.DisableControls;
   lPedidos := TClientDataSet.Create(nil);
@@ -319,25 +342,36 @@ begin
     lPedidos.FieldDefs.Add('ID_PEDIDO',ftInteger);
     lPedidos.FieldDefs.Add('STATUS',ftString,50);
     lPedidos.FieldDefs.Add('USUARIO',ftString,30);
-    lPedidos.FieldDefs.Add('GERA_PRODUCAO',ftInteger);
+    lPedidos.FieldDefs.Add('GERAR_ORDEM_PRODUCAO',ftInteger);
     lPedidos.CreateDataSet;
     cdsPedidos.First;
     while not cdsPedidos.Eof do
     begin
       if ((cdsPedidos.FieldByName('SELECAO').AsInteger = 1) and (cdsPedidos.FieldByName('STATUS').AsString <> 'CONCLUÍDO')) then
       begin
-        lPedidos.Append;
-        lPedidos.FieldByName('ID_PEDIDO').AsInteger := cdsPedidos.FieldByName('ID_PEDIDO').AsInteger;
-        lPedidos.FieldByName('STATUS').AsString := AvancaStatus(cdsPedidos.FieldByName('STATUS').AsString);
-        lPedidos.FieldByName('USUARIO').AsString := DM.Usuario.Login;
-        lPedidos.FieldByName('GERA_PRODUCAO').AsInteger := 1;
-        lPedidos.Post;
+        lProximoStatus := AvancaStatus(cdsPedidos.FieldByName('STATUS').AsString);
+        if ((FExibeMensagemReceber = False) and
+            (lProximoStatus = 'APROVADO') and
+            (not IsContasAReceber(cdsPedidos.FieldByName('ID_PEDIDO').AsInteger))) then
+        begin
+          FExibeMensagemReceber := True;
+        end
+        else
+        begin
+          lPedidos.Append;
+          lPedidos.FieldByName('ID_PEDIDO').AsInteger := cdsPedidos.FieldByName('ID_PEDIDO').AsInteger;
+          lPedidos.FieldByName('STATUS').AsString := lProximoStatus;
+          lPedidos.FieldByName('USUARIO').AsString := DM.Usuario.Login;
+          lPedidos.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger := cdsPedidos.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger;
+          lPedidos.Post;
+        end;
       end;
       cdsPedidos.Next;
     end;
 
-    if (DM.SMPedido.PedidoVenda_AvancaStatus(DM.BancoDados, lPedidos.Data) = 1) then
-      actPesquisar.Execute;
+    if not lPedidos.IsEmpty then
+      if (DM.SMPedido.PedidoVenda_AvancaStatus(DM.BancoDados, lPedidos.Data) = 1) then
+        actPesquisar.Execute;
   finally
     FreeAndNil(lPedidos);
     cdsPedidos.EnableControls;

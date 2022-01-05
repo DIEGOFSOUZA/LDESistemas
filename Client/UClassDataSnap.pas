@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 03/01/2022 14:52:32
+// 04/01/2022 15:15:17
 //
 
 unit UClassDataSnap;
@@ -258,12 +258,16 @@ type
   private
     FsetProdutoCommand: TDBXCommand;
     FgetProdutoCommand: TDBXCommand;
+    FsetServicoCommand: TDBXCommand;
+    FgetServicoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProduto(BD: string; pID: Integer): OleVariant;
+    function setServico(BD: string; aDados: OleVariant; aID: Integer): OleVariant;
+    function getServico(BD: string; aID: Integer): OleVariant;
   end;
 
   TSM_SaveInCloudClient = class(TDSAdminClient)
@@ -2001,6 +2005,37 @@ begin
   Result := FgetProdutoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSMProdutoClient.setServico(BD: string; aDados: OleVariant; aID: Integer): OleVariant;
+begin
+  if FsetServicoCommand = nil then
+  begin
+    FsetServicoCommand := FDBXConnection.CreateCommand;
+    FsetServicoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetServicoCommand.Text := 'TSMProduto.setServico';
+    FsetServicoCommand.Prepare;
+  end;
+  FsetServicoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetServicoCommand.Parameters[1].Value.AsVariant := aDados;
+  FsetServicoCommand.Parameters[2].Value.SetInt32(aID);
+  FsetServicoCommand.ExecuteUpdate;
+  Result := FsetServicoCommand.Parameters[3].Value.AsVariant;
+end;
+
+function TSMProdutoClient.getServico(BD: string; aID: Integer): OleVariant;
+begin
+  if FgetServicoCommand = nil then
+  begin
+    FgetServicoCommand := FDBXConnection.CreateCommand;
+    FgetServicoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FgetServicoCommand.Text := 'TSMProduto.getServico';
+    FgetServicoCommand.Prepare;
+  end;
+  FgetServicoCommand.Parameters[0].Value.SetWideString(BD);
+  FgetServicoCommand.Parameters[1].Value.SetInt32(aID);
+  FgetServicoCommand.ExecuteUpdate;
+  Result := FgetServicoCommand.Parameters[2].Value.AsVariant;
+end;
+
 constructor TSMProdutoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -2015,6 +2050,8 @@ destructor TSMProdutoClient.Destroy;
 begin
   FsetProdutoCommand.DisposeOf;
   FgetProdutoCommand.DisposeOf;
+  FsetServicoCommand.DisposeOf;
+  FgetServicoCommand.DisposeOf;
   inherited;
 end;
 

@@ -30,14 +30,12 @@ type
     FDGUIxWaitCursor1: TFDGUIxWaitCursor;
     procedure DataModuleDestroy(Sender: TObject);
   private
-    { Private declarations }
     fBancoDados: string;
     procedure MontaInsert(Tabela, pCampos : string) ;
     procedure MontaUpDate(Tabela, pCampos : string; pChavePrimaria : TStrings) ;
     procedure MontaDelete(Tabela : string; pChavePrimaria : TStrings) ;
     function CampoModificado(pCampo : TField) : boolean ;
   public
-    { Public declarations }
     constructor Create(pBancoDados: string); reintroduce ;
     function LerDataSet(pSQL : string) : OleVariant ;
     function LerDataSetInteger(pSQL, pCampoRetorno : string) : integer ;
@@ -45,6 +43,7 @@ type
     function LerDataSetString(pSQL, pCampoRetorno : string) : string ;
     function ExecuteDirect(pSQL : string) : integer ;
     function Executar(pSQL : string) : integer ;
+    function CDSIsEmpty(aSQL: string): Boolean;
 
     function TesteDataBase: Boolean;
 
@@ -190,13 +189,37 @@ begin
     SQLLer.SQL.Text := pSQL ;
     //SQLLer.SQL.SaveToFile('c:\apagar\t.txt');
     Ler.Open ;
-    Result := Ler.Data ;
+    Result := Ler.Data;
     Ler.Close ;
     TranLeitura.Commit ;
   except on e : Exception do
     begin
       if TranLeitura.Active then
         TranLeitura.Commit ;
+      raise Exception.Create(e.Message);
+    end;
+  end;
+end;
+
+function TServerDM.CDSIsEmpty(aSQL: string): Boolean;
+begin
+  Result := True;
+  Ler.Close;
+  try
+    if not TranLeitura.Active then
+      TranLeitura.StartTransaction;
+    SQLLer.SQL.Clear;
+    SQLLer.SQL.Text := aSQL;
+    Ler.Open;
+    if not Ler.IsEmpty then
+      Result := False;
+    Ler.Close;
+    TranLeitura.Commit;
+  except
+    on e: Exception do
+    begin
+      if TranLeitura.Active then
+        TranLeitura.Commit;
       raise Exception.Create(e.Message);
     end;
   end;

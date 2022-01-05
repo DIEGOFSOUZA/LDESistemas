@@ -133,7 +133,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Style = [fsBold]
         ParentFont = False
         ReadOnly = True
-        TabOrder = 1
+        TabOrder = 0
       end
       object DBEdit2: TDBEdit
         Left = 161
@@ -148,7 +148,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 1
       end
       object DBEdit3: TDBEdit
         Left = 290
@@ -163,7 +163,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 2
       end
       object dbpsqsCliente: TDBPesquisa
         Left = 26
@@ -209,7 +209,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsClientePesquisa
-        TabOrder = 5
+        TabOrder = 4
         TabStop = True
       end
       object dbpsqsVendedor: TDBPesquisa
@@ -256,49 +256,36 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsVendedorPesquisa
-        TabOrder = 6
+        TabOrder = 5
         TabStop = True
       end
       object DBMemo1: TDBMemo
         Left = 418
         Top = 30
         Width = 280
-        Height = 121
+        Height = 94
         DataField = 'OBSERVACAO'
         DataSource = dsPEDIDO_VENDA
-        TabOrder = 4
+        TabOrder = 3
       end
-      object pnlTopRight: TPanel
-        Left = 704
-        Top = 1
-        Width = 166
-        Height = 175
-        Align = alRight
-        TabOrder = 0
-        object imgPedido: TImage
-          Left = 1
-          Top = 30
-          Width = 164
-          Height = 144
-          Align = alBottom
-          Center = True
-          Proportional = True
-          ExplicitTop = 31
-        end
-        object btnImagem: TButton
-          Left = 5
-          Top = 2
-          Width = 25
-          Height = 25
-          Action = actAdicionarImagem
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-          TabOrder = 0
-        end
+      object dbchkGeraProducao: TDBCheckBox
+        Left = 418
+        Top = 129
+        Width = 228
+        Height = 34
+        Caption = 'GERAR ORDEM DE PRODU'#199#194'O PARA ITENS COM ESTOQUE ABAIXO'
+        DataField = 'GERAR_ORDEM_PRODUCAO'
+        DataSource = dsPEDIDO_VENDA
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+        ValueChecked = '1'
+        ValueUnchecked = '0'
+        WordWrap = True
       end
     end
     object pnlBotton: TPanel
@@ -460,7 +447,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 303
-          ActivePage = tsItem
+          ActivePage = tsImagem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
@@ -1038,6 +1025,323 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               end
             end
           end
+          object tsImagem: TTabSheet
+            Caption = 'IMAGENS'
+            ImageIndex = 2
+            object pnlImgFundo: TPanel
+              Left = 0
+              Top = 0
+              Width = 863
+              Height = 275
+              Align = alClient
+              BevelOuter = bvNone
+              Color = 14803681
+              ParentBackground = False
+              TabOrder = 0
+              ExplicitLeft = 152
+              ExplicitTop = 96
+              ExplicitWidth = 185
+              ExplicitHeight = 41
+              object pnlImgTop: TPanel
+                Left = 0
+                Top = 0
+                Width = 863
+                Height = 137
+                Align = alTop
+                TabOrder = 0
+                ExplicitTop = -6
+                object pnlImg1: TPanel
+                  Left = 1
+                  Top = 1
+                  Width = 287
+                  Height = 135
+                  Align = alLeft
+                  TabOrder = 0
+                  ExplicitLeft = 575
+                  object img1: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 108
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg1Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    object btnImg1: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg1Click
+                    end
+                  end
+                end
+                object pnlImg2: TPanel
+                  Left = 288
+                  Top = 1
+                  Width = 287
+                  Height = 135
+                  Align = alLeft
+                  TabOrder = 1
+                  ExplicitLeft = 9
+                  ExplicitTop = 2
+                  object img2: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 108
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg2Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    ExplicitLeft = 27
+                    ExplicitTop = 9
+                    object btnImg2: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg2Click
+                    end
+                  end
+                end
+                object pnlImg3: TPanel
+                  Left = 575
+                  Top = 1
+                  Width = 287
+                  Height = 135
+                  Align = alLeft
+                  TabOrder = 2
+                  ExplicitLeft = 9
+                  ExplicitTop = 2
+                  object img3: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 108
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg3Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    object btnImg3: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg3Click
+                    end
+                  end
+                end
+              end
+              object pnlImgBotton: TPanel
+                Left = 0
+                Top = 137
+                Width = 863
+                Height = 138
+                Align = alClient
+                BevelOuter = bvNone
+                TabOrder = 1
+                ExplicitTop = -6
+                ExplicitHeight = 137
+                object pnlImg4: TPanel
+                  Left = 0
+                  Top = 0
+                  Width = 287
+                  Height = 138
+                  Align = alLeft
+                  TabOrder = 0
+                  ExplicitLeft = 8
+                  object img4: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 111
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg4Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    object btnImg4: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg4Click
+                    end
+                  end
+                end
+                object pnlImg5: TPanel
+                  Left = 287
+                  Top = 0
+                  Width = 287
+                  Height = 138
+                  Align = alLeft
+                  TabOrder = 1
+                  ExplicitLeft = 9
+                  ExplicitTop = 2
+                  ExplicitHeight = 135
+                  object img5: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 111
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg5Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    object btnImg5: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg5Click
+                    end
+                  end
+                end
+                object pnlImg6: TPanel
+                  Left = 574
+                  Top = 0
+                  Width = 287
+                  Height = 138
+                  Align = alLeft
+                  TabOrder = 2
+                  ExplicitLeft = 9
+                  ExplicitTop = 2
+                  ExplicitHeight = 135
+                  object img6: TImage
+                    Left = 1
+                    Top = 26
+                    Width = 285
+                    Height = 111
+                    Align = alClient
+                    Center = True
+                    Proportional = True
+                    ExplicitTop = 31
+                    ExplicitWidth = 164
+                    ExplicitHeight = 144
+                  end
+                  object pnlImg6Top: TPanel
+                    Left = 1
+                    Top = 1
+                    Width = 285
+                    Height = 25
+                    Align = alTop
+                    BevelOuter = bvNone
+                    TabOrder = 0
+                    object btnImg6: TButton
+                      Left = 5
+                      Top = 0
+                      Width = 25
+                      Height = 25
+                      Caption = '...'
+                      Font.Charset = DEFAULT_CHARSET
+                      Font.Color = clWindowText
+                      Font.Height = -13
+                      Font.Name = 'Tahoma'
+                      Font.Style = [fsBold]
+                      ParentFont = False
+                      TabOrder = 0
+                      OnClick = btnImg6Click
+                    end
+                  end
+                end
+              end
+            end
+          end
         end
       end
     end
@@ -1072,10 +1376,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object actPagtoLimpar: TAction
       Caption = 'actPagtoLimpar'
       OnExecute = actPagtoLimparExecute
-    end
-    object actAdicionarImagem: TAction
-      Caption = '...'
-      OnExecute = actAdicionarImagemExecute
     end
   end
   object cdsPEDIDO_VENDA_ITEM: TClientDataSet
@@ -1288,6 +1588,9 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       ProviderFlags = []
       Size = 40
     end
+    object cdsPEDIDO_VENDAGERAR_ORDEM_PRODUCAO: TIntegerField
+      FieldName = 'GERAR_ORDEM_PRODUCAO'
+    end
   end
   object dsPEDIDO_VENDA: TDataSource
     DataSet = cdsPEDIDO_VENDA
@@ -1310,14 +1613,41 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   end
   object cdsPEDIDO_VENDA_IMG: TClientDataSet
     Aggregates = <>
-    CommandText = 'select ID_PEDIDO, IMAGEM'#13#10'from PEDIDO_VENDA_IMG'#13#10'where 1=2  '
+    CommandText = 
+      'select ID_PEDIDO, SEQUENCIA, IMAGEM'#13#10'from PEDIDO_VENDA_IMG'#13#10'wher' +
+      'e 1=2  '
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'ID_PEDIDO'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'SEQUENCIA'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'IMAGEM'
+        DataType = ftBlob
+      end>
+    IndexDefs = <>
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
+    StoreDefs = True
     Left = 389
     Top = 480
     object cdsPEDIDO_VENDA_IMGID_PEDIDO: TIntegerField
       FieldName = 'ID_PEDIDO'
+      Required = True
+    end
+    object cdsPEDIDO_VENDA_IMGSEQUENCIA: TIntegerField
+      FieldName = 'SEQUENCIA'
       Required = True
     end
     object cdsPEDIDO_VENDA_IMGIMAGEM: TBlobField
