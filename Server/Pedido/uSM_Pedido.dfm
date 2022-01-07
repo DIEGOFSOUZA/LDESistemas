@@ -224,7 +224,7 @@ object SM_Pedido: TSM_Pedido
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
-      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO'
+      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO, DESCRI'
       'from CONTAS_A_RECEBER  '
       'where 1=2')
     Left = 272
@@ -258,6 +258,11 @@ object SM_Pedido: TSM_Pedido
       Origin = 'DVENC'
       Required = True
     end
+    object ReceberDESCRI: TStringField
+      FieldName = 'DESCRI'
+      Origin = 'DESCRI'
+      Size = 150
+    end
   end
   object dspReceber: TDataSetProvider
     DataSet = Receber
@@ -280,7 +285,7 @@ object SM_Pedido: TSM_Pedido
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
-      'select ID_PEDIDO, SEQUENCIA, IMAGEM'
+      'select ID_PEDIDO, SEQUENCIA, PATH_IMAGEM'
       'from PEDIDO_VENDA_IMG'
       'where 1=2  ')
     Left = 352
@@ -297,9 +302,10 @@ object SM_Pedido: TSM_Pedido
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object Pedido_Venda_IMGIMAGEM: TBlobField
-      FieldName = 'IMAGEM'
-      Origin = 'IMAGEM'
+    object Pedido_Venda_IMGPATH_IMAGEM: TStringField
+      FieldName = 'PATH_IMAGEM'
+      Origin = 'PATH_IMAGEM'
+      Size = 5000
     end
   end
   object dspIMG: TDataSetProvider

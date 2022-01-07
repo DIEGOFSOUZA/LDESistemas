@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 04/01/2022 15:15:17
+// 07/01/2022 17:27:05
 //
 
 unit UClassDataSnap;
@@ -228,6 +228,7 @@ type
     FPedidoVenda_AvancaStatusCommand: TDBXCommand;
     FPedidoVenda_ExcluirCommand: TDBXCommand;
     FPedidoVenda_CarregarCommand: TDBXCommand;
+    FPedidoVenda_RelA3Command: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -238,6 +239,7 @@ type
     function PedidoVenda_AvancaStatus(BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Excluir(BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Carregar(BD: string; aIDPedido: Integer): OleVariant;
+    function PedidoVenda_RelA3(BD: string; aIdPedido: Integer): OleVariant;
   end;
 
   TSMProducaoClient = class(TDSAdminClient)
@@ -1883,6 +1885,21 @@ begin
   Result := FPedidoVenda_CarregarCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSM_PedidoClient.PedidoVenda_RelA3(BD: string; aIdPedido: Integer): OleVariant;
+begin
+  if FPedidoVenda_RelA3Command = nil then
+  begin
+    FPedidoVenda_RelA3Command := FDBXConnection.CreateCommand;
+    FPedidoVenda_RelA3Command.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_RelA3Command.Text := 'TSM_Pedido.PedidoVenda_RelA3';
+    FPedidoVenda_RelA3Command.Prepare;
+  end;
+  FPedidoVenda_RelA3Command.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_RelA3Command.Parameters[1].Value.SetInt32(aIdPedido);
+  FPedidoVenda_RelA3Command.ExecuteUpdate;
+  Result := FPedidoVenda_RelA3Command.Parameters[2].Value.AsVariant;
+end;
+
 constructor TSM_PedidoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1901,6 +1918,7 @@ begin
   FPedidoVenda_AvancaStatusCommand.DisposeOf;
   FPedidoVenda_ExcluirCommand.DisposeOf;
   FPedidoVenda_CarregarCommand.DisposeOf;
+  FPedidoVenda_RelA3Command.DisposeOf;
   inherited;
 end;
 

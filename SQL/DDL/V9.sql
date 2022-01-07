@@ -790,6 +790,10 @@ alter SEQUENCIA position 3;
 alter table PEDIDO_VENDA_IMG
 alter IMAGEM position 4;
 
+ALTER TABLE PEDIDO_VENDA_IMG
+    ADD PATH_IMAGEM VARCHAR(5000);
+
+
 
 
 

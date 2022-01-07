@@ -131,8 +131,6 @@ begin
   Application.Title := 'LDE Sistemas';
   Application.CreateForm(TDM, DM);
   Application.CreateForm(TDMACBr, DMACBr);
-  Application.CreateForm(TPdr_Relatorio2_1, Pdr_Relatorio2_1);
-  Application.CreateForm(TRel_PedidoVendaA3, Rel_PedidoVendaA3);
   try
     if Iniciar() then
     begin

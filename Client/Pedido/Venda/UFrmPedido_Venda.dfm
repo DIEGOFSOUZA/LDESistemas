@@ -256,7 +256,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsVendedorPesquisa
-        TabOrder = 5
+        TabOrder = 6
         TabStop = True
       end
       object DBMemo1: TDBMemo
@@ -282,10 +282,18 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 7
         ValueChecked = '1'
         ValueUnchecked = '0'
         WordWrap = True
+      end
+      object btn1: TButton
+        Left = 760
+        Top = 105
+        Width = 75
+        Height = 25
+        Action = actRelatorio
+        TabOrder = 5
       end
     end
     object pnlBotton: TPanel
@@ -447,7 +455,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 303
-          ActivePage = tsImagem
+          ActivePage = tsItem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
@@ -1038,10 +1046,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitLeft = 152
-              ExplicitTop = 96
-              ExplicitWidth = 185
-              ExplicitHeight = 41
               object pnlImgTop: TPanel
                 Left = 0
                 Top = 0
@@ -1049,7 +1053,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Height = 137
                 Align = alTop
                 TabOrder = 0
-                ExplicitTop = -6
                 object pnlImg1: TPanel
                   Left = 1
                   Top = 1
@@ -1057,7 +1060,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 135
                   Align = alLeft
                   TabOrder = 0
-                  ExplicitLeft = 575
                   object img1: TImage
                     Left = 1
                     Top = 26
@@ -1102,8 +1104,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 135
                   Align = alLeft
                   TabOrder = 1
-                  ExplicitLeft = 9
-                  ExplicitTop = 2
                   object img2: TImage
                     Left = 1
                     Top = 26
@@ -1124,8 +1124,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Align = alTop
                     BevelOuter = bvNone
                     TabOrder = 0
-                    ExplicitLeft = 27
-                    ExplicitTop = 9
                     object btnImg2: TButton
                       Left = 5
                       Top = 0
@@ -1150,8 +1148,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 135
                   Align = alLeft
                   TabOrder = 2
-                  ExplicitLeft = 9
-                  ExplicitTop = 2
                   object img3: TImage
                     Left = 1
                     Top = 26
@@ -1198,8 +1194,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitTop = -6
-                ExplicitHeight = 137
                 object pnlImg4: TPanel
                   Left = 0
                   Top = 0
@@ -1207,7 +1201,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 138
                   Align = alLeft
                   TabOrder = 0
-                  ExplicitLeft = 8
                   object img4: TImage
                     Left = 1
                     Top = 26
@@ -1252,9 +1245,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 138
                   Align = alLeft
                   TabOrder = 1
-                  ExplicitLeft = 9
-                  ExplicitTop = 2
-                  ExplicitHeight = 135
                   object img5: TImage
                     Left = 1
                     Top = 26
@@ -1299,9 +1289,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 138
                   Align = alLeft
                   TabOrder = 2
-                  ExplicitLeft = 9
-                  ExplicitTop = 2
-                  ExplicitHeight = 135
                   object img6: TImage
                     Left = 1
                     Top = 26
@@ -1376,6 +1363,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object actPagtoLimpar: TAction
       Caption = 'actPagtoLimpar'
       OnExecute = actPagtoLimparExecute
+    end
+    object actRelatorio: TAction
+      Caption = 'actRelatorio'
+      OnExecute = actRelatorioExecute
     end
   end
   object cdsPEDIDO_VENDA_ITEM: TClientDataSet
@@ -1466,8 +1457,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     Aggregates = <>
     AggregatesActive = True
     CommandText = 
-      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO'#13#10'from CONTAS_A_' +
-      'RECEBER  '#13#10'where 1=2'
+      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO, DESCRI'#13#10'from C' +
+      'ONTAS_A_RECEBER  '#13#10'where 1=2'
     FieldDefs = <
       item
         Name = 'ID_TABELA_MASTER'
@@ -1494,6 +1485,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Name = 'TIPO'
         Attributes = [faRequired]
         DataType = ftInteger
+      end
+      item
+        Name = 'DESCRI'
+        DataType = ftString
+        Size = 150
       end>
     IndexDefs = <>
     Params = <>
@@ -1528,6 +1524,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       DisplayLabel = 'VENCIMENTO'
       FieldName = 'DVENC'
       Required = True
+    end
+    object cdsCONTAS_A_RECEBERDESCRI: TStringField
+      FieldName = 'DESCRI'
+      Size = 150
     end
     object cdsCONTAS_A_RECEBERTOT_PAGO: TAggregateField
       FieldName = 'TOT_PAGO'
@@ -1614,13 +1614,9 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   object cdsPEDIDO_VENDA_IMG: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'select ID_PEDIDO, SEQUENCIA, IMAGEM'#13#10'from PEDIDO_VENDA_IMG'#13#10'wher' +
-      'e 1=2  '
+      'select ID_PEDIDO, SEQUENCIA, PATH_IMAGEM'#13#10'from PEDIDO_VENDA_IMG'#13 +
+      #10'where 1=2  '
     FieldDefs = <
-      item
-        Name = 'ID'
-        DataType = ftInteger
-      end
       item
         Name = 'ID_PEDIDO'
         Attributes = [faRequired]
@@ -1632,8 +1628,9 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         DataType = ftInteger
       end
       item
-        Name = 'IMAGEM'
-        DataType = ftBlob
+        Name = 'PATH_IMAGEM'
+        DataType = ftString
+        Size = 5000
       end>
     IndexDefs = <>
     Params = <>
@@ -1650,8 +1647,9 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       FieldName = 'SEQUENCIA'
       Required = True
     end
-    object cdsPEDIDO_VENDA_IMGIMAGEM: TBlobField
-      FieldName = 'IMAGEM'
+    object cdsPEDIDO_VENDA_IMGPATH_IMAGEM: TStringField
+      FieldName = 'PATH_IMAGEM'
+      Size = 5000
     end
   end
 end
