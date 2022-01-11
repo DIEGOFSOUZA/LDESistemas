@@ -1,10 +1,10 @@
 inherited FrmPedido_Venda: TFrmPedido_Venda
   Caption = 'FrmPedido_Venda'
-  ClientHeight = 564
+  ClientHeight = 614
   ClientWidth = 871
   Visible = False
   ExplicitWidth = 871
-  ExplicitHeight = 564
+  ExplicitHeight = 614
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
@@ -25,14 +25,16 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
   end
   object pnlFundo: TPanel [1]
     Left = 0
-    Top = 30
+    Top = 70
     Width = 871
-    Height = 534
+    Height = 544
     Align = alClient
     BevelOuter = bvNone
     Color = 14803681
     ParentBackground = False
-    TabOrder = 1
+    TabOrder = 2
+    ExplicitTop = 30
+    ExplicitHeight = 534
     object pnltop: TPanel
       Left = 0
       Top = 0
@@ -40,6 +42,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Height = 177
       Align = alTop
       TabOrder = 0
+      ExplicitLeft = -5
+      ExplicitTop = 141
       object Label1: TLabel
         Left = 32
         Top = 11
@@ -256,53 +260,27 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Campo.ParentFont = False
         Campo.TabOrder = 0
         OnPesquisa = dbpsqsVendedorPesquisa
-        TabOrder = 6
+        TabOrder = 5
         TabStop = True
       end
       object DBMemo1: TDBMemo
         Left = 418
         Top = 30
         Width = 280
-        Height = 94
+        Height = 121
         DataField = 'OBSERVACAO'
         DataSource = dsPEDIDO_VENDA
         TabOrder = 3
       end
-      object dbchkGeraProducao: TDBCheckBox
-        Left = 418
-        Top = 129
-        Width = 228
-        Height = 34
-        Caption = 'GERAR ORDEM DE PRODU'#199#194'O PARA ITENS COM ESTOQUE ABAIXO'
-        DataField = 'GERAR_ORDEM_PRODUCAO'
-        DataSource = dsPEDIDO_VENDA
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 7
-        ValueChecked = '1'
-        ValueUnchecked = '0'
-        WordWrap = True
-      end
-      object btn1: TButton
-        Left = 760
-        Top = 105
-        Width = 75
-        Height = 25
-        Action = actRelatorio
-        TabOrder = 5
-      end
     end
     object pnlBotton: TPanel
       Left = 0
-      Top = 480
+      Top = 490
       Width = 871
       Height = 54
       Align = alBottom
       TabOrder = 2
+      ExplicitTop = 480
       object pnlGravar: TPanel
         Left = 747
         Top = 11
@@ -438,38 +416,43 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Left = 0
       Top = 177
       Width = 871
-      Height = 303
+      Height = 313
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitHeight = 303
       object pnlClientCenter: TPanel
         Left = 0
         Top = 0
         Width = 871
-        Height = 303
+        Height = 313
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitHeight = 303
         object pgc1: TPageControl
           Left = 0
           Top = 0
           Width = 871
-          Height = 303
-          ActivePage = tsItem
+          Height = 313
+          ActivePage = tsImagem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
+          ExplicitHeight = 303
           object tsItem: TTabSheet
             Caption = '   PRODUTO   '
+            ExplicitHeight = 275
             object pnlProdutoFundo: TPanel
               Left = 0
               Top = 0
               Width = 863
-              Height = 275
+              Height = 285
               Align = alClient
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
+              ExplicitHeight = 275
               object lblTitContato: TLabel
                 Left = 1
                 Top = 1
@@ -502,7 +485,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 TabOrder = 0
                 object pnlAdicionarItem: TPanel
                   Left = 10
-                  Top = 11
+                  Top = 10
                   Width = 100
                   Height = 32
                   BevelOuter = bvNone
@@ -510,7 +493,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Color = 7024384
                   ParentBackground = False
                   ShowCaption = False
-                  TabOrder = 0
+                  TabOrder = 1
                   object lblAdicionarItem: TLabel
                     Left = 0
                     Top = 0
@@ -536,7 +519,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 end
                 object pnlCriarItem: TPanel
                   Left = 122
-                  Top = 11
+                  Top = 10
                   Width = 100
                   Height = 32
                   BevelOuter = bvNone
@@ -544,7 +527,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Color = 7024384
                   ParentBackground = False
                   ShowCaption = False
-                  TabOrder = 1
+                  TabOrder = 2
                   object lblCriarItem: TLabel
                     Left = 0
                     Top = 0
@@ -568,16 +551,37 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     ExplicitHeight = 30
                   end
                 end
+                object dbchkGeraProducao: TDBCheckBox
+                  Left = 606
+                  Top = 1
+                  Width = 254
+                  Height = 50
+                  Align = alRight
+                  Caption = 'GERAR ORDEM DE PRODU'#199#194'O PARA ITENS COM ESTOQUE ABAIXO'
+                  DataField = 'GERAR_ORDEM_PRODUCAO'
+                  DataSource = dsPEDIDO_VENDA
+                  Font.Charset = ANSI_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'Segoe UI'
+                  Font.Style = []
+                  ParentFont = False
+                  TabOrder = 0
+                  ValueChecked = '1'
+                  ValueUnchecked = '0'
+                  WordWrap = True
+                end
               end
               object pnlProdutoBotton: TPanel
                 Left = 1
-                Top = 254
+                Top = 264
                 Width = 861
                 Height = 20
                 Align = alBottom
                 Color = 16764573
                 ParentBackground = False
                 TabOrder = 2
+                ExplicitTop = 254
                 object Label6: TLabel
                   Left = 568
                   Top = 2
@@ -610,15 +614,16 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Left = 1
                 Top = 73
                 Width = 861
-                Height = 181
+                Height = 191
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitHeight = 181
                 object dbgrdItens: TDBGrid
                   Left = 0
                   Top = 0
-                  Width = 861
-                  Height = 181
+                  Width = 821
+                  Height = 191
                   Align = alClient
                   DataSource = dsItem
                   DrawingStyle = gdsGradient
@@ -684,29 +689,78 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                       Visible = True
                     end>
                 end
+                object pnlProdutoClientRight: TPanel
+                  Left = 821
+                  Top = 0
+                  Width = 40
+                  Height = 191
+                  Align = alRight
+                  BevelOuter = bvNone
+                  TabOrder = 1
+                  ExplicitLeft = 825
+                  ExplicitHeight = 181
+                  object pnlDelItem: TPanel
+                    Left = 4
+                    Top = 75
+                    Width = 32
+                    Height = 32
+                    BevelOuter = bvNone
+                    Caption = 'pnlAddMovimentacao'
+                    Color = 7024384
+                    ParentBackground = False
+                    ShowCaption = False
+                    TabOrder = 0
+                    OnClick = actItemExcluirExecute
+                    object imgDelItem: TImage
+                      Left = 0
+                      Top = 0
+                      Width = 32
+                      Height = 32
+                      Hint = 'excluir duplicatas'
+                      Align = alClient
+                      ParentShowHint = False
+                      Picture.Data = {
+                        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+                        00200806000000737A7AF400000006624B474400FF00FF00FFA0BDA793000000
+                        A44944415478DA63641860C038EA8021E780FFFFFF4B00A97D40AC8926751D88
+                        9D1819195F50C501408BFE53D5A740404D07A0F8164FA890EF006447E0D24C08
+                        10A37FD40143CB0194F2471D30EA8051078C3A60D401143B805430EA006A38E0
+                        29909202621BA0194749B4DC06481D06E2A740BD32E43AA01D485590E37B24D0
+                        06744035B90E6003528D401C070D09520028F41682F4031DF08B2C07D0038C3A
+                        60C01D00000CE73E30020C91510000000049454E44AE426082}
+                      ShowHint = True
+                      Stretch = True
+                      OnClick = actItemExcluirExecute
+                      ExplicitLeft = 2
+                    end
+                  end
+                end
               end
             end
           end
           object tsPagamento: TTabSheet
             Caption = '   PAGAMENTO   '
             ImageIndex = 1
+            ExplicitHeight = 275
             object pnlPagtoFundo: TPanel
               Left = 0
               Top = 0
               Width = 863
-              Height = 275
+              Height = 285
               Align = alClient
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
+              ExplicitHeight = 275
               object pnlPagtoLeft: TPanel
                 Left = 1
                 Top = 1
                 Width = 185
-                Height = 273
+                Height = 283
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 0
+                ExplicitHeight = 273
                 object pnlPagtoLeftTop: TPanel
                   Left = 0
                   Top = 0
@@ -749,7 +803,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 end
                 object pnlPagtoLeftBotton: TPanel
                   Left = 0
-                  Top = 233
+                  Top = 243
                   Width = 185
                   Height = 40
                   Align = alBottom
@@ -757,6 +811,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   ParentBackground = False
                   TabOrder = 2
                   OnClick = actPagtoGerarDuplicatasExecute
+                  ExplicitTop = 233
                   object Label8: TLabel
                     Left = 2
                     Top = 10
@@ -803,12 +858,13 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Left = 0
                   Top = 54
                   Width = 185
-                  Height = 179
+                  Height = 189
                   Align = alClient
                   BevelOuter = bvNone
                   Color = 10198939
                   ParentBackground = False
                   TabOrder = 1
+                  ExplicitHeight = 179
                   object Label9: TLabel
                     Left = 7
                     Top = 19
@@ -906,10 +962,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Left = 186
                 Top = 1
                 Width = 676
-                Height = 273
+                Height = 283
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitHeight = 273
                 object pnlPagtoClientTop: TPanel
                   Left = 0
                   Top = 0
@@ -938,18 +995,20 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Left = 0
                   Top = 35
                   Width = 676
-                  Height = 238
+                  Height = 248
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 1
+                  ExplicitHeight = 238
                   object pnlPagtoClientRight: TPanel
                     Left = 424
                     Top = 0
                     Width = 252
-                    Height = 238
+                    Height = 248
                     Align = alRight
                     BevelOuter = bvNone
                     TabOrder = 1
+                    ExplicitHeight = 238
                     object pnlPagtoExcDup: TPanel
                       Left = 4
                       Top = 96
@@ -989,7 +1048,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Left = 0
                     Top = 0
                     Width = 424
-                    Height = 238
+                    Height = 248
                     Align = alClient
                     DataSource = dsContasAReceber
                     DrawingStyle = gdsGradient
@@ -1036,16 +1095,18 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           object tsImagem: TTabSheet
             Caption = 'IMAGENS'
             ImageIndex = 2
+            ExplicitHeight = 275
             object pnlImgFundo: TPanel
               Left = 0
               Top = 0
               Width = 863
-              Height = 275
+              Height = 285
               Align = alClient
               BevelOuter = bvNone
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
+              ExplicitHeight = 275
               object pnlImgTop: TPanel
                 Left = 0
                 Top = 0
@@ -1061,6 +1122,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Align = alLeft
                   TabOrder = 0
                   object img1: TImage
+                    Tag = 1
                     Left = 1
                     Top = 26
                     Width = 285
@@ -1068,6 +1130,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img1DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1105,6 +1168,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Align = alLeft
                   TabOrder = 1
                   object img2: TImage
+                    Tag = 2
                     Left = 1
                     Top = 26
                     Width = 285
@@ -1112,6 +1176,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img2DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1149,6 +1214,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Align = alLeft
                   TabOrder = 2
                   object img3: TImage
+                    Tag = 3
                     Left = 1
                     Top = 26
                     Width = 285
@@ -1156,6 +1222,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img3DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1190,25 +1257,28 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Left = 0
                 Top = 137
                 Width = 863
-                Height = 138
+                Height = 148
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
+                ExplicitHeight = 138
                 object pnlImg4: TPanel
                   Left = 0
                   Top = 0
                   Width = 287
-                  Height = 138
+                  Height = 148
                   Align = alLeft
                   TabOrder = 0
+                  ExplicitHeight = 138
                   object img4: TImage
                     Left = 1
                     Top = 26
                     Width = 285
-                    Height = 111
+                    Height = 121
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img4DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1242,17 +1312,19 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Left = 287
                   Top = 0
                   Width = 287
-                  Height = 138
+                  Height = 148
                   Align = alLeft
                   TabOrder = 1
+                  ExplicitHeight = 138
                   object img5: TImage
                     Left = 1
                     Top = 26
                     Width = 285
-                    Height = 111
+                    Height = 121
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img5DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1286,17 +1358,19 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Left = 574
                   Top = 0
                   Width = 287
-                  Height = 138
+                  Height = 148
                   Align = alLeft
                   TabOrder = 2
+                  ExplicitHeight = 138
                   object img6: TImage
                     Left = 1
                     Top = 26
                     Width = 285
-                    Height = 111
+                    Height = 121
                     Align = alClient
                     Center = True
                     Proportional = True
+                    OnDblClick = img6DblClick
                     ExplicitTop = 31
                     ExplicitWidth = 164
                     ExplicitHeight = 144
@@ -1330,6 +1404,51 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
             end
           end
         end
+      end
+    end
+  end
+  object pnlBotoesTop: TPanel [2]
+    Left = 0
+    Top = 30
+    Width = 871
+    Height = 40
+    Align = alTop
+    Color = 14803681
+    ParentBackground = False
+    TabOrder = 1
+    ExplicitTop = 24
+    object pnlGerarRelatorio: TPanel
+      Left = 754
+      Top = 4
+      Width = 80
+      Height = 32
+      BevelOuter = bvNone
+      Caption = 'pnlAddMovimentacao'
+      Color = 7024384
+      ParentBackground = False
+      ShowCaption = False
+      TabOrder = 0
+      object lblGerarRelatorio: TLabel
+        Left = 0
+        Top = 0
+        Width = 80
+        Height = 32
+        Align = alClient
+        Alignment = taCenter
+        Caption = 'GERAR'#13#10'RELAT'#211'RIO'
+        Color = 7237230
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -12
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        Transparent = True
+        Layout = tlCenter
+        OnClick = actRelatorioExecute
+        ExplicitWidth = 62
+        ExplicitHeight = 30
       end
     end
   end

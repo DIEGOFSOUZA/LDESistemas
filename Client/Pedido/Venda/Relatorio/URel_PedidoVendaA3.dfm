@@ -1,15 +1,15 @@
 inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
-  Width = 1064
-  VertScrollBar.Position = 204
+  Width = 1053
+  VertScrollBar.Position = 310
   AutoScroll = True
   Caption = 'Rel_PedidoVendaA3'
-  ExplicitWidth = 1064
+  ExplicitWidth = 1053
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    Top = -184
+    Top = -290
     DataSource = dsPedidoVenda
-    ExplicitTop = -184
+    ExplicitTop = -290
     inherited rlbndTitulo: TRLBand
       Height = 30
       ExplicitHeight = 30
@@ -442,9 +442,9 @@ inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
           ParentFont = False
         end
         object RLLabel15: TRLLabel
-          Left = 8
+          Left = 6
           Top = 41
-          Width = 45
+          Width = 47
           Height = 20
           AutoSize = False
           Caption = 'C'#211'DIGO'
@@ -568,36 +568,69 @@ inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
           Top = 1
           Width = 239
           Height = 179
+          Margins.LeftMargin = 2.000000000000000000
+          Margins.TopMargin = 2.000000000000000000
+          Margins.RightMargin = 2.000000000000000000
+          Margins.BottomMargin = 2.000000000000000000
           Align = faLeft
           Borders.Sides = sdCustom
           Borders.DrawLeft = False
           Borders.DrawTop = False
-          Borders.DrawRight = True
+          Borders.DrawRight = False
           Borders.DrawBottom = False
+          object rlmg1: TRLImage
+            Left = 8
+            Top = 8
+            Width = 223
+            Height = 163
+            Align = faClient
+          end
         end
         object rlpnlImg2: TRLPanel
           Left = 240
           Top = 1
           Width = 238
           Height = 179
+          Margins.LeftMargin = 2.000000000000000000
+          Margins.TopMargin = 2.000000000000000000
+          Margins.RightMargin = 2.000000000000000000
+          Margins.BottomMargin = 2.000000000000000000
           Align = faClient
           Borders.Sides = sdCustom
           Borders.DrawLeft = False
           Borders.DrawTop = False
-          Borders.DrawRight = True
+          Borders.DrawRight = False
           Borders.DrawBottom = False
+          object rlmg2: TRLImage
+            Left = 8
+            Top = 8
+            Width = 222
+            Height = 163
+            Align = faClient
+          end
         end
         object rlpnlImg3: TRLPanel
           Left = 478
           Top = 1
           Width = 239
           Height = 179
+          Margins.LeftMargin = 2.000000000000000000
+          Margins.TopMargin = 2.000000000000000000
+          Margins.RightMargin = 2.000000000000000000
+          Margins.BottomMargin = 2.000000000000000000
           Align = faRight
           Borders.Sides = sdCustom
           Borders.DrawLeft = False
           Borders.DrawTop = False
           Borders.DrawRight = False
           Borders.DrawBottom = False
+          object rlmg3: TRLImage
+            Left = 8
+            Top = 8
+            Width = 223
+            Height = 163
+            Align = faClient
+          end
         end
       end
     end
@@ -753,9 +786,9 @@ inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
         Width = 718
         Height = 22
         object RLDBText13: TRLDBText
-          Left = 8
+          Left = 6
           Top = 1
-          Width = 45
+          Width = 47
           Height = 20
           AutoSize = False
           DataField = 'ID_PRODUTO'
@@ -876,70 +909,122 @@ inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
         Width = 718
         Height = 27
         BandType = btSummary
-        object RLLabel26: TRLLabel
-          Left = 184
-          Top = 4
-          Width = 151
-          Height = 20
-          AutoSize = False
-          Caption = 'Quantidade de Itens:'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
+        object rlpnlTotaisItem: TRLPanel
+          Left = 120
+          Top = 1
+          Width = 596
+          Height = 25
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = True
+          Borders.DrawTop = True
+          Borders.DrawRight = True
+          Borders.DrawBottom = True
+          object RLLabel26: TRLLabel
+            Left = 104
+            Top = 2
+            Width = 151
+            Height = 20
+            AutoSize = False
+            Caption = 'Quantidade de Itens:'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+          end
+          object rldbrsltQtde: TRLDBResult
+            Left = 256
+            Top = 2
+            Width = 90
+            Height = 20
+            Alignment = taRightJustify
+            AutoSize = False
+            DataField = 'QTDE'
+            DataSource = dsItens
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial Narrow'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
+          object RLLabel27: TRLLabel
+            Left = 350
+            Top = 2
+            Width = 151
+            Height = 20
+            AutoSize = False
+            Caption = 'Valor total dos Itens:'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+          end
+          object rldbrsltTotItens: TRLDBResult
+            Left = 502
+            Top = 2
+            Width = 90
+            Height = 20
+            Alignment = taRightJustify
+            AutoSize = False
+            DataField = 'TOTAL'
+            DataSource = dsItens
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clBlack
+            Font.Height = -16
+            Font.Name = 'Arial Narrow'
+            Font.Style = [fsBold]
+            Info = riSum
+            ParentFont = False
+            Text = ''
+          end
         end
-        object RLLabel27: TRLLabel
-          Left = 460
-          Top = 4
-          Width = 151
-          Height = 20
-          AutoSize = False
-          Caption = 'Valor total dos Itens:'
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Arial'
-          Font.Style = []
-          ParentFont = False
-        end
-        object rldbrsltQtde: TRLDBResult
-          Left = 337
-          Top = 4
-          Width = 90
-          Height = 20
-          Alignment = taRightJustify
-          AutoSize = False
-          DataField = 'QTDE'
-          DataSource = dsItens
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Arial Narrow'
-          Font.Style = [fsBold]
-          Info = riSum
-          ParentFont = False
-          Text = ''
-        end
-        object rldbrsltTotItens: TRLDBResult
-          Left = 613
-          Top = 4
-          Width = 90
-          Height = 20
-          Alignment = taRightJustify
-          AutoSize = False
-          DataField = 'TOTAL'
-          DataSource = dsItens
-          Font.Charset = ANSI_CHARSET
-          Font.Color = clBlack
-          Font.Height = -16
-          Font.Name = 'Arial Narrow'
-          Font.Style = [fsBold]
-          Info = riSum
-          ParentFont = False
-          Text = ''
-        end
+      end
+    end
+    object rlbndObservacao: TRLBand
+      Left = 38
+      Top = 739
+      Width = 718
+      Height = 94
+      BandType = btSummary
+      object RLLabel28: TRLLabel
+        Left = 0
+        Top = 15
+        Width = 718
+        Height = 23
+        Align = faTop
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = True
+        Borders.DrawTop = False
+        Borders.DrawRight = False
+        Borders.DrawBottom = True
+        Borders.Width = 2
+        Caption = ' OBSERVA'#199#213'ES'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial Narrow'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object rlmOBS: TRLMemo
+        Left = 18
+        Top = 43
+        Width = 681
+        Height = 16
+        Behavior = [beSiteExpander]
+      end
+      object RLPanel2: TRLPanel
+        Left = 0
+        Top = 0
+        Width = 718
+        Height = 15
+        Align = faTop
       end
     end
   end
@@ -1153,5 +1238,13 @@ inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
       FieldName = 'PATH_IMAGEM'
       Size = 5000
     end
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 
+      'FortesReport Community Edition v4.0.0.1 \251 Copyright '#169' 1999-20' +
+      '21 Fortes Inform'#225'tica'
+    DisplayName = 'Documento PDF'
+    Left = 872
+    Top = 184
   end
 end

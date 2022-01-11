@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Relatorio2_1, RLReport, Data.DB,
-  Datasnap.DBClient;
+  Datasnap.DBClient, RLFilters, RLPDFFilter;
 
 type
   TRel_PedidoVendaA3 = class(TPdr_Relatorio2_1)
@@ -80,10 +80,6 @@ type
     RLDBText18: TRLDBText;
     RLDBText19: TRLDBText;
     rlbndSumaryItens: TRLBand;
-    RLLabel26: TRLLabel;
-    RLLabel27: TRLLabel;
-    rldbrsltQtde: TRLDBResult;
-    rldbrsltTotItens: TRLDBResult;
     cdsPedidoVendaID: TIntegerField;
     cdsPedidoVendaEMISSAO: TDateField;
     cdsPedidoVendaENTREGA: TDateField;
@@ -109,10 +105,26 @@ type
     cdsReceberVDUP: TFMTBCDField;
     cdsIMGSEQUENCIA: TIntegerField;
     cdsIMGPATH_IMAGEM: TStringField;
+    rlmg1: TRLImage;
+    rlmg2: TRLImage;
+    rlmg3: TRLImage;
+    RLPDFFilter1: TRLPDFFilter;
+    rlpnlTotaisItem: TRLPanel;
+    RLLabel26: TRLLabel;
+    rldbrsltQtde: TRLDBResult;
+    RLLabel27: TRLLabel;
+    rldbrsltTotItens: TRLDBResult;
+    rlbndObservacao: TRLBand;
+    RLLabel28: TRLLabel;
+    rlmOBS: TRLMemo;
+    RLPanel2: TRLPanel;
+    procedure RelatorioBeforePrint(Sender: TObject; var PrintIt: Boolean);
   private
     FID_PEDIDO: Integer;
     procedure SetID_PEDIDO(const Value: Integer);
     procedure CarregarCDS();
+    procedure CarregarImagens();
+    procedure CarregarObservacao();
 
   public
     property ID_PEDIDO : Integer read FID_PEDIDO write SetID_PEDIDO;
@@ -157,6 +169,44 @@ begin
   except
 
   end;
+end;
+
+procedure TRel_PedidoVendaA3.CarregarImagens;
+var
+  i: Integer;
+begin
+  rlbndDados.Height := 408;
+  for i := 1 to 3 do
+  begin
+    try
+      if cdsIMG.Locate('sequencia', i, []) then
+      begin
+        TRLImage(FindComponent('rlmg' + IntToStr(i))).Center := True;
+        TRLImage(FindComponent('rlmg' + IntToStr(i))).Scaled := True;
+        TRLImage(FindComponent('rlmg' + IntToStr(i))).Picture.LoadFromFile(cdsIMGPATH_IMAGEM.AsString);
+      end;
+    except
+
+    end;
+//    rlImage1.Picture.LoadFromFile(QFoto.Fieldbyname('CM_FOTO').AsString);
+  end;
+end;
+
+procedure TRel_PedidoVendaA3.CarregarObservacao;
+begin
+  rlmOBS.Lines.Clear;
+  rlmOBS.Lines.Add(cdsPedidoVendaOBSERVACAO.AsString);
+end;
+
+procedure TRel_PedidoVendaA3.RelatorioBeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+  inherited;
+  rlbndDados.Height := 227;
+  rlpnlmages.Visible := not cdsIMG.IsEmpty;
+  if not cdsIMG.IsEmpty then
+    CarregarImagens;
+  CarregarObservacao;
 end;
 
 procedure TRel_PedidoVendaA3.SetID_PEDIDO(const Value: Integer);

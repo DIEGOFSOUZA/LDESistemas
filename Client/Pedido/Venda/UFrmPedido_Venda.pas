@@ -117,7 +117,6 @@ type
     cdsPEDIDO_VENDA_IMG: TClientDataSet;
     cdsPEDIDO_VENDA_IMGID_PEDIDO: TIntegerField;
     cdsPEDIDO_VENDA_ITEMQTDE_A_BAIXAR: TBCDField;
-    dbchkGeraProducao: TDBCheckBox;
     cdsPEDIDO_VENDAGERAR_ORDEM_PRODUCAO: TIntegerField;
     tsImagem: TTabSheet;
     pnlImgFundo: TPanel;
@@ -150,8 +149,14 @@ type
     cdsPEDIDO_VENDA_IMGSEQUENCIA: TIntegerField;
     cdsPEDIDO_VENDA_IMGPATH_IMAGEM: TStringField;
     cdsCONTAS_A_RECEBERDESCRI: TStringField;
-    btn1: TButton;
     actRelatorio: TAction;
+    pnlProdutoClientRight: TPanel;
+    pnlDelItem: TPanel;
+    imgDelItem: TImage;
+    pnlBotoesTop: TPanel;
+    pnlGerarRelatorio: TPanel;
+    lblGerarRelatorio: TLabel;
+    dbchkGeraProducao: TDBCheckBox;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -179,6 +184,12 @@ type
     procedure btnImg5Click(Sender: TObject);
     procedure btnImg6Click(Sender: TObject);
     procedure actRelatorioExecute(Sender: TObject);
+    procedure img3DblClick(Sender: TObject);
+    procedure img2DblClick(Sender: TObject);
+    procedure img1DblClick(Sender: TObject);
+    procedure img4DblClick(Sender: TObject);
+    procedure img5DblClick(Sender: TObject);
+    procedure img6DblClick(Sender: TObject);
   private
     FIdParcelamento: integer;
     FIdPagamento: integer;
@@ -197,6 +208,8 @@ type
     function SelecionarIMG(): string;
     procedure SalvarImagem(aCaminho: string;aSeq:integer);
     procedure ExibeImagem(aSequencia: Integer);
+    procedure ExcluirImagem(aSequencia: Integer);
+    procedure ExcluirDuplicatas();
   public
     property IdPagamento: integer read FIdPagamento write FIdPagamento;
     property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
@@ -264,6 +277,29 @@ begin
   end;
 end;
 
+procedure TFrmPedido_Venda.ExcluirDuplicatas;
+begin
+  cdsCONTAS_A_RECEBER.First;
+  try
+    cdsCONTAS_A_RECEBER.DisableControls;
+    while not cdsCONTAS_A_RECEBER.Eof do
+    begin
+      cdsCONTAS_A_RECEBER.Delete;
+    end;
+  finally
+    cdsCONTAS_A_RECEBER.EnableControls;
+  end;
+end;
+
+procedure TFrmPedido_Venda.ExcluirImagem(aSequencia: Integer);
+begin
+  if not cdsPEDIDO_VENDA_IMG.Locate('SEQUENCIA', aSequencia, []) then
+    Exit;
+
+  cdsPEDIDO_VENDA_IMG.Delete;
+  TImage(FindComponent('img' + IntToStr(aSequencia))).Picture := nil;
+end;
+
 procedure TFrmPedido_Venda.ExibeImagem(aSequencia: Integer);
 //var
 //  oMemorystream: TStream;
@@ -305,7 +341,12 @@ begin
       if (IdProduto > 0) then
       begin
         AdicioneProduto(IdProduto, Produto, Qtde, Unitario, Desconto, Unidade);
-        TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+        ExcluirDuplicatas;
+        try
+          TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+        except
+          TotalPedido := 0;
+        end;
       end;
     end;
   finally
@@ -329,7 +370,11 @@ begin
       if (IdProduto > 0) then
       begin
         AdicioneProduto(IdProduto, Produto, 1, ProdutoUnitario, 0, ProdutoUnidade);
-        TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+        try
+          TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+        except
+          TotalPedido := 0;
+        end;
       end;
     end;
   finally
@@ -341,7 +386,15 @@ end;
 procedure TFrmPedido_Venda.actItemExcluirExecute(Sender: TObject);
 begin
   inherited;
-//
+  if cdsPEDIDO_VENDA_ITEM.IsEmpty then
+    Exit;
+  cdsPEDIDO_VENDA_ITEM.Delete;
+  ExcluirDuplicatas;
+  try
+    TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+  except
+    TotalPedido := 0;
+  end;
 end;
 
 procedure TFrmPedido_Venda.actPagtoGerarDuplicatasExecute(Sender: TObject);
@@ -373,7 +426,11 @@ begin
 
   cdsCONTAS_A_RECEBER.Last;
   cdsCONTAS_A_RECEBER.Delete;
-  TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+  try
+    TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+  except
+    TotalPedido := 0;
+  end;
 end;
 
 procedure TFrmPedido_Venda.actPedidoCancelarExecute(Sender: TObject);
@@ -652,6 +709,42 @@ begin
   SaldoAPagar := FSaldoAPagar - aValor;
 end;
 
+procedure TFrmPedido_Venda.img1DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(1);
+end;
+
+procedure TFrmPedido_Venda.img2DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(2);
+end;
+
+procedure TFrmPedido_Venda.img3DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(3);
+end;
+
+procedure TFrmPedido_Venda.img4DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(4);
+end;
+
+procedure TFrmPedido_Venda.img5DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(5);
+end;
+
+procedure TFrmPedido_Venda.img6DblClick(Sender: TObject);
+begin
+  inherited;
+  ExcluirImagem(6);
+end;
+
 procedure TFrmPedido_Venda.LimparCbbs;
 begin
   cbbPagtoForma.Clear;
@@ -703,7 +796,11 @@ begin
   Iniciar;
   FTipoTransacao := 'UPDATE';
   AbrirCDS(aIDPedido);
-  TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+  try
+    TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+  except
+    TotalPedido := 0;
+  end;
   if not cdsPEDIDO_VENDA_IMG.IsEmpty then
   for I := 1 to 6 do
     ExibeImagem(i);
