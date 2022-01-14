@@ -239,8 +239,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         object lblAdicionarMat: TLabel
           Left = 0
           Top = 0
-          Width = 71
-          Height = 17
+          Width = 92
+          Height = 32
           Align = alClient
           Alignment = taCenter
           Caption = 'ADICIONAR'
@@ -256,6 +256,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
           Layout = tlCenter
           WordWrap = True
           OnClick = actAdicionarExecute
+          ExplicitWidth = 71
+          ExplicitHeight = 17
         end
       end
     end
@@ -281,8 +283,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         object lblGravar: TLabel
           Left = 0
           Top = 0
-          Width = 71
-          Height = 34
+          Width = 92
+          Height = 32
           Align = alClient
           Alignment = taCenter
           Caption = 'INCLUIR'#13#10'NO PEDIDO'
@@ -298,6 +300,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
           Layout = tlCenter
           WordWrap = True
           OnClick = actIncluirPedidoExecute
+          ExplicitWidth = 71
+          ExplicitHeight = 34
         end
       end
       object pnlCancelar: TPanel
@@ -315,8 +319,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         object lblCancelar: TLabel
           Left = 0
           Top = 0
-          Width = 59
-          Height = 15
+          Width = 85
+          Height = 32
           Align = alClient
           Alignment = taCenter
           Caption = 'CANCELAR'
@@ -331,6 +335,8 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
           Transparent = True
           Layout = tlCenter
           OnClick = actSairExecute
+          ExplicitWidth = 59
+          ExplicitHeight = 15
         end
       end
     end

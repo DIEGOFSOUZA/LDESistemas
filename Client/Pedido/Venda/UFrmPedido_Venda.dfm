@@ -33,8 +33,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     Color = 14803681
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 30
-    ExplicitHeight = 534
     object pnltop: TPanel
       Left = 0
       Top = 0
@@ -42,8 +40,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Height = 177
       Align = alTop
       TabOrder = 0
-      ExplicitLeft = -5
-      ExplicitTop = 141
       object Label1: TLabel
         Left = 32
         Top = 11
@@ -280,7 +276,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Height = 54
       Align = alBottom
       TabOrder = 2
-      ExplicitTop = 480
       object pnlGravar: TPanel
         Left = 747
         Top = 11
@@ -420,7 +415,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitHeight = 303
       object pnlClientCenter: TPanel
         Left = 0
         Top = 0
@@ -429,20 +423,17 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitHeight = 303
         object pgc1: TPageControl
           Left = 0
           Top = 0
           Width = 871
           Height = 313
-          ActivePage = tsImagem
+          ActivePage = tsItem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
-          ExplicitHeight = 303
           object tsItem: TTabSheet
             Caption = '   PRODUTO   '
-            ExplicitHeight = 275
             object pnlProdutoFundo: TPanel
               Left = 0
               Top = 0
@@ -452,7 +443,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitHeight = 275
               object lblTitContato: TLabel
                 Left = 1
                 Top = 1
@@ -581,7 +571,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Color = 16764573
                 ParentBackground = False
                 TabOrder = 2
-                ExplicitTop = 254
                 object Label6: TLabel
                   Left = 568
                   Top = 2
@@ -618,7 +607,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitHeight = 181
                 object dbgrdItens: TDBGrid
                   Left = 0
                   Top = 0
@@ -697,8 +685,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Align = alRight
                   BevelOuter = bvNone
                   TabOrder = 1
-                  ExplicitLeft = 825
-                  ExplicitHeight = 181
                   object pnlDelItem: TPanel
                     Left = 4
                     Top = 75
@@ -741,7 +727,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           object tsPagamento: TTabSheet
             Caption = '   PAGAMENTO   '
             ImageIndex = 1
-            ExplicitHeight = 275
             object pnlPagtoFundo: TPanel
               Left = 0
               Top = 0
@@ -751,7 +736,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitHeight = 275
               object pnlPagtoLeft: TPanel
                 Left = 1
                 Top = 1
@@ -760,7 +744,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alLeft
                 BevelOuter = bvNone
                 TabOrder = 0
-                ExplicitHeight = 273
                 object pnlPagtoLeftTop: TPanel
                   Left = 0
                   Top = 0
@@ -811,7 +794,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   ParentBackground = False
                   TabOrder = 2
                   OnClick = actPagtoGerarDuplicatasExecute
-                  ExplicitTop = 233
                   object Label8: TLabel
                     Left = 2
                     Top = 10
@@ -864,7 +846,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Color = 10198939
                   ParentBackground = False
                   TabOrder = 1
-                  ExplicitHeight = 179
                   object Label9: TLabel
                     Left = 7
                     Top = 19
@@ -966,7 +947,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitHeight = 273
                 object pnlPagtoClientTop: TPanel
                   Left = 0
                   Top = 0
@@ -999,7 +979,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Align = alClient
                   BevelOuter = bvNone
                   TabOrder = 1
-                  ExplicitHeight = 238
                   object pnlPagtoClientRight: TPanel
                     Left = 424
                     Top = 0
@@ -1008,7 +987,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Align = alRight
                     BevelOuter = bvNone
                     TabOrder = 1
-                    ExplicitHeight = 238
                     object pnlPagtoExcDup: TPanel
                       Left = 4
                       Top = 96
@@ -1095,7 +1073,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           object tsImagem: TTabSheet
             Caption = 'IMAGENS'
             ImageIndex = 2
-            ExplicitHeight = 275
             object pnlImgFundo: TPanel
               Left = 0
               Top = 0
@@ -1106,7 +1083,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
               Color = 14803681
               ParentBackground = False
               TabOrder = 0
-              ExplicitHeight = 275
               object pnlImgTop: TPanel
                 Left = 0
                 Top = 0
@@ -1261,7 +1237,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alClient
                 BevelOuter = bvNone
                 TabOrder = 1
-                ExplicitHeight = 138
                 object pnlImg4: TPanel
                   Left = 0
                   Top = 0
@@ -1269,7 +1244,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 148
                   Align = alLeft
                   TabOrder = 0
-                  ExplicitHeight = 138
                   object img4: TImage
                     Left = 1
                     Top = 26
@@ -1315,7 +1289,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 148
                   Align = alLeft
                   TabOrder = 1
-                  ExplicitHeight = 138
                   object img5: TImage
                     Left = 1
                     Top = 26
@@ -1361,7 +1334,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Height = 148
                   Align = alLeft
                   TabOrder = 2
-                  ExplicitHeight = 138
                   object img6: TImage
                     Left = 1
                     Top = 26
@@ -1416,7 +1388,6 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     Color = 14803681
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 24
     object pnlGerarRelatorio: TPanel
       Left = 754
       Top = 4

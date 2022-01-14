@@ -105,6 +105,7 @@ type
     procedure CriarNovoProduto();
     procedure SetIdProduto(const Value: integer);
     procedure SetProduto(const Value: string);
+    procedure CarregarDados();
   public
     property IdInsumo: integer read FIdInsumo write SetIdInsumo;
     property Insumo: string read FInsumo write SetInsumo;
@@ -119,6 +120,7 @@ type
     property ProdutoUnidade: string read FProdutoUnidade write FProdutoUnidade;
 
     procedure Iniciar();
+    procedure Editar();
   end;
 
 var
@@ -281,6 +283,16 @@ begin
   aRet := Consulta.Unidade;
   if aRet.Codigo > 0 then
     Retorno := IntToStr(aRet.Codigo);
+end;
+
+procedure TFrm_PedidoVenda_NovoProduto.CarregarDados;
+begin
+
+end;
+
+procedure TFrm_PedidoVenda_NovoProduto.Editar(aIDProduto: integer);
+begin
+  CarregarDados();
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.edpesMatPrimaedtCampoExit(Sender: TObject);
