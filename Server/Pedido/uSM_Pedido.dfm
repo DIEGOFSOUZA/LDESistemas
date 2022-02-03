@@ -1,7 +1,7 @@
 object SM_Pedido: TSM_Pedido
   OldCreateOrder = False
   Height = 370
-  Width = 443
+  Width = 636
   object TranGravar: TFDTransaction
     Connection = ServerDM.Conexao
     Left = 64
@@ -122,7 +122,8 @@ object SM_Pedido: TSM_Pedido
         ' pi.UNIDADE, '
       
         'pi.QTDE_A_BAIXAR, pi.QTDE_BAIXADA, pi.VDESC, pi.SUBTOTAL, pi.TOT' +
-        'AL, p.NOME PRODUTO'
+        'AL, p.NOME PRODUTO,'
+      'pi.NOVO_PRODSERVICO'
       'from PEDIDO_VENDA_ITEM pi'
       'left join produto p on (p.codigo=pi.id_produto)'
       'where 1=2')
@@ -201,6 +202,11 @@ object SM_Pedido: TSM_Pedido
       ProviderFlags = []
       ReadOnly = True
       Size = 100
+    end
+    object PedidoVenda_ItensNOVO_PRODSERVICO: TIntegerField
+      FieldName = 'NOVO_PRODSERVICO'
+      Origin = 'NOVO_PRODSERVICO'
+      Required = True
     end
   end
   object dspPedidoVenda_Itens: TDataSetProvider
@@ -324,5 +330,152 @@ object SM_Pedido: TSM_Pedido
     StoreDefs = True
     Left = 352
     Top = 215
+  end
+  object Produto: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      
+        'select CODIGO, NOME, PRECO_VENDA, COD_UNIDADE, PRECO_CUSTO, ULTI' +
+        'MA_ALTERACAO,'
+      'cast('#39#39' as varchar(10))unidade'
+      'from PRODUTO  '
+      'where 1=2')
+    Left = 464
+    Top = 104
+    object ProdutoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object ProdutoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object ProdutoPRECO_VENDA: TCurrencyField
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      Required = True
+    end
+    object ProdutoCOD_UNIDADE: TIntegerField
+      FieldName = 'COD_UNIDADE'
+      Origin = 'COD_UNIDADE'
+    end
+    object ProdutoPRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      Origin = 'PRECO_CUSTO'
+    end
+    object ProdutoULTIMA_ALTERACAO: TStringField
+      FieldName = 'ULTIMA_ALTERACAO'
+      Origin = 'ULTIMA_ALTERACAO'
+      Size = 200
+    end
+    object ProdutoUNIDADE: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+  end
+  object dspProduto: TDataSetProvider
+    DataSet = Produto
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 464
+    Top = 152
+  end
+  object cdsProduto: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspProduto'
+    StoreDefs = True
+    Left = 464
+    Top = 216
+  end
+  object Produto_Composicao: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      
+        'select pc.ID_PRODUTO, pc.ID_MATPRIMA, pc.QTDE, pc.CUSTO_UNIT, pc' +
+        '.CUSTO_TOTAL,'
+      'p.nome material,coalesce(u2.sigla,u.sigla)UND'
+      'from PRODUTO_COMPOSICAO pc'
+      'left join produto p on (p.codigo = pc.id_matprima)'
+      'left join unidade u on (u.codigo=p.cod_unidade)'
+      'left join unidade u2 on (u2.codigo=p.conv_unidade)'
+      'where 1=2')
+    Left = 552
+    Top = 105
+    object Produto_ComposicaoID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Produto_ComposicaoID_MATPRIMA: TIntegerField
+      FieldName = 'ID_MATPRIMA'
+      Origin = 'ID_MATPRIMA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Produto_ComposicaoQTDE: TFMTBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Precision = 18
+      Size = 5
+    end
+    object Produto_ComposicaoCUSTO_UNIT: TFMTBCDField
+      FieldName = 'CUSTO_UNIT'
+      Origin = 'CUSTO_UNIT'
+      Precision = 18
+      Size = 2
+    end
+    object Produto_ComposicaoCUSTO_TOTAL: TFMTBCDField
+      FieldName = 'CUSTO_TOTAL'
+      Origin = 'CUSTO_TOTAL'
+      Precision = 18
+      Size = 2
+    end
+    object Produto_ComposicaoMATERIAL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'MATERIAL'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 100
+    end
+    object Produto_ComposicaoUND: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UND'
+      Origin = 'UND'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+  end
+  object dspProdComposicao: TDataSetProvider
+    DataSet = Produto_Composicao
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 552
+    Top = 153
+  end
+  object cdsProdComposicao: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspProdComposicao'
+    StoreDefs = True
+    Left = 552
+    Top = 217
   end
 end

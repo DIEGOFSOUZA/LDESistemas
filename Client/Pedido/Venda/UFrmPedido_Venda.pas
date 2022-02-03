@@ -157,6 +157,8 @@ type
     pnlGerarRelatorio: TPanel;
     lblGerarRelatorio: TLabel;
     dbchkGeraProducao: TDBCheckBox;
+    actEditarNovoProd: TAction;
+    cdsPEDIDO_VENDA_ITEMNOVO_PRODSERVICO: TIntegerField;
     procedure actPedidoSalvarExecute(Sender: TObject);
     procedure actPedidoCancelarExecute(Sender: TObject);
     procedure actItemAdicionarExecute(Sender: TObject);
@@ -190,13 +192,15 @@ type
     procedure img4DblClick(Sender: TObject);
     procedure img5DblClick(Sender: TObject);
     procedure img6DblClick(Sender: TObject);
+    procedure actEditarNovoProdExecute(Sender: TObject);
   private
     FIdParcelamento: integer;
     FIdPagamento: integer;
     FTotalPedio: Currency;
     FSaldoAPagar: Currency;
     FTipoTransacao: string;
-    procedure AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
+    procedure AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string; aNovoProdServ: integer);
+    procedure EditaProduto(aIdProd: Integer; aProduto: string; aUnit, aDesc: Currency; aUND: string);
     procedure FormasDePagto();
     procedure Parcelamento(aId: integer);
     procedure SetTotalPedido(const Value: Currency);
@@ -210,6 +214,8 @@ type
     procedure ExibeImagem(aSequencia: Integer);
     procedure ExcluirImagem(aSequencia: Integer);
     procedure ExcluirDuplicatas();
+    procedure EditarItemCriado;
+    procedure EditarItem;
   public
     property IdPagamento: integer read FIdPagamento write FIdPagamento;
     property IdParcelamento: integer read FIdParcelamento write FIdParcelamento;
@@ -340,7 +346,7 @@ begin
       ShowModal;
       if (IdProduto > 0) then
       begin
-        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, Desconto, Unidade);
+        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, Desconto, Unidade,0);
         ExcluirDuplicatas;
         try
           TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
@@ -365,11 +371,11 @@ begin
   try
     with Frm_PedidoVenda_NovoProduto do
     begin
-      Iniciar;
+      Inserir;
       ShowModal;
       if (IdProduto > 0) then
       begin
-        AdicioneProduto(IdProduto, Produto, 1, ProdutoUnitario, 0, ProdutoUnidade);
+        AdicioneProduto(IdProduto, Produto, 1, ProdutoUnitario, 0, ProdutoUnidade,1);
         try
           TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
         except
@@ -381,6 +387,15 @@ begin
     FreeAndNil(Frm_PedidoVenda_NovoProduto);
     AlphaBlend := False;
   end;
+end;
+
+procedure TFrmPedido_Venda.actEditarNovoProdExecute(Sender: TObject);
+begin
+  inherited;
+  if (cdsPEDIDO_VENDA_ITEM.FieldByName('NOVO_PRODSERVICO').AsInteger = 1) then
+    EditarItemCriado;
+//  else
+//    EditarItem;
 end;
 
 procedure TFrmPedido_Venda.actItemExcluirExecute(Sender: TObject);
@@ -487,7 +502,7 @@ end;
 
 procedure TFrmPedido_Venda.actRelatorioExecute(Sender: TObject);
 begin
- if not Assigned(Rel_PedidoVendaA3) then
+  if not Assigned(Rel_PedidoVendaA3) then
     Rel_PedidoVendaA3 := TRel_PedidoVendaA3.Create(Self);
   try
     Rel_PedidoVendaA3.ID_PEDIDO := cdsPEDIDO_VENDAID.AsInteger;
@@ -497,7 +512,7 @@ begin
   end;
 end;
 
-procedure TFrmPedido_Venda.AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string);
+procedure TFrmPedido_Venda.AdicioneProduto(aIdProd: Integer; aProduto: string; aQtde: Extended; aUnit: Currency; aDesc: Currency; aUND: string; aNovoProdServ: integer);
 var
   lQtdeBaixa: Extended;
 begin
@@ -518,8 +533,22 @@ begin
     cdsPEDIDO_VENDA_ITEM.FieldByName('VUNIT').AsCurrency := aUnit;
     cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat := aQtde;
     cdsPEDIDO_VENDA_ITEM.FieldByName('UNIDADE').AsString := aUND;
+    cdsPEDIDO_VENDA_ITEM.FieldByName('NOVO_PRODSERVICO').AsInteger := aNovoProdServ;
     cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE_A_BAIXAR').AsFloat := lQtdeBaixa;
   end;
+  cdsPEDIDO_VENDA_ITEM.FieldByName('VDESC').AsCurrency := aDesc;
+  cdsPEDIDO_VENDA_ITEM.FieldByName('SUBTOTAL').AsCurrency := RoundABNT((cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat * aUnit), 2);
+  cdsPEDIDO_VENDA_ITEM.FieldByName('TOTAL').AsCurrency := RoundABNT((cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat * aUnit) - aDesc, 2);
+  cdsPEDIDO_VENDA_ITEM.Post;
+end;
+
+procedure TFrmPedido_Venda.EditaProduto(aIdProd: Integer; aProduto: string; aUnit, aDesc: Currency; aUND: string);
+begin
+  cdsPEDIDO_VENDA_ITEM.Locate('ID_PRODUTO', aIdProd, []);
+  cdsPEDIDO_VENDA_ITEM.Edit;
+  cdsPEDIDO_VENDA_ITEM.FieldByName('PRODUTO').AsString := aProduto;
+  cdsPEDIDO_VENDA_ITEM.FieldByName('VUNIT').AsCurrency := aUnit;
+  cdsPEDIDO_VENDA_ITEM.FieldByName('UNIDADE').AsString := aUND;
   cdsPEDIDO_VENDA_ITEM.FieldByName('VDESC').AsCurrency := aDesc;
   cdsPEDIDO_VENDA_ITEM.FieldByName('SUBTOTAL').AsCurrency := RoundABNT((cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat * aUnit), 2);
   cdsPEDIDO_VENDA_ITEM.FieldByName('TOTAL').AsCurrency := RoundABNT((cdsPEDIDO_VENDA_ITEM.FieldByName('QTDE').AsFloat * aUnit) - aDesc, 2);
@@ -764,6 +793,7 @@ procedure TFrmPedido_Venda.AbrirCDS(aIdPedido: integer);
 var
   lPedido: OleVariant;
 begin
+  cdsPEDIDO_VENDA_ITEM.IndexFieldNames := 'ordem';
   lPedido := DM.SMPedido.PedidoVenda_Carregar(DM.BancoDados, aIdPedido);
   cdsPEDIDO_VENDA.Close;
   cdsPEDIDO_VENDA_ITEM.Close;
@@ -776,6 +806,7 @@ begin
 
   MakeReadWrite(cdsPEDIDO_VENDACLIENTE);
   MakeReadWrite(cdsPEDIDO_VENDAVENDEDOR);
+  MakeReadWrite(cdsPEDIDO_VENDA_ITEMPRODUTO);
 end;
 
 procedure TFrmPedido_Venda.NovoPedido;
@@ -787,6 +818,54 @@ begin
   TotalPedido := 0;
   SaldoAPagar := 0;
   cdsPEDIDO_VENDA.Append;
+end;
+
+procedure TFrmPedido_Venda.EditarItem;
+begin
+  if not Assigned(Frm_PedidoVenda_AdicionarProduto) then
+    Frm_PedidoVenda_AdicionarProduto := TFrm_PedidoVenda_AdicionarProduto.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    with Frm_PedidoVenda_AdicionarProduto do
+    begin
+      Unidade := '';
+      ShowModal;
+      if (IdProduto > 0) then
+      begin
+        AdicioneProduto(IdProduto, Produto, Qtde, Unitario, Desconto, Unidade, 0);
+        ExcluirDuplicatas;
+        try
+          TotalPedido := cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL.Value;
+        except
+          TotalPedido := 0;
+        end;
+      end;
+    end;
+  finally
+    FreeAndNil(Frm_PedidoVenda_AdicionarProduto);
+    AlphaBlend := False;
+  end;
+end;
+
+procedure TFrmPedido_Venda.EditarItemCriado;
+begin
+  if not Assigned(Frm_PedidoVenda_NovoProduto) then
+    Frm_PedidoVenda_NovoProduto := TFrm_PedidoVenda_NovoProduto.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    with Frm_PedidoVenda_NovoProduto do
+    begin
+      IdProduto := cdsPEDIDO_VENDA_ITEM.FieldByName('ID_PRODUTO').AsInteger;
+      Editar;
+      ShowModal;
+      EditaProduto(IdProduto, Produto, ProdutoUnitario, 0, ProdutoUnidade);
+    end;
+  finally
+    FreeAndNil(Frm_PedidoVenda_NovoProduto);
+    AlphaBlend := False;
+  end;
 end;
 
 procedure TFrmPedido_Venda.EditarPedido(aIDPedido: integer);

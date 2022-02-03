@@ -65,6 +65,8 @@ type
     dbpsqsUnidade: TDBPesquisa;
     DBEdit1: TDBEdit;
     actLimparInsumos: TAction;
+    cdsProdutoCODIGO: TIntegerField;
+    cdsProdutoComposicaoID_PRODUTO: TIntegerField;
     procedure cdsProdutoComposicaoCalcFields(DataSet: TDataSet);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
     procedure edtUnitarioExit(Sender: TObject);
@@ -78,6 +80,9 @@ type
     procedure cdsProdutoAfterInsert(DataSet: TDataSet);
     procedure cdsProdutoBeforePost(DataSet: TDataSet);
     procedure actLimparInsumosExecute(Sender: TObject);
+    procedure cdsProdutoComposicaoAfterInsert(DataSet: TDataSet);
+    procedure edtUnitarioKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     FInsumo: string;
     FUnitario: Currency;
@@ -90,6 +95,7 @@ type
     FProduto: string;
     FProdutoUnitario: Currency;
     FProdutoUnidade: string;
+    FState: string;
     procedure SetIdInsumo(const Value: integer);
     procedure SetInsumo(const Value: string);
     procedure SetQtde(const Value: Extended);
@@ -105,7 +111,8 @@ type
     procedure CriarNovoProduto();
     procedure SetIdProduto(const Value: integer);
     procedure SetProduto(const Value: string);
-    procedure CarregarDados();
+    procedure CarregarDados(aIdProd: Integer = -1);
+    procedure SetState(const Value: string);
   public
     property IdInsumo: integer read FIdInsumo write SetIdInsumo;
     property Insumo: string read FInsumo write SetInsumo;
@@ -118,8 +125,9 @@ type
     property Produto: string read FProduto write SetProduto;
     property ProdutoUnitario: Currency read FProdutoUnitario write FProdutoUnitario;
     property ProdutoUnidade: string read FProdutoUnidade write FProdutoUnidade;
+    property State: string read FState write SetState;
 
-    procedure Iniciar();
+    procedure Inserir();
     procedure Editar();
   end;
 
@@ -129,7 +137,8 @@ var
 implementation
 
 uses
-  UConsulta, u_Mensagem, UFuncoes, UDM;
+  UConsulta, u_Mensagem, UFuncoes, UDM, UMakeReadWrite;
+
 
 {$R *.dfm}
 
@@ -165,17 +174,15 @@ end;
 procedure TFrm_PedidoVenda_NovoProduto.actLimparInsumosExecute(Sender: TObject);
 begin
   inherited;
-  if not cdsProdutoComposicao.IsEmpty then
-    if TMensagem.Pergunta('Confirma a exclusão de todos Materiais inseridos?') then
-    begin
-      cdsProdutoComposicao.DisableControls;
-      try
-        cdsProdutoComposicao.EmptyDataSet;
-        TotalInsumos := 0;
-      finally
-        cdsProdutoComposicao.EnableControls;
-      end;
-    end;
+  if cdsProdutoComposicao.IsEmpty then
+    Exit;
+
+  cdsProdutoComposicao.Delete;
+  try
+    TotalInsumos := cdsProdutoComposicaoSUBTOTAL.Value;
+  except
+    TotalInsumos := 0;
+  end;
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.actSairExecute(Sender: TObject);
@@ -252,6 +259,7 @@ end;
 procedure TFrm_PedidoVenda_NovoProduto.cdsProdutoAfterInsert(DataSet: TDataSet);
 begin
   inherited;
+  cdsProdutoCODIGO.AsInteger := -1;
   cdsProdutoPRECO_VENDA.AsCurrency := 0;
 end;
 
@@ -262,6 +270,13 @@ begin
   cdsProdutoPRECO_CUSTO.AsCurrency := TotalInsumos;
 end;
 
+procedure TFrm_PedidoVenda_NovoProduto.cdsProdutoComposicaoAfterInsert(
+  DataSet: TDataSet);
+begin
+  inherited;
+  cdsProdutoComposicaoID_PRODUTO.AsInteger := cdsProdutoCODIGO.AsInteger;
+end;
+
 procedure TFrm_PedidoVenda_NovoProduto.cdsProdutoComposicaoCalcFields(DataSet: TDataSet);
 begin
   inherited;
@@ -269,10 +284,19 @@ begin
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.CriarNovoProduto;
+var
+  lComposicao: OleVariant;
 begin
-  if cdsProduto.State in [dsInsert] then
+  if cdsProduto.State in [dsInsert,dsEdit] then
     cdsProduto.Post;
-  IdProduto := DM.SMPedido.PedidoVenda_CriaProduto(DM.BancoDados,cdsProduto.Delta,cdsProdutoComposicao.Delta);
+  lComposicao := null;
+  if (cdsProdutoComposicao.ChangeCount > 0) then
+    lComposicao := cdsProdutoComposicao.Delta;
+
+  if (FState = 'insert') then
+    IdProduto := DM.SMPedido.PedidoVenda_CriaProduto(DM.BancoDados, VarArrayOf([cdsProduto.Delta,lComposicao]))
+  else
+    DM.SMPedido.PedidoVenda_EditarProduto(DM.BancoDados,VarArrayOf([cdsProduto.Delta,lComposicao]));
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.dbpsqsUnidadePesquisa(Sender: TObject; var Retorno: string);
@@ -285,14 +309,38 @@ begin
     Retorno := IntToStr(aRet.Codigo);
 end;
 
-procedure TFrm_PedidoVenda_NovoProduto.CarregarDados;
+procedure TFrm_PedidoVenda_NovoProduto.Inserir;
 begin
-
+  State := 'insert';
+  CarregarDados;
+  cdsProduto.Append;
 end;
 
-procedure TFrm_PedidoVenda_NovoProduto.Editar(aIDProduto: integer);
+procedure TFrm_PedidoVenda_NovoProduto.Editar;
 begin
-  CarregarDados();
+  State := 'update';
+  CarregarDados(FIdProduto);
+  if not cdsProdutoComposicao.IsEmpty then
+    TotalInsumos := cdsProdutoComposicaoSUBTOTAL.Value;
+  cdsProduto.Edit;
+end;
+
+procedure TFrm_PedidoVenda_NovoProduto.CarregarDados(aIdProd: Integer = -1);
+var
+  lRet: OleVariant;
+begin
+  FIdInsumo := -1;
+  Unidade := '';
+
+  lRet := DM.SMPedido.PedidoVenda_CarregarProduto(DM.BancoDados, aIdProd);
+  cdsProduto.Close;
+  cdsProdutoComposicao.Close;
+  cdsProduto.Data := lRet[0];
+  cdsProdutoComposicao.Data := lRet[1];
+
+  MakeReadWrite(cdsProdutoUNIDADE);
+  MakeReadWrite(cdsProdutoComposicaoMATERIAL);
+  MakeReadWrite(cdsProdutoComposicaoUND);
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.edpesMatPrimaedtCampoExit(Sender: TObject);
@@ -363,15 +411,12 @@ begin
     Unitario := 0;
 end;
 
-procedure TFrm_PedidoVenda_NovoProduto.Iniciar;
+procedure TFrm_PedidoVenda_NovoProduto.edtUnitarioKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
 begin
-  FIdInsumo := -1;
-  Unidade := '';
-  cdsProduto.Close;
-  cdsProduto.CreateDataSet;
-  cdsProdutoComposicao.Close;
-  cdsProdutoComposicao.CreateDataSet;
-  cdsProduto.Append;
+  inherited;
+  if Key = VK_RETURN then
+    actAdicionar.Execute;
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.NovoInsumo;
@@ -414,6 +459,19 @@ begin
   FQtde := Value;
   edtQtde.Text := FormatFloat('#,##0.000', FQtde);
   Total := (FQtde * FUnitario);
+end;
+
+procedure TFrm_PedidoVenda_NovoProduto.SetState(const Value: string);
+begin
+  FState := Value;
+  if Value = 'insert' then
+  begin
+    lblGravar.Caption := 'INCLUIR NO PEDIDO';
+  end
+  else
+  begin
+    lblGravar.Caption := 'ALTERAR NO PEDIDO';
+  end;
 end;
 
 procedure TFrm_PedidoVenda_NovoProduto.SetTotal(const Value: Currency);

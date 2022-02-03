@@ -450,7 +450,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Height = 20
                 Align = alTop
                 AutoSize = False
-                Caption = '         PRODUTOS'
+                Caption = '    PRODUTOS / SERVI'#199'O'
                 Color = 10114859
                 Font.Charset = ANSI_CHARSET
                 Font.Color = clWhite
@@ -474,9 +474,9 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                 Align = alTop
                 TabOrder = 0
                 object pnlAdicionarItem: TPanel
-                  Left = 10
+                  Left = 18
                   Top = 10
-                  Width = 100
+                  Width = 120
                   Height = 32
                   BevelOuter = bvNone
                   Caption = 'pnlAddMovimentacao'
@@ -487,11 +487,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   object lblAdicionarItem: TLabel
                     Left = 0
                     Top = 0
-                    Width = 100
+                    Width = 120
                     Height = 32
                     Align = alClient
                     Alignment = taCenter
-                    Caption = 'ADICIONAR'#13#10'PRODUTO'
+                    Caption = 'PESQUISAR '#13#10'PRODUTO/SERVI'#199'O'
                     Color = 7237230
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clWhite
@@ -503,14 +503,14 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Transparent = True
                     Layout = tlCenter
                     OnClick = actItemAdicionarExecute
-                    ExplicitWidth = 65
+                    ExplicitWidth = 109
                     ExplicitHeight = 30
                   end
                 end
                 object pnlCriarItem: TPanel
-                  Left = 122
+                  Left = 148
                   Top = 10
-                  Width = 100
+                  Width = 120
                   Height = 32
                   BevelOuter = bvNone
                   Caption = 'pnlAddMovimentacao'
@@ -521,11 +521,11 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   object lblCriarItem: TLabel
                     Left = 0
                     Top = 0
-                    Width = 100
+                    Width = 120
                     Height = 32
                     Align = alClient
                     Alignment = taCenter
-                    Caption = 'CRIAR'#13#10'PRODUTO'
+                    Caption = 'NOVO '#13#10'PRODUTO/SERVI'#199'O'
                     Color = 7237230
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clWhite
@@ -537,7 +537,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Transparent = True
                     Layout = tlCenter
                     OnClick = actItemCriarExecute
-                    ExplicitWidth = 56
+                    ExplicitWidth = 109
                     ExplicitHeight = 30
                   end
                 end
@@ -630,6 +630,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   TitleFont.Name = 'Segoe UI'
                   TitleFont.Style = []
                   OnDrawColumnCell = dbgrdItensDrawColumnCell
+                  OnDblClick = actEditarNovoProdExecute
                   Columns = <
                     item
                       Alignment = taCenter
@@ -1458,6 +1459,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Caption = 'actRelatorio'
       OnExecute = actRelatorioExecute
     end
+    object actEditarNovoProd: TAction
+      Caption = 'actEditarNovoProd'
+      OnExecute = actEditarNovoProdExecute
+    end
   end
   object cdsPEDIDO_VENDA_ITEM: TClientDataSet
     Aggregates = <>
@@ -1465,8 +1470,8 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     CommandText = 
       'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,' +
       ' pi.UNIDADE, '#13#10'pi.QTDE_A_BAIXAR, pi.VDESC, pi.SUBTOTAL, pi.TOTAL' +
-      ', p.NOME PRODUTO'#13#10'from PEDIDO_VENDA_ITEM pi'#13#10'left join produto p' +
-      ' on (p.codigo=pi.id_produto)'#13#10'where 1=2'
+      ', p.NOME PRODUTO,'#13#10'pi.NOVO_PRODSERVICO'#13#10'from PEDIDO_VENDA_ITEM p' +
+      'i'#13#10'left join produto p on (p.codigo=pi.id_produto)'#13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
@@ -1535,6 +1540,10 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     object cdsPEDIDO_VENDA_ITEMPRODUTO: TStringField
       FieldName = 'PRODUTO'
       Size = 100
+    end
+    object cdsPEDIDO_VENDA_ITEMNOVO_PRODSERVICO: TIntegerField
+      FieldName = 'NOVO_PRODSERVICO'
+      Required = True
     end
     object cdsPEDIDO_VENDA_ITEMSUBTOTAL_GERAL: TAggregateField
       FieldName = 'SUBTOTAL_GERAL'

@@ -164,10 +164,8 @@ object Frm_Login: TFrm_Login
             Font.Style = [fsBold]
             ParentFont = False
             Transparent = False
-            ExplicitLeft = 1
-            ExplicitTop = 8
-            ExplicitWidth = 183
-            ExplicitHeight = 28
+            ExplicitLeft = -5
+            ExplicitTop = -6
           end
         end
       end

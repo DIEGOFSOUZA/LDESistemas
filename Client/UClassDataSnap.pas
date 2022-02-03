@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 07/01/2022 17:27:05
+// 17/01/2022 15:33:41
 //
 
 unit UClassDataSnap;
@@ -225,6 +225,8 @@ type
     FPedidoVenda_AdicionarCommand: TDBXCommand;
     FPedidoVenda_EditarCommand: TDBXCommand;
     FPedidoVenda_CriaProdutoCommand: TDBXCommand;
+    FPedidoVenda_EditarProdutoCommand: TDBXCommand;
+    FPedidoVenda_CarregarProdutoCommand: TDBXCommand;
     FPedidoVenda_AvancaStatusCommand: TDBXCommand;
     FPedidoVenda_ExcluirCommand: TDBXCommand;
     FPedidoVenda_CarregarCommand: TDBXCommand;
@@ -235,7 +237,9 @@ type
     destructor Destroy; override;
     function PedidoVenda_Adicionar(BD: string; aTabelas: OleVariant): Boolean;
     function PedidoVenda_Editar(BD: string; aTabelas: OleVariant): Boolean;
-    function PedidoVenda_CriaProduto(BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
+    function PedidoVenda_CriaProduto(BD: string; aTabelas: OleVariant): Integer;
+    function PedidoVenda_EditarProduto(BD: string; aTabelas: OleVariant): Boolean;
+    function PedidoVenda_CarregarProduto(BD: string; aIDProduto: Integer): OleVariant;
     function PedidoVenda_AvancaStatus(BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Excluir(BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Carregar(BD: string; aIDPedido: Integer): OleVariant;
@@ -1824,7 +1828,7 @@ begin
   Result := FPedidoVenda_EditarCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TSM_PedidoClient.PedidoVenda_CriaProduto(BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
+function TSM_PedidoClient.PedidoVenda_CriaProduto(BD: string; aTabelas: OleVariant): Integer;
 begin
   if FPedidoVenda_CriaProdutoCommand = nil then
   begin
@@ -1834,10 +1838,39 @@ begin
     FPedidoVenda_CriaProdutoCommand.Prepare;
   end;
   FPedidoVenda_CriaProdutoCommand.Parameters[0].Value.SetWideString(BD);
-  FPedidoVenda_CriaProdutoCommand.Parameters[1].Value.AsVariant := aProduto;
-  FPedidoVenda_CriaProdutoCommand.Parameters[2].Value.AsVariant := aProdComposicao;
+  FPedidoVenda_CriaProdutoCommand.Parameters[1].Value.AsVariant := aTabelas;
   FPedidoVenda_CriaProdutoCommand.ExecuteUpdate;
-  Result := FPedidoVenda_CriaProdutoCommand.Parameters[3].Value.GetInt32;
+  Result := FPedidoVenda_CriaProdutoCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TSM_PedidoClient.PedidoVenda_EditarProduto(BD: string; aTabelas: OleVariant): Boolean;
+begin
+  if FPedidoVenda_EditarProdutoCommand = nil then
+  begin
+    FPedidoVenda_EditarProdutoCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_EditarProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_EditarProdutoCommand.Text := 'TSM_Pedido.PedidoVenda_EditarProduto';
+    FPedidoVenda_EditarProdutoCommand.Prepare;
+  end;
+  FPedidoVenda_EditarProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_EditarProdutoCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FPedidoVenda_EditarProdutoCommand.ExecuteUpdate;
+  Result := FPedidoVenda_EditarProdutoCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TSM_PedidoClient.PedidoVenda_CarregarProduto(BD: string; aIDProduto: Integer): OleVariant;
+begin
+  if FPedidoVenda_CarregarProdutoCommand = nil then
+  begin
+    FPedidoVenda_CarregarProdutoCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_CarregarProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_CarregarProdutoCommand.Text := 'TSM_Pedido.PedidoVenda_CarregarProduto';
+    FPedidoVenda_CarregarProdutoCommand.Prepare;
+  end;
+  FPedidoVenda_CarregarProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_CarregarProdutoCommand.Parameters[1].Value.SetInt32(aIDProduto);
+  FPedidoVenda_CarregarProdutoCommand.ExecuteUpdate;
+  Result := FPedidoVenda_CarregarProdutoCommand.Parameters[2].Value.AsVariant;
 end;
 
 function TSM_PedidoClient.PedidoVenda_AvancaStatus(BD: string; aPedidos: OleVariant): Integer;
@@ -1915,6 +1948,8 @@ begin
   FPedidoVenda_AdicionarCommand.DisposeOf;
   FPedidoVenda_EditarCommand.DisposeOf;
   FPedidoVenda_CriaProdutoCommand.DisposeOf;
+  FPedidoVenda_EditarProdutoCommand.DisposeOf;
+  FPedidoVenda_CarregarProdutoCommand.DisposeOf;
   FPedidoVenda_AvancaStatusCommand.DisposeOf;
   FPedidoVenda_ExcluirCommand.DisposeOf;
   FPedidoVenda_CarregarCommand.DisposeOf;

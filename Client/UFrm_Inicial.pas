@@ -176,7 +176,9 @@ uses
   UFrm_GrupoHistorico, UFrm_Usuario, uFrm_CadUnidade, UFrm_CondicoesPagto,
   UFrm_Pedido, uRel_VendaFormaPagto, uRel_VendaPeriodo, uRel_VendaPorVendedor,
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
-  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta, uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou, UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico;
+  UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta,
+  uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou,
+  UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico;
 
 function Saudacao: string;
 begin
@@ -390,7 +392,6 @@ begin
   MenuVenda_PDV_AutorizaOrcamento.Visible := (DM.Usuario.Perfil='Administrador');
 
   Cheque1.Visible          := (DM.Usuario.Login = 'ADMIN');
-  MenuVenda_Pedido.Visible := (DM.Usuario.Login = 'ADMIN');
   CONTASARECEBER21.Visible := (DM.Usuario.Login = 'ADMIN');
 
   if not ValidaCliente then

@@ -385,7 +385,6 @@ var
   tmp: TClientDataSet;
 begin               //0 invalido; 1 valido; 2 inativo
   Result := 0;
-
   tmp := TClientDataSet.Create(nil);
   try
     txt := 'select U.USU_ID, U.USU_NOME, U.ATIVO, U.PERFIL, UG.ATIVO GRUPOATIVO,'+
@@ -395,8 +394,10 @@ begin               //0 invalido; 1 valido; 2 inativo
            'WHERE UPPER(USU_NOME) = '+QuotedStr(AnsiUpperCase(Trim(usuario)))+
            ' AND USU_SENHA = ' + QuotedStr(Trim(senha));
 
+    ShowMessage('antes de consultar usuario');
     tmp.Close;
     tmp.Data := fSMClient.LerDataSet(BancoDados, txt);
+    ShowMessage('depois de consultar usuario');
 
     if not tmp.IsEmpty then
     begin
@@ -419,7 +420,9 @@ begin               //0 invalido; 1 valido; 2 inativo
         fUsuario.AcessoFinanceiro := (tmp.FieldByName('ACESSO_FINANCEIRO').AsInteger = 1);
         fUsuario.AcessoOP := (tmp.FieldByName('ACESSO_OP').AsInteger = 1);
       end;
-    end;
+    end
+    else
+      ShowMessage('dados usuario nao listado');
   finally
     FreeAndNil(tmp);
   end;

@@ -5,7 +5,7 @@ inherited Frm_ConsultaCNPJ: TFrm_ConsultaCNPJ
   Visible = False
   OnShow = FormShow
   ExplicitWidth = 648
-  ExplicitHeight = 225
+  ExplicitHeight = 226
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel

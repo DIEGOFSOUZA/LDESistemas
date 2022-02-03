@@ -206,6 +206,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         TabOrder = 3
         Text = '0,00'
         OnExit = edtUnitarioExit
+        OnKeyDown = edtUnitarioKeyDown
         OnKeyPress = edtQtdeKeyPress
       end
       object edtTotal: TEdit
@@ -359,7 +360,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
         ParentBackground = False
         TabOrder = 2
         object Label6: TLabel
-          Left = 298
+          Left = 330
           Top = 4
           Width = 209
           Height = 17
@@ -372,7 +373,7 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
           ParentFont = False
         end
         object lblItensSubTotal: TLabel
-          Left = 509
+          Left = 541
           Top = 4
           Width = 102
           Height = 17
@@ -632,12 +633,17 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     Aggregates = <>
     AggregatesActive = True
     CommandText = 
-      'select pc.ID_MATPRIMA, pc.QTDE, pc.CUSTO_UNIT, pc.CUSTO_TOTAL,'#13#10 +
-      'p.nome material,coalesce(u2.sigla,u.sigla)UND'#13#10'from PRODUTO_COMP' +
-      'OSICAO pc'#13#10'left join produto p on (p.codigo = pc.id_matprima)'#13#10'l' +
-      'eft join unidade u on (u.codigo=p.cod_unidade)'#13#10'left join unidad' +
-      'e u2 on (u2.codigo=p.conv_unidade)'#13#10'where 1=2'
+      'select pc.ID_PRODUTO, pc.ID_MATPRIMA, pc.QTDE, pc.CUSTO_UNIT, pc' +
+      '.CUSTO_TOTAL,'#13#10'p.nome material,coalesce(u2.sigla,u.sigla)UND'#13#10'fr' +
+      'om PRODUTO_COMPOSICAO pc'#13#10'left join produto p on (p.codigo = pc.' +
+      'id_matprima)'#13#10'left join unidade u on (u.codigo=p.cod_unidade)'#13#10'l' +
+      'eft join unidade u2 on (u2.codigo=p.conv_unidade)'#13#10'where 1=2'
     FieldDefs = <
+      item
+        Name = 'ID_PRODUTO'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
       item
         Name = 'ID_MATPRIMA'
         Attributes = [faRequired]
@@ -678,9 +684,14 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
     StoreDefs = True
+    AfterInsert = cdsProdutoComposicaoAfterInsert
     OnCalcFields = cdsProdutoComposicaoCalcFields
     Left = 376
     Top = 344
+    object cdsProdutoComposicaoID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      ProviderFlags = []
+    end
     object cdsProdutoComposicaoID_MATPRIMA: TIntegerField
       FieldName = 'ID_MATPRIMA'
       Required = True
@@ -729,8 +740,9 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
   object cdsProduto: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'select NOME, PRECO_VENDA, COD_UNIDADE, PRECO_CUSTO, ULTIMA_ALTER' +
-      'ACAO,'#13#10'cast('#39#39' as varchar(10))unidade'#13#10'from PRODUTO  '#13#10'where 1=2'
+      'select CODIGO, NOME, PRECO_VENDA, COD_UNIDADE, PRECO_CUSTO, ULTI' +
+      'MA_ALTERACAO,'#13#10'cast('#39#39' as varchar(10))unidade'#13#10'from PRODUTO  '#13#10'w' +
+      'here 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
     RemoteServer = DM.dspRLer
@@ -738,6 +750,9 @@ inherited Frm_PedidoVenda_NovoProduto: TFrm_PedidoVenda_NovoProduto
     BeforePost = cdsProdutoBeforePost
     Left = 269
     Top = 344
+    object cdsProdutoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+    end
     object cdsProdutoNOME: TStringField
       FieldName = 'NOME'
       Required = True

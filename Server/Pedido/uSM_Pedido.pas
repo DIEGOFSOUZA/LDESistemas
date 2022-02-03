@@ -59,6 +59,27 @@ type
     Pedido_Venda_IMGSEQUENCIA: TIntegerField;
     Pedido_Venda_IMGPATH_IMAGEM: TStringField;
     ReceberDESCRI: TStringField;
+    Produto: TFDQuery;
+    dspProduto: TDataSetProvider;
+    cdsProduto: TClientDataSet;
+    ProdutoNOME: TStringField;
+    ProdutoPRECO_VENDA: TCurrencyField;
+    ProdutoCOD_UNIDADE: TIntegerField;
+    ProdutoPRECO_CUSTO: TCurrencyField;
+    ProdutoULTIMA_ALTERACAO: TStringField;
+    ProdutoUNIDADE: TStringField;
+    Produto_Composicao: TFDQuery;
+    dspProdComposicao: TDataSetProvider;
+    cdsProdComposicao: TClientDataSet;
+    Produto_ComposicaoID_MATPRIMA: TIntegerField;
+    Produto_ComposicaoQTDE: TFMTBCDField;
+    Produto_ComposicaoCUSTO_UNIT: TFMTBCDField;
+    Produto_ComposicaoCUSTO_TOTAL: TFMTBCDField;
+    Produto_ComposicaoMATERIAL: TStringField;
+    Produto_ComposicaoUND: TStringField;
+    Produto_ComposicaoID_PRODUTO: TIntegerField;
+    ProdutoCODIGO: TIntegerField;
+    PedidoVenda_ItensNOVO_PRODSERVICO: TIntegerField;
   private
     procedure getClientDataSet(aClientDataSet: OleVariant);
     procedure GeraProducao(aDM: TServerDM; aIdPedido: integer; aUsuario: string);
@@ -67,7 +88,11 @@ type
   public
     function PedidoVenda_Adicionar(const BD: string; aTabelas: OleVariant): Boolean;
     function PedidoVenda_Editar(const BD: string; aTabelas: OleVariant): Boolean;
-    function PedidoVenda_CriaProduto(const BD: string; aProduto: OleVariant; aProdComposicao: OleVariant): Integer;
+
+    function PedidoVenda_CriaProduto(const BD: string; aTabelas: OleVariant): Integer;
+    function PedidoVenda_EditarProduto(const BD: string; aTabelas: OleVariant): Boolean;
+    function PedidoVenda_CarregarProduto(const BD: string; aIDProduto: integer): OleVariant;
+
     function PedidoVenda_AvancaStatus(const BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Excluir(const BD: string; aPedidos: OleVariant): Integer;
     function PedidoVenda_Carregar(const BD: string; aIDPedido: integer): OleVariant;
@@ -238,6 +263,46 @@ begin
   end;
 end;
 
+function TSM_Pedido.PedidoVenda_EditarProduto(const BD: string; aTabelas: OleVariant): Boolean;
+var
+  DM: TServerDM;
+begin
+  Result := False;
+  DM := TServerDM.Create(BD);
+  try
+    Produto.Connection := DM.Conexao;
+    Produto_Composicao.Connection := DM.Conexao;
+    TranGravar.Connection := DM.Conexao;
+    TranGravar.StartTransaction;
+
+    try
+      if (aTabelas[0] <> Null) then
+      begin
+        cdsProduto.Data := aTabelas[0];
+        cdsProduto.ApplyUpdates(0);
+      end;
+      if (aTabelas[1] <> Null) then
+      begin
+        cdsProdComposicao.Data := aTabelas[1];
+        cdsProdComposicao.ApplyUpdates(0);
+      end;
+      TranGravar.Commit;
+      Result := True;
+    except
+      on e: Exception do
+      begin
+        TranGravar.Rollback;
+        Result := False;
+      end;
+    end;
+  finally
+    cdsProduto.Close;
+    cdsProdComposicao.Close;
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
+
 function TSM_Pedido.PedidoVenda_RelA3(const BD: string; aIdPedido: integer): OleVariant;
 const
   PEDIDO  = 'select P.ID, P.EMISSAO, P.ENTREGA, cast(P.ENTRADA as date) ENTRADA, P.OBSERVACAO, R.NOME VENDEDOR, C.NOME_RAZAO CLIENTE,'+
@@ -282,6 +347,40 @@ begin
   end;
 end;
 
+function TSM_Pedido.PedidoVenda_CarregarProduto(const BD: string; aIDProduto: integer): OleVariant;
+const
+  SQL_PROD  = 'select P.CODIGO, P.NOME, P.PRECO_VENDA, P.COD_UNIDADE, P.PRECO_CUSTO, P.ULTIMA_ALTERACAO, U.SIGLA UNIDADE '+
+              'from PRODUTO P '+
+              'left join UNIDADE U on (U.CODIGO = P.COD_UNIDADE) '+
+              'where P.CODIGO = %s';
+
+  SQL_PRODC = 'select pc.ID_PRODUTO, pc.ID_MATPRIMA, pc.QTDE, pc.CUSTO_UNIT, pc.CUSTO_TOTAL,'+
+              'p.nome material,coalesce(u2.sigla,u.sigla)UND '+
+              'from PRODUTO_COMPOSICAO pc '+
+              'left join produto p on (p.codigo = pc.id_matprima) '+
+              'left join unidade u on (u.codigo=p.cod_unidade) '+
+              'left join unidade u2 on (u2.codigo=p.conv_unidade) '+
+              'where pc.id_produto = %s';
+var
+  DM: TServerDM;
+  lProduto, lProdComp: OleVariant;
+begin
+  DM := TServerDM.Create(BD);
+  try
+    try
+      lProduto := DM.LerDataSet(Format(SQL_PROD, [aIDProduto.ToString]));
+      lProdComp := DM.LerDataSet(Format(SQL_PRODC, [aIDProduto.ToString]));
+      Result := VarArrayOf([lProduto, lProdComp]);
+    except
+      on E: Exception do
+        raise Exception.Create('Servidor Aplicativo: ' + #10 + #13 + E.Message);
+    end;
+  finally
+    DM.FecharConexao();
+    FreeAndNil(DM);
+  end;
+end;
+
 function TSM_Pedido.PedidoVenda_Carregar(const BD: string;
   aIDPedido: integer): OleVariant;
 const
@@ -291,7 +390,8 @@ const
                         'left join REPRESENTANTE R on (R.CODIGO = P.ID_VENDEDOR) '+
                         'where P.ID = %s';
   SQL_PEDIDOVENDAITEM = 'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,'+
-                        'pi.UNIDADE, pi.QTDE_A_BAIXAR, pi.VDESC, pi.SUBTOTAL, pi.TOTAL, P.NOME PRODUTO '+
+                        'pi.UNIDADE, pi.QTDE_A_BAIXAR, pi.VDESC, pi.SUBTOTAL, pi.TOTAL,'+
+                        'p.NOME PRODUTO, pi.NOVO_PRODSERVICO '+
                         'from PEDIDO_VENDA_ITEM pi '+
                         'left join PRODUTO P on (P.CODIGO = pi.ID_PRODUTO) '+
                         'where pi.ID_PEDIDO = %s';
@@ -324,8 +424,7 @@ begin
   end;
 end;
 
-function TSM_Pedido.PedidoVenda_CriaProduto(const BD: string; aProduto,
-  aProdComposicao: OleVariant): Integer;
+function TSM_Pedido.PedidoVenda_CriaProduto(const BD: string; aTabelas: OleVariant): Integer;
 const
   INS_PRODUTO = 'insert into PRODUTO (NOME, PRECO_VENDA, COD_UNIDADE, QTDE_ESTOQUE, PRECO_CUSTO, TIPO_PRODUTO, DT_CADASTRO,'+
                 '                     SITUACAO, ULTIMA_ALTERACAO, CALC_CUSTO_COMPOSICAO) '+
@@ -344,7 +443,7 @@ begin
   DM := TServerDM.Create(BD);
   try
     try
-      getClientDataSet(aProduto);
+      getClientDataSet(aTabelas[0]);
       DM.Gravar.SQL.Clear;
       DM.Gravar.SQL.Add(INS_PRODUTO);
       DM.Gravar.ParamByName('NOME').AsString := cdsLER.FieldByName('NOME').AsString;
@@ -360,19 +459,22 @@ begin
       DM.Gravar.ExecSQL;
       lIDProduto := DM.Gravar.Params[10].Value;
 
-      getClientDataSet(aProdComposicao);
-      DM.Gravar.SQL.Clear;
-      DM.Gravar.SQL.Add(INS_PRODCOMPOSICAO);
-      cdsLER.First;
-      while not cdsLER.Eof do
+      if (aTabelas[1] <> Null) then
       begin
-        DM.Gravar.ParamByName('ID_PRODUTO').AsInteger := lIDProduto;
-        DM.Gravar.ParamByName('ID_MATPRIMA').AsInteger := cdsLER.FieldByName('ID_MATPRIMA').AsInteger;
-        DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
-        DM.Gravar.ParamByName('CUSTO_UNIT').AsCurrency := cdsLER.FieldByName('CUSTO_UNIT').AsCurrency;
-        DM.Gravar.ParamByName('CUSTO_TOTAL').AsCurrency := cdsLER.FieldByName('CUSTO_TOTAL').AsCurrency;
-        DM.Gravar.ExecSQL;
-        cdsLER.Next;
+        getClientDataSet(aTabelas[1]);
+        DM.Gravar.SQL.Clear;
+        DM.Gravar.SQL.Add(INS_PRODCOMPOSICAO);
+        cdsLER.First;
+        while not cdsLER.Eof do
+        begin
+          DM.Gravar.ParamByName('ID_PRODUTO').AsInteger := lIDProduto;
+          DM.Gravar.ParamByName('ID_MATPRIMA').AsInteger := cdsLER.FieldByName('ID_MATPRIMA').AsInteger;
+          DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
+          DM.Gravar.ParamByName('CUSTO_UNIT').AsCurrency := cdsLER.FieldByName('CUSTO_UNIT').AsCurrency;
+          DM.Gravar.ParamByName('CUSTO_TOTAL').AsCurrency := cdsLER.FieldByName('CUSTO_TOTAL').AsCurrency;
+          DM.Gravar.ExecSQL;
+          cdsLER.Next;
+        end;
       end;
       Result := lIDProduto;
     except
@@ -391,8 +493,8 @@ const
                 'returning ID '+
                 '{into :ID}';
 
-  INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_A_BAIXAR, VDESC, SUBTOTAL, TOTAL) '+
-                'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_A_BAIXAR, :VDESC, :SUBTOTAL, :TOTAL)';
+  INS_ITEM    = 'insert into PEDIDO_VENDA_ITEM (ID_PEDIDO, ORDEM, ID_PRODUTO, VUNIT, QTDE, UNIDADE, QTDE_A_BAIXAR, VDESC, SUBTOTAL, TOTAL, NOVO_PRODSERVICO) '+
+                'values (:ID_PEDIDO, :ORDEM, :ID_PRODUTO, :VUNIT, :QTDE, :UNIDADE, :QTDE_A_BAIXAR, :VDESC, :SUBTOTAL, :TOTAL, :NOVO_PRODSERVICO)';
 
   INS_RECEBER = 'insert into CONTAS_A_RECEBER (TIPO, ID_TABELA_MASTER, NDUP, VDUP, DVENC, DESCRI) '+
                 'values (:TIPO, :ID_TABELA_MASTER, :NDUP, :VDUP, :DVENC, :DESCRI)';
@@ -443,6 +545,7 @@ begin
           DM.Gravar.ParamByName('VDESC').AsCurrency := cdsLER.FieldByName('VDESC').AsCurrency;
           DM.Gravar.ParamByName('SUBTOTAL').AsCurrency := cdsLER.FieldByName('SUBTOTAL').AsCurrency;
           DM.Gravar.ParamByName('TOTAL').AsCurrency := cdsLER.FieldByName('TOTAL').AsCurrency;
+          DM.Gravar.ParamByName('NOVO_PRODSERVICO').AsInteger := cdsLER.FieldByName('NOVO_PRODSERVICO').AsInteger;
           DM.Gravar.ExecSQL;
           cdsLER.Next;
         end;
