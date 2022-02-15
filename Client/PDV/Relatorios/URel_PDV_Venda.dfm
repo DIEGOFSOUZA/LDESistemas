@@ -1,11 +1,11 @@
 inherited Rel_PDV_Venda: TRel_PDV_Venda
   BorderStyle = bsDialog
   Caption = 'RELAT'#211'RIO DE VENDAS (PDV)'
-  ClientHeight = 456
-  ClientWidth = 896
+  ClientHeight = 615
+  ClientWidth = 1092
   OnCreate = FormCreate
-  ExplicitWidth = 902
-  ExplicitHeight = 485
+  ExplicitWidth = 1098
+  ExplicitHeight = 644
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
@@ -533,14 +533,15 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
   object pnlFundo: TPanel [1]
     Left = 0
     Top = 0
-    Width = 896
+    Width = 1092
     Height = 217
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 1949
     object pnlFiltros: TPanel
       Left = 1
       Top = 1
-      Width = 894
+      Width = 1090
       Height = 122
       Align = alTop
       Font.Charset = ANSI_CHARSET
@@ -550,7 +551,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
       Font.Style = []
       ParentFont = False
       TabOrder = 0
-      ExplicitTop = -1
+      ExplicitWidth = 894
       object Label2: TLabel
         Left = 251
         Top = 63
@@ -570,7 +571,7 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Width = 228
         Height = 63
         BorderStyle = bsSingle
-        TabOrder = 0
+        TabOrder = 1
         object lblTitPeriodo: TLabel
           Left = 1
           Top = 1
@@ -781,17 +782,18 @@ inherited Rel_PDV_Venda: TRel_PDV_Venda
         Campo.Height = 21
         Campo.CharCase = ecUpperCase
         Campo.TabOrder = 0
-        TabOrder = 1
+        TabOrder = 0
         TabStop = True
       end
     end
     object pnlAcoes: TPanel
       Left = 1
       Top = 123
-      Width = 894
+      Width = 1090
       Height = 54
       Align = alTop
       TabOrder = 1
+      ExplicitWidth = 894
       object btnRelatorio: TButton
         Left = 465
         Top = 4

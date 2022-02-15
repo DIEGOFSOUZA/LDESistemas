@@ -165,13 +165,6 @@ begin
   if TMensagem.Pergunta('Confirma a baixa da duplicata?') then
   begin
     try
-//      Historico := edpsqsHistorico.Campo.Text;
-//
-//      if edpsqsConta.Campo.Text <> '' then
-//        Conta := QuotedStr(edpsqsConta.Campo.Text)
-//      else
-//        Conta := 'null';
-
       if not GerarParcial(StrToFloat(edtValorBaixa.Text)) then
         Baixa();
     finally
@@ -350,12 +343,10 @@ begin
   Result := False;
   if (FValor > pVlPago) then
   begin
+    Result := True;
     lDiferenca := FValor - pVlPago;
     if TMensagem.Pergunta('Será gerado uma nova duplicata pendente no valor de R$ ' + FormatCurr('#,##0.00', lDiferenca) + #13#10 + 'Confirma o pagamento parcial da duplicata?') then
-    begin
-      Result := True;
       PagtoParcial(pVlPago, lDiferenca);
-    end;
   end;
 end;
 

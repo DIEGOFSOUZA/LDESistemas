@@ -394,18 +394,13 @@ begin               //0 invalido; 1 valido; 2 inativo
            'WHERE UPPER(USU_NOME) = '+QuotedStr(AnsiUpperCase(Trim(usuario)))+
            ' AND USU_SENHA = ' + QuotedStr(Trim(senha));
 
-    ShowMessage('antes de consultar usuario');
     tmp.Close;
     tmp.Data := fSMClient.LerDataSet(BancoDados, txt);
-    ShowMessage('depois de consultar usuario');
 
     if not tmp.IsEmpty then
     begin
       if (tmp.FieldByName('ativo').AsString = 'Não') then
-      begin
-        Result := 2;
-//        TMensagem.Informacao('Usuário Inativo');
-      end
+        Result := 2
       else
       begin
         Result := 1;
@@ -420,9 +415,7 @@ begin               //0 invalido; 1 valido; 2 inativo
         fUsuario.AcessoFinanceiro := (tmp.FieldByName('ACESSO_FINANCEIRO').AsInteger = 1);
         fUsuario.AcessoOP := (tmp.FieldByName('ACESSO_OP').AsInteger = 1);
       end;
-    end
-    else
-      ShowMessage('dados usuario nao listado');
+    end;
   finally
     FreeAndNil(tmp);
   end;
