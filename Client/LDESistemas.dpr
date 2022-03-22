@@ -121,7 +121,9 @@ uses
   UFrm_PedidoVenda_AdicionarProduto in 'Pedido\Venda\UFrm_PedidoVenda_AdicionarProduto.pas' {Frm_PedidoVenda_AdicionarProduto},
   UFrmCad_Servico in 'Produto\UFrmCad_Servico.pas' {FrmCad_Servico},
   UPdr_Relatorio2_1 in 'Heranca\Relatorio\UPdr_Relatorio2_1.pas' {Pdr_Relatorio2_1},
-  URel_PedidoVendaA3 in 'Pedido\Venda\Relatorio\URel_PedidoVendaA3.pas' {Rel_PedidoVendaA3};
+  URel_PedidoVendaA3 in 'Pedido\Venda\Relatorio\URel_PedidoVendaA3.pas' {Rel_PedidoVendaA3},
+  ContasAReceber.Intefaces in 'Financeiro\ContasReceber\ContasAReceber.Intefaces.pas',
+  ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas';
 
 {$R *.res}
 

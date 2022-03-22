@@ -472,8 +472,6 @@ inherited Frm_Produto: TFrm_Produto
             ParentColor = True
             ShowCaption = False
             TabOrder = 0
-            ExplicitLeft = 4
-            ExplicitTop = -2
             object Label1: TLabel
               Left = 147
               Top = 7

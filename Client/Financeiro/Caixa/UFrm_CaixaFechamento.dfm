@@ -1,6 +1,6 @@
 inherited Frm_CaixaFechamento: TFrm_CaixaFechamento
   BorderStyle = bsNone
-  Caption = 'tela de fechamento'
+  Caption = 'FECHAMENTO DE CAIXA'
   ClientHeight = 546
   ClientWidth = 1267
   Color = 13750737

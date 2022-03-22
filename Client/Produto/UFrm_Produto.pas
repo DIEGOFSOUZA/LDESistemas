@@ -587,10 +587,9 @@ procedure TFrm_Produto.Excluir;
 begin
   inherited;
   try
-    inherited;
-    if cds.ChangeCount > 0 then
+    if (cds.ChangeCount > 0) then
     begin
-      DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('ID').AsInteger, cds.Delta);
+      DM.SMProduto.setProduto(DM.BancoDados, cds.FieldByName('CODIGO').AsInteger, cds.Delta);
       cds.Close;
       cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
     end;

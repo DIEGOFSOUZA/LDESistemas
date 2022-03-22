@@ -700,7 +700,6 @@ procedure TFrm_ContasAReceber.MontaSQL;
 var
   txt: string;
   txtParcial: string;
-  sCliente : string ;
 begin
   txtParcial := '' ;
 
@@ -780,7 +779,7 @@ begin
   cdsGrid.Data := DM.LerDataSet(txt);
 
   //Busca Parciais
-  if rgSituacao.ItemIndex <> 0 then
+  if (rgSituacao.ItemIndex <> 0) then
     AddParciais();
 
   Label9.Visible := cdsGrid.IsEmpty;

@@ -504,6 +504,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 539
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384
@@ -571,6 +572,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 331
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384
@@ -650,6 +652,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 227
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384
@@ -732,6 +735,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 123
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384
@@ -802,6 +806,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 435
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384
@@ -872,6 +877,7 @@ inherited Frm_ContasAReceber: TFrm_ContasAReceber
       Top = 19
       Width = 70
       Height = 74
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384

@@ -9,8 +9,8 @@ const
   cor03 = $00E1E2E1;
 
   //Versao do Sistema
-  Release = '40'; //para quando A3 iniciar
-  Build =   '0';
+  Release = '40';
+  Build =   '1';
 
   //Versao BD - busca versao do banco
 //  BDRelease = '5';

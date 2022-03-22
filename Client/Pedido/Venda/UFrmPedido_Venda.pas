@@ -810,7 +810,6 @@ begin
 end;
 
 procedure TFrmPedido_Venda.NovoPedido;
-
 begin
   Iniciar;
   FTipoTransacao := 'INSERT';

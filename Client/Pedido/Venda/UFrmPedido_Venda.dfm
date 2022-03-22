@@ -281,6 +281,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Top = 11
         Width = 120
         Height = 32
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -341,6 +342,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
         Top = 11
         Width = 100
         Height = 32
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -428,7 +430,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 313
-          ActivePage = tsItem
+          ActivePage = tsPagamento
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing
@@ -478,6 +480,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Top = 10
                   Width = 120
                   Height = 32
+                  Cursor = crHandPoint
                   BevelOuter = bvNone
                   Caption = 'pnlAddMovimentacao'
                   Color = 7024384
@@ -512,6 +515,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Top = 10
                   Width = 120
                   Height = 32
+                  Cursor = crHandPoint
                   BevelOuter = bvNone
                   Caption = 'pnlAddMovimentacao'
                   Color = 7024384
@@ -691,6 +695,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                     Top = 75
                     Width = 32
                     Height = 32
+                    Cursor = crHandPoint
                     BevelOuter = bvNone
                     Caption = 'pnlAddMovimentacao'
                     Color = 7024384
@@ -790,6 +795,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                   Top = 243
                   Width = 185
                   Height = 40
+                  Cursor = crHandPoint
                   Align = alBottom
                   Color = 7024384
                   ParentBackground = False
@@ -993,6 +999,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
                       Top = 96
                       Width = 32
                       Height = 32
+                      Cursor = crHandPoint
                       BevelOuter = bvNone
                       Caption = 'pnlAddMovimentacao'
                       Color = 7024384
@@ -1394,6 +1401,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
       Top = 4
       Width = 80
       Height = 32
+      Cursor = crHandPoint
       BevelOuter = bvNone
       Caption = 'pnlAddMovimentacao'
       Color = 7024384

@@ -508,6 +508,8 @@
             <Form>Rel_PedidoVendaA3</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Financeiro\ContasReceber\ContasAReceber.Intefaces.pas"/>
+        <DCCReference Include="Financeiro\ContasReceber\ContasAReceber.Baixa.pas"/>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
