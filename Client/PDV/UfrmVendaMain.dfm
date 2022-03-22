@@ -231,9 +231,6 @@ object frmVendaMain: TfrmVendaMain
           Color = 13337441
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 1
-          ExplicitTop = 1
-          ExplicitWidth = 408
           object lblProduto: TLabel
             Left = 43
             Top = 9
@@ -302,9 +299,6 @@ object frmVendaMain: TfrmVendaMain
           Color = 13337441
           ParentBackground = False
           TabOrder = 1
-          ExplicitLeft = 1
-          ExplicitTop = 102
-          ExplicitWidth = 408
           object lblClienteNome: TLabel
             Left = 100
             Top = 4
@@ -516,9 +510,6 @@ object frmVendaMain: TfrmVendaMain
           Color = 13337441
           ParentBackground = False
           TabOrder = 2
-          ExplicitLeft = 1
-          ExplicitTop = 209
-          ExplicitWidth = 408
           object pnlCancelar: TPanel
             Left = 42
             Top = 11
@@ -734,9 +725,6 @@ object frmVendaMain: TfrmVendaMain
           Color = 13337441
           ParentBackground = False
           TabOrder = 3
-          ExplicitLeft = 1
-          ExplicitTop = 332
-          ExplicitWidth = 408
           object Label2: TLabel
             Left = 1
             Top = 1

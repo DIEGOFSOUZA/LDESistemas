@@ -52,7 +52,6 @@ uses
   UFrm_ReabreCaixa in 'Financeiro\Caixa\UFrm_ReabreCaixa.pas' {Frm_ReabreCaixa},
   UFrm_Caixa_InformaValores in 'Financeiro\Caixa\UFrm_Caixa_InformaValores.pas' {Frm_Caixa_InformaValores},
   URel_FechamentoCaixa in 'Financeiro\Caixa\Relatorio\URel_FechamentoCaixa.pas' {Rel_FechamentoCaixa},
-  UFrm_NotaEntrada in 'Financeiro\ContasPagar\UFrm_NotaEntrada.pas' {Frm_NotaEntrada},
   UFrm_Historico in 'Financeiro\ContasPagar\UFrm_Historico.pas' {Frm_Historico},
   UFrm_ContaBancaria in 'Financeiro\ContasPagar\UFrm_ContaBancaria.pas' {Frm_ContaBancaria},
   UFrm_EntradaSimples in 'Financeiro\ContasPagar\UFrm_EntradaSimples.pas' {Frm_EntradaSimples},
@@ -81,7 +80,6 @@ uses
   uRel_VendaPeriodo in 'Relatorios\Venda\uRel_VendaPeriodo.pas' {Rel_VendaPeriodo},
   uRel_VendaPorVendedor in 'Relatorios\Venda\uRel_VendaPorVendedor.pas' {Rel_VendaPorVendedor},
   uRel_VendaPorItem in 'Relatorios\Venda\uRel_VendaPorItem.pas' {Rel_VendaPorItem},
-  uFrm_PedidoVenda in 'Pedido\Venda\uFrm_PedidoVenda.pas' {Frm_PedidoVenda},
   uFrm_PedidoDescontoItem in 'Pedido\uFrm_PedidoDescontoItem.pas' {Frm_PedidoDescontoItem},
   uPdr_FinanceiroPesquisar in 'Heranca\Financeiro\uPdr_FinanceiroPesquisar.pas' {Pdr_FinanceiroPesquisar},
   uFrm_PesquisaContasAReceber in 'Financeiro\ContasReceber\uFrm_PesquisaContasAReceber.pas' {Frm_PesquisaContasAReceber},
@@ -116,7 +114,16 @@ uses
   URel_NFEntradaPorClassificacao in 'Relatorios\NFEntrada\URel_NFEntradaPorClassificacao.pas' {Rel_NFEntradaPorClassificacao},
   URel_ClienteNaoComprou in 'Cadastros\Cliente\Relatorio\URel_ClienteNaoComprou.pas' {Rel_ClienteNaoComprou},
   UClassDataSnap in 'UClassDataSnap.pas',
-  UFrm_Conta_Pix_PDV in 'PDV\UFrm_Conta_Pix_PDV.pas' {Frm_Conta_Pix_PDV};
+  UFrm_Conta_Pix_PDV in 'PDV\UFrm_Conta_Pix_PDV.pas' {Frm_Conta_Pix_PDV},
+  UFrm_PedidoVendaGerencia in 'Pedido\Venda\UFrm_PedidoVendaGerencia.pas' {Frm_PedidoVendaGerencia},
+  UFrmPedido_Venda in 'Pedido\Venda\UFrmPedido_Venda.pas' {FrmPedido_Venda},
+  UFrm_PedidoVenda_NovoProduto in 'Pedido\Venda\UFrm_PedidoVenda_NovoProduto.pas' {Frm_PedidoVenda_NovoProduto},
+  UFrm_PedidoVenda_AdicionarProduto in 'Pedido\Venda\UFrm_PedidoVenda_AdicionarProduto.pas' {Frm_PedidoVenda_AdicionarProduto},
+  UFrmCad_Servico in 'Produto\UFrmCad_Servico.pas' {FrmCad_Servico},
+  UPdr_Relatorio2_1 in 'Heranca\Relatorio\UPdr_Relatorio2_1.pas' {Pdr_Relatorio2_1},
+  URel_PedidoVendaA3 in 'Pedido\Venda\Relatorio\URel_PedidoVendaA3.pas' {Rel_PedidoVendaA3},
+  ContasAReceber.Intefaces in 'Financeiro\ContasReceber\ContasAReceber.Intefaces.pas',
+  ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas';
 
 {$R *.res}
 

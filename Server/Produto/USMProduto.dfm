@@ -1,7 +1,11 @@
 inherited SMProduto: TSMProduto
   OldCreateOrder = True
-  Height = 331
-  Width = 369
+  Height = 295
+  Width = 758
+  inherited TranGravacao: TFDTransaction
+    Left = 39
+    Top = 34
+  end
   object fdqryProduto: TFDQuery
     Connection = ServerDM.Conexao
     Transaction = TranGravacao
@@ -18,8 +22,8 @@ inherited SMProduto: TSMProduto
       'left outer join NCM N on (N.ID = A.FISCAL_NCM)'
       'left outer join CEST C on (C.ID = A.FISCAL_CEST)'
       'where a.CODIGO = :CODIGO')
-    Left = 56
-    Top = 16
+    Left = 128
+    Top = 35
     ParamData = <
       item
         Name = 'CODIGO'
@@ -235,8 +239,8 @@ inherited SMProduto: TSMProduto
       'left join unidade c on (c.codigo=b.cod_unidade)'
       'left join unidade d on (d.codigo=b.conv_unidade)'
       'where a.id_produto = :codigo')
-    Left = 56
-    Top = 72
+    Left = 228
+    Top = 35
     ParamData = <
       item
         Name = 'CODIGO'
@@ -304,8 +308,8 @@ inherited SMProduto: TSMProduto
       'from PRODUTO_FORNECEDOR A'
       'left join FABRICANTE B on (B.CODIGO = A.ID_FORNECEDOR)'
       'where A.ID_PRODUTO = :ID_PRODUTO ')
-    Left = 56
-    Top = 128
+    Left = 355
+    Top = 36
     ParamData = <
       item
         Name = 'ID_PRODUTO'
@@ -349,8 +353,8 @@ inherited SMProduto: TSMProduto
     DataSet = fdqryProduto
     Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
     UpdateMode = upWhereKeyOnly
-    Left = 176
-    Top = 112
+    Left = 124
+    Top = 93
   end
   object cdsProduto: TClientDataSet
     Aggregates = <>
@@ -359,13 +363,13 @@ inherited SMProduto: TSMProduto
     Params = <>
     ProviderName = 'dspProduto'
     StoreDefs = True
-    Left = 176
-    Top = 176
+    Left = 124
+    Top = 157
   end
   object dsProduto: TDataSource
     DataSet = fdqryProduto
-    Left = 176
-    Top = 240
+    Left = 124
+    Top = 221
   end
   object fdqryPrecoVendaHist: TFDQuery
     MasterSource = dsProduto
@@ -379,8 +383,8 @@ inherited SMProduto: TSMProduto
       'where a.ID_PROD = :CODIGO'
       'order by a.id desc'
       '')
-    Left = 56
-    Top = 192
+    Left = 475
+    Top = 35
     ParamData = <
       item
         Name = 'CODIGO'
@@ -436,8 +440,8 @@ inherited SMProduto: TSMProduto
       '      left join NOTA_ENTRADA B on (B.ID = A.ID_NFENTRADA)'
       '      where A.ID_PROD = :CODIGO'
       '      order by A.ID desc) D  ')
-    Left = 54
-    Top = 256
+    Left = 589
+    Top = 35
     ParamData = <
       item
         Name = 'CODIGO'
@@ -474,5 +478,81 @@ inherited SMProduto: TSMProduto
       ReadOnly = True
       Size = 500
     end
+  end
+  object fdqryServico: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravacao
+    SQL.Strings = (
+      
+        'select P.CODIGO, P.NOME, P.PRECO_VENDA, P.COD_UNIDADE, P.PRECO_C' +
+        'USTO, P.SITUACAO, U.SIGLA'
+      'from PRODUTO P'
+      'left join UNIDADE U on (U.CODIGO = P.COD_UNIDADE)'
+      'where P.CODIGO = :ID  ')
+    Left = 682
+    Top = 36
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object fdqryServicoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object fdqryServicoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
+      Size = 100
+    end
+    object fdqryServicoPRECO_VENDA: TCurrencyField
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      Required = True
+    end
+    object fdqryServicoCOD_UNIDADE: TIntegerField
+      FieldName = 'COD_UNIDADE'
+      Origin = 'COD_UNIDADE'
+    end
+    object fdqryServicoPRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      Origin = 'PRECO_CUSTO'
+    end
+    object fdqryServicoSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      Required = True
+      Size = 10
+    end
+    object fdqryServicoSIGLA: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'SIGLA'
+      Origin = 'SIGLA'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+  end
+  object dspServico: TDataSetProvider
+    DataSet = fdqryServico
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 682
+    Top = 92
+  end
+  object cdsServico: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspServico'
+    StoreDefs = True
+    Left = 682
+    Top = 156
   end
 end

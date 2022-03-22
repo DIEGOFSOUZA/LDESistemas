@@ -1,350 +1,481 @@
 object SM_Pedido: TSM_Pedido
   OldCreateOrder = False
-  Height = 203
-  Width = 443
-  object fdqryPedVenda: TFDQuery
+  Height = 370
+  Width = 636
+  object TranGravar: TFDTransaction
+    Connection = ServerDM.Conexao
+    Left = 64
+    Top = 34
+  end
+  object cdsLER: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 168
+    Top = 40
+  end
+  object Pedido_Venda: TFDQuery
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
-      
-        'SELECT a.*,b.nome representante,c.nome_razao cliente from PEDIDO' +
-        '_VENDA a'
-      'left outer join REPRESENTANTE b on (b.codigo = a.ID_VENDEDOR)'
-      'left outer join CLIENTE c on (c.codigo = a.ID_CLIENTE)'
-      'where a.ID_PEDVENDA = :ID_PEDVENDA')
-    Left = 56
-    Top = 24
+      'select p.*,c.nome_razao cliente, r.nome vendedor'
+      'from PEDIDO_VENDA p'
+      'left join cliente c on (c.codigo=p.id_cliente)'
+      'left join representante r on (r.codigo=p.id_vendedor)'
+      'where p.ID = :ID')
+    Left = 64
+    Top = 96
     ParamData = <
       item
-        Name = 'ID_PEDVENDA'
+        Name = 'ID'
         DataType = ftInteger
         ParamType = ptInput
         Value = Null
       end>
-    object fdqryPedVendaID_PEDVENDA: TIntegerField
-      FieldName = 'ID_PEDVENDA'
-      Origin = 'ID_PEDVENDA'
+    object Pedido_VendaID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object fdqryPedVendaID_VENDEDOR: TIntegerField
+    object Pedido_VendaEMISSAO: TDateField
+      FieldName = 'EMISSAO'
+      Origin = 'EMISSAO'
+      Required = True
+    end
+    object Pedido_VendaENTRADA: TSQLTimeStampField
+      FieldName = 'ENTRADA'
+      Origin = 'ENTRADA'
+      Required = True
+    end
+    object Pedido_VendaENTREGA: TDateField
+      FieldName = 'ENTREGA'
+      Origin = 'ENTREGA'
+    end
+    object Pedido_VendaID_CLIENTE: TIntegerField
+      FieldName = 'ID_CLIENTE'
+      Origin = 'ID_CLIENTE'
+      Required = True
+    end
+    object Pedido_VendaID_VENDEDOR: TIntegerField
       FieldName = 'ID_VENDEDOR'
       Origin = 'ID_VENDEDOR'
     end
-    object fdqryPedVendaDT_EMISSAO: TDateField
-      FieldName = 'DT_EMISSAO'
-      Origin = 'DT_EMISSAO'
+    object Pedido_VendaOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      Size = 500
     end
-    object fdqryPedVendaDT_ENTRADA: TDateField
-      FieldName = 'DT_ENTRADA'
-      Origin = 'DT_ENTRADA'
+    object Pedido_VendaUSUARIO: TStringField
+      FieldName = 'USUARIO'
+      Origin = 'USUARIO'
+      Size = 40
     end
-    object fdqryPedVendaDT_ENTREGA: TDateField
-      FieldName = 'DT_ENTREGA'
-      Origin = 'DT_ENTREGA'
+    object Pedido_VendaSTATUS: TStringField
+      FieldName = 'STATUS'
+      Origin = 'STATUS'
+      Size = 50
     end
-    object fdqryPedVendaID_CLIENTE: TIntegerField
-      FieldName = 'ID_CLIENTE'
-      Origin = 'ID_CLIENTE'
-    end
-    object fdqryPedVendaCLI_CPFCNPJ: TStringField
-      FieldName = 'CLI_CPFCNPJ'
-      Origin = 'CLI_CPFCNPJ'
-    end
-    object fdqryPedVendaCLI_RGINSC: TStringField
-      FieldName = 'CLI_RGINSC'
-      Origin = 'CLI_RGINSC'
-      Size = 30
-    end
-    object fdqryPedVendaCLI_EMAIL: TStringField
-      FieldName = 'CLI_EMAIL'
-      Origin = 'CLI_EMAIL'
-      Size = 70
-    end
-    object fdqryPedVendaCLI_TELEFONE: TStringField
-      FieldName = 'CLI_TELEFONE'
-      Origin = 'CLI_TELEFONE'
-      Size = 15
-    end
-    object fdqryPedVendaCLI_F_CEP: TStringField
-      FieldName = 'CLI_F_CEP'
-      Origin = 'CLI_F_CEP'
-      Size = 10
-    end
-    object fdqryPedVendaCLI_F_END: TStringField
-      FieldName = 'CLI_F_END'
-      Origin = 'CLI_F_END'
-      Size = 45
-    end
-    object fdqryPedVendaCLI_F_NUM: TStringField
-      FieldName = 'CLI_F_NUM'
-      Origin = 'CLI_F_NUM'
-      Size = 10
-    end
-    object fdqryPedVendaCLI_F_COMPL: TStringField
-      FieldName = 'CLI_F_COMPL'
-      Origin = 'CLI_F_COMPL'
-      Size = 30
-    end
-    object fdqryPedVendaCLI_F_BAIRRO: TStringField
-      FieldName = 'CLI_F_BAIRRO'
-      Origin = 'CLI_F_BAIRRO'
-      Size = 30
-    end
-    object fdqryPedVendaCLI_E_CEP: TStringField
-      FieldName = 'CLI_E_CEP'
-      Origin = 'CLI_E_CEP'
-      Size = 10
-    end
-    object fdqryPedVendaCLI_E_END: TStringField
-      FieldName = 'CLI_E_END'
-      Origin = 'CLI_E_END'
-      Size = 45
-    end
-    object fdqryPedVendaCLI_E_NUM: TStringField
-      FieldName = 'CLI_E_NUM'
-      Origin = 'CLI_E_NUM'
-      Size = 10
-    end
-    object fdqryPedVendaCLI_E_COMPL: TStringField
-      FieldName = 'CLI_E_COMPL'
-      Origin = 'CLI_E_COMPL'
-      Size = 30
-    end
-    object fdqryPedVendaCLI_E_BAIRRO: TStringField
-      FieldName = 'CLI_E_BAIRRO'
-      Origin = 'CLI_E_BAIRRO'
-      Size = 30
-    end
-    object fdqryPedVendaDESCONTO: TFMTBCDField
-      FieldName = 'DESCONTO'
-      Origin = 'DESCONTO'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaVL_DESCONTO: TFMTBCDField
-      FieldName = 'VL_DESCONTO'
-      Origin = 'VL_DESCONTO'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaVL_FRETE: TFMTBCDField
-      FieldName = 'VL_FRETE'
-      Origin = 'VL_FRETE'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaVL_O_CUSTOS: TFMTBCDField
-      FieldName = 'VL_O_CUSTOS'
-      Origin = 'VL_O_CUSTOS'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaVL_TOTAL: TFMTBCDField
-      FieldName = 'VL_TOTAL'
-      Origin = 'VL_TOTAL'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaREPRESENTANTE: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'REPRESENTANTE'
-      Origin = 'NOME'
-      ProviderFlags = []
-      Size = 45
-    end
-    object fdqryPedVendaCLIENTE: TStringField
+    object Pedido_VendaCLIENTE: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'CLIENTE'
       Origin = 'NOME_RAZAO'
       ProviderFlags = []
+      ReadOnly = True
       Size = 100
     end
+    object Pedido_VendaVENDEDOR: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'VENDEDOR'
+      Origin = 'NOME'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 45
+    end
+    object Pedido_VendaGERAR_ORDEM_PRODUCAO: TIntegerField
+      FieldName = 'GERAR_ORDEM_PRODUCAO'
+      Origin = 'GERAR_ORDEM_PRODUCAO'
+    end
   end
-  object fdqryPedVendaItem: TFDQuery
-    MasterSource = sPedVenda
-    MasterFields = 'ID_PEDVENDA'
+  object dspPedido_Venda: TDataSetProvider
+    DataSet = Pedido_Venda
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 64
+    Top = 152
+  end
+  object cdsPedidoVenda: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspPedido_Venda'
+    StoreDefs = True
+    Left = 64
+    Top = 216
+  end
+  object PedidoVenda_Itens: TFDQuery
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       
-        'select a.*,b.nome produto,c.sigla unidade from PEDIDO_VENDAITENS' +
-        ' a'
-      'left outer join PRODUTO b on (b.codigo = a.ID_PROD)'
-      'left outer join UNIDADE c on (c.codigo = a.ID_UNIDADE)'
-      'where a.ID_PEDVENDA = :ID_PEDVENDA')
-    Left = 56
-    Top = 82
-    ParamData = <
-      item
-        Name = 'ID_PEDVENDA'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object fdqryPedVendaItemID_PEDVENDA: TIntegerField
-      FieldName = 'ID_PEDVENDA'
-      Origin = 'ID_PEDVENDA'
+        'select pi.ID_PEDIDO, pi.ORDEM, pi.ID_PRODUTO, pi.VUNIT, pi.QTDE,' +
+        ' pi.UNIDADE, '
+      
+        'pi.QTDE_A_BAIXAR, pi.QTDE_BAIXADA, pi.VDESC, pi.SUBTOTAL, pi.TOT' +
+        'AL, p.NOME PRODUTO,'
+      'pi.NOVO_PRODSERVICO'
+      'from PEDIDO_VENDA_ITEM pi'
+      'left join produto p on (p.codigo=pi.id_produto)'
+      'where 1=2')
+    Left = 176
+    Top = 104
+    object PedidoVenda_ItensID_PEDIDO: TIntegerField
+      FieldName = 'ID_PEDIDO'
+      Origin = 'ID_PEDIDO'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object fdqryPedVendaItemORDEM: TIntegerField
+    object PedidoVenda_ItensORDEM: TIntegerField
       FieldName = 'ORDEM'
       Origin = 'ORDEM'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
     end
-    object fdqryPedVendaItemID_PROD: TIntegerField
-      FieldName = 'ID_PROD'
-      Origin = 'ID_PROD'
+    object PedidoVenda_ItensID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
+      Required = True
     end
-    object fdqryPedVendaItemID_UNIDADE: TIntegerField
-      FieldName = 'ID_UNIDADE'
-      Origin = 'ID_UNIDADE'
+    object PedidoVenda_ItensVUNIT: TFMTBCDField
+      FieldName = 'VUNIT'
+      Origin = 'VUNIT'
+      Required = True
+      Precision = 18
+      Size = 2
     end
-    object fdqryPedVendaItemQTDE: TFMTBCDField
+    object PedidoVenda_ItensQTDE: TBCDField
       FieldName = 'QTDE'
       Origin = 'QTDE'
+      Required = True
       Precision = 18
-      Size = 3
     end
-    object fdqryPedVendaItemDESCONTO: TFMTBCDField
-      FieldName = 'DESCONTO'
-      Origin = 'DESCONTO'
+    object PedidoVenda_ItensQTDE_A_BAIXAR: TBCDField
+      FieldName = 'QTDE_A_BAIXAR'
+      Origin = 'QTDE_A_BAIXAR'
+      Required = True
+      Precision = 18
+    end
+    object PedidoVenda_ItensQTDE_BAIXADA: TBCDField
+      FieldName = 'QTDE_BAIXADA'
+      Origin = 'QTDE_BAIXADA'
+      Required = True
+      Precision = 18
+    end
+    object PedidoVenda_ItensUNIDADE: TStringField
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      Required = True
+      Size = 10
+    end
+    object PedidoVenda_ItensVDESC: TFMTBCDField
+      FieldName = 'VDESC'
+      Origin = 'VDESC'
       Precision = 18
       Size = 2
     end
-    object fdqryPedVendaItemVL_UNITARIO: TFMTBCDField
-      FieldName = 'VL_UNITARIO'
-      Origin = 'VL_UNITARIO'
+    object PedidoVenda_ItensSUBTOTAL: TFMTBCDField
+      FieldName = 'SUBTOTAL'
+      Origin = 'SUBTOTAL'
       Precision = 18
       Size = 2
     end
-    object fdqryPedVendaItemVL_DESCONTO: TFMTBCDField
-      FieldName = 'VL_DESCONTO'
-      Origin = 'VL_DESCONTO'
+    object PedidoVenda_ItensTOTAL: TFMTBCDField
+      FieldName = 'TOTAL'
+      Origin = 'TOTAL'
       Precision = 18
       Size = 2
     end
-    object fdqryPedVendaItemVL_TOTAL: TFMTBCDField
-      FieldName = 'VL_TOTAL'
-      Origin = 'VL_TOTAL'
-      Precision = 18
-      Size = 2
-    end
-    object fdqryPedVendaItemPRODUTO: TStringField
+    object PedidoVenda_ItensPRODUTO: TStringField
       AutoGenerateValue = arDefault
       FieldName = 'PRODUTO'
       Origin = 'NOME'
       ProviderFlags = []
+      ReadOnly = True
       Size = 100
     end
-    object fdqryPedVendaItemUNIDADE: TStringField
-      AutoGenerateValue = arDefault
-      FieldName = 'UNIDADE'
-      Origin = 'SIGLA'
-      ProviderFlags = []
-      Size = 10
+    object PedidoVenda_ItensNOVO_PRODSERVICO: TIntegerField
+      FieldName = 'NOVO_PRODSERVICO'
+      Origin = 'NOVO_PRODSERVICO'
+      Required = True
     end
   end
-  object fdqryPedVendaPagar: TFDQuery
-    MasterSource = sPedVenda
-    MasterFields = 'ID_PEDVENDA'
+  object dspPedidoVenda_Itens: TDataSetProvider
+    DataSet = PedidoVenda_Itens
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 176
+    Top = 152
+  end
+  object cdsPedidoVenda_Itens: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspPedidoVenda_Itens'
+    StoreDefs = True
+    Left = 176
+    Top = 216
+  end
+  object Receber: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      'select ID_TABELA_MASTER, NDUP, VDUP, DVENC, TIPO, DESCRI'
+      'from CONTAS_A_RECEBER  '
+      'where 1=2')
+    Left = 272
+    Top = 104
+    object ReceberTIPO: TIntegerField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object ReceberID_TABELA_MASTER: TIntegerField
+      FieldName = 'ID_TABELA_MASTER'
+      Origin = 'ID_TABELA_MASTER'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+    end
+    object ReceberNDUP: TIntegerField
+      FieldName = 'NDUP'
+      Origin = 'NDUP'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object ReceberVDUP: TFMTBCDField
+      FieldName = 'VDUP'
+      Origin = 'VDUP'
+      Required = True
+      Precision = 18
+      Size = 2
+    end
+    object ReceberDVENC: TDateField
+      FieldName = 'DVENC'
+      Origin = 'DVENC'
+      Required = True
+    end
+    object ReceberDESCRI: TStringField
+      FieldName = 'DESCRI'
+      Origin = 'DESCRI'
+      Size = 150
+    end
+  end
+  object dspReceber: TDataSetProvider
+    DataSet = Receber
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 272
+    Top = 152
+  end
+  object cdsReceber: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspReceber'
+    StoreDefs = True
+    Left = 272
+    Top = 216
+  end
+  object Pedido_Venda_IMG: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      'select ID_PEDIDO, SEQUENCIA, PATH_IMAGEM'
+      'from PEDIDO_VENDA_IMG'
+      'where 1=2  ')
+    Left = 352
+    Top = 103
+    object Pedido_Venda_IMGID_PEDIDO: TIntegerField
+      FieldName = 'ID_PEDIDO'
+      Origin = 'ID_PEDIDO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Pedido_Venda_IMGSEQUENCIA: TIntegerField
+      FieldName = 'SEQUENCIA'
+      Origin = 'SEQUENCIA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Pedido_Venda_IMGPATH_IMAGEM: TStringField
+      FieldName = 'PATH_IMAGEM'
+      Origin = 'PATH_IMAGEM'
+      Size = 5000
+    end
+  end
+  object dspIMG: TDataSetProvider
+    DataSet = Pedido_Venda_IMG
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 352
+    Top = 151
+  end
+  object cdsIMG: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspIMG'
+    StoreDefs = True
+    Left = 352
+    Top = 215
+  end
+  object Produto: TFDQuery
     Connection = ServerDM.Conexao
     Transaction = TranGravar
     SQL.Strings = (
       
-        'select a.*, cast(c.DESCRI||'#39'('#39'||b.descri||'#39')'#39' as varchar(100)) p' +
-        'agto from PEDIDO_VENDAPAGAR a'
-      'left outer join PAGTO_PARCELAMENTO b on (b.ID = a.ID_CONDPAGTO)'
-      
-        'left outer join PAGTO_FORMA c on (c.ID_PAGTOFORMA = b.ID_PAGTOFO' +
-        'RMA)'
-      'where a.ID_PEDVENDA = :ID_PEDVENDA')
-    Left = 56
-    Top = 132
-    ParamData = <
-      item
-        Name = 'ID_PEDVENDA'
-        DataType = ftInteger
-        ParamType = ptInput
-        Value = Null
-      end>
-    object fdqryPedVendaPagarID_PEDVENDA: TIntegerField
-      FieldName = 'ID_PEDVENDA'
-      Origin = 'ID_PEDVENDA'
+        'select CODIGO, NOME, PRECO_VENDA, COD_UNIDADE, PRECO_CUSTO, ULTI' +
+        'MA_ALTERACAO,'
+      'cast('#39#39' as varchar(10))unidade'
+      'from PRODUTO  '
+      'where 1=2')
+    Left = 464
+    Top = 104
+    object ProdutoCODIGO: TIntegerField
+      FieldName = 'CODIGO'
+      Origin = 'CODIGO'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
-    object fdqryPedVendaPagarORDEM: TStringField
-      FieldName = 'ORDEM'
-      Origin = 'ORDEM'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
-      Size = 6
-    end
-    object fdqryPedVendaPagarDT_VENC: TDateField
-      FieldName = 'DT_VENC'
-      Origin = 'DT_VENC'
-    end
-    object fdqryPedVendaPagarID_CONDPAGTO: TIntegerField
-      FieldName = 'ID_CONDPAGTO'
-      Origin = 'ID_CONDPAGTO'
-    end
-    object fdqryPedVendaPagarOBS: TStringField
-      FieldName = 'OBS'
-      Origin = 'OBS'
+    object ProdutoNOME: TStringField
+      FieldName = 'NOME'
+      Origin = 'NOME'
+      Required = True
       Size = 100
     end
-    object fdqryPedVendaPagarVL_PARCELA: TFMTBCDField
-      FieldName = 'VL_PARCELA'
-      Origin = 'VL_PARCELA'
-      Precision = 18
-      Size = 2
+    object ProdutoPRECO_VENDA: TCurrencyField
+      FieldName = 'PRECO_VENDA'
+      Origin = 'PRECO_VENDA'
+      Required = True
     end
-    object fdqryPedVendaPagarVL_PAGO: TFMTBCDField
-      FieldName = 'VL_PAGO'
-      Origin = 'VL_PAGO'
-      Precision = 18
-      Size = 2
+    object ProdutoCOD_UNIDADE: TIntegerField
+      FieldName = 'COD_UNIDADE'
+      Origin = 'COD_UNIDADE'
     end
-    object fdqryPedVendaPagarDTIME_BAIXA: TSQLTimeStampField
-      FieldName = 'DTIME_BAIXA'
-      Origin = 'DTIME_BAIXA'
+    object ProdutoPRECO_CUSTO: TCurrencyField
+      FieldName = 'PRECO_CUSTO'
+      Origin = 'PRECO_CUSTO'
     end
-    object fdqryPedVendaPagarUSUARIO: TStringField
-      FieldName = 'USUARIO'
-      Origin = 'USUARIO'
-      Size = 30
+    object ProdutoULTIMA_ALTERACAO: TStringField
+      FieldName = 'ULTIMA_ALTERACAO'
+      Origin = 'ULTIMA_ALTERACAO'
+      Size = 200
     end
-    object fdqryPedVendaPagarPAGTO: TStringField
+    object ProdutoUNIDADE: TStringField
       AutoGenerateValue = arDefault
-      FieldName = 'PAGTO'
-      Origin = 'PAGTO'
+      FieldName = 'UNIDADE'
+      Origin = 'UNIDADE'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+  end
+  object dspProduto: TDataSetProvider
+    DataSet = Produto
+    Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
+    UpdateMode = upWhereKeyOnly
+    Left = 464
+    Top = 152
+  end
+  object cdsProduto: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
+    Params = <>
+    ProviderName = 'dspProduto'
+    StoreDefs = True
+    Left = 464
+    Top = 216
+  end
+  object Produto_Composicao: TFDQuery
+    Connection = ServerDM.Conexao
+    Transaction = TranGravar
+    SQL.Strings = (
+      
+        'select pc.ID_PRODUTO, pc.ID_MATPRIMA, pc.QTDE, pc.CUSTO_UNIT, pc' +
+        '.CUSTO_TOTAL,'
+      'p.nome material,coalesce(u2.sigla,u.sigla)UND'
+      'from PRODUTO_COMPOSICAO pc'
+      'left join produto p on (p.codigo = pc.id_matprima)'
+      'left join unidade u on (u.codigo=p.cod_unidade)'
+      'left join unidade u2 on (u2.codigo=p.conv_unidade)'
+      'where 1=2')
+    Left = 552
+    Top = 105
+    object Produto_ComposicaoID_PRODUTO: TIntegerField
+      FieldName = 'ID_PRODUTO'
+      Origin = 'ID_PRODUTO'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Produto_ComposicaoID_MATPRIMA: TIntegerField
+      FieldName = 'ID_MATPRIMA'
+      Origin = 'ID_MATPRIMA'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object Produto_ComposicaoQTDE: TFMTBCDField
+      FieldName = 'QTDE'
+      Origin = 'QTDE'
+      Precision = 18
+      Size = 5
+    end
+    object Produto_ComposicaoCUSTO_UNIT: TFMTBCDField
+      FieldName = 'CUSTO_UNIT'
+      Origin = 'CUSTO_UNIT'
+      Precision = 18
+      Size = 2
+    end
+    object Produto_ComposicaoCUSTO_TOTAL: TFMTBCDField
+      FieldName = 'CUSTO_TOTAL'
+      Origin = 'CUSTO_TOTAL'
+      Precision = 18
+      Size = 2
+    end
+    object Produto_ComposicaoMATERIAL: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'MATERIAL'
+      Origin = 'NOME'
       ProviderFlags = []
       ReadOnly = True
       Size = 100
     end
+    object Produto_ComposicaoUND: TStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'UND'
+      Origin = 'UND'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
   end
-  object dspPedVenda: TDataSetProvider
-    DataSet = fdqryPedVenda
+  object dspProdComposicao: TDataSetProvider
+    DataSet = Produto_Composicao
     Options = [poCascadeDeletes, poCascadeUpdates, poUseQuoteChar]
     UpdateMode = upWhereKeyOnly
-    Left = 162
-    Top = 25
+    Left = 552
+    Top = 153
   end
-  object dsPedVenda: TClientDataSet
+  object cdsProdComposicao: TClientDataSet
     Aggregates = <>
+    FieldDefs = <>
+    IndexDefs = <>
     Params = <>
-    ProviderName = 'dspPedVenda'
-    Left = 162
-    Top = 81
-  end
-  object sPedVenda: TDataSource
-    DataSet = fdqryPedVenda
-    Left = 159
-    Top = 131
-  end
-  object TranGravar: TFDTransaction
-    Connection = ServerDM.Conexao
-    Left = 240
-    Top = 26
+    ProviderName = 'dspProdComposicao'
+    StoreDefs = True
+    Left = 552
+    Top = 217
   end
 end

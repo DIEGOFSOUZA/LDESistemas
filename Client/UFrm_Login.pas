@@ -105,7 +105,7 @@ end;
 
 procedure TFrm_Login.actEntrarExecute(Sender: TObject);
 begin
-  if (rgEmpresa.Items.Count < 1) then
+ if (rgEmpresa.Items.Count < 1) then
   begin
     TMensagem.Atencao('Nenhuma empresa encontrada.');
     Abort;
@@ -281,7 +281,6 @@ begin
   if (lValidaUser = 0) then
   begin
     Result := False;
-//    Inc(gTentativaAtual);
     TMensagem.Informacao('Usuário/Senha inválido.'+#13+'Tentativa ' + IntToStr(gTentativaAtual) + ' de ' + IntToStr(maximoTentativas));
     Exit;
   end;
@@ -289,7 +288,6 @@ begin
   if (lValidaUser = 2) then
   begin
     Result := False;
-//    Inc(gTentativaAtual);
     TMensagem.Informacao('Usuário inativo.'+ #13 + 'Tentativa ' + IntToStr(gTentativaAtual) + ' de ' + IntToStr(maximoTentativas));
     Exit;
   end;

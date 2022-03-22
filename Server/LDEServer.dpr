@@ -18,7 +18,8 @@ uses
   USMProduto in 'Produto\USMProduto.pas' {SMProduto: TDataModule},
   uServerDM in 'uServerDM.pas' {ServerDM: TDataModule},
   uDM_SaveInCloud in 'SaveInCloud\uDM_SaveInCloud.pas' {DM_SaveInCloud: TDataModule},
-  uSM_SaveInCloud in 'SaveInCloud\uSM_SaveInCloud.pas' {SM_SaveInCloud: TDataModule};
+  uSM_SaveInCloud in 'SaveInCloud\uSM_SaveInCloud.pas' {SM_SaveInCloud: TDataModule},
+  uFields in 'uFields.pas';
 
 {$R *.res}
 

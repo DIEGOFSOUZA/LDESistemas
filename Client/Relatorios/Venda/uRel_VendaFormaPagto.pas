@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPdr_ListaRelatorio, Data.DB,
   System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids,
   Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Datasnap.DBClient, RLReport, RLXLSFilter, RLFilters, RLPDFFilter;
+  Datasnap.DBClient, RLReport, RLXLSFilter, RLFilters, RLPDFFilter,
+  scExcelExport;
 
 type
   TRel_VendaFormaPagto = class(TPdr_ListaRelatorio)
@@ -43,6 +44,7 @@ type
     RLBand3: TRLBand;
     RLLabel5: TRLLabel;
     rlblTotal: TRLLabel;
+    scExcelExport1: TscExcelExport;
     procedure FormCreate(Sender: TObject);
     procedure actGerarExecute(Sender: TObject);
     procedure dtp1Change(Sender: TObject);
@@ -63,6 +65,7 @@ implementation
 
 uses
   System.DateUtils, UDM, u_Mensagem;
+
 
 {$R *.dfm}
 
@@ -162,14 +165,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasTipoPagamento.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasTipoPagamento.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin

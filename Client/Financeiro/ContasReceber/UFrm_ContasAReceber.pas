@@ -156,12 +156,12 @@ procedure TFrm_ContasAReceber.actBaixaDuplicataExecute(Sender: TObject);
 begin
   inherited;
   if cdsGrid.IsEmpty then
-    Exit ;
+    Exit;
 
   if (not cdsGridDT_BAIXA.IsNull) then
   begin
-    TMensagem.Informacao('Duplicata já foi baixada.') ;
-    Exit ;
+    TMensagem.Informacao('Duplicata já foi baixada.');
+    Exit;
   end;
 
   if not Assigned(Frm_ContasaReceber_Baixa) then
@@ -171,7 +171,8 @@ begin
   try
     with Frm_ContasaReceber_Baixa do
     begin
-      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger, cdsGrid.FieldByName('ORDEM').AsString);
+      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger,
+         cdsGrid.FieldByName('ORDEM').AsString);
 
       ShowModal;
 
@@ -699,18 +700,8 @@ procedure TFrm_ContasAReceber.MontaSQL;
 var
   txt: string;
   txtParcial: string;
-  sCliente : string ;
 begin
   txtParcial := '' ;
-
-//  txt := 'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
-//         'cast(a.VALOR as double precision)valor,'+
-//         'a.DT_BAIXA,a.USUARIO_BAIXA,'+
-//         'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
-//         'FROM PDV_MASTER b '+
-//         'left outer join PDV_RECEBER a on (a.TIPO = b.TIPO and a.ID = b.ID) '+
-//         'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) '+
-//         'where a.FORMA_PAGTO = ''CREDIARIO'' ' ;
 
   txt := 'SELECT cast(0 as integer)selecao,pr.ID, pr.TIPO, pr.ORDEM, pr.DT_VENC,'+
          'pr.VALOR,pr.DT_BAIXA,pr.USUARIO_BAIXA,'+
@@ -727,51 +718,47 @@ begin
   case rgPesquisar.ItemIndex of
     0:
       begin
-        txt := txt + ' and pr.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                 QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Vencimento: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pr.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Vencimento: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     1:
       begin
-        txt := txt + ' and pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                 QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Emissão: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Emissão: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     2:
       begin
-        txt := txt + ' and pr.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                   QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Baixada: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pr.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Baixada: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     3:
       begin
         if edpCliente.Campo.Text = EmptyStr then
         begin
-          MessageDlg('Informe o Cliente',mtInformation,[mbOK],0) ;
-          edpCliente.Campo.SetFocus ;
-          Abort ;
+          MessageDlg('Informe o Cliente', mtInformation, [mbOK], 0);
+          edpCliente.Campo.SetFocus;
+          Abort;
         end
         else
         begin
           txt := txt + ' and pm.id_cliente = ' + edpCliente.Campo.Text;
-          sFiltro := 'Cliente: '+edpCliente.Campo.Text;
+          sFiltro := 'Cliente: ' + edpCliente.Campo.Text;
         end;
       end;
     4:
-     begin
-       if edtDoc.Text = EmptyStr then
       begin
-          MessageDlg('Informe o nº da Venda/Docto.',mtInformation,[mbOK],0) ;
-          edtDoc.SetFocus ;
-          Abort ;
+        if edtDoc.Text = EmptyStr then
+        begin
+          MessageDlg('Informe o nº da Venda/Docto.', mtInformation, [mbOK], 0);
+          edtDoc.SetFocus;
+          Abort;
         end
         else
         begin
-          txt := txt + ' and pr.tipo = ''0'' ' +
-                       ' and pr.ID = '+ edtDoc.Text ;
-          sFiltro := 'Venda Nº: '+edtDoc.Text ;
+          txt := txt + ' and pr.tipo = ''0'' ' + ' and pr.ID = ' + edtDoc.Text;
+          sFiltro := 'Venda Nº: ' + edtDoc.Text;
         end;
-     end;
+      end;
   end;
 
   case rgSituacao.ItemIndex of
@@ -787,12 +774,12 @@ begin
       end;
   end;
 
-  cdsGrid.IndexFieldNames := 'ordem' ;
-  cdsGrid.Close ;
-  cdsGrid.Data := DM.LerDataSet(txt) ;
+  cdsGrid.IndexFieldNames := 'ordem';
+  cdsGrid.Close;
+  cdsGrid.Data := DM.LerDataSet(txt);
 
   //Busca Parciais
-  if rgSituacao.ItemIndex <> 0 then
+  if (rgSituacao.ItemIndex <> 0) then
     AddParciais();
 
   Label9.Visible := cdsGrid.IsEmpty;

@@ -718,7 +718,6 @@ inherited Rel_VendaPorVendedor: TRel_VendaPorVendedor
       'ODUTO)'#13#10'left outer join USUARIO d on (d.ID_VENDEDOR = a.ID_VENDE' +
       'DOR)'#13#10'where 1=2'#13#10'group by 1,2,d.COMISSAO'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     object dsGridVENDEDOR: TStringField
       DisplayLabel = 'Vendedor'
       FieldName = 'VENDEDOR'

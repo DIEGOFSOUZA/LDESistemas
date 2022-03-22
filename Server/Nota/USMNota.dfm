@@ -1,6 +1,6 @@
 object SMNota: TSMNota
   OldCreateOrder = False
-  Height = 236
+  Height = 198
   Width = 300
   object fdqryEntrada: TFDQuery
     Connection = ServerDM.Conexao

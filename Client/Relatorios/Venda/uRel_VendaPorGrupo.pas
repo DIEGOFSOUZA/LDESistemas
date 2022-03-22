@@ -90,8 +90,10 @@ var
 begin
   inherited;
   cdsDetalhe.Filtered := False;
-  lSQL := 'select cast(sum(pi.QTDE) as double precision) QTDE, cast(sum(pi.QTDE * P.PRECO_VENDA) as double precision) TOTAL, coalesce(P.COD_GRUPO, -1) IDGRUPO,'+
-          '       coalesce(GP.DESCRI, ''GRUPO NAO INFORMADO'') GRUPO, PM.ID VENDA, PM.EMISSAO, C.NOME_RAZAO CLIENTE, U.USU_NOME VENDEDOR '+
+  lSQL := 'select cast(sum(pi.QTDE) as double precision) QTDE,cast(sum(pi.VL_TOTAL) as double precision) TOTAL,'+
+  //cast(sum(pi.QTDE * P.PRECO_VENDA) as double precision) TOTAL,'+
+          'coalesce(P.COD_GRUPO, -1) IDGRUPO, coalesce(GP.DESCRI, ''GRUPO NAO INFORMADO'') GRUPO,'+
+          'PM.ID VENDA, PM.EMISSAO, C.NOME_RAZAO CLIENTE, U.USU_NOME VENDEDOR '+
           'from PDV_MASTER PM '+
           'left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) '+
           'left join USUARIO U on (U.ID_VENDEDOR = PM.ID_VENDEDOR) '+
