@@ -228,7 +228,7 @@ begin
   mCampos[3].Mostrar   := True ;
   mCampos[3].Nome      := 'cpf' ;
   mCampos[3].NomeSQL   := 'cpf' ;
-  mCampos[3].Pesquisa  := True ;
+  mCampos[3].Pesquisa  := False ;
   mCampos[3].Retorno   := False ;
 
   mCampos[4].Descricao := 'RG' ;
@@ -236,7 +236,7 @@ begin
   mCampos[4].Mostrar   := True ;
   mCampos[4].Nome      := 'rg' ;
   mCampos[4].NomeSQL   := 'rg' ;
-  mCampos[4].Pesquisa  := True ;
+  mCampos[4].Pesquisa  := False ;
   mCampos[4].Retorno   := False ;
 
   mCampos[5].Descricao := 'Cidade' ;
@@ -244,11 +244,11 @@ begin
   mCampos[5].Mostrar   := True ;
   mCampos[5].Nome      := 'cidade' ;
   mCampos[5].NomeSQL   := 'cidade' ;
-  mCampos[5].Pesquisa  := True ;
+  mCampos[5].Pesquisa  := False ;
   mCampos[5].Retorno   := False ;
 
   Aux := TPdr_Consulta.Create(nil,'Consulta de Representante',InstrucaoSQL,'',
-          mCampos,DM.LerDataSet,2);
+          mCampos,DM.LerDataSet,4);
   try
     Aux.ShowModal ;
     Result := StrToIntDef( Aux.Retorno.Values['codigo'], 0) ;
