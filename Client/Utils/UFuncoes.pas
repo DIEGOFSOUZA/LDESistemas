@@ -1062,12 +1062,7 @@ begin
   DM.dsConsulta.Close ;
   DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
 
-  if DM.dsConsulta.IsEmpty then
-  begin
-    Result.Fechado := True ;
-    Exit ;
-  end
-  else if DM.dsConsulta.FieldByName('status').AsString = 'F' then
+  if ( (DM.dsConsulta.IsEmpty) or (DM.dsConsulta.FieldByName('status').AsString = 'F') ) then
   begin
     Result.Fechado := True ;
     Exit ;

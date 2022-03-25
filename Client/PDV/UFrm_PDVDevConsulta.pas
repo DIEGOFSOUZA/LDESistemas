@@ -58,7 +58,7 @@ type
     procedure actFiltrarExecute(Sender: TObject);
     procedure edtCupomKeyPress(Sender: TObject; var Key: Char);
   private
-    procedure FitGrid(Grid: TDBGrid);   //deixar todas as colunas com o tam = maior registro
+    function ValidarCancelamento(aTipo: string; aID: integer): Boolean;
   public
     { Public declarations }
   end;
@@ -75,8 +75,6 @@ uses
 {$R *.dfm}
 
 procedure TFrm_PDVDevConsulta.actCancelarVendaExecute(Sender: TObject);
-const
-  SQL = 'select p.retorno from pro_iscrediario(%s,%s)p';
 var
   lJustificativa: string;
 begin
@@ -90,23 +88,8 @@ begin
     Exit;
   end;
 
-//  if (cdsVenda.FieldByName('EMISSAO').AsDateTime <> Date) then
-//  begin
-//    TMensagem.Atencao('Cancelamento permitido apenas para vendas do dia.');
-//    Exit;
-//  end;
-
-  if (cdsVenda.FieldByName('STATUS').AsString = 'CANCELADA') then
-  begin
-    TMensagem.Atencao('Venda já foi cancelada.');
+  if not ValidarCancelamento(cdsVenda.FieldByName('TIPO').AsString,cdsVenda.FieldByName('ID').AsInteger) then
     Exit;
-  end;
-
-  if (DM.GetInteger(Format(SQL,[QuotedStr('0'),cdsVenda.FieldByName('ID').AsString]),'retorno') = 1) then
-  begin
-    TMensagem.Atencao('Cancelamento permitido para vendas efetuada totalmente no crediario e não contenha duplicata recebida.');
-    Exit;
-  end;
 
   if TMensagem.Pergunta('Deseja realmente cancelar este cupom?') then
   begin
@@ -125,18 +108,22 @@ var
 begin
   inherited;
   lCupom := '0';
-  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,c.nome_razao,pm.status,c.cliente_default ' +
+  lSQL := 'select pm.tipo,pm.id,pm.emissao,pm.vl_total,'+
+          'c.nome_razao,pm.status,c.cliente_default,'+
+          'coalesce(a.aberto_fechado,''F'')caixastatus ' +
           'from pdv_master pm ' +
           'left join cliente c on (c.codigo=pm.id_cliente) ' +
+          'left join caixa a on (a.id = pm.id_caixa) '+
           'where pm.tipo = ''0'' ';
 //          'and c.cliente_default = ''N'' ';
+
   if cbbFIltro.ItemIndex = 0 then
   begin
     lSQL := lSQL + ' and pm.emissao = ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.DateTime));
   end
   else
   begin
-    if edtCupom.Text <> '' then
+    if (edtCupom.Text <> '') then
       lCupom := edtCupom.Text;
     lSQL := lSQL + ' and pm.id = ' + lCupom;
   end;
@@ -208,47 +195,6 @@ begin
     actFiltrar.Execute;
 end;
 
-procedure TFrm_PDVDevConsulta.FitGrid(Grid: TDBGrid);
-const
-  C_Add = 3;
-var
-  ds: TDataSet;
-  bm: TBookmark;
-  i: Integer;
-  w: Integer;
-  a: array of Integer;
-begin
-  ds := Grid.DataSource.DataSet;
-  if Assigned(ds) then
-  begin
-    ds.DisableControls;
-    bm := ds.GetBookmark;
-    try
-      ds.First;
-      SetLength(a, Grid.Columns.Count);
-      while not ds.Eof do
-      begin
-        for i := 0 to Grid.Columns.Count - 1 do
-        begin
-          if Assigned(Grid.Columns[i].Field) then
-          begin
-            w := Grid.Canvas.TextWidth(ds.FieldByName(Grid.Columns[i].Field.FieldName).DisplayText);
-            if a[i] < w then
-              a[i] := w;
-          end;
-        end;
-        ds.Next;
-      end;
-      for i := 0 to Grid.Columns.Count - 1 do
-        Grid.Columns[i].Width := a[i] + C_Add;
-      ds.GotoBookmark(bm);
-    finally
-      ds.FreeBookmark(bm);
-      ds.EnableControls;
-    end;
-  end;
-end;
-
 procedure TFrm_PDVDevConsulta.FormCreate(Sender: TObject);
 begin
   inherited;
@@ -257,6 +203,36 @@ begin
   dtp1.Date := Date;
   cbbFIltro.ItemIndex := 0;
   pnlFiltrar.Left := 224;
+end;
+
+function TFrm_PDVDevConsulta.ValidarCancelamento(aTipo: string;
+  aID: integer): Boolean;
+const
+  SQL = 'select p.retorno from pro_iscrediario(%s,%s)p';
+begin
+  Result := True;
+
+  if (aTipo <> '0') then
+  begin
+    Result := False;
+    TMensagem.Atencao('Venda não pode ser cancelada.');
+    Exit;
+  end;
+
+  if (cdsVenda.FieldByName('STATUS').AsString = 'CANCELADA') then
+  begin
+    Result := False;
+    TMensagem.Atencao('Venda já foi cancelada.');
+    Exit;
+  end;
+
+  if (cdsVenda.FieldByName('caixastatus').AsString = 'F') then
+    if (DM.GetInteger(Format(SQL, [QuotedStr('0'), cdsVenda.FieldByName('ID').AsString]), 'retorno') = 1) then
+    begin
+      Result := False;
+      TMensagem.Atencao('Cancelamento permitido para vendas efetuada totalmente no crediario e não contenha duplicata recebida.');
+      Exit;
+    end;
 end;
 
 end.
