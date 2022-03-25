@@ -1,4 +1,4 @@
 INSERT INTO CONTROL (DB_VERSAO, EM_MANUTENCAO)
-             VALUES (3, 'N');
+             VALUES (9, 0);
 
 COMMIT WORK;

@@ -178,14 +178,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasVendedor.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasVendedor.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin

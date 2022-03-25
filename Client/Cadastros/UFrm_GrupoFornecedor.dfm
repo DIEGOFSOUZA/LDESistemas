@@ -1,7 +1,6 @@
 inherited Frm_GrupoFornecedor: TFrm_GrupoFornecedor
   Caption = 'Cadastro de Grupos de Fornecedor'
   ClientHeight = 336
-  OnCreate = FormCreate
   ExplicitHeight = 336
   PixelsPerInch = 96
   TextHeight = 13
@@ -81,6 +80,7 @@ inherited Frm_GrupoFornecedor: TFrm_GrupoFornecedor
   end
   inherited pnlFundo0: TPanel
     Height = 306
+    ExplicitHeight = 306
     inherited pnlFundo1: TPanel
       inherited Panel4: TPanel
         Top = 316

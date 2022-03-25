@@ -187,7 +187,7 @@ type
     gIdCliente : string ;
     aCliemDebito : Boolean;
 
-    procedure IniciaComDesconto(Valor : Extended) ;
+    procedure IniciaComDesconto(Valor: Currency);
 
   published
     property ValorRestante: Currency read fValorRestante write setValorRestante;
@@ -263,7 +263,7 @@ end;
 procedure TFrm_PDVPagamento.actFinalizaVendaExecute(Sender: TObject);
 begin
   inherited;
-  if ValorRestante > 0 then
+  if (ValorRestante > 0) then
   begin
     TMensagem.Atencao('Valor Pago é menor que Total da Venda.') ;
     Exit ;
@@ -443,9 +443,7 @@ begin
     Key := #0; //apenas numero e virgula
 end;
 
-procedure TFrm_PDVPagamento.IniciaComDesconto(Valor: Extended);
-var
-  mtot: Extended;
+procedure TFrm_PDVPagamento.IniciaComDesconto(Valor: Currency);
 begin
   if Valor = 0 then
     Exit ;

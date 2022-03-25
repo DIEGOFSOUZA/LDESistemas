@@ -46,7 +46,7 @@ object Frm_Inicial: TFrm_Inicial
         Left = 497
         Top = 1
         Width = 379
-        Height = 17
+        Height = 18
         Align = alRight
         Alignment = taRightJustify
         Caption = 'Boa Tarde EDUARDO, hoje '#233' quinta-feira,10 de Outubro de 2019'
@@ -60,6 +60,7 @@ object Frm_Inicial: TFrm_Inicial
         ParentFont = False
         Transparent = True
         Layout = tlBottom
+        ExplicitHeight = 17
       end
       object lblConexao: TLabel
         Left = 21
@@ -4456,7 +4457,7 @@ object Frm_Inicial: TFrm_Inicial
       end
     end
     object MenuProduto: TMenuItem
-      Caption = 'PRODUTO'
+      Caption = 'PRODUTO/SERVI'#199'O'
       object MenuProd_Produto: TMenuItem
         Caption = 'PRODUTOS'
         OnClick = MenuProd_ProdutoClick
@@ -4476,6 +4477,10 @@ object Frm_Inicial: TFrm_Inicial
       object MenuProd_Subgrupo: TMenuItem
         Caption = 'SUB GRUPO DE PRODUTO'
         OnClick = MenuProd_SubgrupoClick
+      end
+      object MenuCadServico: TMenuItem
+        Caption = 'SERVI'#199'O'
+        OnClick = MenuCadServicoClick
       end
     end
     object MenuCompra: TMenuItem
@@ -4520,7 +4525,10 @@ object Frm_Inicial: TFrm_Inicial
       end
       object MenuVenda_Pedido: TMenuItem
         Caption = 'PEDIDOS'
-        OnClick = MenuVenda_PedidoClick
+        object MenuPedido_GERENCIAR: TMenuItem
+          Caption = 'GERENCIAR'
+          OnClick = MenuPedido_GERENCIARClick
+        end
       end
       object MenuVenda_Cliente: TMenuItem
         Caption = 'CLIENTE'

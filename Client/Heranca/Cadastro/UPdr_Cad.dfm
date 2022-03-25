@@ -51,6 +51,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 436
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -105,6 +106,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 366
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -157,6 +159,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 296
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -242,6 +245,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 226
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -313,6 +317,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 156
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -367,6 +372,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 86
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384
@@ -452,6 +458,7 @@ inherited Pdr_Cad: TPdr_Cad
         Top = 16
         Width = 48
         Height = 60
+        Cursor = crHandPoint
         BevelOuter = bvNone
         Caption = 'pnlAddMovimentacao'
         Color = 7024384

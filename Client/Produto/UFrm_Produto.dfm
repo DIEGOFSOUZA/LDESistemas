@@ -804,6 +804,7 @@ inherited Frm_Produto: TFrm_Produto
               Top = 4
               Width = 90
               Height = 49
+              Cursor = crHandPoint
               Caption = 'pnlTrilha'
               Color = 4868682
               ParentBackground = False
@@ -848,7 +849,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsEstoque
+            ActivePage = tsFiscal
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -1120,6 +1121,7 @@ inherited Frm_Produto: TFrm_Produto
                         Top = 1
                         Width = 60
                         Height = 48
+                        Cursor = crHandPoint
                         Align = alRight
                         BevelOuter = bvNone
                         Caption = 'pnlAdd'
@@ -1377,6 +1379,7 @@ inherited Frm_Produto: TFrm_Produto
                           Top = 8
                           Width = 25
                           Height = 25
+                          Cursor = crHandPoint
                           BevelOuter = bvNone
                           Caption = 'pnlIncluiCondPagto'
                           Color = 7024384
@@ -1523,15 +1526,6 @@ inherited Frm_Produto: TFrm_Produto
                         Font.Name = 'Segoe UI'
                         Font.Style = []
                         ParentFont = False
-                      end
-                      object chkCustoEstimado: TCheckBox
-                        Left = 184
-                        Top = 2
-                        Width = 218
-                        Height = 17
-                        Caption = 'Calcular custo a partir da composi'#231#227'o'
-                        TabOrder = 0
-                        OnClick = chkCustoEstimadoClick
                       end
                     end
                   end
@@ -1772,6 +1766,7 @@ inherited Frm_Produto: TFrm_Produto
                       Top = 39
                       Width = 25
                       Height = 25
+                      Cursor = crHandPoint
                       BevelOuter = bvNone
                       Caption = 'pnlIncluiCondPagto'
                       Color = 7024384
@@ -1826,10 +1821,6 @@ inherited Frm_Produto: TFrm_Produto
             object tsHistPrecoVenda: TTabSheet
               Caption = 'HIST'#211'RICO DE PRE'#199'O'
               ImageIndex = 3
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0

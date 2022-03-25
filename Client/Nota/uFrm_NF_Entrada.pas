@@ -547,7 +547,7 @@ begin
   end
   else
   begin
-    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
+    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),Qtde);
     lPrCustoCalc := RoundABNT((FvUnitario),-2);
   end;
 
@@ -679,16 +679,8 @@ begin
     Exit;
   end;
 
-
   lVlPago := RoundABNT(GetValor(edtPagValor.Text),-2);
   edtPagValor.OnExit(Self);
-
-//  AtualizaSaldoaPagar;
-//  if ( (SaldoAPagar = 0) or (lVlPago > SaldoAPagar) ) then
-//  begin
-//    TMensagem.Informacao('Não há Saldo a pagar / Valor maior que o Saldo a pagar.');
-//    Exit;
-//  end;
 
   if ((lVlPago > 0) and (Parcelamento.Locate('descri', cbbParcelamento.Text, []))) then
   begin
@@ -705,7 +697,7 @@ begin
       if (I = 1) then
         dsPagar.FieldByName('DVENC').AsDateTime := IncDay(Date, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger)
       else
-        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger);
+        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('INTV_PARCELAS').AsInteger);
       lVencto := dsPagar.FieldByName('DVENC').AsDateTime;
       dsPagar.FieldByName('VDUP').AsCurrency := lVlParcela + lVlCentavos;
       lVlCentavos := 0;

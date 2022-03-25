@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Relatorio.Cabecalho,
   RLReport, Data.DB, Datasnap.DBClient, Vcl.Imaging.pngimage,
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids, System.Math,
-  RLFilters, RLPDFFilter,U_DataCorrida;
+  RLFilters, RLPDFFilter,U_DataCorrida, Vcl.Buttons;
 
 type
   TRel_FechamentoCaixa = class(TPdr_RelatorioRetratoCabecalho)
@@ -46,14 +46,8 @@ type
     RLLabel28: TRLLabel;
     RLLabel29: TRLLabel;
     RLLabel30: TRLLabel;
-    lblTitulo: TLabel;
-    imgFechar: TImage;
     pnlfundo: TPanel;
     pnlAcoes: TPanel;
-    imgFiltrar: TImage;
-    lblFiltrar: TLabel;
-    imgGeraRelatorio: TImage;
-    lblGeraRelatorio: TLabel;
     dtp1: TDateTimePicker;
     dtp2: TDateTimePicker;
     Label1: TLabel;
@@ -98,7 +92,6 @@ type
     RLLabel51: TRLLabel;
     rlblMantChq: TRLLabel;
     Panel1: TPanel;
-    pnlTit: TPanel;
     RelREcebidos: TRLReport;
     RLBand4: TRLBand;
     RLPanel1: TRLPanel;
@@ -144,9 +137,15 @@ type
     RLLabel60: TRLLabel;
     RLLabel61: TRLLabel;
     RLLabel62: TRLLabel;
+    pnlGeraRelatorio: TPanel;
+    btnGerarRelatorio: TSpeedButton;
+    pnlFiltrar: TPanel;
+    btnFiltrar: TSpeedButton;
+    pnlTitulo: TPanel;
+    lblTit: TLabel;
+    imgSair: TImage;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure imgFecharClick(Sender: TObject);
-    procedure lblGeraRelatorioClick(Sender: TObject);
     procedure imgFiltrarClick(Sender: TObject);
     procedure dbgrd1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -154,8 +153,11 @@ type
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLDBResult1Compute(Sender: TObject; var Value: Variant;
       var AText: string; var ComputeIt: Boolean);
+    procedure btnGerarRelatorioClick(Sender: TObject);
+    procedure btnFiltrarClick(Sender: TObject);
+    procedure lblTitMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
   private
-    { Private declarations }
     gTotBaixa,gTotPrazo,gTotSangria : Extended ;
     gTotDinheiro,gTotCheque : Extended ;
     gTotCartCredito,gTotCartDebito : Extended ;
@@ -250,6 +252,26 @@ uses
 
 { TRel_FechamentoCaixa }
 
+procedure TRel_FechamentoCaixa.btnFiltrarClick(Sender: TObject);
+begin
+  inherited;
+  MontaSQLGrid();
+end;
+
+procedure TRel_FechamentoCaixa.btnGerarRelatorioClick(Sender: TObject);
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  btnGerarRelatorio.Enabled := False;
+  try
+    if not ds2IDCAIXA.IsNull then
+      Executar(ds2IDCAIXA.AsString);
+  finally
+    btnGerarRelatorio.Enabled := True;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
 procedure TRel_FechamentoCaixa.dbgrd1DrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
@@ -304,8 +326,8 @@ end;
 procedure TRel_FechamentoCaixa.FormCreate(Sender: TObject);
 begin
   inherited;
-  Self.ClientHeight := 360;
-  Self.ClientWidth := 541;
+  Self.ClientHeight := 300;
+  Self.ClientWidth := 545;
 end;
 
 function TRel_FechamentoCaixa.GetVlApurado(pFormaPagto: string): Extended;
@@ -344,11 +366,12 @@ begin
   Close ;
 end;
 
-procedure TRel_FechamentoCaixa.lblGeraRelatorioClick(Sender: TObject);
+procedure TRel_FechamentoCaixa.lblTitMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+const
+  sc_DragMove = $f012;
 begin
-  inherited;
-  if not ds2IDCAIXA.IsNull then
-    Executar(ds2IDCAIXA.AsString);
+  ReleaseCapture;
+  Perform(wm_SysCommand, sc_DragMove, 0);
 end;
 
 procedure TRel_FechamentoCaixa.MontaParametros(pIdCaixa : string);

@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{50E8482D-D175-4132-B35E-39C5E999728D}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ExcelExportPack11.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dclExcelExportPackD11.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ExcelExportPack11">
+        <MSBuild Projects="ExcelExportPack11.dproj"/>
+    </Target>
+    <Target Name="ExcelExportPack11:Clean">
+        <MSBuild Projects="ExcelExportPack11.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ExcelExportPack11:Make">
+        <MSBuild Projects="ExcelExportPack11.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclExcelExportPackD11">
+        <MSBuild Projects="dclExcelExportPackD11.dproj"/>
+    </Target>
+    <Target Name="dclExcelExportPackD11:Clean">
+        <MSBuild Projects="dclExcelExportPackD11.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclExcelExportPackD11:Make">
+        <MSBuild Projects="dclExcelExportPackD11.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ExcelExportPack11;dclExcelExportPackD11"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ExcelExportPack11:Clean;dclExcelExportPackD11:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ExcelExportPack11:Make;dclExcelExportPackD11:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Cad2, Vcl.StdCtrls, Vcl.Mask,
   Vcl.DBCtrls, System.Actions, Vcl.ActnList, Data.DB, Datasnap.DBClient,
-  Vcl.Buttons, Vcl.ExtCtrls, Vcl.Menus;
+  Vcl.Buttons, Vcl.ExtCtrls, Vcl.Menus, Vcl.Imaging.pngimage;
 
 type
   TFrm_Ramo = class(TPdr_Cad2)

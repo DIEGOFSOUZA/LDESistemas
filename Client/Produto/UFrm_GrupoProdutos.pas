@@ -26,7 +26,6 @@ type
   private
     procedure MontaSql(pCodigo: Integer);
   public
-    { Public declarations }
     procedure Novo(); override;
     procedure Gravar(); override;
     procedure Excluir(); override;

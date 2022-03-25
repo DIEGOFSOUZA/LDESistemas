@@ -117,7 +117,7 @@ var
 implementation
 
 uses
-  UDM, UDMACBr, pcnNFe, UFuncoes, UFrm_NotaEntrada, UFrm_EntradaSimples,
+  UDM, UDMACBr, pcnNFe, UFuncoes, UFrm_EntradaSimples,
   UConsulta, u_Mensagem, UFrmBaixaContaPagar, URel_ContasAPagar;
 
 {$R *.dfm}

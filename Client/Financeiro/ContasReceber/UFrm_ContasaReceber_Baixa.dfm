@@ -504,6 +504,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Top = 0
           Width = 100
           Height = 30
+          Cursor = crHandPoint
           Action = actVoltar
           Align = alClient
           Flat = True
@@ -531,6 +532,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
           Top = 0
           Width = 100
           Height = 40
+          Cursor = crHandPoint
           Action = actEfetuarBaixa
           Align = alClient
           Caption = 'RECEBER'

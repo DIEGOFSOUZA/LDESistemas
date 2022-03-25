@@ -1339,7 +1339,6 @@ inherited Rel_VendaPeriodo: TRel_VendaPeriodo
       'ER e on (e.TIPO = a.TIPO and e.ID = a.TIPO)'#13#10'where 1=2'#13#10'group by' +
       ' 1,2,3,4,5,7,8,9,10'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     object dsGridFONTE: TStringField
       DisplayLabel = 'Canal de venda'
       FieldName = 'FONTE'

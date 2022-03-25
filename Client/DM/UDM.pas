@@ -3,99 +3,60 @@ Unit UDM;
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-
-  FireDAC.Stan.Intf,
-  FireDAC.Stan.Option,
-  FireDAC.Stan.Error,
-  FireDAC.UI.Intf,
-
-  FireDAC.Stan.Def,
-  FireDAC.Stan.Pool,
-  FireDAC.Stan.Async,
-  FireDAC.Phys,
-  FireDAC.Phys.FB,
-  FireDAC.VCLUI.Wait,
-
-
-  FireDAC.Comp.Client,
-  FireDAC.Phys.MSAcc,
-  FireDAC.Stan.Param,
-  FireDAC.DatS,
-
-  FireDAC.DApt,
-
-  FireDAC.Phys.DS,
-
-  Data.DB,
-
-  Vcl.ImgList,
-  Vcl.Controls,
-  Vcl.AppEvnts,
-
-  Datasnap.DBClient,
-
-  Data.DBXDataSnap,
-  IPPeerClient,
-  Data.DBXCommon,
-  Datasnap.DSConnect,
-  Data.SqlExpr,
-
-  Data.DbxHTTPLayer,
-
-  UClassDataSnap,
-  UPadraoExecutaConsultaSQL,
-
-  System.ImageList,
-  System.IniFiles,Vcl.Dialogs,
-
-  PngImageList;
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool,
+  FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB, FireDAC.VCLUI.Wait,
+  FireDAC.Comp.Client, FireDAC.Phys.MSAcc, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt, FireDAC.Phys.DS, Data.DB, Vcl.ImgList, Vcl.Controls,
+  Vcl.AppEvnts, Datasnap.DBClient, Data.DBXDataSnap, IPPeerClient,
+  Data.DBXCommon, Datasnap.DSConnect, Data.SqlExpr, Data.DbxHTTPLayer,
+  UClassDataSnap, UPadraoExecutaConsultaSQL, System.ImageList, System.IniFiles,
+  Vcl.Dialogs, Winapi.ActiveX, PngImageList, scExcelExport;
 
 type
   TEmpresa = record
-    RazaoSocial : string ;
-    Fantasia : string ;
-    CNPJ : string ;
-    InscEst : string ;
-    UF : string ;
-    Cidade : string;
-    Endereco : string ;
-    Numero : string ;
-    Bairro : string ;
-    Email : string ;
-    Fone : string ;
-    Celular : string;
-    Cep : string;
-end;
+    RazaoSocial: string;
+    Fantasia: string;
+    CNPJ: string;
+    InscEst: string;
+    UF: string;
+    Cidade: string;
+    Endereco: string;
+    Numero: string;
+    Bairro: string;
+    Email: string;
+    Fone: string;
+    Celular: string;
+    Cep: string;
+  end;
 
 type
   TUsuario = record
-    ID : Integer;
-    Login : string;
-    Ativo : Boolean;
-    Perfil : string;
+    ID: Integer;
+    Login: string;
+    Ativo: Boolean;
+    Perfil: string;
 
-    GrupoAtivo : Boolean;
-    AcessoPDV : Boolean;
-    AcessoFinanceiro : Boolean;
-    AcessoOP : Boolean;//OP = Ordem de producao
+    GrupoAtivo: Boolean;
+    AcessoPDV: Boolean;
+    AcessoFinanceiro: Boolean;
+    AcessoOP: Boolean; //OP = Ordem de producao
   end;
 
 type
   TVersao = record
-    SistemaRelease : string ;
-    SistemaBuild : string ;
-    BDRelease : string ;
-    BDBuild : string ;
+    SistemaRelease: string;
+    SistemaBuild: string;
+    BDRelease: string;
+    BDBuild: string;
   end;
 
 type
   TConexao = record
-    Servidor : string ;
-    Banco : string ;
-    Porta : string ;
-    Protocolo : string ;
+    Servidor: string;
+    Banco: string;
+    Porta: string;
+    Protocolo: string;
   end;
 
 type
@@ -118,12 +79,11 @@ type
     dspRProduto: TDSProviderConnection;
     dspRSaveInCloud: TDSProviderConnection;
     dsConsulta4: TClientDataSet;
+    scExcelExport1: TscExcelExport;
     procedure DataModuleCreate(Sender: TObject);
     procedure ApplicationEvents1Exception(Sender: TObject; E: Exception);
-    procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string;
-      var pRetorno: OleVariant);
+    procedure ExecutaSQL1ExecutaSQL(Sender: TObject; const pSQL: string; var pRetorno: OleVariant);
   private
-    { Private declarations }
     FInstanceOwner: Boolean;
     FSMClient: TSMClient;
     fSMCadastroClient: TSMCadastroClient;
@@ -142,47 +102,45 @@ type
     fSMSaveInCloud: TSM_SaveInCloudClient;
     function GetSMClient: TSMClient;
   public
-//    User,UserPerfil : string ;
-//    UserID : Integer ;
-
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     property InstanceOwner: Boolean read FInstanceOwner write FInstanceOwner;
     property SMClient: TSMClient read FSMClient;
-    property SMCadastroClient : TSMCadastroClient read fSMCadastroClient ;
-    property SMNotaClient : TSMNotaClient read fSMNotaClient ;
-    property SMOrcamento : TsmPDVClient read fSMOrcamento ;
-    property SMFormaPagto : TSM_FinanceiroClient read fSMFormaPagto ;
-    property SMPedido : TSM_PedidoClient read fSMPedido ;
-    property SMProducao : TSMProducaoClient read fSMProducao ;
-    property SMProduto : TSMProdutoClient read fSMProduto ;
-    property SMSaveInCloud : TSM_SaveInCloudClient read fSMSaveInCloud ;
-    property ArquivoConfiguracao : string read fArquivoConfiguracao write fArquivoConfiguracao ;
+    property SMCadastroClient: TSMCadastroClient read fSMCadastroClient;
+    property SMNotaClient: TSMNotaClient read fSMNotaClient;
+    property SMOrcamento: TsmPDVClient read fSMOrcamento;
+    property SMFormaPagto: TSM_FinanceiroClient read fSMFormaPagto;
+    property SMPedido: TSM_PedidoClient read fSMPedido;
+    property SMProducao: TSMProducaoClient read fSMProducao;
+    property SMProduto: TSMProdutoClient read fSMProduto;
+    property SMSaveInCloud: TSM_SaveInCloudClient read fSMSaveInCloud;
+    property ArquivoConfiguracao: string read fArquivoConfiguracao write fArquivoConfiguracao;
 
-    function UsuarioDataHora() : string ;
-    function ValidaUser(usuario, senha: string; aExibirMSG:Boolean = true): integer;
+    function UsuarioDataHora(): string;
+    function ValidaUser(usuario, senha: string; aExibirMSG: Boolean = true): integer;
     function ProdutoExiste(pCodProduto: string): boolean;
-    function VerificaProdutoFabricado(codProduto:string):boolean;
-    function LerDataSet(pSQL : string) : OleVariant ;
+    function VerificaProdutoFabricado(codProduto: string): boolean;
+    function LerDataSet(pSQL: string): OleVariant;
 
-    function LerConfig(sArq : string) : Boolean ;
-    function AbrirConexao() : Boolean ;
-    procedure FechaConexao() ;
+    function LerConfig(sArq: string): Boolean;
+    function AbrirConexao(): Boolean;
+    procedure FechaConexao();
+    procedure ExportarExcel(cds: TClientDataSet);
 
     function UpdateorInsert(const BD, Tabela: string; pk: string; Dados: OleVariant): Integer;
     function ExecutarSQL(pBanco: string; pSQL: string): integer;
 
-    function GetString(pSQL,pCampoRetorno : string) : string ;
-    function GetInteger(pSQL,pCampoRetorno : string) : integer ;
-    function GetFloat(pSQL,pCampoRetorno : string) : Double ;
+    function GetString(pSQL, pCampoRetorno: string): string;
+    function GetInteger(pSQL, pCampoRetorno: string): integer;
+    function GetFloat(pSQL, pCampoRetorno: string): Double;
 
-    property Empresa : TEmpresa read fEmpresa ;
-    property Usuario : TUsuario read fUsuario;
-    property SistemaVersao : TVersao read fVersao ;
+    property Empresa: TEmpresa read fEmpresa;
+    property Usuario: TUsuario read fUsuario;
+    property SistemaVersao: TVersao read fVersao;
     property AConexao: TConexao read FConexao;
-    property BancoDados : string read fBancoDados ;
-    procedure CarregaEmpresa() ;
-    procedure ConfiguraConexao(pEmpresa : string) ;
+    property BancoDados: string read fBancoDados;
+    procedure CarregaEmpresa();
+    procedure ConfiguraConexao(pEmpresa: string);
   end;
 
 var
@@ -342,6 +300,31 @@ begin
   pRetorno := LerDataSet(pSQL);
 end;
 
+procedure TDM.ExportarExcel(cds: TClientDataSet);
+var
+  sNomePlanilha: string;
+begin
+  if not DirectoryExists(GetCurrentDir + '\EXCEL\') then
+    ForceDirectories(GetCurrentDir + '\EXCEL\');
+
+  sNomePlanilha := InputBox('Salvar como', 'Dê o nome da Planilha: ', FormatDateTime('ddmmyyhhmmss', Now));
+
+  if sNomePlanilha = EmptyStr then
+    Exit;
+
+  try
+    CoInitialize(nil);
+    scExcelExport1.ExcelVisible := False;
+    scExcelExport1.Dataset := cds;
+    scExcelExport1.ExportDataset;
+    scExcelExport1.SaveAs(GetCurrentDir + '\EXCEL\' + sNomePlanilha, ffXLSX);
+    scExcelExport1.Disconnect;
+    MessageDlg('Arquivo gerado em: ' + GetCurrentDir + '\EXCEL\', mtInformation, [mbOK], 0);
+  finally
+    CoUninitialize;
+  end;
+end;
+
 procedure TDM.FechaConexao;
 begin
   if Conexao.Connected then
@@ -402,7 +385,6 @@ var
   tmp: TClientDataSet;
 begin               //0 invalido; 1 valido; 2 inativo
   Result := 0;
-
   tmp := TClientDataSet.Create(nil);
   try
     txt := 'select U.USU_ID, U.USU_NOME, U.ATIVO, U.PERFIL, UG.ATIVO GRUPOATIVO,'+
@@ -418,10 +400,7 @@ begin               //0 invalido; 1 valido; 2 inativo
     if not tmp.IsEmpty then
     begin
       if (tmp.FieldByName('ativo').AsString = 'Não') then
-      begin
-        Result := 2;
-//        TMensagem.Informacao('Usuário Inativo');
-      end
+        Result := 2
       else
       begin
         Result := 1;

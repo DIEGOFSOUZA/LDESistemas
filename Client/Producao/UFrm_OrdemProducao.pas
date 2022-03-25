@@ -9,39 +9,11 @@ unit UFrm_OrdemProducao;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.Actions,
-
-
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-
-  Vcl.DBCtrls,
-  Vcl.ActnList,
-  Vcl.ComCtrls,
-  Vcl.Buttons,
-  Vcl.ExtCtrls,
-  Vcl.Grids,
-  Vcl.DBGrids,
-  Vcl.Menus,
-
-  UPdr_Cad2,
-
-
-  Data.DB,
-  Datasnap.DBClient,
-
-  PngSpeedButton,
-
-
-  UEDPesquisa, Vcl.Imaging.pngimage,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, System.Actions, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.ActnList, Vcl.ComCtrls,
+  Vcl.Buttons, Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, Vcl.Menus, UPdr_Cad2,
+  Data.DB, Datasnap.DBClient, PngSpeedButton, UEDPesquisa, Vcl.Imaging.pngimage,
   U_DataCorrida;
 type
   TFrm_OrdemProducao = class(TPdr_Cad2)

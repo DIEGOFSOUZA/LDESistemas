@@ -1,5 +1,5 @@
 inherited Rel_VendaPorItem: TRel_VendaPorItem
-  Caption = 'Rel_VendaPorItem'
+  Caption = 'VENDAS TOTAIS POR ITEM'
   ClientWidth = 825
   OnCreate = FormCreate
   ExplicitWidth = 825
@@ -166,6 +166,14 @@ inherited Rel_VendaPorItem: TRel_VendaPorItem
               FieldName = 'QTDE_VENDIDA'
               Title.Alignment = taRightJustify
               Width = 85
+              Visible = True
+            end
+            item
+              Alignment = taCenter
+              Expanded = False
+              FieldName = 'UND'
+              Title.Alignment = taCenter
+              Width = 30
               Visible = True
             end
             item
@@ -1074,19 +1082,78 @@ inherited Rel_VendaPorItem: TRel_VendaPorItem
   end
   inherited dsGrid: TClientDataSet
     CommandText = 
-      'select c.NOME produto,sum(b.QTDE) qtde_vendida,'#13#10'cast(sum(b.VL_T' +
-      'OTAL) as numeric(10,2)) vl_vendas,'#13#10'cast((sum(b.VL_TOTAL)/sum(b.' +
-      'QTDE)) as numeric(10,2)) vl_medio,'#13#10'cast( ( (sum(b.QTDE)*coalesc' +
-      'e(c.PRECO_CUSTO,0)) / sum(b.QTDE) )as numeric(10,2)) custo_medio' +
-      ','#13#10'cast( (sum(b.QTDE)*coalesce(c.PRECO_CUSTO,0)) as numeric(10,2' +
-      ')) custo_direto,'#13#10'cast( (sum(b.VL_TOTAL)-(sum(b.QTDE)*coalesce(c' +
-      '.PRECO_CUSTO,0))) as numeric(10,2)) lucratividade,'#13#10'cast( iif(c.' +
-      'PRECO_CUSTO > 0,((coalesce(c.PRECO_VENDA,0)-coalesce(c.PRECO_CUS' +
-      'TO,0)) /coalesce(c.PRECO_CUSTO,0))*100,100) as numeric(10,2)) ma' +
-      'rg_lucro'#13#10'from PDV_MASTER a'#13#10'left outer join PDV_ITENS b on (b.I' +
-      'D = a.ID and b.TIPO = a.TIPO)'#13#10'left outer join PRODUTO c on (c.C' +
-      'ODIGO = b.ID_PRODUTO)'#13#10'where 1=2 '#13#10'and a.STATUS is null  '#13#10'group' +
-      ' by c.NOME,c.PRECO_CUSTO,c.PRECO_VENDA'
+      'select C.NOME PRODUTO, sum(B.QTDE_BAIXA) QTDE_VENDIDA, coalesce(' +
+      'U2.SIGLA, U1.SIGLA) UND,'#13#10'       cast(sum(B.VL_TOTAL) as numeric' +
+      '(10,2)) VL_VENDAS,'#13#10'       cast((sum(B.VL_TOTAL) / sum(B.QTDE_BA' +
+      'IXA)) as numeric(10,2)) VL_MEDIO,'#13#10'       cast(((sum(B.QTDE_BAIX' +
+      'A) * coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) ' +
+      '/ sum(B.QTDE_BAIXA)) as numeric(10,2)) CUSTO_MEDIO,'#13#10'       cast' +
+      '((sum(B.QTDE_BAIXA) * coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.' +
+      'PRECO_CUSTO, 0)) as numeric(10,2)) CUSTO_DIRETO,'#13#10'       cast(((' +
+      'sum(B.VL_TOTAL) - (sum(B.QTDE_BAIXA)) * coalesce((C.PRECO_CUSTO ' +
+      '/ C.CONV_QTDE), C.PRECO_CUSTO, 0))) as numeric(10,2)) LUCRATIVID' +
+      'ADE, cast(iif(C.PRECO_CUSTO > 0,'#13#10'       ((coalesce(C.PRECO_VEND' +
+      'A, 0) - coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0' +
+      ')) / coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) ' +
+      '* 100, 100) as numeric(10,2)) MARG_LUCRO'#13#10'from PDV_MASTER A'#13#10'lef' +
+      't join PDV_ITENS B on (B.ID = A.ID and'#13#10'      B.TIPO = A.TIPO)'#13#10 +
+      'left join PRODUTO C on (C.CODIGO = B.ID_PRODUTO)'#13#10'left join UNID' +
+      'ADE U1 on (U1.CODIGO = C.COD_UNIDADE)'#13#10'left join UNIDADE U2 on (' +
+      'U2.CODIGO = C.CONV_UNIDADE)'#13#10'where 1=2'#13#10'group by C.NOME, C.PRECO' +
+      '_CUSTO, C.PRECO_VENDA, C.CONV_QTDE, U1.SIGLA, U2.SIGLA'
+    FieldDefs = <
+      item
+        Name = 'PRODUTO'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'QTDE_VENDIDA'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 3
+      end
+      item
+        Name = 'UND'
+        DataType = ftString
+        Size = 10
+      end
+      item
+        Name = 'VL_VENDAS'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'VL_MEDIO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'CUSTO_MEDIO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'CUSTO_DIRETO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'LUCRATIVIDADE'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end
+      item
+        Name = 'MARG_LUCRO'
+        DataType = ftFMTBcd
+        Precision = 18
+        Size = 2
+      end>
     IndexDefs = <
       item
         Name = 'dsGridIndex1'
@@ -1095,7 +1162,7 @@ inherited Rel_VendaPorItem: TRel_VendaPorItem
       end>
     IndexName = 'dsGridIndex1'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
+    RemoteServer = DM.dspRLer
     StoreDefs = True
     object dsGridPRODUTO: TStringField
       DisplayLabel = 'Produto'
@@ -1150,6 +1217,11 @@ inherited Rel_VendaPorItem: TRel_VendaPorItem
       DisplayFormat = '#,##0.00%'
       Precision = 18
       Size = 2
+    end
+    object dsGridUND: TStringField
+      DisplayLabel = 'und'
+      FieldName = 'UND'
+      Size = 10
     end
   end
 end
