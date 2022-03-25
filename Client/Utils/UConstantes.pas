@@ -10,11 +10,8 @@ const
 
   //Versao do Sistema
   Release = '40';
-<<<<<<< HEAD
   Build =   '2';
-=======
-  Build =   '1';
->>>>>>> 318855a387d8808f4c05d31eb7a9fe5a92bfba81
+
 
   //Versao BD - busca versao do banco
 //  BDRelease = '5';
