@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask, Vcl.DBCtrls,
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, LDESistemas.DAO.NFEntrada.Interfaces;
 
 type
   TFrm_Item = class(TPdr_Child)
@@ -107,9 +107,18 @@ type
     pnlVlFinal: TPanel;
     Label36: TLabel;
     lblVlFinal: TLabel;
+    pnlLote: TPanel;
+    lblTitLote: TLabel;
+    Label37: TLabel;
+    edtLote: TEdit;
+    lbl1: TLabel;
+    lbl2: TLabel;
+    medtLoteValidade: TMaskEdit;
+    medtLoteProducao: TMaskEdit;
     procedure actSalvarExecute(Sender: TObject);
     procedure actCancelarExecute(Sender: TObject);
   private
+    FDao : iDAOInterface;
     FVlFinal: Currency;
     procedure SetVlFinal(const Value: Currency);
     { Private declarations }
@@ -124,7 +133,7 @@ var
 implementation
 
 uses
-  uFrm_NF_Entrada;
+  uFrm_NF_Entrada, LDESistemas.DAO.NFEntradaItem;
 
 {$R *.dfm}
 
@@ -140,6 +149,15 @@ begin
   inherited;
   if sItem.DataSet.State in [dsEdit,dsInsert] then
     sItem.DataSet.Post ;
+
+  FDao
+   .Lote(edtLote.Text)
+   .DtProducao(medtLoteProducao.Text)
+   .DtValidade(medtLoteValidade.text)
+   .IdNota(sItem.DataSet.FieldByName('ID_NOTAENTRADA').AsInteger)
+   .IdProduto(sItem.DataSet.FieldByName('ID_PRODUTO').AsInteger)
+   .Qtde(sItem.DataSet.FieldByName('QTDE').AsFloat)
+   .Post;
   Close;
 end;
 
@@ -147,6 +165,7 @@ constructor TFrm_Item.Create(Sender: TComponent);
 begin
   inherited Create(Sender);
   sItem.DataSet := (Sender as TFrm_NF_Entrada).dsItem ;
+  FDao := TDAONFEntradaItem.New;
   pnlCSOSN.visible := False;
 end;
 

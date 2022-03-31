@@ -552,8 +552,8 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           ParentFont = False
           Transparent = False
           Layout = tlCenter
-          ExplicitTop = 8
-          ExplicitWidth = 1115
+          ExplicitLeft = 5
+          ExplicitTop = 2
         end
         object DBPesquisa2: TDBPesquisa
           Left = 34
@@ -837,7 +837,7 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           Top = 1
           Width = 716
           Height = 245
-          ActivePage = tsCobranca
+          ActivePage = tsProdutoServico
           Align = alClient
           TabOrder = 0
           object tsProdutoServico: TTabSheet
@@ -1486,10 +1486,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsTotal: TTabSheet
             Caption = 'TOTAIS'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlTotais: TPanel
               Left = 0
               Top = 0
@@ -1869,10 +1865,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsTransportador: TTabSheet
             Caption = 'TRANSPORTADOR'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlTransportador: TPanel
               Left = 0
               Top = 0
@@ -2668,10 +2660,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsAnotacao: TTabSheet
             Caption = 'ANOTA'#199#213'ES'
             ImageIndex = 4
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object pnlAnotacao: TPanel
               Left = 0
               Top = 0
@@ -3476,7 +3464,6 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
       OnExecute = actExcItemExecute
     end
     object actEditarItem: TAction
-      Enabled = False
       Hint = 'Editar o Item'
       OnExecute = actEditarItemExecute
     end

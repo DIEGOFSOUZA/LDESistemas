@@ -1,18 +1,18 @@
 inherited Frm_Item: TFrm_Item
   BorderStyle = bsNone
   Caption = 'Frm_Item'
-  ClientHeight = 406
-  ClientWidth = 558
+  ClientHeight = 500
+  ClientWidth = 560
   Visible = False
-  ExplicitWidth = 558
-  ExplicitHeight = 406
+  ExplicitWidth = 560
+  ExplicitHeight = 500
   PixelsPerInch = 96
   TextHeight = 13
   object pnlFundo0: TPanel
     Left = 0
     Top = 0
-    Width = 558
-    Height = 406
+    Width = 560
+    Height = 500
     Align = alClient
     Color = 14803681
     ParentBackground = False
@@ -20,11 +20,11 @@ inherited Frm_Item: TFrm_Item
     object lblTitulo: TLabel
       Left = 1
       Top = 1
-      Width = 556
+      Width = 558
       Height = 30
       Align = alTop
       AutoSize = False
-      Caption = '   N.F. ENTRADA - ALTERA'#199#195'O DE ITEM'
+      Caption = '  ITEM - DETALHE'
       Color = 7024384
       Font.Charset = ANSI_CHARSET
       Font.Color = clWhite
@@ -41,8 +41,8 @@ inherited Frm_Item: TFrm_Item
     end
     object pnlRodape: TPanel
       Left = 1
-      Top = 360
-      Width = 556
+      Top = 454
+      Width = 558
       Height = 45
       Align = alBottom
       BevelOuter = bvNone
@@ -50,8 +50,7 @@ inherited Frm_Item: TFrm_Item
       Color = clWhite
       ParentBackground = False
       ShowCaption = False
-      TabOrder = 0
-      ExplicitTop = 362
+      TabOrder = 3
       object pnlCancelar: TPanel
         Left = 314
         Top = 5
@@ -90,7 +89,7 @@ inherited Frm_Item: TFrm_Item
         Color = 3458443
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 0
+        TabOrder = 2
         object btnSalvar: TSpeedButton
           Left = 1
           Top = 1
@@ -117,7 +116,7 @@ inherited Frm_Item: TFrm_Item
         Height = 45
         Align = alLeft
         BevelOuter = bvNone
-        TabOrder = 2
+        TabOrder = 0
         object Label36: TLabel
           Left = 14
           Top = 14
@@ -149,11 +148,12 @@ inherited Frm_Item: TFrm_Item
     object pnlDados: TPanel
       Left = 1
       Top = 31
-      Width = 556
+      Width = 558
       Height = 130
       Align = alTop
       BevelOuter = bvNone
-      TabOrder = 1
+      Enabled = False
+      TabOrder = 0
       object Label10: TLabel
         Left = 241
         Top = 4
@@ -497,10 +497,10 @@ inherited Frm_Item: TFrm_Item
     end
     object pnlPages: TPanel
       Left = 1
-      Top = 161
-      Width = 556
-      Height = 199
-      Align = alClient
+      Top = 258
+      Width = 558
+      Height = 196
+      Align = alBottom
       BevelOuter = bvNone
       Caption = 'pnlPages'
       Color = 14803681
@@ -510,8 +510,8 @@ inherited Frm_Item: TFrm_Item
       object pgc1: TPageControl
         Left = 0
         Top = 0
-        Width = 556
-        Height = 199
+        Width = 558
+        Height = 196
         ActivePage = tsICMS
         Align = alClient
         MultiLine = True
@@ -528,17 +528,18 @@ inherited Frm_Item: TFrm_Item
           object pnlICMS: TPanel
             Left = 0
             Top = 0
-            Width = 548
-            Height = 171
+            Width = 550
+            Height = 168
             Align = alClient
             BevelOuter = bvNone
             Color = 14803681
+            Enabled = False
             ParentBackground = False
             TabOrder = 0
             object pnlCSOSN: TPanel
               Left = 0
               Top = 0
-              Width = 548
+              Width = 550
               Height = 41
               Align = alTop
               BevelOuter = bvNone
@@ -597,8 +598,8 @@ inherited Frm_Item: TFrm_Item
             object pnlICMSDados: TPanel
               Left = 0
               Top = 41
-              Width = 548
-              Height = 130
+              Width = 550
+              Height = 127
               Align = alClient
               BevelOuter = bvNone
               TabOrder = 1
@@ -763,7 +764,7 @@ inherited Frm_Item: TFrm_Item
                     'itui'#231#227'o Tribut'#225'ria'
                   '90 - Outros')
                 ParentFont = False
-                TabOrder = 0
+                TabOrder = 1
               end
               object DBComboBox1: TDBComboBox
                 Left = 10
@@ -783,7 +784,7 @@ inherited Frm_Item: TFrm_Item
                   '1 - Estrangeira - Importa'#231#227'o direta;'
                   '2 - Estrangeira - Adquirida no mercado interno')
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 0
               end
               object DBEdit13: TDBEdit
                 Left = 10
@@ -859,7 +860,7 @@ inherited Frm_Item: TFrm_Item
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 6
+                TabOrder = 7
               end
               object DBEdit18: TDBEdit
                 Left = 132
@@ -874,7 +875,7 @@ inherited Frm_Item: TFrm_Item
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 7
+                TabOrder = 8
               end
               object DBEdit19: TDBEdit
                 Left = 254
@@ -889,7 +890,7 @@ inherited Frm_Item: TFrm_Item
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 8
+                TabOrder = 9
               end
               object DBEdit20: TDBEdit
                 Left = 376
@@ -905,19 +906,20 @@ inherited Frm_Item: TFrm_Item
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 9
+                TabOrder = 6
               end
             end
           end
         end
         object tsIPI: TTabSheet
           Caption = 'I.P.I.'
+          Enabled = False
           ImageIndex = 1
           object pnlIPI: TPanel
             Left = 0
             Top = 0
-            Width = 548
-            Height = 171
+            Width = 550
+            Height = 168
             Align = alClient
             BevelOuter = bvNone
             Color = 14803681
@@ -1056,12 +1058,13 @@ inherited Frm_Item: TFrm_Item
         end
         object tsPIS: TTabSheet
           Caption = 'P.I.S.'
+          Enabled = False
           ImageIndex = 2
           object pnlPIS: TPanel
             Left = 0
             Top = 0
-            Width = 548
-            Height = 171
+            Width = 550
+            Height = 168
             Align = alClient
             BevelOuter = bvNone
             Color = 14803681
@@ -1258,12 +1261,13 @@ inherited Frm_Item: TFrm_Item
         end
         object tsCOFINS: TTabSheet
           Caption = 'C.O.F.I.N.S.'
+          Enabled = False
           ImageIndex = 3
           object pnlCOFINS: TPanel
             Left = 0
             Top = 0
-            Width = 548
-            Height = 171
+            Width = 550
+            Height = 168
             Align = alClient
             BevelOuter = bvNone
             Color = 14803681
@@ -1458,6 +1462,121 @@ inherited Frm_Item: TFrm_Item
             end
           end
         end
+      end
+    end
+    object pnlLote: TPanel
+      Left = 1
+      Top = 161
+      Width = 558
+      Height = 97
+      Align = alClient
+      BevelOuter = bvNone
+      Caption = 'pnlLote'
+      ShowCaption = False
+      TabOrder = 1
+      object lblTitLote: TLabel
+        Left = 0
+        Top = 0
+        Width = 558
+        Height = 20
+        Align = alTop
+        AutoSize = False
+        Caption = '   Lote - Fornecedor'
+        Color = 10114859
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWhite
+        Font.Height = -15
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        Layout = tlCenter
+        ExplicitTop = -1
+      end
+      object Label37: TLabel
+        Left = 24
+        Top = 30
+        Width = 26
+        Height = 13
+        Caption = 'LOTE'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl1: TLabel
+        Left = 267
+        Top = 30
+        Width = 50
+        Height = 13
+        Caption = 'VALIDADE'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbl2: TLabel
+        Left = 363
+        Top = 30
+        Width = 61
+        Height = 13
+        Caption = 'PRODU'#199#195'O'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edtLote: TEdit
+        Left = 24
+        Top = 49
+        Width = 237
+        Height = 25
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+      end
+      object medtLoteValidade: TMaskEdit
+        Left = 267
+        Top = 49
+        Width = 80
+        Height = 25
+        EditMask = '!99/99/9999;1;_'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentFont = False
+        TabOrder = 1
+        Text = '  /  /    '
+      end
+      object medtLoteProducao: TMaskEdit
+        Left = 363
+        Top = 49
+        Width = 80
+        Height = 25
+        EditMask = '!99/99/9999;1;_'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentFont = False
+        TabOrder = 2
+        Text = '  /  /    '
       end
     end
   end

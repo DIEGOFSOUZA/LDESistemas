@@ -123,7 +123,9 @@ uses
   UPdr_Relatorio2_1 in 'Heranca\Relatorio\UPdr_Relatorio2_1.pas' {Pdr_Relatorio2_1},
   URel_PedidoVendaA3 in 'Pedido\Venda\Relatorio\URel_PedidoVendaA3.pas' {Rel_PedidoVendaA3},
   ContasAReceber.Intefaces in 'Financeiro\ContasReceber\ContasAReceber.Intefaces.pas',
-  ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas';
+  ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas',
+  LDESistemas.DAO.NFEntrada.Interfaces in 'Nota\LDESistemas.DAO.NFEntrada.Interfaces.pas',
+  LDESistemas.DAO.NFEntradaItem in 'Nota\LDESistemas.DAO.NFEntradaItem.pas';
 
 {$R *.res}
 

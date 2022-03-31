@@ -12,6 +12,9 @@
         <Projects Include="..\..\Backup BD\BackupBanco.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\..\exemplos\delphitohero-aula44\Client\DelphiToHero-bc00cb3b9e6387c85376a250584c521c73c7dd4f\DelphiToHero.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="BackupBanco:Make">
         <MSBuild Projects="..\..\Backup BD\BackupBanco.dproj" Targets="Make"/>
     </Target>
+    <Target Name="DelphiToHero">
+        <MSBuild Projects="..\..\exemplos\delphitohero-aula44\Client\DelphiToHero-bc00cb3b9e6387c85376a250584c521c73c7dd4f\DelphiToHero.dproj"/>
+    </Target>
+    <Target Name="DelphiToHero:Clean">
+        <MSBuild Projects="..\..\exemplos\delphitohero-aula44\Client\DelphiToHero-bc00cb3b9e6387c85376a250584c521c73c7dd4f\DelphiToHero.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DelphiToHero:Make">
+        <MSBuild Projects="..\..\exemplos\delphitohero-aula44\Client\DelphiToHero-bc00cb3b9e6387c85376a250584c521c73c7dd4f\DelphiToHero.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco"/>
+        <CallTarget Targets="LDEServer;LDESistemas;BackupBanco;DelphiToHero"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean"/>
+        <CallTarget Targets="LDEServer:Clean;LDESistemas:Clean;BackupBanco:Clean;DelphiToHero:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make"/>
+        <CallTarget Targets="LDEServer:Make;LDESistemas:Make;BackupBanco:Make;DelphiToHero:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
