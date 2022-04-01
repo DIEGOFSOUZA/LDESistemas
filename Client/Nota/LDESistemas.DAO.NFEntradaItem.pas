@@ -100,13 +100,24 @@ begin
          FloatToStr(FQTDE)+','+
          FloatToStr(FQTDE)+
          ')';
-
+  try
+    DM.ExecutarSQL(DM.BancoDados,SQL);
+  except
+    raise Exception.Create('Não foi possivel inserir o lote do Fornecedor.'+sLineBreak+
+                           'Tente novamente.');
+  end;
 end;
 
 function TDAONFEntradaItem.Lote(aValue: string): iDAOInterface;
 begin
   Result := Self;
   FLOTE := aValue;
+end;
+
+function TDAONFEntradaItem.Qtde(aValue: Extended): iDAOInterface;
+begin
+  Result := Self;
+  FQTDE := aValue;
 end;
 
 class function TDAONFEntradaItem.New: iDAOInterface;
@@ -123,26 +134,12 @@ begin
   if (FLOTE <> '') then
   begin
     //Existe registro
-    //Inserir
+    Inserir;
     //Atualizar
   end;
-  try
-
-    DM.ExecutarSQL(DM.BancoDados,'');
-  except
-
-  end;
-
-//  for var Param in FParamList do
-//  begin
-//    lValue := Format('%s=%s&', [Param.Key, Param.Value]);
-//  end;
 end;
 
-function TDAONFEntradaItem.Qtde(aValue: Extended): iDAOInterface;
-begin
 
-end;
 
 end.
 

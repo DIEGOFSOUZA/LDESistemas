@@ -623,10 +623,13 @@ begin
   if dsItem.IsEmpty then
     Exit;
 
-  Editar;
+//  Editar;
   lItem := TFrm_Item.Create(Self);
   try
     lItem.VlFinal := dsItem.FieldByName('total').AsCurrency;
+    lItem.IDNF := cds.FieldByName('ID').AsInteger;
+    lItem.IDPRO := dsItem.FieldByName('ID_PRODUTO').AsInteger;
+    lItem.QTDE := dsItem.FieldByName('QTDE').AsFloat;
     lItem.ShowModal;
   finally
     FreeAndNil(lItem);

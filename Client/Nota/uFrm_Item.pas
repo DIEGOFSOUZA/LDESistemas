@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask, Vcl.DBCtrls,
-  Vcl.ComCtrls, LDESistemas.DAO.NFEntrada.Interfaces;
+  Vcl.ComCtrls, LDESistemas.DAO.NFEntrada.Interfaces, Vcl.WinXCalendars;
 
 type
   TFrm_Item = class(TPdr_Child)
@@ -120,11 +120,17 @@ type
   private
     FDao : iDAOInterface;
     FVlFinal: Currency;
+    FIDNF: Integer;
+    FIDPRO: Integer;
+    FQTDE: Extended;
     procedure SetVlFinal(const Value: Currency);
-    { Private declarations }
+    procedure CarregarLote();
   public
     constructor Create(Sender: TComponent);
-    property VlFinal:Currency  read FVlFinal write SetVlFinal;
+    property VlFinal: Currency read FVlFinal write SetVlFinal;
+    property IDNF : Integer read FIDNF write FIDNF;
+    property IDPRO : Integer read FIDPRO write FIDPRO;
+    property QTDE : Extended read FQTDE write FQTDE;
   end;
 
 var
@@ -147,18 +153,23 @@ end;
 procedure TFrm_Item.actSalvarExecute(Sender: TObject);
 begin
   inherited;
-  if sItem.DataSet.State in [dsEdit,dsInsert] then
-    sItem.DataSet.Post ;
+//  if sItem.DataSet.State in [dsEdit,dsInsert] then
+//    sItem.DataSet.Post ;
 
   FDao
    .Lote(edtLote.Text)
    .DtProducao(medtLoteProducao.Text)
    .DtValidade(medtLoteValidade.text)
-   .IdNota(sItem.DataSet.FieldByName('ID_NOTAENTRADA').AsInteger)
-   .IdProduto(sItem.DataSet.FieldByName('ID_PRODUTO').AsInteger)
-   .Qtde(sItem.DataSet.FieldByName('QTDE').AsFloat)
+   .IdNota(FIDNF)
+   .IdProduto(FIDPRO)
+   .Qtde(FQTDE)
    .Post;
   Close;
+end;
+
+procedure TFrm_Item.CarregarLote;
+begin
+
 end;
 
 constructor TFrm_Item.Create(Sender: TComponent);

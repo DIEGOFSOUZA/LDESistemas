@@ -1474,6 +1474,8 @@ inherited Frm_Item: TFrm_Item
       Caption = 'pnlLote'
       ShowCaption = False
       TabOrder = 1
+      ExplicitLeft = -318
+      ExplicitTop = 160
       object lblTitLote: TLabel
         Left = 0
         Top = 0

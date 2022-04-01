@@ -1,0 +1,148 @@
+unit LDESistemas.Nota.Entrada.Controller.Interfaces;
+
+interface
+
+uses 
+  LDESistemas.Model.NFEntrada.Item.Interfaces,
+  LDESistemas.Model.NFEntrada.Pagar.Interfaces;
+
+type
+  iControllerNFEntrada = interface;
+  iControllerItem = interface;
+  iControllerPagar = interface;
+
+  iController = interface
+    
+    function NFEntrada : iControllerNFEntrada;
+    
+  end;
+
+  iControllerNFEntrada = interface
+    
+    function Item : iModelItem;
+    function Pagar : iModelPagar;
+  end;
+
+implementation
+
+end.
+------------------------------------------------------------
+unit LDESistemas.Nota.Entrada.Controller.Item.Interfaces;
+
+interface
+
+uses
+ LDESistemas.Nota.Entrada.Model.Item.Dados.Interfaces;
+ LDESistemas.Nota.Entrada.Model.Item.Lote.Interfaces;
+ LDESistemas.Nota.Entrada.Model.Item.Imposto.Interfaces;
+ 
+type
+
+  iModelItem = interface
+    function Insert : iModelItem;
+	function Delete : iModelItem;
+	function Update : iModelItem;
+	function Get : iModelItem;
+	
+    function Dados : iModelDados;
+	function Lote : iModelLote;
+	function Imposto : iModelImposto;
+  end;
+
+implementation
+
+end.
+-------------------------------------------------------------
+unit LDESistemas.Nota.Entrada.Model.Item.Dados.Interfaces;
+
+interface
+
+type
+
+  iModelDados = interface
+    
+    function Descricao(aValue : string) : iModelDados;
+	function Qtde(aValue : Extended) : iModelDados;
+  end;
+
+implementation
+
+end.
+------------------------------------------------------------
+unit LDESistemas.Nota.Entrada.Model.Item.Lote.Interfaces;
+
+interface
+
+type
+
+  iModelLote = interface
+    
+    function Insert : iModelLote;
+	function Delete : iModelLote;
+	function Update : iModelLote;
+	function Get : iModelLote;
+	function Lote(aValue : string) : iModelLote;
+	function Validade(aValue : TDate) : iModelLote;
+	function Producao(aValue : TDate) : iModelLote;
+	function Qtde(aValue : Extended) : iModelLote;
+  end;
+
+implementation
+
+end.
+------------------------------------------------------------
+unit LDESistemas.Nota.Entrada.Model.Item.Imposto.Interfaces;
+
+interface
+
+type
+  iModelICMS = interface;
+  iModelPIS = interface;
+  iModelCOFINS = interface;
+  
+  iModelIImposto = interface;
+    
+    function ICMS : iModelICMS;
+	function PIS : iModelPIS;
+	function COFINS : iModelCOFINS;
+  end;
+  
+  iModelICMS = interface;
+    
+	function pAliq(aValue : Extended) : iModelICMS;
+	function BC(aValue : Currency) : iModelICMS;
+  end;
+
+  iModelPIS = interface;
+    
+	function pAliq(aValue : Extended) : iModelPIS;
+	function BC(aValue : Currency) : iModelPIS;
+  end;
+  
+  iModelCOFINS = interface;
+    
+	function pAliq(aValue : Extended) : iModelCOFINS;
+	function BC(aValue : Currency) : iModelCOFINS;
+  end;
+implementation
+
+end.
+------------------------------------------------------------
+ iControllerItem = interface
+    
+    function Item : iControllerItem;
+	function Lote : iControllerLote;
+	function Imposto : iControllerImposto;
+  end;
+  
+  iControllerImposto = interface
+  
+    function ICMS : iControllerICMS;
+	function PIS : iControllerPIS;
+	function COFINS : iControllerCOFINS;
+  end;
+
+  iControllerPagar = interface
+    
+    function GerarDuplicata : iControllerPagar;  
+  end;
