@@ -14,8 +14,8 @@ type
     FDMemTable: TFDMemTable;
     FParamList: TDictionary<string, Variant>;
     FLOTE: string;
-    FDTPRODUCAO: TDate;
-    FDTVALIDADE: TDate;
+    FDTPRODUCAO: string;
+    FDTVALIDADE: string;
     FIDNOTA: Integer;
     FIDPRODUTO: Integer;
     FQTDE: Extended;
@@ -61,17 +61,27 @@ begin
 end;
 
 function TDAONFEntradaItem.DtProducao(aValue: string): iDAOInterface;
+var
+  lData: TDateTime;
 begin
   Result := Self;
-  if (aValue <> '') then
-    FDTPRODUCAO := StrToDate(aValue);
+
+  if not TryStrToDate(aValue, lData) then
+    FDTPRODUCAO := 'null'
+  else
+    FDTPRODUCAO := FormatDateTime('dd.mm.yyyy', lData);
 end;
 
 function TDAONFEntradaItem.DtValidade(aValue: string): iDAOInterface;
+var
+  lData: TDateTime;
 begin
   Result := Self;
-  if (aValue <> '') then
-    FDTVALIDADE := StrToDate(aValue);
+
+  if not TryStrToDate(aValue, lData) then
+    FDTVALIDADE := 'null'
+  else
+    FDTVALIDADE := FormatDateTime('dd.mm.yyyy', lData);
 end;
 
 function TDAONFEntradaItem.IdNota(aValue: Integer): iDAOInterface;
@@ -95,8 +105,8 @@ begin
          FIDNOTA.ToString+','+
          FIDPRODUTO.ToString+','+
          QuotedStr(FLOTE)+','+
-         QuotedStr(FormatDateTime('dd.mm.yyyy',FDTPRODUCAO))+','+
-         QuotedStr(FormatDateTime('dd.mm.yyyy',FDTVALIDADE))+','+
+         QuotedStr(StringReplace(FDTPRODUCAO,'/','.',[rfReplaceAll]))+','+
+         QuotedStr(StringReplace(FDTVALIDADE,'/','.',[rfReplaceAll]))+','+
          FloatToStr(FQTDE)+','+
          FloatToStr(FQTDE)+
          ')';

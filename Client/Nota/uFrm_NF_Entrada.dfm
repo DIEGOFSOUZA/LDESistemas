@@ -1869,6 +1869,10 @@ inherited Frm_NF_Entrada: TFrm_NF_Entrada
           object tsTransportador: TTabSheet
             Caption = 'TRANSPORTADOR'
             ImageIndex = 2
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object pnlTransportador: TPanel
               Left = 0
               Top = 0
