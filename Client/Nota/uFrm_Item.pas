@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child, Vcl.StdCtrls, Vcl.Buttons,
   Vcl.ExtCtrls, System.Actions, Vcl.ActnList, Data.DB, Vcl.Mask, Vcl.DBCtrls,
-  Vcl.ComCtrls, LDESistemas.DAO.NFEntrada.Interfaces, Vcl.WinXCalendars;
+  Vcl.ComCtrls, LDESistemas.DAO.NFEntrada.Interfaces, Vcl.WinXCalendars,
+  LDESistemas.Client.Utils.RTTI;
 
 type
   TFrm_Item = class(TPdr_Child)
@@ -110,13 +111,18 @@ type
     pnlLote: TPanel;
     lblTitLote: TLabel;
     Label37: TLabel;
-    edtLote: TEdit;
     lbl1: TLabel;
     lbl2: TLabel;
+    [Bind('LOTE','LOTE')]
+    edtLote: TEdit;
+    [Bind('DT_VALIDADE','DT_VALIDADE')]
     medtLoteValidade: TMaskEdit;
+    [Bind('DT_PRODUCAO','DT_PRODUCAO')]
     medtLoteProducao: TMaskEdit;
+    dsLote: TDataSource;
     procedure actSalvarExecute(Sender: TObject);
     procedure actCancelarExecute(Sender: TObject);
+    procedure dsLoteDataChange(Sender: TObject; Field: TField);
   private
     FDao : iDAOInterface;
     FVlFinal: Currency;
@@ -155,15 +161,25 @@ begin
   inherited;
 //  if sItem.DataSet.State in [dsEdit,dsInsert] then
 //    sItem.DataSet.Post ;
-
-  FDao
-   .Lote(edtLote.Text)
-   .DtProducao(medtLoteProducao.Text)
-   .DtValidade(medtLoteValidade.text)
-   .IdNota(FIDNF)
-   .IdProduto(FIDPRO)
-   .Qtde(FQTDE)
-   .Post;
+  if (dsLote.DataSet.FieldByName('ID').AsInteger > 0) then
+    FDao
+     .ID(dsLote.DataSet.FieldByName('ID').AsInteger)
+     .Lote(edtLote.Text)
+     .DtProducao(medtLoteProducao.Text)
+     .DtValidade(medtLoteValidade.text)
+     .IdNota(FIDNF)
+     .IdProduto(FIDPRO)
+     .Qtde(FQTDE)
+     .Update
+  else
+    FDao
+     .Lote(edtLote.Text)
+     .DtProducao(medtLoteProducao.Text)
+     .DtValidade(medtLoteValidade.text)
+     .IdNota(FIDNF)
+     .IdProduto(FIDPRO)
+     .Qtde(FQTDE)
+     .Insert;
   Close;
 end;
 
@@ -175,9 +191,21 @@ end;
 constructor TFrm_Item.Create(Sender: TComponent);
 begin
   inherited Create(Sender);
+  pnlCSOSN.visible := False;
   sItem.DataSet := (Sender as TFrm_NF_Entrada).dsItem ;
   FDao := TDAONFEntradaItem.New;
-  pnlCSOSN.visible := False;
+
+  FDao
+   .IdNota(sItem.DataSet.FieldByName('ID_NOTAENTRADA').AsInteger)
+   .IdProduto(sItem.DataSet.FieldByName('ID_PRODUTO').AsInteger)
+  .Get
+  .DataSet(dsLote);
+end;
+
+procedure TFrm_Item.dsLoteDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  TRTTIUtils.DataSetToForm(dsLote.DataSet, Self);
 end;
 
 procedure TFrm_Item.SetVlFinal(const Value: Currency);

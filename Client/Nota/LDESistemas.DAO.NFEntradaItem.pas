@@ -6,12 +6,14 @@ uses
   Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   FireDAC.Stan.StorageBin, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  LDESistemas.DAO.NFEntrada.Interfaces, Vcl.Forms, System.Generics.Collections;
+  LDESistemas.DAO.NFEntrada.Interfaces, Vcl.Forms, System.Generics.Collections,
+  System.StrUtils, Datasnap.DBClient;
 
 type
   TDAONFEntradaItem = class(TInterfacedObject, iDAOInterface)
   private
-    FDMemTable: TFDMemTable;
+    FClientDataSet: TClientDataSet;
+    FDataSet : TDataSource;
     FParamList: TDictionary<string, Variant>;
     FLOTE: string;
     FDTPRODUCAO: string;
@@ -19,19 +21,26 @@ type
     FIDNOTA: Integer;
     FIDPRODUTO: Integer;
     FQTDE: Extended;
+    FID : Integer;
     procedure Inserir();
   public
     constructor Create;
     destructor Destroy; override;
     class function New: iDAOInterface;
-    function Post: iDAOInterface; overload;
+    function Get : iDAOInterface;
+    function Insert: iDAOInterface;
+    function Update: iDAOInterface;
     function AddParam(aKey: string; aValue: Variant): iDAOInterface;
+    function DataSet ( aValue : TDataSource ) : iDAOInterface;
     function Lote(aValue: string): iDAOInterface;
-    function DtProducao(aValue: string): iDAOInterface;
-    function DtValidade(aValue: string): iDAOInterface;
+    function DtProducao : String; overload;
+    function DtProducao(aValue: string): iDAOInterface; overload;
+    function DtValidade : String; overload;
+    function DtValidade(aValue: string): iDAOInterface; overload;
     function IdNota(aValue: Integer): iDAOInterface;
     function IdProduto(aValue: Integer): iDAOInterface;
     function Qtde(aValue: Extended): iDAOInterface;
+    function ID(aValue: Integer): iDAOInterface;
   end;
 
 implementation
@@ -49,13 +58,20 @@ end;
 
 constructor TDAONFEntradaItem.Create;
 begin
-  FDMemTable := TFDMemTable.Create(nil);
+  FClientDataSet := TClientDataSet.Create(nil);
   FParamList := TDictionary<string, Variant>.Create;
+end;
+
+function TDAONFEntradaItem.DataSet(aValue: TDataSource): iDAOInterface;
+begin
+  Result := Self;
+  FDataSet := aValue;
+  FDataSet.DataSet := FClientDataSet;
 end;
 
 destructor TDAONFEntradaItem.Destroy;
 begin
-  FDMemTable.Free;
+  FClientDataSet.Free;
   FParamList.Free;
   inherited;
 end;
@@ -72,6 +88,16 @@ begin
     FDTPRODUCAO := FormatDateTime('dd.mm.yyyy', lData);
 end;
 
+function TDAONFEntradaItem.DtProducao: String;
+begin
+  Result := FDTPRODUCAO;
+end;
+
+function TDAONFEntradaItem.DtValidade: String;
+begin
+  Result := FDTVALIDADE;
+end;
+
 function TDAONFEntradaItem.DtValidade(aValue: string): iDAOInterface;
 var
   lData: TDateTime;
@@ -82,6 +108,28 @@ begin
     FDTVALIDADE := 'null'
   else
     FDTVALIDADE := FormatDateTime('dd.mm.yyyy', lData);
+end;
+
+function TDAONFEntradaItem.Get: iDAOInterface;
+const
+  SQL = 'select l.ID,l.lote,l.dt_producao,l.dt_validade '+
+        'from FABRICANTE_LOTE l '+
+        'where l.id_nf = %s and '+
+        'l.id_produto = %s';
+begin
+  Result := Self;
+  try
+    FClientDataSet.Data := DM.LerDataSet(Format(SQL,[FIDNOTA.ToString,FIDPRODUTO.ToString]));
+  except
+    on ex: exception do
+      raise Exception.Create('Erro ao Consultar Lote: ' + ex.Message);
+  end;
+end;
+
+function TDAONFEntradaItem.Id(aValue: Integer): iDAOInterface;
+begin
+  Result := Self;
+  FID := aValue;
 end;
 
 function TDAONFEntradaItem.IdNota(aValue: Integer): iDAOInterface;
@@ -104,9 +152,9 @@ begin
          'values ('+
          FIDNOTA.ToString+','+
          FIDPRODUTO.ToString+','+
-         QuotedStr(FLOTE)+','+
-         QuotedStr(StringReplace(FDTPRODUCAO,'/','.',[rfReplaceAll]))+','+
-         QuotedStr(StringReplace(FDTVALIDADE,'/','.',[rfReplaceAll]))+','+
+         IfThen(FLOTE <> 'null',QuotedStr(FLOTE),FLOTE)+','+
+         IfThen(FDTPRODUCAO <> 'null',QuotedStr(FDTPRODUCAO),FDTPRODUCAO)+','+
+         IfThen(FDTVALIDADE <> 'null',QuotedStr(FDTVALIDADE),FDTVALIDADE)+','+
          FloatToStr(FQTDE)+','+
          FloatToStr(FQTDE)+
          ')';
@@ -135,21 +183,47 @@ begin
   Result := Self.Create;
 end;
 
-function TDAONFEntradaItem.Post: iDAOInterface;
+function TDAONFEntradaItem.Insert: iDAOInterface;
 var
-  lValue: string;
+  SQL: string;
 begin
-  Result := Self;
-
-  if (FLOTE <> '') then
-  begin
-    //Existe registro
-    Inserir;
-    //Atualizar
+  SQL := 'insert into FABRICANTE_LOTE (ID_NF, ID_PRODUTO, LOTE, DT_PRODUCAO, DT_VALIDADE, QTDE, QTDE_DISPONIVEL) '+
+         'values ('+
+         FIDNOTA.ToString+','+
+         FIDPRODUTO.ToString+','+
+         IfThen(FLOTE <> 'null',QuotedStr(FLOTE),FLOTE)+','+
+         IfThen(FDTPRODUCAO <> 'null',QuotedStr(FDTPRODUCAO),FDTPRODUCAO)+','+
+         IfThen(FDTVALIDADE <> 'null',QuotedStr(FDTVALIDADE),FDTVALIDADE)+','+
+         FloatToStr(FQTDE)+','+
+         FloatToStr(FQTDE)+
+         ')';
+  try
+    DM.ExecutarSQL(DM.BancoDados,SQL);
+  except
+    raise Exception.Create('Não foi possivel inserir o lote do Fornecedor.'+sLineBreak+
+                           'Tente novamente.');
   end;
 end;
 
+function TDAONFEntradaItem.Update: iDAOInterface;
+var
+  SQL: string;
+begin
+  SQL := 'update FABRICANTE_LOTE '+
+         'set LOTE = '+QuotedStr(FLOTE)+','+
+         '    DT_PRODUCAO = '+IfThen(FDTPRODUCAO <> 'null',QuotedStr(FDTPRODUCAO),FDTPRODUCAO)+','+
+         '    DT_VALIDADE = '+IfThen(FDTVALIDADE <> 'null',QuotedStr(FDTVALIDADE),FDTVALIDADE)+
+//         '    QTDE = '+FQTDE.ToString+
+//         '    QTDE_DISPONIVEL = '+FQTDE.ToString+
+         ' where (ID = '+FID.ToString+')';
+  try
+    DM.ExecutarSQL(DM.BancoDados,SQL);
+  except
+    raise Exception.Create('Não foi possivel atualizar o lote do Fornecedor.'+sLineBreak+
+                           'Tente novamente.');
+  end;
 
+end;
 
 end.
 

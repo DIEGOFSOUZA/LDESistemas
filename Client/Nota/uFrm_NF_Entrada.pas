@@ -473,16 +473,11 @@ type
   public
     var
       Pagamento, Parcelamento, Temp: TClientDataSet;
-      property
-      vUnitario: Double read FvUnitario write setvUnitario;
-      property
-      Qtde: Double read FQtde write SetQtde;
-      property
-      SubTotal: Currency read FSubTotal write SetSubTotal;
-      property
-      SaldoAPagar: Currency read FSaldoAPagar write SetSaldoAPagar;
-      property
-      ExibirMens:Boolean read fExibirMens;
+    property vUnitario: Double read FvUnitario write setvUnitario;
+    property Qtde: Double read FQtde write SetQtde;
+    property SubTotal: Currency read FSubTotal write SetSubTotal;
+    property SaldoAPagar: Currency read FSaldoAPagar write SetSaldoAPagar;
+    property ExibirMens: Boolean read fExibirMens;
 
     procedure Novo(); override;
     procedure Gravar(); override;
@@ -500,8 +495,9 @@ implementation
 
 {$R *.dfm}
 
-uses UDM, UConsulta, u_Mensagem, UFuncoes, ACBrUtil,
-       uFrm_NFEnt_AltDupl, uFrm_Item, UFrm_Fornecedor;
+uses
+  UDM, UConsulta, u_Mensagem, UFuncoes, ACBrUtil, uFrm_NFEnt_AltDupl, uFrm_Item,
+  UFrm_Fornecedor;
 
 procedure TFrm_NF_Entrada.actAddFornecedorExecute(Sender: TObject);
 var

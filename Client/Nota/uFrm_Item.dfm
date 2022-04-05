@@ -1474,8 +1474,6 @@ inherited Frm_Item: TFrm_Item
       Caption = 'pnlLote'
       ShowCaption = False
       TabOrder = 1
-      ExplicitLeft = -318
-      ExplicitTop = 160
       object lblTitLote: TLabel
         Left = 0
         Top = 0
@@ -1598,5 +1596,10 @@ inherited Frm_Item: TFrm_Item
     DataSet = Frm_NF_Entrada.dsItem
     Left = 512
     Top = 176
+  end
+  object dsLote: TDataSource
+    OnDataChange = dsLoteDataChange
+    Left = 509
+    Top = 234
   end
 end

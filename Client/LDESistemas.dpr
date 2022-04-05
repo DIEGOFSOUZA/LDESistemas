@@ -125,7 +125,8 @@ uses
   ContasAReceber.Intefaces in 'Financeiro\ContasReceber\ContasAReceber.Intefaces.pas',
   ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas',
   LDESistemas.DAO.NFEntrada.Interfaces in 'Nota\LDESistemas.DAO.NFEntrada.Interfaces.pas',
-  LDESistemas.DAO.NFEntradaItem in 'Nota\LDESistemas.DAO.NFEntradaItem.pas';
+  LDESistemas.DAO.NFEntradaItem in 'Nota\LDESistemas.DAO.NFEntradaItem.pas',
+  LDESistemas.Client.Utils.RTTI in 'Utils\LDESistemas.Client.Utils.RTTI.pas';
 
 {$R *.res}
 
