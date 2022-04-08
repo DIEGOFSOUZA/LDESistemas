@@ -159,3 +159,50 @@ GRANT USAGE ON SEQUENCE GEN_PRODUTO TO R_SISTEMA;
 GRANT USAGE ON SEQUENCE GEN_RECEBER_PARCIAL TO R_SISTEMA;
 GRANT USAGE ON SEQUENCE GEN_UNIDADE TO R_SISTEMA;
 
+ALTER TABLE LOTE DROP ID_PEDIDO;
+
+ALTER TABLE LOTE DROP VALIDADE
+
+ALTER TABLE LOTE DROP ENTREGA;
+
+ALTER TABLE LOTE DROP ESTIMATIVA_PRONTO;
+
+ALTER TABLE LOTE
+    ADD DT_FIM_PRODUCAO DATE;
+
+alter table LOTE
+alter ID position 1;
+
+alter table LOTE
+alter LOTE position 2;
+
+alter table LOTE
+alter EMISSAO position 3;
+
+alter table LOTE
+alter DT_FIM_PRODUCAO position 4;
+
+alter table LOTE
+alter OBS position 5;
+
+alter table LOTE
+alter STATUS position 6;
+
+alter table LOTE
+alter GERA_MATPRIMA position 7;
+
+alter table LOTE
+alter USUARIO position 8;
+
+alter table LOTE
+alter LOTE_ACERTO position 9;
+
+alter table LOTE
+alter AUTORIZACAO position 10;
+
+ALTER TABLE LOTE_ITENS
+    ADD DT_VALIDADE DATE;
+
+ALTER TABLE LOTE_ITENS
+    ADD VL_CUSTO NUMERIC(10,2);
+
