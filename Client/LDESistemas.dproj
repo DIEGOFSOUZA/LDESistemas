@@ -513,6 +513,18 @@
         <DCCReference Include="Nota\LDESistemas.DAO.NFEntrada.Interfaces.pas"/>
         <DCCReference Include="Nota\LDESistemas.DAO.NFEntradaItem.pas"/>
         <DCCReference Include="Utils\LDESistemas.Client.Utils.RTTI.pas"/>
+        <DCCReference Include="Producao\View\LDESistemas.Producao.View.Producao.IncluirItem.pas">
+            <Form>FrmProducaoIncluirItem</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Producao\View\LDESistemas.Producao.View.Producao.Nova.pas">
+            <Form>FrmProducaoNova</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Producao\View\LDESistemas.Producao.View.Producao.Pesquisa.pas">
+            <Form>FrmProducaoPesquisa</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

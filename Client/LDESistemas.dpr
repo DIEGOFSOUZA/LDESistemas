@@ -126,7 +126,10 @@ uses
   ContasAReceber.Baixa in 'Financeiro\ContasReceber\ContasAReceber.Baixa.pas',
   LDESistemas.DAO.NFEntrada.Interfaces in 'Nota\LDESistemas.DAO.NFEntrada.Interfaces.pas',
   LDESistemas.DAO.NFEntradaItem in 'Nota\LDESistemas.DAO.NFEntradaItem.pas',
-  LDESistemas.Client.Utils.RTTI in 'Utils\LDESistemas.Client.Utils.RTTI.pas';
+  LDESistemas.Client.Utils.RTTI in 'Utils\LDESistemas.Client.Utils.RTTI.pas',
+  LDESistemas.Producao.View.Producao.IncluirItem in 'Producao\View\LDESistemas.Producao.View.Producao.IncluirItem.pas' {FrmProducaoIncluirItem},
+  LDESistemas.Producao.View.Producao.Nova in 'Producao\View\LDESistemas.Producao.View.Producao.Nova.pas' {FrmProducaoNova},
+  LDESistemas.Producao.View.Producao.Pesquisa in 'Producao\View\LDESistemas.Producao.View.Producao.Pesquisa.pas' {FrmProducaoPesquisa};
 
 {$R *.res}
 

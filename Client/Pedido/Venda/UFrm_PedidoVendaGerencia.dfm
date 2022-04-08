@@ -11,15 +11,13 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
     Width = 1092
     ExplicitWidth = 1092
     inherited lblTitulo: TLabel
-      Width = 1067
+      Width = 1057
       Caption = '         GERENCIAMENTO DE PEDIDOS'
       ExplicitWidth = 1067
     end
     inherited pnlBotaoSair: TPanel
-      Left = 1067
+      Left = 1062
       ExplicitLeft = 1067
-      ExplicitTop = 0
-      ExplicitHeight = 30
     end
   end
   object pnlFundo: TPanel [1]
@@ -46,7 +44,6 @@ inherited Frm_PedidoVendaGerencia: TFrm_PedidoVendaGerencia
         Height = 71
         Align = alLeft
         Color = clWhite
-        PageIndex = 2
         ParentColor = False
         TabOrder = 1
         object TPage

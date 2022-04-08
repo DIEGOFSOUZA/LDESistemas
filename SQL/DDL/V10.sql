@@ -161,7 +161,7 @@ GRANT USAGE ON SEQUENCE GEN_UNIDADE TO R_SISTEMA;
 
 ALTER TABLE LOTE DROP ID_PEDIDO;
 
-ALTER TABLE LOTE DROP VALIDADE
+ALTER TABLE LOTE DROP VALIDADE;
 
 ALTER TABLE LOTE DROP ENTREGA;
 
@@ -205,4 +205,592 @@ ALTER TABLE LOTE_ITENS
 
 ALTER TABLE LOTE_ITENS
     ADD VL_CUSTO NUMERIC(10,2);
+	
+/* Executar a parte*/
+ALTER TABLE LOTE_ITENS DROP CONSTRAINT FK_LOTE_ITENS_IDLOTE;
+
+ALTER TABLE LOTE_ITENS
+    ADD LOTE VARCHAR(50);
+
+update lote_itens i
+set i.lote = i.id_lote;
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure PRO_MOVIMENTOPRODUTO (
+    ID_PROD integer)
+returns (
+    ENTSAI char(1),
+    QTDE numeric(15,3),
+    QTDE_FECHADA numeric(15,3),
+    DTMOVTO date,
+    LOTE varchar(20),
+    TIPO_MOVIMENTO varchar(20),
+    USUARIO varchar(100),
+    ID_PRODUTO integer,
+    DESCRI varchar(100),
+    TIPO_PRODUTO varchar(20),
+    CODBARRA varchar(13),
+    ESTOQUE_MINIMO numeric(15,3),
+    SIGLA_UM varchar(10))
+as
+begin
+  select A.NOME, A.CODIGO,
+         case upper(A.TIPO_PRODUTO)
+           when 'PA' then 'Produto Acabado'
+           when 'MP' then 'Materia Prima'
+           else 'Ambos'
+         end TIPO_PRODUTO,
+         coalesce(A.EAN_CODBARRA, 0), coalesce(A.QTDE_MINIMA, 0), coalesce(C.SIGLA, B.SIGLA) SIGLA
+  from PRODUTO A
+  left outer join UNIDADE B on (B.CODIGO = A.COD_UNIDADE)
+  left join UNIDADE C on (C.CODIGO = A.CONV_UNIDADE)
+  where (A.CODIGO = :ID_PROD)
+  into :DESCRI, :ID_PRODUTO, :TIPO_PRODUTO, :CODBARRA, :ESTOQUE_MINIMO, :SIGLA_UM;
+
+  /**************ENTRADA - LOTE ****************/
+  for select iif(B.ENTSAI = 'ENTRADA', 'E', 'S') ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, A.LOTE, A.USUARIO,
+             'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_ITENS B on (B.lote = A.LOTE)
+      where (B.CODPRO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+  /****************SAIDA - LOTE MAT. PRIMA *********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, A.LOTE, A.USUARIO, 'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_MATPRIMA B on (B.ID_LOTE = A.LOTE)
+      where A.GERA_MATPRIMA = 'S' and
+            (B.ID_MATPRIMA = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - VENDAS*********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_BAIXA, A.EMISSAO, A.TIPO || '-' || A.ID, C.USU_NOME, 'VENDA' TIPO_MOVIMENTO
+      from PDV_MASTER A
+      left outer join PDV_ITENS B on (B.TIPO = A.TIPO and
+            B.ID = A.ID)
+      left outer join USUARIO C on (C.ID_VENDEDOR = A.ID_VENDEDOR)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - PEDIDO_VENDA*********************************/
+for select 'S' ENTSAI, I.QTDE_A_BAIXAR, I.QTDE_BAIXADA, P.EMISSAO, lpad(P.ID, 5, '0'),
+           S.USUARIO || '|' || lpad(extract(day from S.DATA_HORA), 2, '0') || '/' || lpad(extract(month from S.DATA_HORA), 2, '0') || '/' || extract(year from S.DATA_HORA) || '|' || extract(hour from S.DATA_HORA) || ':' || extract(minute from S.DATA_HORA) USUARIO,
+           'PEDIDO_VENDA' TIPO_MOVIMENTO
+    from PEDIDO_VENDA P
+    left join PEDIDO_VENDA_ITEM I on (I.ID_PEDIDO = P.ID)
+    left join PEDIDO_VENDA_STATUS S on (S.ID_PEDIDO = P.ID and
+          S.STATUS = P.STATUS)
+    where (I.ID_PRODUTO = :ID_PRODUTO)
+    into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+do
+begin
+  suspend;
+end  
+  /****************ENTRADA - NF*********************************/
+  for select 'E' ENTSAI, B.QTDE, B.QTDE, A.EMISSAO, 'NF:' || A.N_NF, C.USU_NOME, 'ENT-NF'
+      from NOTA_ENTRADA A
+      left outer join NOTA_ENTRADA_ITENS B on (B.ID_NOTAENTRADA = A.ID)
+      left outer join USUARIO C on (C.USU_ID = A.ID_USUARIO)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - DEVOLUCAO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'DEV/TROCA' TIPO_MOVIMENTO
+      from PDV_DEVOLUCAO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - CANCELAMENTO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'CANCELADA' TIPO_MOVIMENTO
+      from PDV_CANCELAMENTO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+end^
+
+SET TERM ; ^
+
+ALTER TABLE LOTE_ITENS DROP ID_LOTE;
+
+ALTER TABLE LOTE_ITENS
+    ADD ID_LOTE INTEGER;
+
+update lote_itens i
+set i.id_lote = (select first 1 l.id from lote l where l.lote = i.lote);
+
+ALTER TABLE LOTE_ITENS
+    ALTER ID_LOTE SET NOT NULL;
+
+ALTER TABLE LOTE_ITENS
+ADD CONSTRAINT FK_LOTE_ITENS_1
+FOREIGN KEY (ID_LOTE)
+REFERENCES LOTE(ID)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+alter table LOTE_ITENS
+alter ID position 1;
+
+alter table LOTE_ITENS
+alter ID_LOTE position 2;
+
+alter table LOTE_ITENS
+alter LOTE position 3;
+
+alter table LOTE_ITENS
+alter CODPRO position 4;
+
+alter table LOTE_ITENS
+alter QTDE position 5;
+
+alter table LOTE_ITENS
+alter QTDE_FECHADA position 6;
+
+alter table LOTE_ITENS
+alter COD_UM position 7;
+
+alter table LOTE_ITENS
+alter ENTSAI position 8;
+
+alter table LOTE_ITENS
+alter DESCRI_ITEM position 9;
+
+alter table LOTE_ITENS
+alter DT_VALIDADE position 10;
+
+alter table LOTE_ITENS
+alter VL_CUSTO position 11;
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure PRO_MOVIMENTOPRODUTO (
+    ID_PROD integer)
+returns (
+    ENTSAI char(1),
+    QTDE numeric(15,3),
+    QTDE_FECHADA numeric(15,3),
+    DTMOVTO date,
+    LOTE varchar(20),
+    TIPO_MOVIMENTO varchar(20),
+    USUARIO varchar(100),
+    ID_PRODUTO integer,
+    DESCRI varchar(100),
+    TIPO_PRODUTO varchar(20),
+    CODBARRA varchar(13),
+    ESTOQUE_MINIMO numeric(15,3),
+    SIGLA_UM varchar(10))
+as
+begin
+  select A.NOME, A.CODIGO,
+         case upper(A.TIPO_PRODUTO)
+           when 'PA' then 'Produto Acabado'
+           when 'MP' then 'Materia Prima'
+           else 'Ambos'
+         end TIPO_PRODUTO,
+         coalesce(A.EAN_CODBARRA, 0), coalesce(A.QTDE_MINIMA, 0), coalesce(C.SIGLA, B.SIGLA) SIGLA
+  from PRODUTO A
+  left outer join UNIDADE B on (B.CODIGO = A.COD_UNIDADE)
+  left join UNIDADE C on (C.CODIGO = A.CONV_UNIDADE)
+  where (A.CODIGO = :ID_PROD)
+  into :DESCRI, :ID_PRODUTO, :TIPO_PRODUTO, :CODBARRA, :ESTOQUE_MINIMO, :SIGLA_UM;
+
+  /**************ENTRADA - LOTE ****************/
+  for select iif(B.ENTSAI = 'ENTRADA', 'E', 'S') ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, A.LOTE, A.USUARIO,
+             'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_ITENS B on (B.ID_LOTE = A.ID)
+      where (B.CODPRO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+  /****************SAIDA - LOTE MAT. PRIMA *********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, A.LOTE, A.USUARIO, 'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_MATPRIMA B on (B.ID_LOTE = A.LOTE)
+      where A.GERA_MATPRIMA = 'S' and
+            (B.ID_MATPRIMA = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - VENDAS*********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_BAIXA, A.EMISSAO, A.TIPO || '-' || A.ID, C.USU_NOME, 'VENDA' TIPO_MOVIMENTO
+      from PDV_MASTER A
+      left outer join PDV_ITENS B on (B.TIPO = A.TIPO and
+            B.ID = A.ID)
+      left outer join USUARIO C on (C.ID_VENDEDOR = A.ID_VENDEDOR)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - PEDIDO_VENDA*********************************/
+for select 'S' ENTSAI, I.QTDE_A_BAIXAR, I.QTDE_BAIXADA, P.EMISSAO, lpad(P.ID, 5, '0'),
+           S.USUARIO || '|' || lpad(extract(day from S.DATA_HORA), 2, '0') || '/' || lpad(extract(month from S.DATA_HORA), 2, '0') || '/' || extract(year from S.DATA_HORA) || '|' || extract(hour from S.DATA_HORA) || ':' || extract(minute from S.DATA_HORA) USUARIO,
+           'PEDIDO_VENDA' TIPO_MOVIMENTO
+    from PEDIDO_VENDA P
+    left join PEDIDO_VENDA_ITEM I on (I.ID_PEDIDO = P.ID)
+    left join PEDIDO_VENDA_STATUS S on (S.ID_PEDIDO = P.ID and
+          S.STATUS = P.STATUS)
+    where (I.ID_PRODUTO = :ID_PRODUTO)
+    into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+do
+begin
+  suspend;
+end  
+  /****************ENTRADA - NF*********************************/
+  for select 'E' ENTSAI, B.QTDE, B.QTDE, A.EMISSAO, 'NF:' || A.N_NF, C.USU_NOME, 'ENT-NF'
+      from NOTA_ENTRADA A
+      left outer join NOTA_ENTRADA_ITENS B on (B.ID_NOTAENTRADA = A.ID)
+      left outer join USUARIO C on (C.USU_ID = A.ID_USUARIO)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - DEVOLUCAO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'DEV/TROCA' TIPO_MOVIMENTO
+      from PDV_DEVOLUCAO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - CANCELAMENTO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'CANCELADA' TIPO_MOVIMENTO
+      from PDV_CANCELAMENTO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+end^
+
+SET TERM ; ^
+
+ALTER TABLE LOTE_MATPRIMA
+    ADD ID_LOTE_ITEM INTEGER;
+
+update lote_matprima m
+set m.id_lote_item = (select first 1 i.id from lote_itens i where i.lote = m.id_lote);
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure PRO_MOVIMENTOPRODUTO (
+    ID_PROD integer)
+returns (
+    ENTSAI char(1),
+    QTDE numeric(15,3),
+    QTDE_FECHADA numeric(15,3),
+    DTMOVTO date,
+    LOTE varchar(20),
+    TIPO_MOVIMENTO varchar(20),
+    USUARIO varchar(100),
+    ID_PRODUTO integer,
+    DESCRI varchar(100),
+    TIPO_PRODUTO varchar(20),
+    CODBARRA varchar(13),
+    ESTOQUE_MINIMO numeric(15,3),
+    SIGLA_UM varchar(10))
+as
+begin
+  select A.NOME, A.CODIGO,
+         case upper(A.TIPO_PRODUTO)
+           when 'PA' then 'Produto Acabado'
+           when 'MP' then 'Materia Prima'
+           else 'Ambos'
+         end TIPO_PRODUTO,
+         coalesce(A.EAN_CODBARRA, 0), coalesce(A.QTDE_MINIMA, 0), coalesce(C.SIGLA, B.SIGLA) SIGLA
+  from PRODUTO A
+  left outer join UNIDADE B on (B.CODIGO = A.COD_UNIDADE)
+  left join UNIDADE C on (C.CODIGO = A.CONV_UNIDADE)
+  where (A.CODIGO = :ID_PROD)
+  into :DESCRI, :ID_PRODUTO, :TIPO_PRODUTO, :CODBARRA, :ESTOQUE_MINIMO, :SIGLA_UM;
+
+  /**************ENTRADA - LOTE ****************/
+  for select iif(B.ENTSAI = 'ENTRADA', 'E', 'S') ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, A.LOTE, A.USUARIO,
+             'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_ITENS B on (B.ID_LOTE = A.ID)
+      where (B.CODPRO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+  /****************SAIDA - LOTE MAT. PRIMA *********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, i.lote, A.USUARIO, 'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left join lote_itens i on (i.id_lote = A.id)
+      left join LOTE_MATPRIMA B on (B.id_lote_item = i.id)
+      where A.GERA_MATPRIMA = 'S' and
+            (B.ID_MATPRIMA = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - VENDAS*********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_BAIXA, A.EMISSAO, A.TIPO || '-' || A.ID, C.USU_NOME, 'VENDA' TIPO_MOVIMENTO
+      from PDV_MASTER A
+      left outer join PDV_ITENS B on (B.TIPO = A.TIPO and
+            B.ID = A.ID)
+      left outer join USUARIO C on (C.ID_VENDEDOR = A.ID_VENDEDOR)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - PEDIDO_VENDA*********************************/
+for select 'S' ENTSAI, I.QTDE_A_BAIXAR, I.QTDE_BAIXADA, P.EMISSAO, lpad(P.ID, 5, '0'),
+           S.USUARIO || '|' || lpad(extract(day from S.DATA_HORA), 2, '0') || '/' || lpad(extract(month from S.DATA_HORA), 2, '0') || '/' || extract(year from S.DATA_HORA) || '|' || extract(hour from S.DATA_HORA) || ':' || extract(minute from S.DATA_HORA) USUARIO,
+           'PEDIDO_VENDA' TIPO_MOVIMENTO
+    from PEDIDO_VENDA P
+    left join PEDIDO_VENDA_ITEM I on (I.ID_PEDIDO = P.ID)
+    left join PEDIDO_VENDA_STATUS S on (S.ID_PEDIDO = P.ID and
+          S.STATUS = P.STATUS)
+    where (I.ID_PRODUTO = :ID_PRODUTO)
+    into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+do
+begin
+  suspend;
+end  
+  /****************ENTRADA - NF*********************************/
+  for select 'E' ENTSAI, B.QTDE, B.QTDE, A.EMISSAO, 'NF:' || A.N_NF, C.USU_NOME, 'ENT-NF'
+      from NOTA_ENTRADA A
+      left outer join NOTA_ENTRADA_ITENS B on (B.ID_NOTAENTRADA = A.ID)
+      left outer join USUARIO C on (C.USU_ID = A.ID_USUARIO)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - DEVOLUCAO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'DEV/TROCA' TIPO_MOVIMENTO
+      from PDV_DEVOLUCAO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - CANCELAMENTO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'CANCELADA' TIPO_MOVIMENTO
+      from PDV_CANCELAMENTO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+end^
+
+SET TERM ; ^
+
+ALTER TABLE LOTE_MATPRIMA DROP ID_LOTE;
+
+alter table LOTE_MATPRIMA
+alter ID position 1;
+
+alter table LOTE_MATPRIMA
+alter ID_LOTE_ITEM position 2;
+
+alter table LOTE_MATPRIMA
+alter ID_MATPRIMA position 3;
+
+alter table LOTE_MATPRIMA
+alter QTDE position 4;
+
+alter table LOTE_MATPRIMA
+alter QTDE_FECHADA position 5;
+
+SET TERM ^ ;
+
+CREATE OR ALTER procedure PRO_MOVIMENTOPRODUTO (
+    ID_PROD integer)
+returns (
+    ENTSAI char(1),
+    QTDE numeric(15,3),
+    QTDE_FECHADA numeric(15,3),
+    DTMOVTO date,
+    LOTE varchar(20),
+    TIPO_MOVIMENTO varchar(20),
+    USUARIO varchar(100),
+    ID_PRODUTO integer,
+    DESCRI varchar(100),
+    TIPO_PRODUTO varchar(20),
+    CODBARRA varchar(13),
+    ESTOQUE_MINIMO numeric(15,3),
+    SIGLA_UM varchar(10))
+as
+begin
+  select A.NOME, A.CODIGO,
+         case upper(A.TIPO_PRODUTO)
+           when 'PA' then 'Produto Acabado'
+           when 'MP' then 'Materia Prima'
+           else 'Ambos'
+         end TIPO_PRODUTO,
+         coalesce(A.EAN_CODBARRA, 0), coalesce(A.QTDE_MINIMA, 0), coalesce(C.SIGLA, B.SIGLA) SIGLA
+  from PRODUTO A
+  left outer join UNIDADE B on (B.CODIGO = A.COD_UNIDADE)
+  left join UNIDADE C on (C.CODIGO = A.CONV_UNIDADE)
+  where (A.CODIGO = :ID_PROD)
+  into :DESCRI, :ID_PRODUTO, :TIPO_PRODUTO, :CODBARRA, :ESTOQUE_MINIMO, :SIGLA_UM;
+
+  /**************ENTRADA - LOTE ****************/
+  for select iif(B.ENTSAI = 'ENTRADA', 'E', 'S') ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, B.LOTE, A.USUARIO,
+             'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left outer join LOTE_ITENS B on (B.ID_LOTE = A.ID)
+      where (B.CODPRO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+  /****************SAIDA - LOTE MAT. PRIMA *********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_FECHADA, A.EMISSAO, i.lote, A.USUARIO, 'LOTE' TIPO_MOVIMENTO
+      from LOTE A
+      left join lote_itens i on (i.id_lote = A.id)
+      left join LOTE_MATPRIMA B on (B.id_lote_item = i.id)
+      where A.GERA_MATPRIMA = 'S' and
+            (B.ID_MATPRIMA = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - VENDAS*********************************/
+  for select 'S' ENTSAI, B.QTDE, B.QTDE_BAIXA, A.EMISSAO, A.TIPO || '-' || A.ID, C.USU_NOME, 'VENDA' TIPO_MOVIMENTO
+      from PDV_MASTER A
+      left outer join PDV_ITENS B on (B.TIPO = A.TIPO and
+            B.ID = A.ID)
+      left outer join USUARIO C on (C.ID_VENDEDOR = A.ID_VENDEDOR)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************SAIDA - PEDIDO_VENDA*********************************/
+for select 'S' ENTSAI, I.QTDE_A_BAIXAR, I.QTDE_BAIXADA, P.EMISSAO, lpad(P.ID, 5, '0'),
+           S.USUARIO || '|' || lpad(extract(day from S.DATA_HORA), 2, '0') || '/' || lpad(extract(month from S.DATA_HORA), 2, '0') || '/' || extract(year from S.DATA_HORA) || '|' || extract(hour from S.DATA_HORA) || ':' || extract(minute from S.DATA_HORA) USUARIO,
+           'PEDIDO_VENDA' TIPO_MOVIMENTO
+    from PEDIDO_VENDA P
+    left join PEDIDO_VENDA_ITEM I on (I.ID_PEDIDO = P.ID)
+    left join PEDIDO_VENDA_STATUS S on (S.ID_PEDIDO = P.ID and
+          S.STATUS = P.STATUS)
+    where (I.ID_PRODUTO = :ID_PRODUTO)
+    into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+do
+begin
+  suspend;
+end  
+  /****************ENTRADA - NF*********************************/
+  for select 'E' ENTSAI, B.QTDE, B.QTDE, A.EMISSAO, 'NF:' || A.N_NF, C.USU_NOME, 'ENT-NF'
+      from NOTA_ENTRADA A
+      left outer join NOTA_ENTRADA_ITENS B on (B.ID_NOTAENTRADA = A.ID)
+      left outer join USUARIO C on (C.USU_ID = A.ID_USUARIO)
+      where (B.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - DEVOLUCAO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'DEV/TROCA' TIPO_MOVIMENTO
+      from PDV_DEVOLUCAO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+  /****************ENTRADA - CANCELAMENTO PDV*********************************/
+  for select 'E' ENTSAI, A.QTDE, A.QTDE_BAIXA, A.data, A.TIPO || '-' || A.ID_VENDA, A.USUARIO,
+             'CANCELADA' TIPO_MOVIMENTO
+      from PDV_CANCELAMENTO A
+      where (A.ID_PRODUTO = :ID_PROD)
+      into :ENTSAI, :QTDE, :QTDE_FECHADA, :DTMOVTO, :LOTE, :USUARIO, :TIPO_MOVIMENTO
+  do
+  begin
+    suspend;
+  end
+
+end^
+
+SET TERM ; ^
+
+ALTER TABLE LOTE DROP LOTE;
+
+ALTER TABLE LOTE_MATPRIMA
+    ALTER ID_LOTE_ITEM SET NOT NULL;
+
+ALTER TABLE LOTE_MATPRIMA
+ADD CONSTRAINT FK_LOTE_MATPRIMA_1
+FOREIGN KEY (ID_LOTE_ITEM)
+REFERENCES LOTE_ITENS(ID)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+CREATE INDEX LOTE_ITENS_IDX1
+ON LOTE_ITENS (LOTE);
+
+	
+
+	
 
