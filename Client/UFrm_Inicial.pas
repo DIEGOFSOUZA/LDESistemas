@@ -178,7 +178,7 @@ uses
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
   UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta,
   uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou,
-  UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico;
+  UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico, LDESistemas.Producao.View.Producao.Pesquisa;
 
 function Saudacao: string;
 begin
@@ -313,7 +313,8 @@ end;
 
 procedure TFrm_Inicial.MenuProducao_GeraOrdemClick(Sender: TObject);
 begin
-  TFrm_OrdemProducao.CreateChild(self);
+  //TFrm_OrdemProducao.CreateChild(self);
+  TFrmProducaoPesquisa.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.MenuVenda_PDV_FechaCaixaClick(Sender: TObject);

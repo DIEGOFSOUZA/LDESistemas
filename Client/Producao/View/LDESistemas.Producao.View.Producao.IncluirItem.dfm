@@ -1,28 +1,32 @@
 inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
   Caption = 'FrmProducaoIncluirItem'
   ClientHeight = 540
-  ClientWidth = 1054
-  ExplicitWidth = 1054
+  ClientWidth = 1103
+  Visible = False
+  OnShow = FormShow
+  ExplicitWidth = 1103
   ExplicitHeight = 540
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
-    Width = 1054
+    Width = 1103
+    ExplicitWidth = 1054
     inherited lblTitulo: TLabel
-      Width = 1019
+      Width = 1068
       Caption = 'ORDEM DE PRODU'#199#195'O - ITEM'
       ExplicitLeft = -6
       ExplicitTop = -6
       ExplicitWidth = 725
     end
     inherited pnlBotaoSair: TPanel
-      Left = 1024
+      Left = 1073
+      ExplicitLeft = 1024
     end
   end
   object pnlFundo: TPanel [1]
     Left = 0
     Top = 30
-    Width = 1054
+    Width = 1103
     Height = 510
     Align = alClient
     BevelOuter = bvNone
@@ -35,10 +39,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
     ParentBackground = False
     ParentFont = False
     TabOrder = 1
-    ExplicitLeft = 96
-    ExplicitTop = 192
-    ExplicitWidth = 185
-    ExplicitHeight = 41
+    ExplicitWidth = 1054
     object pnlLeft: TPanel
       Left = 0
       Top = 0
@@ -143,25 +144,9 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Campo.Font.Style = []
         Campo.ParentFont = False
         Campo.TabOrder = 0
+        Campo.OnChange = edpesProdutoedtCampoChange
         TabOrder = 0
         TabStop = True
-      end
-      object seQude: TSpinEdit
-        Left = 501
-        Top = 38
-        Width = 80
-        Height = 27
-        Color = 14803681
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Segoe UI Semibold'
-        Font.Style = [fsBold]
-        MaxValue = 0
-        MinValue = 1
-        ParentFont = False
-        TabOrder = 1
-        Value = 1
       end
       object edtValidade: TEdit
         Left = 13
@@ -174,15 +159,18 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Font.Height = -13
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
+        NumbersOnly = True
         ParentFont = False
         TabOrder = 2
         TextHint = 'dd/mm/aaaa'
+        OnKeyPress = edtValidadeKeyPress
       end
       object edtLote: TEdit
         Left = 149
         Top = 102
         Width = 432
         Height = 25
+        CharCase = ecUpperCase
         Color = 14803681
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -191,7 +179,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 3
-        TextHint = 'dd/mm/aaaa'
       end
       object pnlEstoque: TPanel
         Left = 13
@@ -265,7 +252,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = []
           ParentFont = False
           Layout = tlCenter
-          ExplicitLeft = 0
           ExplicitHeight = 25
         end
         object lblCusto: TLabel
@@ -283,25 +269,42 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
-          ExplicitLeft = 502
+          ExplicitLeft = 487
           ExplicitWidth = 66
           ExplicitHeight = 25
         end
+      end
+      object edtQtde: TEdit
+        Left = 501
+        Top = 38
+        Width = 80
+        Height = 25
+        Alignment = taCenter
+        Color = 14803681
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        NumbersOnly = True
+        ParentFont = False
+        TabOrder = 1
+        OnKeyPress = edtQtdeKeyPress
       end
     end
     object pnlRight: TPanel
       Left = 587
       Top = 0
-      Width = 467
+      Width = 516
       Height = 510
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 6
+      ExplicitWidth = 467
       object pnlBotoes: TPanel
         Left = 0
         Top = 460
-        Width = 467
+        Width = 516
         Height = 50
         Align = alBottom
         BevelOuter = bvNone
@@ -311,7 +314,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 2
-        ExplicitWidth = 375
+        ExplicitWidth = 467
         object pnlCancelar: TPanel
           Left = 5
           Top = 5
@@ -322,9 +325,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Color = 10114881
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitHeight = 41
           object btnCancelar: TSpeedButton
             Left = 0
             Top = 0
@@ -340,6 +340,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
             Font.Name = 'Segoe UI Semibold'
             Font.Style = [fsBold]
             ParentFont = False
+            OnClick = btnCancelarClick
             ExplicitLeft = 80
             ExplicitTop = 16
             ExplicitWidth = 23
@@ -349,21 +350,18 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         object pnlIncluir: TPanel
           Left = 190
           Top = 5
-          Width = 272
+          Width = 321
           Height = 40
           Align = alClient
           BevelOuter = bvNone
           Color = 7024384
           ParentBackground = False
           TabOrder = 1
-          ExplicitLeft = 8
-          ExplicitTop = 0
-          ExplicitWidth = 129
-          ExplicitHeight = 41
+          ExplicitWidth = 272
           object btnIncluir: TSpeedButton
             Left = 0
             Top = 0
-            Width = 272
+            Width = 321
             Height = 40
             Cursor = crHandPoint
             Align = alClient
@@ -375,6 +373,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
             Font.Name = 'Segoe UI Semibold'
             Font.Style = [fsBold]
             ParentFont = False
+            OnClick = btnIncluirClick
             ExplicitLeft = 80
             ExplicitTop = 16
             ExplicitWidth = 23
@@ -385,17 +384,18 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       object pnlTitInsumo: TPanel
         Left = 0
         Top = 0
-        Width = 467
+        Width = 516
         Height = 60
         Align = alTop
         BevelOuter = bvNone
         Caption = 'pnlTitulo'
         ShowCaption = False
         TabOrder = 0
+        ExplicitWidth = 467
         object lblTitInsumo: TLabel
           Left = 0
           Top = 0
-          Width = 467
+          Width = 516
           Height = 60
           Align = alClient
           Alignment = taCenter
@@ -421,19 +421,16 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       object pnlGrid: TPanel
         Left = 0
         Top = 60
-        Width = 467
+        Width = 516
         Height = 400
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 96
-        ExplicitTop = 120
-        ExplicitWidth = 185
-        ExplicitHeight = 41
+        ExplicitWidth = 467
         object dbgrdPedidos: TDBGrid
           Left = 0
           Top = 0
-          Width = 467
+          Width = 516
           Height = 400
           Align = alClient
           DataSource = dsInsumo
@@ -452,6 +449,27 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           TitleFont.Height = -11
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'INSUMO'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'QTDE'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'QTDE_ESTOQUE'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'UNIDADE'
+              Visible = True
+            end>
         end
       end
     end
@@ -461,7 +479,62 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
     Top = 304
   end
   object dsInsumo: TDataSource
-    Left = 832
-    Top = 216
+    DataSet = cdsInsumo
+    Left = 936
+    Top = 352
+  end
+  object cdsInsumo: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID_INSUMO'
+        DataType = ftInteger
+      end
+      item
+        Name = 'INSUMO'
+        DataType = ftString
+        Size = 100
+      end
+      item
+        Name = 'QTDE'
+        DataType = ftFloat
+      end
+      item
+        Name = 'QTDE_ESTOQUE'
+        DataType = ftFloat
+      end
+      item
+        Name = 'UNIDADE'
+        DataType = ftString
+        Size = 10
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 936
+    Top = 288
+    object cdsInsumoID_INSUMO: TIntegerField
+      FieldName = 'ID_INSUMO'
+    end
+    object cdsInsumoINSUMO: TStringField
+      DisplayWidth = 35
+      FieldName = 'INSUMO'
+      Size = 100
+    end
+    object cdsInsumoQTDE: TFloatField
+      DisplayLabel = 'QUANTIDADE'
+      FieldName = 'QTDE'
+    end
+    object cdsInsumoQTDE_ESTOQUE: TFloatField
+      DisplayLabel = 'ESTOQUE ATUAL'
+      FieldName = 'QTDE_ESTOQUE'
+    end
+    object cdsInsumoUNIDADE: TStringField
+      Alignment = taCenter
+      DisplayLabel = 'UND'
+      DisplayWidth = 8
+      FieldName = 'UNIDADE'
+      Size = 10
+    end
   end
 end

@@ -2,19 +2,22 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
   Caption = 'FrmProducaoPesquisa'
   ClientHeight = 588
   ClientWidth = 1056
+  OnCreate = FormCreate
   ExplicitWidth = 1056
   ExplicitHeight = 588
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 1056
+    ExplicitWidth = 1056
     inherited lblTitulo: TLabel
       Width = 1021
       Caption = 'ORDEM DE PRODU'#199#195'O - CONSULTA'
+      ExplicitWidth = 1021
     end
     inherited pnlBotaoSair: TPanel
       Left = 1026
-      ExplicitLeft = 433
+      ExplicitLeft = 1026
     end
   end
   object pnlFundo: TPanel [1]
@@ -27,10 +30,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
     Color = clWhite
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 587
-    ExplicitHeight = 510
     object pnlBotoes: TPanel
       Left = 0
       Top = 508
@@ -45,8 +44,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
       Padding.Bottom = 5
       ParentBackground = False
       TabOrder = 2
-      ExplicitTop = 447
-      ExplicitWidth = 1000
       object pnlIncluir: TPanel
         Left = 816
         Top = 5
@@ -57,7 +54,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
         Color = 7024384
         ParentBackground = False
         TabOrder = 0
-        ExplicitLeft = 760
         object btnIncluir: TSpeedButton
           Left = 0
           Top = 0
@@ -73,6 +69,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
+          OnClick = btnIncluirClick
           ExplicitLeft = 80
           ExplicitTop = 16
           ExplicitWidth = 23
@@ -90,9 +87,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
       Padding.Left = 5
       Padding.Right = 5
       TabOrder = 1
-      ExplicitTop = 146
-      ExplicitWidth = 1000
-      ExplicitHeight = 301
       object pnlGrid: TPanel
         Left = 5
         Top = 0
@@ -102,8 +96,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
         BevelOuter = bvNone
         Color = 14803681
         TabOrder = 0
-        ExplicitWidth = 990
-        ExplicitHeight = 211
         object dbgrdPedidos: TDBGrid
           Left = 0
           Top = 0

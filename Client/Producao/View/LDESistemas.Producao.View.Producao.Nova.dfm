@@ -2,18 +2,24 @@ inherited FrmProducaoNova: TFrmProducaoNova
   Caption = 'FrmProducaoNova'
   ClientHeight = 527
   ClientWidth = 1000
+  Visible = False
+  OnCreate = FormCreate
+  OnShow = FormShow
   ExplicitWidth = 1000
   ExplicitHeight = 527
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 1000
+    ExplicitWidth = 1000
     inherited lblTitulo: TLabel
       Width = 965
       Caption = 'ORDEM DE PRODU'#199#195'O - NOVA'
+      ExplicitWidth = 965
     end
     inherited pnlBotaoSair: TPanel
       Left = 970
+      ExplicitLeft = 970
     end
   end
   object pnlFundo: TPanel [1]
@@ -26,10 +32,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
     Color = clWhite
     ParentBackground = False
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitTop = 8
-    ExplicitWidth = 587
-    ExplicitHeight = 510
     object pnlBotoes: TPanel
       Left = 0
       Top = 447
@@ -44,8 +46,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
       Padding.Bottom = 5
       ParentBackground = False
       TabOrder = 2
-      ExplicitTop = 460
-      ExplicitWidth = 375
       object pnlIncluir: TPanel
         Left = 760
         Top = 5
@@ -88,8 +88,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
       Padding.Left = 5
       Padding.Right = 5
       TabOrder = 1
-      ExplicitTop = 152
-      ExplicitHeight = 295
       object pnlIncRodapeIncProduto: TPanel
         Left = 5
         Top = 211
@@ -100,7 +98,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Color = 14803681
         Padding.Top = 5
         TabOrder = 1
-        ExplicitTop = 205
         object pnlIncProduto: TPanel
           Left = 800
           Top = 5
@@ -111,8 +108,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
           Color = 4195840
           ParentBackground = False
           TabOrder = 0
-          ExplicitLeft = 795
-          ExplicitHeight = 40
           object btnIncProduto: TSpeedButton
             Left = 0
             Top = 0
@@ -128,10 +123,8 @@ inherited FrmProducaoNova: TFrmProducaoNova
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitLeft = 80
-            ExplicitTop = 16
-            ExplicitWidth = 23
-            ExplicitHeight = 22
+            OnClick = btnIncProdutoClick
+            ExplicitTop = -6
           end
         end
       end
@@ -146,7 +139,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Padding.Top = 5
         Padding.Bottom = 5
         TabOrder = 2
-        ExplicitTop = 244
         object lblCustoTotal: TLabel
           Left = 800
           Top = 5
@@ -196,8 +188,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
         BevelOuter = bvNone
         Color = 14803681
         TabOrder = 0
-        ExplicitTop = 239
-        ExplicitHeight = 50
         object dbgrdPedidos: TDBGrid
           Left = 0
           Top = 0
@@ -282,7 +272,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Font.Style = []
         ParentFont = False
       end
-      object edtValidade: TEdit
+      object edtInicio: TEdit
         Left = 202
         Top = 43
         Width = 180
@@ -293,11 +283,13 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Font.Height = -13
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
+        NumbersOnly = True
         ParentFont = False
         TabOrder = 0
         TextHint = 'dd/mm/aaaa'
+        OnKeyPress = edtInicioKeyPress
       end
-      object edtLote: TEdit
+      object edtFimProducao: TEdit
         Left = 390
         Top = 43
         Width = 180
@@ -308,15 +300,18 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Font.Height = -13
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
+        NumbersOnly = True
         ParentFont = False
         TabOrder = 1
         TextHint = 'dd/mm/aaaa'
+        OnKeyPress = edtFimProducaoKeyPress
       end
-      object Edit1: TEdit
+      object edtResponsavel: TEdit
         Left = 578
         Top = 43
         Width = 220
         Height = 25
+        TabStop = False
         Color = 14803681
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -324,10 +319,10 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
+        ReadOnly = True
         TabOrder = 2
-        TextHint = 'dd/mm/aaaa'
       end
-      object Edit2: TEdit
+      object edtObservacao: TEdit
         Left = 202
         Top = 99
         Width = 596
@@ -340,7 +335,6 @@ inherited FrmProducaoNova: TFrmProducaoNova
         Font.Style = [fsBold]
         ParentFont = False
         TabOrder = 3
-        TextHint = 'dd/mm/aaaa'
       end
     end
   end

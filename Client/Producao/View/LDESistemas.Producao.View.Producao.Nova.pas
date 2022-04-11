@@ -26,16 +26,23 @@ type
     pnlTop: TPanel;
     Label2: TLabel;
     Label3: TLabel;
-    edtValidade: TEdit;
-    edtLote: TEdit;
+    edtInicio: TEdit;
+    edtFimProducao: TEdit;
     Label1: TLabel;
-    Edit1: TEdit;
+    edtResponsavel: TEdit;
     Label4: TLabel;
-    Edit2: TEdit;
+    edtObservacao: TEdit;
+    procedure edtInicioKeyPress(Sender: TObject; var Key: Char);
+    procedure btnIncProdutoClick(Sender: TObject);
+    procedure edtFimProducaoKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
-    { Private declarations }
+    FCustoTotal: Currency;
+    procedure Iniciar();
+    procedure SetCustoTotal(const Value: Currency);
   public
-    { Public declarations }
+    property CustoTotal : Currency read FCustoTotal write SetCustoTotal;
   end;
 
 var
@@ -43,6 +50,69 @@ var
 
 implementation
 
+uses
+  UDM, LDESistemas.Producao.View.Producao.IncluirItem, uFormat;
+
 {$R *.dfm}
+
+{ TFrmProducaoNova }
+
+procedure TFrmProducaoNova.btnIncProdutoClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmProducaoIncluirItem) then
+    FrmProducaoIncluirItem := TFrmProducaoIncluirItem.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    FrmProducaoIncluirItem.IDLote := 0;
+    FrmProducaoIncluirItem.ShowModal;
+
+  finally
+    FreeAndNil(FrmProducaoIncluirItem);
+    AlphaBlend := False;
+  end;
+end;
+
+procedure TFrmProducaoNova.edtFimProducaoKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  Formatar(edtFimProducao, TFormato.Dt);
+end;
+
+procedure TFrmProducaoNova.edtInicioKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+  Formatar(edtInicio, TFormato.Dt);
+end;
+
+procedure TFrmProducaoNova.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Self.ClientHeight := 685;
+  Self.ClientWidth := 1300;
+  Self.Position := poScreenCenter;
+end;
+
+procedure TFrmProducaoNova.FormShow(Sender: TObject);
+begin
+  inherited;
+  Iniciar;
+end;
+
+procedure TFrmProducaoNova.Iniciar;
+begin
+  edtInicio.Text := FormatDateTime('dd/mm/yyyy',Date);
+  edtFimProducao.Text := FormatDateTime('dd/mm/yyyy',Date);
+  edtResponsavel.Text := DM.Usuario.Login;
+  edtFimProducao.SetFocus;
+end;
+
+procedure TFrmProducaoNova.SetCustoTotal(const Value: Currency);
+begin
+  FCustoTotal := Value;
+  lblCustoTotal.Caption := FormatCurr('R$ #,##0.00',Value);
+end;
 
 end.

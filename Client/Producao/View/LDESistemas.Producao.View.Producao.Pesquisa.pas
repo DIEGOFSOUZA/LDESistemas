@@ -24,6 +24,8 @@ type
     dtp1: TDateTimePicker;
     dtp2: TDateTimePicker;
     pngspdbtnBuscar: TPngSpeedButton;
+    procedure btnIncluirClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -35,6 +37,33 @@ var
 
 implementation
 
+uses
+  LDESistemas.Producao.View.Producao.Nova;
+
 {$R *.dfm}
+
+procedure TFrmProducaoPesquisa.btnIncluirClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(FrmProducaoNova) then
+    FrmProducaoNova := TFrmProducaoNova.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    FrmProducaoNova.ShowModal;
+
+  finally
+    FreeAndNil(FrmProducaoNova);
+    AlphaBlend := False;
+  end;
+end;
+
+procedure TFrmProducaoPesquisa.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Self.ClientHeight := 765;
+  Self.ClientWidth := 1373;
+  Self.Position := poScreenCenter;
+end;
 
 end.

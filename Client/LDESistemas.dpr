@@ -129,7 +129,8 @@ uses
   LDESistemas.Client.Utils.RTTI in 'Utils\LDESistemas.Client.Utils.RTTI.pas',
   LDESistemas.Producao.View.Producao.IncluirItem in 'Producao\View\LDESistemas.Producao.View.Producao.IncluirItem.pas' {FrmProducaoIncluirItem},
   LDESistemas.Producao.View.Producao.Nova in 'Producao\View\LDESistemas.Producao.View.Producao.Nova.pas' {FrmProducaoNova},
-  LDESistemas.Producao.View.Producao.Pesquisa in 'Producao\View\LDESistemas.Producao.View.Producao.Pesquisa.pas' {FrmProducaoPesquisa};
+  LDESistemas.Producao.View.Producao.Pesquisa in 'Producao\View\LDESistemas.Producao.View.Producao.Pesquisa.pas' {FrmProducaoPesquisa},
+  uFormat in 'Utils\uFormat.pas';
 
 {$R *.res}
 
