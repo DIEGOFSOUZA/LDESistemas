@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
   Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Samples.Spin, UEDPesquisa,
-  Vcl.Buttons, Data.DB, Vcl.Grids, Vcl.DBGrids;
+  Vcl.Buttons, Data.DB, Vcl.Grids, Vcl.DBGrids, Datasnap.DBClient;
 
 type
   TFrmProducaoNova = class(TPdr_Child2)
@@ -32,6 +32,8 @@ type
     edtResponsavel: TEdit;
     Label4: TLabel;
     edtObservacao: TEdit;
+    dsItem: TDataSource;
+    cdsItem: TClientDataSet;
     procedure edtInicioKeyPress(Sender: TObject; var Key: Char);
     procedure btnIncProdutoClick(Sender: TObject);
     procedure edtFimProducaoKeyPress(Sender: TObject; var Key: Char);
@@ -39,10 +41,12 @@ type
     procedure FormShow(Sender: TObject);
   private
     FCustoTotal: Currency;
+    FIDLote: integer;
     procedure Iniciar();
     procedure SetCustoTotal(const Value: Currency);
   public
     property CustoTotal : Currency read FCustoTotal write SetCustoTotal;
+    property IDLote : integer read FIDLote write FIDLote;
   end;
 
 var

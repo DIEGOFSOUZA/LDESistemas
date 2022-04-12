@@ -38,7 +38,7 @@ var
 implementation
 
 uses
-  LDESistemas.Producao.View.Producao.Nova;
+  LDESistemas.Producao.View.Producao.Nova, UDM;
 
 {$R *.dfm}
 
@@ -50,6 +50,7 @@ begin
   AlphaBlend := True;
   AlphaBlendValue := 128;
   try
+    FrmProducaoNova.IDLote := DM.GetInteger('select gen_id(GEN_LOTE,1) id_lote from RDB$DATABASE','ID_LOTE');
     FrmProducaoNova.ShowModal;
 
   finally

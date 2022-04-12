@@ -48,8 +48,10 @@ type
     procedure btnIncluirClick(Sender: TObject);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
     procedure edtValidadeKeyPress(Sender: TObject; var Key: Char);
-    procedure edpesProdutoedtCampoChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure edtQtdeChange(Sender: TObject);
+    procedure edtQtdeEnter(Sender: TObject);
+    procedure edpesProdutoPesquisa(Sender: TObject; var Retorno: string);
   private
     FCustoProducao: Currency;
     FEstoqueAtual: Extended;
@@ -73,7 +75,7 @@ var
 implementation
 
 uses
-  u_Mensagem, uFormat, UDM;
+  u_Mensagem, uFormat, UDM, UConsulta;
 
 {$R *.dfm}
 
@@ -96,7 +98,30 @@ begin
   end;
 end;
 
-procedure TFrmProducaoIncluirItem.edpesProdutoedtCampoChange(Sender: TObject);
+procedure TFrmProducaoIncluirItem.edpesProdutoPesquisa(Sender: TObject;
+  var Retorno: string);
+var
+  aRet: TRetornoProduto;
+begin
+  inherited;
+  aRet := Consulta.Produto(QuotedStr('PA'), 'Consulta de Produto');
+  if (aRet.iCodigo > 0) then
+    Retorno := aRet.iCodigo.ToString;
+end;
+
+procedure TFrmProducaoIncluirItem.edtQtdeChange(Sender: TObject);
+var
+  lValue: Extended;
+begin
+  inherited;
+  if TryStrToFloat(edtQtde.Text,lValue) then
+  begin
+    Qtde := lValue;
+    Insumos;
+  end;
+end;
+
+procedure TFrmProducaoIncluirItem.edtQtdeEnter(Sender: TObject);
 begin
   inherited;
   Insumos;
@@ -106,7 +131,10 @@ procedure TFrmProducaoIncluirItem.edtQtdeKeyPress(Sender: TObject;
   var Key: Char);
 begin
   inherited;
-  Formatar(edtQtde, TFormato.Personalizado,'##0.000');
+  if not (Key in ['0'..'9', ',', #8, #13]) then
+    Key := #0;
+
+//  Formatar(edtQtde, TFormato.Peso);
 end;
 
 procedure TFrmProducaoIncluirItem.edtValidadeKeyPress(Sender: TObject;
@@ -124,7 +152,7 @@ end;
 
 procedure TFrmProducaoIncluirItem.Iniciar;
 begin
-  Qtde := 1;
+  edtQtde.Text := FormatFloat('##0.000',1);
   EstoqueAtual := 0;
   SetEstoques('0');
   CustoProducao := 0;
@@ -190,7 +218,7 @@ begin
   if not TryStrToFloat(aValue,lValor) then
     lValor := 1;
 
-  Qtde := lValor;
+//  Qtde := lValor;
   lblEstoque.Caption := FormatFloat('#,##0.000 ',EstoqueAtual)+
                         FormatFloat('(#,##0.000)',EstoqueAtual+lValor)
 end;
@@ -198,7 +226,7 @@ end;
 procedure TFrmProducaoIncluirItem.SetQtde(const Value: Extended);
 begin
   FQtde := Value;
-  edtQtde.Text := FormatFloat('##0.000',Value);
+//  edtQtde.Text := FormatFloat('##0.000',Value);
 end;
 
 end.

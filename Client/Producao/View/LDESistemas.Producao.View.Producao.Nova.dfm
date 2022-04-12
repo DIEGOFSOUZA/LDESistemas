@@ -194,6 +194,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
           Width = 990
           Height = 211
           Align = alClient
+          DataSource = dsItem
           DrawingStyle = gdsGradient
           GradientEndColor = 13864803
           Font.Charset = ANSI_CHARSET
@@ -341,5 +342,16 @@ inherited FrmProducaoNova: TFrmProducaoNova
   inherited actlst1: TActionList
     Left = 832
     Top = 200
+  end
+  object dsItem: TDataSource
+    DataSet = cdsItem
+    Left = 488
+    Top = 248
+  end
+  object cdsItem: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 392
+    Top = 248
   end
 end

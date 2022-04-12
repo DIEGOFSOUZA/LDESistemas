@@ -10,7 +10,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
   TextHeight = 13
   inherited pnlTitulo: TPanel
     Width = 1103
-    ExplicitWidth = 1054
+    ExplicitWidth = 1103
     inherited lblTitulo: TLabel
       Width = 1068
       Caption = 'ORDEM DE PRODU'#199#195'O - ITEM'
@@ -20,7 +20,8 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
     end
     inherited pnlBotaoSair: TPanel
       Left = 1073
-      ExplicitLeft = 1024
+      Visible = False
+      ExplicitLeft = 1073
     end
   end
   object pnlFundo: TPanel [1]
@@ -39,7 +40,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
     ParentBackground = False
     ParentFont = False
     TabOrder = 1
-    ExplicitWidth = 1054
     object pnlLeft: TPanel
       Left = 0
       Top = 0
@@ -112,6 +112,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         ConsultaTabela.Pesquisa = 'CODIGO'
         ConsultaTabela.Mostrar = 'NOME'
         ConsultaTabela.ExecutaSQL = DM.ExecutaSQL1
+        OnPesquisa = edpesProdutoPesquisa
         Titulo.Left = 0
         Titulo.Top = 3
         Titulo.Width = 4
@@ -144,7 +145,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Campo.Font.Style = []
         Campo.ParentFont = False
         Campo.TabOrder = 0
-        Campo.OnChange = edpesProdutoedtCampoChange
         TabOrder = 0
         TabStop = True
       end
@@ -286,9 +286,10 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Font.Height = -13
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
-        NumbersOnly = True
         ParentFont = False
         TabOrder = 1
+        OnChange = edtQtdeChange
+        OnEnter = edtQtdeEnter
         OnKeyPress = edtQtdeKeyPress
       end
     end
@@ -300,7 +301,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 467
       object pnlBotoes: TPanel
         Left = 0
         Top = 460
@@ -314,7 +314,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Padding.Bottom = 5
         ParentBackground = False
         TabOrder = 2
-        ExplicitWidth = 467
         object pnlCancelar: TPanel
           Left = 5
           Top = 5
@@ -357,7 +356,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Color = 7024384
           ParentBackground = False
           TabOrder = 1
-          ExplicitWidth = 272
           object btnIncluir: TSpeedButton
             Left = 0
             Top = 0
@@ -391,7 +389,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Caption = 'pnlTitulo'
         ShowCaption = False
         TabOrder = 0
-        ExplicitWidth = 467
         object lblTitInsumo: TLabel
           Left = 0
           Top = 0
@@ -426,7 +423,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 467
         object dbgrdPedidos: TDBGrid
           Left = 0
           Top = 0
@@ -524,10 +520,12 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
     object cdsInsumoQTDE: TFloatField
       DisplayLabel = 'QUANTIDADE'
       FieldName = 'QTDE'
+      DisplayFormat = '#,##0.000'
     end
     object cdsInsumoQTDE_ESTOQUE: TFloatField
       DisplayLabel = 'ESTOQUE ATUAL'
       FieldName = 'QTDE_ESTOQUE'
+      DisplayFormat = '#,##0.000'
     end
     object cdsInsumoUNIDADE: TStringField
       Alignment = taCenter
