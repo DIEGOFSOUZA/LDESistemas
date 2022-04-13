@@ -2,7 +2,9 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
   Caption = 'FrmProducaoPesquisa'
   ClientHeight = 588
   ClientWidth = 1056
+  Visible = False
   OnCreate = FormCreate
+  OnShow = FormShow
   ExplicitWidth = 1056
   ExplicitHeight = 588
   PixelsPerInch = 96

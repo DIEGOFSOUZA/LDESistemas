@@ -5,6 +5,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
   Visible = False
   OnCreate = FormCreate
   OnShow = FormShow
+  ExplicitLeft = -237
   ExplicitWidth = 1000
   ExplicitHeight = 527
   PixelsPerInch = 96

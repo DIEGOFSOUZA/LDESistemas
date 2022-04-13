@@ -26,6 +26,7 @@ type
     pngspdbtnBuscar: TPngSpeedButton;
     procedure btnIncluirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -38,7 +39,7 @@ var
 implementation
 
 uses
-  LDESistemas.Producao.View.Producao.Nova, UDM;
+  LDESistemas.Producao.View.Producao.Nova, UDM, UFrm_Inicial;
 
 {$R *.dfm}
 
@@ -65,6 +66,21 @@ begin
   Self.ClientHeight := 765;
   Self.ClientWidth := 1373;
   Self.Position := poScreenCenter;
+end;
+
+procedure TFrmProducaoPesquisa.FormShow(Sender: TObject);
+begin
+  inherited;
+  Align := alNone;
+  AutoSize := False;
+  WindowState := wsNormal;
+  BorderStyle := bsnone;
+
+  {Preenche Espaço Image}
+  Top := Frm_Inicial.pnlRodape.Height;
+  Left := Frm_Inicial.pnlFundo.Left;
+  Width := Frm_Inicial.pnlFundo.Width;
+  Height := Frm_Inicial.pnlFundo.Height-50;
 end;
 
 end.

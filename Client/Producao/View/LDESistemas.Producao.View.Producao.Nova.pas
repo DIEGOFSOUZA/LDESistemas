@@ -94,9 +94,9 @@ end;
 procedure TFrmProducaoNova.FormCreate(Sender: TObject);
 begin
   inherited;
-  Self.ClientHeight := 685;
-  Self.ClientWidth := 1300;
-  Self.Position := poScreenCenter;
+//  Self.ClientHeight := 685;
+//  Self.ClientWidth := 1300;
+//  Self.Position := poScreenCenter;
 end;
 
 procedure TFrmProducaoNova.FormShow(Sender: TObject);
