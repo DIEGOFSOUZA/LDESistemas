@@ -390,13 +390,8 @@ end;
 
 function TFrm_OrdemProducao.EscolhaUM(pCodPro : string): integer;
 const
-      SQL = 'select coalesce(a.CONV_QTDE,0) conv_qtde '+
-            'from produto a '+
-            'where a.CODIGO = %s' ;
-
-      SQL2 = 'select a.COD_UNIDADE '+
-             'from produto a '+
-             'where a.CODIGO = %s' ;
+  SQL = 'select coalesce(a.CONV_QTDE,0) conv_qtde from produto a ' +
+        'where a.CODIGO = %s';
 begin
   begin
     if not Assigned(Frm_EscolhaUM) then
@@ -404,23 +399,16 @@ begin
     try
       with Frm_EscolhaUM do
       begin
-        Executar(pCodPro.ToInteger(),0);
-//        aCodPro := pCodPro;
-//        aQTDE := 0;
-//        RadioGroup1.Items.Clear;
-//        MontaSql();
+        Executar(pCodPro.ToInteger(), 0);
 
         if DM.GetInteger(Format(SQL, [pCodPro]), 'conv_qtde') > 1 then
         begin
           ShowModal;
-
-//          Result := aRetCodUnidade;
-          cdsItensCOD_UM.AsInteger :=  CodUnidade;
+          cdsItensCOD_UM.AsInteger := CodUnidade;
           cdsItensUM.AsString := Unidade;
         end
         else
         begin
-//          Result := Frm_EscolhaUM.RadioGroup1.Items[RadioGroup1.ItemIndex] ;
           cdsItensCOD_UM.AsInteger := CodUnidade;
           cdsItensUM.AsString := Unidade;
         end;

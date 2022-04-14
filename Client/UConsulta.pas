@@ -11,6 +11,7 @@ type
     cPreco: Currency;
     sUM, sUM_Conv: string;
     PrecoCusto: Currency;
+    IdUnid : Integer;
   end;
 
 type
@@ -1134,7 +1135,7 @@ begin
                   '   else ''Ambos'' '+
                   'end tipo,'+
                   'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA, b.SIGLA, '''') CONVERSAO,'+
-                  'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO '+
+                  'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO, a.cod_unidade '+
                   'from PRODUTO a ' +
                   'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
                   'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
@@ -1142,7 +1143,7 @@ begin
   if pTipo <> EmptyStr then
     InstrucaoSQL := InstrucaoSQL + 'where a.TIPO_PRODUTO in( ' + pTipo + ')';
 
-  SetLength(mCampos, 8);
+  SetLength(mCampos, 9);
 
   mCampos[0].Descricao := 'Tipo';
   mCampos[0].Mascara := '';
@@ -1209,15 +1210,24 @@ begin
   mCampos[7].Pesquisa := False;
   mCampos[7].Retorno := True;
 
+  mCampos[8].Descricao := 'COD_UNIDADE';
+  mCampos[8].Mascara := '';
+  mCampos[8].Mostrar := False;
+  mCampos[8].Nome := 'COD_UNIDADE';
+  mCampos[8].NomeSQL := 'a.COD_UNIDADE';
+  mCampos[8].Pesquisa := False;
+  mCampos[8].Retorno := True;
+
   Aux := TPdr_Consulta.Create(nil, pTituloConsulta, InstrucaoSQL, '', mCampos, DM.LerDataSet, 2);
   try
     Aux.ShowModal;
-    Result.iCodigo := StrToIntDef(Aux.Retorno.Values['codigo'], 0);
-    Result.cPreco := StrToCurrDef(Aux.Retorno.Values['preco_venda'], 0);
+    Result.iCodigo := StrToIntDef(Aux.Retorno.Values['CODIGO'], 0);
+    Result.cPreco := StrToCurrDef(Aux.Retorno.Values['PRECO_VENDA'], 0);
     Result.sUM := Aux.Retorno.Values['UM'];
     Result.sUM_Conv := Aux.Retorno.Values['CONVERSAO'];
     Result.PrecoCusto := StrToCurr(Aux.Retorno.Values['PRECO_CUSTO']);
-    Result.Descricao := Aux.Retorno.Values['nome'];
+    Result.Descricao := Aux.Retorno.Values['NOME'];
+    Result.IdUnid := StrToInt(Aux.Retorno.Values['COD_UNIDADE']);
   finally
     FreeAndNil(Aux);
   end;

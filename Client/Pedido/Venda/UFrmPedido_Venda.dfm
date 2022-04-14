@@ -11,16 +11,14 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
     Width = 871
     ExplicitWidth = 871
     inherited lblTitulo: TLabel
-      Width = 846
+      Width = 836
       Caption = '         PEDIDO'
       ExplicitWidth = 998
     end
     inherited pnlBotaoSair: TPanel
-      Left = 846
+      Left = 841
       Visible = False
-      ExplicitLeft = 846
-      ExplicitTop = 0
-      ExplicitHeight = 30
+      ExplicitLeft = 841
     end
   end
   object pnlFundo: TPanel [1]
@@ -430,7 +428,7 @@ inherited FrmPedido_Venda: TFrmPedido_Venda
           Top = 0
           Width = 871
           Height = 313
-          ActivePage = tsPagamento
+          ActivePage = tsItem
           Align = alClient
           TabOrder = 0
           OnChanging = pgc1Changing

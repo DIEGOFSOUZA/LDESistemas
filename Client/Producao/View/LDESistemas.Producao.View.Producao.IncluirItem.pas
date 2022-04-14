@@ -44,6 +44,8 @@ type
     cdsInsumoQTDE: TFloatField;
     cdsInsumoQTDE_ESTOQUE: TFloatField;
     cdsInsumoUNIDADE: TStringField;
+    Label5: TLabel;
+    cbbUnidade: TComboBox;
     procedure btnCancelarClick(Sender: TObject);
     procedure btnIncluirClick(Sender: TObject);
     procedure edtQtdeKeyPress(Sender: TObject; var Key: Char);
@@ -57,16 +59,30 @@ type
     FEstoqueAtual: Extended;
     FIDLote: Integer;
     FQtde: Extended;
+    FPRODUTO: String;
+    FID_PRODUTO: Integer;
+    FID_UND: integer;
+    FLOTE: String;
+    FUNIDADE: String;
+    FVALIDADE: TDate;
+    FRetorno: string;
     procedure SetCustoProducao(const Value: Currency);
     procedure SetEstoques(aValue: string);
     procedure Iniciar();
     procedure Insumos();
     procedure SetQtde(const Value: Extended);
+    procedure Unidades(aValue,aValue2: string);
   public
-    property IDLote : Integer read FIDLote write FIDLote;
     property EstoqueAtual : Extended read FEstoqueAtual write FEstoqueAtual;
     property Qtde : Extended read FQtde write SetQtde;
     property CustoProducao : Currency read FCustoProducao write SetCustoProducao;
+    property ID_PRODUTO: Integer read FID_PRODUTO write FID_PRODUTO;
+    property PRODUTO: string read FPRODUTO write FPRODUTO;
+    property LOTE: string read FLOTE write FLOTE;
+    property VALIDADE: TDate read FVALIDADE write FVALIDADE;
+    property ID_UND: integer read FID_UND write FID_UND;
+    property UNIDADE: string read FUNIDADE write FUNIDADE;
+    property Retorno: string read FRetorno write FRetorno;
   end;
 
 var
@@ -84,14 +100,23 @@ uses
 procedure TFrmProducaoIncluirItem.btnCancelarClick(Sender: TObject);
 begin
   inherited;
+  Retorno := 'cancel';
   Close;
 end;
 
 procedure TFrmProducaoIncluirItem.btnIncluirClick(Sender: TObject);
+var
+  lData: TDateTime;
 begin
   inherited;
   try
+    LOTE := edtLote.Text;
+    if TryStrToDate(edtValidade.Text,lData) then
+      VALIDADE := lData
+    else
+      VALIDADE := 0;
 
+    Retorno := 'sucess';
     Close;
   except
     TMensagem.Erro('Não foi possível incluir o produto.'+sLineBreak+'Tente novamente.');
@@ -106,7 +131,15 @@ begin
   inherited;
   aRet := Consulta.Produto(QuotedStr('PA'), 'Consulta de Produto');
   if (aRet.iCodigo > 0) then
+  begin
     Retorno := aRet.iCodigo.ToString;
+    Unidades(aRet.sUM,aRet.sUM_Conv);
+    ID_PRODUTO := aRet.iCodigo;
+    PRODUTO := aRet.Descricao;
+    ID_UND := aRet.IdUnid;
+    UNIDADE := aRet.sUM;
+  end;
+
 end;
 
 procedure TFrmProducaoIncluirItem.edtQtdeChange(Sender: TObject);
@@ -188,10 +221,10 @@ begin
       cdsInsumo.Append;
       cdsInsumo.FieldByName('ID_INSUMO').AsInteger := DM.dsConsulta.FieldByName('ID').AsInteger;
       cdsInsumo.FieldByName('INSUMO').AsString := DM.dsConsulta.FieldByName('DESCRI').AsString;
-      cdsInsumo.FieldByName('QTDE').AsFloat := DM.dsConsulta.FieldByName('QTDE').AsFloat*FQtde;
+      cdsInsumo.FieldByName('QTDE').AsFloat := DM.dsConsulta.FieldByName('QTDE').AsFloat * FQtde;
       cdsInsumo.FieldByName('QTDE_ESTOQUE').AsFloat := DM.dsConsulta.FieldByName('ID').AsInteger;
       cdsInsumo.FieldByName('UNIDADE').AsString := DM.dsConsulta.FieldByName('UNIDADE').AsString;
-      lCusto := lCusto + DM.dsConsulta.FieldByName('CUSTO').AsCurrency;
+      lCusto := lCusto + (DM.dsConsulta.FieldByName('CUSTO').AsCurrency * FQtde);
       cdsInsumo.Post;
       DM.dsConsulta.Next;
     end;
@@ -227,6 +260,15 @@ procedure TFrmProducaoIncluirItem.SetQtde(const Value: Extended);
 begin
   FQtde := Value;
 //  edtQtde.Text := FormatFloat('##0.000',Value);
+end;
+
+procedure TFrmProducaoIncluirItem.Unidades(aValue,aValue2: string);
+begin
+  cbbUnidade.Items.Clear;
+  cbbUnidade.Items.Add(aValue);
+  if (aValue2 <> '') then
+    cbbUnidade.Items.Add(aValue2);
+  cbbUnidade.ItemIndex := 0;
 end;
 
 end.

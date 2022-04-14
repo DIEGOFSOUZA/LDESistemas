@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 17/01/2022 15:33:41
+// 14/04/2022 15:51:20
 //
 
 unit UClassDataSnap;
@@ -251,6 +251,8 @@ type
     FsetProducaoCommand: TDBXCommand;
     FgetProducaoCommand: TDBXCommand;
     FsetMovimentoCommand: TDBXCommand;
+    FsetProducao_InsertCommand: TDBXCommand;
+    FgetLoteCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -258,6 +260,8 @@ type
     function setProducao(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProducao(BD: string; pID: Integer): OleVariant;
     function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+    function setProducao_Insert(BD: string; aTabelas: OleVariant): Boolean;
+    function getLote(BD: string; aValue: Integer): OleVariant;
   end;
 
   TSMProdutoClient = class(TDSAdminClient)
@@ -2009,6 +2013,36 @@ begin
   Result := FsetMovimentoCommand.Parameters[8].Value.GetBoolean;
 end;
 
+function TSMProducaoClient.setProducao_Insert(BD: string; aTabelas: OleVariant): Boolean;
+begin
+  if FsetProducao_InsertCommand = nil then
+  begin
+    FsetProducao_InsertCommand := FDBXConnection.CreateCommand;
+    FsetProducao_InsertCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetProducao_InsertCommand.Text := 'TSMProducao.setProducao_Insert';
+    FsetProducao_InsertCommand.Prepare;
+  end;
+  FsetProducao_InsertCommand.Parameters[0].Value.SetWideString(BD);
+  FsetProducao_InsertCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FsetProducao_InsertCommand.ExecuteUpdate;
+  Result := FsetProducao_InsertCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TSMProducaoClient.getLote(BD: string; aValue: Integer): OleVariant;
+begin
+  if FgetLoteCommand = nil then
+  begin
+    FgetLoteCommand := FDBXConnection.CreateCommand;
+    FgetLoteCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FgetLoteCommand.Text := 'TSMProducao.getLote';
+    FgetLoteCommand.Prepare;
+  end;
+  FgetLoteCommand.Parameters[0].Value.SetWideString(BD);
+  FgetLoteCommand.Parameters[1].Value.SetInt32(aValue);
+  FgetLoteCommand.ExecuteUpdate;
+  Result := FgetLoteCommand.Parameters[2].Value.AsVariant;
+end;
+
 constructor TSMProducaoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -2024,6 +2058,8 @@ begin
   FsetProducaoCommand.DisposeOf;
   FgetProducaoCommand.DisposeOf;
   FsetMovimentoCommand.DisposeOf;
+  FsetProducao_InsertCommand.DisposeOf;
+  FgetLoteCommand.DisposeOf;
   inherited;
 end;
 

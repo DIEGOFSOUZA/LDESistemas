@@ -104,11 +104,12 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           Width = 1046
           Height = 405
           Align = alClient
+          DataSource = dsLote
           DrawingStyle = gdsGradient
           GradientEndColor = 13864803
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
+          Font.Height = -21
           Font.Name = 'Segoe UI'
           Font.Style = []
           Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -119,6 +120,83 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           TitleFont.Height = -11
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
+          OnDblClick = dbgrdPedidosDblClick
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'ID'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -21
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Font.Charset = ANSI_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -16
+              Title.Font.Name = 'Segoe UI Semibold'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'INICIO'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -21
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Font.Charset = ANSI_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -16
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'USUARIO'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -21
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Font.Charset = ANSI_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -16
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'CUSTO'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -21
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Font.Charset = ANSI_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -16
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'STATUS'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -21
+              Font.Name = 'Segoe UI'
+              Font.Style = []
+              Title.Font.Charset = ANSI_CHARSET
+              Title.Font.Color = clWindowText
+              Title.Font.Height = -16
+              Title.Font.Name = 'Segoe UI'
+              Title.Font.Style = [fsBold]
+              Visible = True
+            end>
         end
       end
     end
@@ -177,6 +255,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           Height = 25
           Cursor = crHandPoint
           Flat = True
+          OnClick = pngspdbtnBuscarClick
           PngImage.Data = {
             89504E470D0A1A0A0000000D4948445200000019000000190806000000C4E985
             6300000006624B474400FF00FF00FFA0BDA793000001ED4944415478DABD96CF
@@ -237,5 +316,65 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
   inherited actlst1: TActionList
     Left = 936
     Top = 88
+  end
+  object dsLote: TDataSource
+    DataSet = cdsLote
+    Left = 496
+    Top = 280
+  end
+  object cdsLote: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'INICIO'
+        DataType = ftDate
+      end
+      item
+        Name = 'USUARIO'
+        DataType = ftString
+        Size = 50
+      end
+      item
+        Name = 'CUSTO'
+        DataType = ftCurrency
+      end
+      item
+        Name = 'STATUS'
+        DataType = ftString
+        Size = 20
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 432
+    Top = 280
+    object cdsLoteID: TIntegerField
+      Alignment = taLeftJustify
+      DisplayLabel = 'PRODU'#199#195'O'
+      FieldName = 'ID'
+      DisplayFormat = '0000'
+    end
+    object cdsLoteINICIO: TDateField
+      Alignment = taCenter
+      FieldName = 'INICIO'
+    end
+    object cdsLoteUSUARIO: TStringField
+      DisplayLabel = 'RESPONS'#193'VEL'
+      FieldName = 'USUARIO'
+      Size = 50
+    end
+    object cdsLoteCUSTO: TCurrencyField
+      DisplayWidth = 15
+      FieldName = 'CUSTO'
+      DisplayFormat = 'R$ #,##0.00'
+    end
+    object cdsLoteSTATUS: TStringField
+      Alignment = taCenter
+      FieldName = 'STATUS'
+    end
   end
 end

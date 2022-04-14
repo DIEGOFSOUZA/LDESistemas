@@ -171,4 +171,10 @@ object SMProducao: TSMProducao
     Left = 112
     Top = 200
   end
+  object cdsLER: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 192
+    Top = 144
+  end
 end

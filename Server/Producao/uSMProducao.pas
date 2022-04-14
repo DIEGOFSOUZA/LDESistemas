@@ -38,20 +38,25 @@ type
     fdqryLoteItensENTSAI: TStringField;
     fdqryLoteItensDESCRI_ITEM: TStringField;
     fdqryLoteAUTORIZACAO: TStringField;
+    cdsLER: TClientDataSet;
   private
-    { Private declarations }
+    procedure getClientDataSet(aClientDataSet: OleVariant);
   public
     function setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
     function getProducao(const BD: string; pID: integer): OleVariant;
     function setMovimento(const BD: string; aUsuario: string; aCodPro: Integer;
         aQtde,aQtdeFechada: Double;
         aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
+    function setProducao_Insert(const BD: string; aTabelas: OleVariant): Boolean;
+    function getLote(const BD: string; aValue: integer): OleVariant;
   end;
 
 implementation
 
 uses
-  uServerDM;
+  uServerDM, System.Variants;
+
+
 
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
@@ -59,6 +64,45 @@ uses
 {$R *.dfm}
 
 { TSMProducao }
+
+procedure TSMProducao.getClientDataSet(aClientDataSet: OleVariant);
+begin
+  cdsLER.Close;
+  cdsLER.Data := aClientDataSet;
+end;
+
+function TSMProducao.getLote(const BD: string; aValue: integer): OleVariant;
+const
+  SQLLOTE = 'select l.id, l.emissao,l.dt_fim_producao,l.obs,l.usuario,'+
+            'l.status,l.gera_matprima,l.lote_acerto,l.autorizacao '+
+            'from lote l '+
+            'where l.id = %s';
+  SQLITEM = 'select I.ID_LOTE, I.LOTE, I.CODPRO, I.QTDE, I.QTDE_FECHADA, I.COD_UM, I.ENTSAI, I.DT_VALIDADE VALIDADE,'+
+            '       I.VL_CUSTO CUSTO, P.NOME PRODUTO, U.SIGLA UNIDADE '+
+            'from LOTE_ITENS I '+
+            'left join PRODUTO P on (P.CODIGO = I.CODPRO) '+
+            'left join UNIDADE U on (U.CODIGO = I.COD_UM) '+
+            'where I.ID_LOTE = %s';
+var
+  DM: TServerDM;
+  lLote, lItem: OleVariant;
+begin
+  Result := Null;
+  DM := TServerDM.Create(BD);
+  try
+   try
+      lLote := DM.LerDataSet(Format(SQLLOTE, [aValue.ToString]));
+      lItem := DM.LerDataSet(Format(SQLITEM, [aValue.ToString]));
+      Result := VarArrayOf([lLote, lItem]);
+    except
+      on E: Exception do
+        raise Exception.Create('Servidor Aplicativo: ' + #10 + #13 + E.Message);
+    end;
+  finally
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
 
 function TSMProducao.getProducao(const BD: string; pID: integer): OleVariant;
 var
@@ -170,6 +214,98 @@ begin
     end;
   finally
     dsProducao.Close;
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
+
+function TSMProducao.setProducao_Insert(const BD: string; aTabelas: OleVariant): Boolean;
+const
+  insert_lote = 'insert into LOTE (EMISSAO, DT_FIM_PRODUCAO, OBS, STATUS, GERA_MATPRIMA, USUARIO, LOTE_ACERTO) '+
+                'values (:EMISSAO, :DT_FIM_PRODUCAO, :OBS, :STATUS, :GERA_MATPRIMA, :USUARIO, :LOTE_ACERTO) '+
+                'returning ID '+
+                '{into :ID}';
+  insert_item = 'insert into LOTE_ITENS (ID_LOTE, LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DT_VALIDADE, VL_CUSTO) '+
+                'values (:ID_LOTE, :LOTE, :CODPRO, :QTDE, :QTDE_FECHADA, :COD_UM, :ENTSAI, :DT_VALIDADE, :VL_CUSTO) '+
+                'returning ID '+
+                '{into :ID}';
+  insert_mtpm = 'insert into LOTE_MATPRIMA (ID_LOTE_ITEM, ID_MATPRIMA, QTDE, QTDE_FECHADA) '+
+                'values (:ID_LOTE_ITEM, :ID_MATPRIMA, :QTDE, :QTDE_FECHADA)';
+
+  sql_insumos = 'select ID_MATPRIMA, QTDE from PRODUTO_COMPOSICAO c '+
+                'where c.id_produto = %s';
+var
+  DM: TServerDM;
+  lIDLote, lIdLoteItem: Integer;
+begin
+  Result := False;
+  DM := TServerDM.Create(BD);
+  try
+    try
+//      *****************LOTE******************************
+      if (aTabelas[0] <> Null) then
+      begin
+        getClientDataSet(aTabelas[0]);
+        DM.Gravar.SQL.Clear;
+        DM.Gravar.SQL.Add(insert_lote);
+        DM.Gravar.ParamByName('EMISSAO').AsDate := cdsLER.FieldByName('EMISSAO').AsDateTime;
+        DM.Gravar.ParamByName('DT_FIM_PRODUCAO').AsDate := cdsLER.FieldByName('DT_FIM_PRODUCAO').AsDateTime;
+        DM.Gravar.ParamByName('OBS').AsString := cdsLER.FieldByName('OBS').AsString;
+        DM.Gravar.ParamByName('STATUS').AsString := cdsLER.FieldByName('STATUS').AsString;
+        DM.Gravar.ParamByName('GERA_MATPRIMA').AsString := cdsLER.FieldByName('GERA_MATPRIMA').AsString;
+        DM.Gravar.ParamByName('USUARIO').AsString := cdsLER.FieldByName('USUARIO').AsString;
+        DM.Gravar.ParamByName('LOTE_ACERTO').AsString := cdsLER.FieldByName('LOTE_ACERTO').AsString;
+        DM.Gravar.ExecSQL;
+        lIDLote := DM.Gravar.Params[7].Value;
+      end;
+
+//      *****************LOTE_ITENS******************************
+      if (aTabelas[1] <> Null) then
+      begin
+        getClientDataSet(aTabelas[1]);
+        cdsLER.First;
+        while not cdsLER.Eof do
+        begin
+          DM.Gravar.SQL.Clear;
+          DM.Gravar.SQL.Add(insert_item);
+          DM.Gravar.ParamByName('ID_LOTE').AsInteger := lIDLote;
+          DM.Gravar.ParamByName('LOTE').AsString := cdsLER.FieldByName('LOTE').AsString;
+          DM.Gravar.ParamByName('CODPRO').AsInteger := cdsLER.FieldByName('CODPRO').AsInteger;
+          DM.Gravar.ParamByName('QTDE').AsFloat := cdsLER.FieldByName('QTDE').AsFloat;
+          DM.Gravar.ParamByName('QTDE_FECHADA').AsFloat := cdsLER.FieldByName('QTDE_FECHADA').AsFloat;
+          DM.Gravar.ParamByName('COD_UM').AsInteger := cdsLER.FieldByName('COD_UM').AsInteger;
+          DM.Gravar.ParamByName('ENTSAI').AsString := cdsLER.FieldByName('ENTSAI').AsString;
+          DM.Gravar.ParamByName('DT_VALIDADE').AsDate := cdsLER.FieldByName('VALIDADE').AsDateTime;
+          DM.Gravar.ParamByName('VL_CUSTO').AsCurrency := cdsLER.FieldByName('CUSTO').AsCurrency;
+          DM.Gravar.ExecSQL;
+          lIdLoteItem := DM.Gravar.Params[9].Value;
+
+//      *****************LOTE_MATPRIMA******************************
+          DM.SQLLer.SQL.Clear;
+          DM.SQLLer.Open(Format(sql_insumos, [cdsLER.FieldByName('CODPRO').AsString]));
+          if not DM.SQLLer.IsEmpty then
+          begin
+            DM.SQLLer.First;
+            while not DM.SQLLer.Eof do
+            begin
+              DM.Gravar.SQL.Clear;
+              DM.Gravar.SQL.Add(insert_mtpm);
+              DM.Gravar.ParamByName('ID_LOTE_ITEM').AsInteger := lIdLoteItem;
+              DM.Gravar.ParamByName('ID_MATPRIMA').AsInteger := DM.SQLLer.FieldByName('ID_MATPRIMA').AsInteger;
+              DM.Gravar.ParamByName('QTDE').AsFloat := DM.SQLLer.FieldByName('QTDE').AsFloat*cdsLER.FieldByName('QTDE').AsFloat;
+              DM.Gravar.ParamByName('QTDE_FECHADA').AsFloat := 0;
+              DM.Gravar.ExecSQL;
+              DM.SQLLer.Next;
+            end;
+          end;
+          cdsLER.Next;
+        end;
+      end;
+      Result := True;
+    except
+      Result := False;
+    end;
+  finally
     DM.FecharConexao;
     FreeAndNil(DM);
   end;

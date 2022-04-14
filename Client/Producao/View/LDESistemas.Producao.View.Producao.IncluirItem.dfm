@@ -50,6 +50,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
+      ExplicitLeft = -1
       object lblProduto: TLabel
         Left = 13
         Top = 17
@@ -78,7 +79,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       end
       object Label2: TLabel
         Left = 13
-        Top = 81
+        Top = 146
         Width = 57
         Height = 17
         Caption = 'VALIDADE'
@@ -91,10 +92,23 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       end
       object Label3: TLabel
         Left = 149
-        Top = 81
+        Top = 146
         Width = 29
         Height = 17
         Caption = 'LOTE'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label5: TLabel
+        Left = 13
+        Top = 81
+        Width = 55
+        Height = 17
+        Caption = 'UNIDADE'
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
@@ -144,13 +158,14 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Campo.Font.Name = 'Segoe UI'
         Campo.Font.Style = []
         Campo.ParentFont = False
+        Campo.ReadOnly = True
         Campo.TabOrder = 0
         TabOrder = 0
         TabStop = True
       end
       object edtValidade: TEdit
         Left = 13
-        Top = 102
+        Top = 167
         Width = 121
         Height = 25
         Color = 14803681
@@ -161,13 +176,13 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Font.Style = [fsBold]
         NumbersOnly = True
         ParentFont = False
-        TabOrder = 2
+        TabOrder = 3
         TextHint = 'dd/mm/aaaa'
         OnKeyPress = edtValidadeKeyPress
       end
       object edtLote: TEdit
         Left = 149
-        Top = 102
+        Top = 167
         Width = 432
         Height = 25
         CharCase = ecUpperCase
@@ -178,11 +193,11 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 4
       end
       object pnlEstoque: TPanel
         Left = 13
-        Top = 216
+        Top = 241
         Width = 568
         Height = 49
         BevelOuter = bvNone
@@ -190,7 +205,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Padding.Left = 10
         Padding.Right = 15
         ParentBackground = False
-        TabOrder = 4
+        TabOrder = 5
         object lbl1: TLabel
           Left = 10
           Top = 0
@@ -229,7 +244,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       end
       object pnlCusto: TPanel
         Left = 13
-        Top = 304
+        Top = 329
         Width = 568
         Height = 50
         BevelOuter = bvNone
@@ -237,7 +252,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         Padding.Left = 10
         Padding.Right = 15
         ParentBackground = False
-        TabOrder = 5
+        TabOrder = 6
         object Label4: TLabel
           Left = 10
           Top = 0
@@ -291,6 +306,17 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
         OnChange = edtQtdeChange
         OnEnter = edtQtdeEnter
         OnKeyPress = edtQtdeKeyPress
+      end
+      object cbbUnidade: TComboBox
+        Left = 13
+        Top = 104
+        Width = 59
+        Height = 25
+        Style = csDropDownList
+        Color = 14803681
+        Enabled = False
+        TabOrder = 2
+        TabStop = False
       end
     end
     object pnlRight: TPanel
