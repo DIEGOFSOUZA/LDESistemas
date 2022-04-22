@@ -87,7 +87,7 @@ type
     property TitValor: Currency read fGetTitValor;
     {Baixa}
     property IdCaixa: string read fIdCaixa;
-    property Retorno:string read fRetorno;
+    property Retorno: string read fRetorno;
     property VlJuros: Currency read FVlJuros write SetVlJuros;
     property VlDescontos: Currency read FVlDescontos write SetVlDescontos;
     property Valor: Currency read FValor write SetValor;

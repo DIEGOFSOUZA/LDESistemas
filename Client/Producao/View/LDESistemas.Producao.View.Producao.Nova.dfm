@@ -19,6 +19,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
     end
     inherited pnlBotaoSair: TPanel
       Left = 970
+      OnClick = pnlBotaoSairClick
       ExplicitLeft = 970
     end
   end

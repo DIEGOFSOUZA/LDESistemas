@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
   Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Buttons, PngSpeedButton, Vcl.ComCtrls, Datasnap.DBClient;
+  Vcl.Buttons, PngSpeedButton, Vcl.ComCtrls, Datasnap.DBClient, U_DataCorrida;
 
 type
   TFrmProducaoPesquisa = class(TPdr_Child2)
@@ -62,8 +62,10 @@ begin
   AlphaBlendValue := 128;
   try
     FrmProducaoNova.IDLote := -1;//DM.GetInteger('select gen_id(GEN_LOTE,0)+1 id_lote from RDB$DATABASE','ID_LOTE');
+    FrmProducaoNova.Retorno := '';
     FrmProducaoNova.ShowModal;
-
+    if (FrmProducaoNova.Retorno = 'sucesso') then
+      CarregarGrid;
   finally
     FreeAndNil(FrmProducaoNova);
     AlphaBlend := False;
@@ -95,7 +97,8 @@ begin
   try
     FrmProducaoNova.IDLote := cdsLote.FieldByName('ID').AsInteger;
     FrmProducaoNova.ShowModal;
-
+    if (FrmProducaoNova.Retorno = 'sucesso') then
+      CarregarGrid;
   finally
     FreeAndNil(FrmProducaoNova);
     AlphaBlend := False;

@@ -68,9 +68,12 @@ type
     procedure cdsItemAfterInsert(DataSet: TDataSet);
     procedure actSalvarProducaoExecute(Sender: TObject);
     procedure actCancelarProducaoExecute(Sender: TObject);
+    procedure actSairExecute(Sender: TObject);
+    procedure pnlBotaoSairClick(Sender: TObject);
   private
     FCustoTotal: Currency;
     FIDLote: integer;
+    FRetorno: string;
     procedure Iniciar();
     procedure SetCustoTotal(const Value: Currency);
     procedure InsertLote();
@@ -81,6 +84,7 @@ type
   public
     property CustoTotal : Currency read FCustoTotal write SetCustoTotal;
     property IDLote : integer read FIDLote write SetIDLote;
+    property Retorno: string read FRetorno write FRetorno;
   end;
 
 var
@@ -98,7 +102,25 @@ uses
 procedure TFrmProducaoNova.actCancelarProducaoExecute(Sender: TObject);
 begin
   inherited;
-//
+  if TMensagem.Pergunta('Confirma o cancelamento da Proução ?') then
+    try
+      if DM.SMProducao.setProducao_Cancelar(DM.BancoDados, FIDLote) then
+      begin
+        TMensagem.Informacao('Ordem de produção cancelada com sucesso.');
+        Retorno := 'sucesso';
+        actSair.Execute;
+      end
+      else
+        TMensagem.Erro('Não foi posível cancelar a produção.' + sLineBreak + 'Tente novamente.');
+    except
+      TMensagem.Erro('Não foi posível cancelar a produção.' + sLineBreak + 'Tente novamente.');
+    end;
+end;
+
+procedure TFrmProducaoNova.actSairExecute(Sender: TObject);
+begin
+  inherited;
+  Close;
 end;
 
 procedure TFrmProducaoNova.actSalvarProducaoExecute(Sender: TObject);
@@ -111,7 +133,8 @@ begin
     if DM.SMProducao.setProducao_Insert(DM.BancoDados, VarArrayOf([cdsLote.Delta, cdsItem.Delta])) then
     begin
       TMensagem.Informacao('Ordem de produção gerado com sucesso.');
-      Close;
+      Retorno := 'sucesso';
+      actSair.Execute;
     end
     else
       TMensagem.Erro('Não foi posível salvar a produção.' + sLineBreak + 'Tente novamente.');
@@ -158,21 +181,30 @@ begin
   pnlIncRodapeIncProduto.Visible := False;
   pnlIncluir.Color := $009A5741;
   btnIncluir.Action := actCancelarProducao;
-
 end;
 
 procedure TFrmProducaoNova.CarregarDados;
 var
   lDados: OleVariant;
+  lTitulo : string;
 begin
   lDados := DM.SMProducao.getLote(DM.BancoDados, FIDLote);
   if not VarIsNull(lDados) then
   begin
     cdsLote.Data := lDados[0];
+    lTitulo := 'ORDEM DE PRODUÇÃO - '+ FormatFloat('000000',FIDLote);
+    if (cdsLote.FieldByName('status').AsString <> 'PENDENTE') then
+    begin
+      lTitulo := lTitulo + ' - '+cdsLote.FieldByName('status').AsString;
+      pnlBotoes.Visible := False;
+    end;
+
+    pnlIncRodapeIncProduto.Visible := False;
     edtInicio.Text := FormatDateTime('dd/mm/yyyy',cdsLote.FieldByName('EMISSAO').AsDateTime);
     edtFimProducao.Text := FormatDateTime('dd/mm/yyyy',cdsLote.FieldByName('DT_FIM_PRODUCAO').AsDateTime);
     edtResponsavel.Text := cdsLote.FieldByName('USUARIO').AsString;
     edtObservacao.Text := cdsLote.FieldByName('OBS').AsString;
+    lblTitulo.Caption := lTitulo;
     cdsItem.Data := lDados[1];
     CustoTotal := cdsItemtotal.Value;
   end;
@@ -245,6 +277,13 @@ begin
     cdsLote.FieldByName('OBS').AsString := edtObservacao.Text;
   cdsLote.FieldByName('USUARIO').AsString := edtResponsavel.Text;
   cdsLote.Post;
+end;
+
+procedure TFrmProducaoNova.pnlBotaoSairClick(Sender: TObject);
+begin
+  inherited;
+  Retorno := 'cancel';
+  actSair.Execute;
 end;
 
 procedure TFrmProducaoNova.SetCustoTotal(const Value: Currency);

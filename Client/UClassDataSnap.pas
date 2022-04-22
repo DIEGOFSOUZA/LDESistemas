@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 14/04/2022 15:51:20
+// 22/04/2022 14:40:32
 //
 
 unit UClassDataSnap;
@@ -252,6 +252,7 @@ type
     FgetProducaoCommand: TDBXCommand;
     FsetMovimentoCommand: TDBXCommand;
     FsetProducao_InsertCommand: TDBXCommand;
+    FsetProducao_CancelarCommand: TDBXCommand;
     FgetLoteCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
@@ -261,6 +262,7 @@ type
     function getProducao(BD: string; pID: Integer): OleVariant;
     function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
     function setProducao_Insert(BD: string; aTabelas: OleVariant): Boolean;
+    function setProducao_Cancelar(BD: string; aIDLote: Integer): Boolean;
     function getLote(BD: string; aValue: Integer): OleVariant;
   end;
 
@@ -2028,6 +2030,21 @@ begin
   Result := FsetProducao_InsertCommand.Parameters[2].Value.GetBoolean;
 end;
 
+function TSMProducaoClient.setProducao_Cancelar(BD: string; aIDLote: Integer): Boolean;
+begin
+  if FsetProducao_CancelarCommand = nil then
+  begin
+    FsetProducao_CancelarCommand := FDBXConnection.CreateCommand;
+    FsetProducao_CancelarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetProducao_CancelarCommand.Text := 'TSMProducao.setProducao_Cancelar';
+    FsetProducao_CancelarCommand.Prepare;
+  end;
+  FsetProducao_CancelarCommand.Parameters[0].Value.SetWideString(BD);
+  FsetProducao_CancelarCommand.Parameters[1].Value.SetInt32(aIDLote);
+  FsetProducao_CancelarCommand.ExecuteUpdate;
+  Result := FsetProducao_CancelarCommand.Parameters[2].Value.GetBoolean;
+end;
+
 function TSMProducaoClient.getLote(BD: string; aValue: Integer): OleVariant;
 begin
   if FgetLoteCommand = nil then
@@ -2059,6 +2076,7 @@ begin
   FgetProducaoCommand.DisposeOf;
   FsetMovimentoCommand.DisposeOf;
   FsetProducao_InsertCommand.DisposeOf;
+  FsetProducao_CancelarCommand.DisposeOf;
   FgetLoteCommand.DisposeOf;
   inherited;
 end;

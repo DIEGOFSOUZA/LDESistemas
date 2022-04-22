@@ -125,11 +125,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
             item
               Expanded = False
               FieldName = 'ID'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -21
-              Font.Name = 'Segoe UI'
-              Font.Style = []
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
@@ -140,11 +135,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
             item
               Expanded = False
               FieldName = 'INICIO'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -21
-              Font.Name = 'Segoe UI'
-              Font.Style = []
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
@@ -155,11 +145,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
             item
               Expanded = False
               FieldName = 'USUARIO'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -21
-              Font.Name = 'Segoe UI'
-              Font.Style = []
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
@@ -170,11 +155,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
             item
               Expanded = False
               FieldName = 'CUSTO'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -21
-              Font.Name = 'Segoe UI'
-              Font.Style = []
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
@@ -185,11 +165,6 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
             item
               Expanded = False
               FieldName = 'STATUS'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -21
-              Font.Name = 'Segoe UI'
-              Font.Style = []
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16

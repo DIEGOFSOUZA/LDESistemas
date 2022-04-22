@@ -48,6 +48,7 @@ type
         aQtde,aQtdeFechada: Double;
         aCodUND: Integer; aEntSai, aDescriProd: string): Boolean;
     function setProducao_Insert(const BD: string; aTabelas: OleVariant): Boolean;
+    function setProducao_Cancelar(const BD: string; aIDLote: integer): Boolean;
     function getLote(const BD: string; aValue: integer): OleVariant;
   end;
 
@@ -214,6 +215,56 @@ begin
     end;
   finally
     dsProducao.Close;
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
+
+function TSMProducao.setProducao_Cancelar(const BD: string;
+  aIDLote: integer): Boolean;
+const
+  delete_MP = 'delete from lote_matprima m where m.id_lote_item = %s';
+  upd_item  = 'update lote_itens i '+
+              'set i.qtde_fechada = 0 '+
+              'where i.id_lote = %s';
+  upd_lote  = 'update lote l '+
+              'set l.status = ''CANCELADA'' '+
+              'where l.id = %s';
+  sql_itens = 'select i.id from lote_itens i '+
+              'where i.id_lote = %s';
+var
+  DM: TServerDM;
+begin
+  Result := False;
+  DM := TServerDM.Create(BD);
+  try
+    try
+      cdsLER.Close;
+      cdsLER.Data := DM.LerDataSet(Format(sql_itens, [aIDLote.ToString]));
+      if not cdsLER.IsEmpty then
+      begin
+        cdsLER.First;
+        while not cdsLER.Eof do
+        begin
+          DM.Gravar.SQL.Clear;
+          DM.Gravar.SQL.Add(Format(delete_MP, [cdsLER.FieldByName('id').AsString]));
+          DM.Gravar.ExecSQL;
+          cdsLER.Next;
+        end;
+      end;
+
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(Format(upd_item, [aIDLote.ToString]));
+      DM.Gravar.ExecSQL;
+
+      DM.Gravar.SQL.Clear;
+      DM.Gravar.SQL.Add(Format(upd_lote, [aIDLote.ToString]));
+      DM.Gravar.ExecSQL;
+      Result := True;
+    except
+      Result := False;
+    end;
+  finally
     DM.FecharConexao;
     FreeAndNil(DM);
   end;
