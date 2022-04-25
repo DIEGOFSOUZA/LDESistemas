@@ -3,10 +3,11 @@ unit LDESistemas.Producao.View.Producao.Pesquisa;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, UPdr_Child2, System.Actions,
-  Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB, Vcl.Grids, Vcl.DBGrids,
-  Vcl.Buttons, PngSpeedButton, Vcl.ComCtrls, Datasnap.DBClient, U_DataCorrida;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  UPdr_Child2, System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, Vcl.Buttons, PngSpeedButton, Vcl.ComCtrls,
+  Datasnap.DBClient, U_DataCorrida, System.DateUtils, Vcl.Menus;
 
 type
   TFrmProducaoPesquisa = class(TPdr_Child2)
@@ -31,11 +32,15 @@ type
     cdsLoteUSUARIO: TStringField;
     cdsLoteCUSTO: TCurrencyField;
     cdsLoteSTATUS: TStringField;
+    pm1: TPopupMenu;
+    PRODUZIRLOTE1: TMenuItem;
+    actProduzirLote: TAction;
     procedure btnIncluirClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure pngspdbtnBuscarClick(Sender: TObject);
     procedure dbgrdPedidosDblClick(Sender: TObject);
+    procedure actProduzirLoteExecute(Sender: TObject);
   private
     procedure Iniciar();
     procedure CarregarGrid();
@@ -49,9 +54,21 @@ var
 implementation
 
 uses
-  LDESistemas.Producao.View.Producao.Nova, UDM, UFrm_Inicial;
+  LDESistemas.Producao.View.Producao.Nova, UDM, UFrm_Inicial, u_Mensagem;
 
 {$R *.dfm}
+
+procedure TFrmProducaoPesquisa.actProduzirLoteExecute(Sender: TObject);
+begin
+  inherited;
+  if (cdsLote.FieldByName('STATUS').AsString <> 'PENDENTE') then
+    Exit;
+
+  if Tmensagem.Pergunta('Confirma a total produção do Lote Nº '+cdsLoteID.AsString+'?') then
+  begin
+    //
+  end;
+end;
 
 procedure TFrmProducaoPesquisa.btnIncluirClick(Sender: TObject);
 begin
@@ -128,7 +145,7 @@ end;
 
 procedure TFrmProducaoPesquisa.Iniciar;
 begin
-  dtp1.Date := IncMonth(Date, -1);
+  dtp1.Date := Incday(Date, -7);
   dtp2.Date := Date;
 end;
 

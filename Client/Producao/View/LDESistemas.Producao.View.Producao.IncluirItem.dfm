@@ -50,7 +50,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
-      ExplicitLeft = -1
       object lblProduto: TLabel
         Left = 13
         Top = 17

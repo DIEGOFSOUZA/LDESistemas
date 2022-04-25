@@ -114,6 +114,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           Font.Style = []
           Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
+          PopupMenu = pm1
           TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clWindowText
@@ -291,6 +292,10 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
   inherited actlst1: TActionList
     Left = 936
     Top = 88
+    object actProduzirLote: TAction
+      Caption = 'PRODUZIR LOTE'
+      OnExecute = actProduzirLoteExecute
+    end
   end
   object dsLote: TDataSource
     DataSet = cdsLote
@@ -350,6 +355,13 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
     object cdsLoteSTATUS: TStringField
       Alignment = taCenter
       FieldName = 'STATUS'
+    end
+  end
+  object pm1: TPopupMenu
+    Left = 560
+    Top = 280
+    object PRODUZIRLOTE1: TMenuItem
+      Action = actProduzirLote
     end
   end
 end

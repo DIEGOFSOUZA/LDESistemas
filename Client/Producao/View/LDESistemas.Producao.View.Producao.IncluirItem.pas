@@ -194,7 +194,8 @@ end;
 
 procedure TFrmProducaoIncluirItem.Insumos;
 const
-  SQL = 'select ID_MATPRIMA id, p.nome descri, QTDE, coalesce(CUSTO_TOTAL,0) custo,u.sigla unidade '+
+  SQL = 'select ID_MATPRIMA id, p.nome descri, QTDE, coalesce(CUSTO_TOTAL,0) custo,'+
+        'u.sigla unidade '+
         'from PRODUTO_COMPOSICAO c '+
         'left join produto p on (p.codigo = c.id_matprima) '+
         'left join unidade u on (u.codigo=coalesce(p.conv_unidade,p.cod_unidade)) '+
