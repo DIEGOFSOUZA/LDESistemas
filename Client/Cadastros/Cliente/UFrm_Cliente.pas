@@ -425,10 +425,11 @@ end;
 procedure TFrm_Cliente.cdsAfterInsert(DataSet: TDataSet);
 begin
   inherited;
-  cdsCODIGO.AsInteger := 0 ;
-  cdsDT_CADASTRO.AsDateTime := Date ;
-  cdsVL_CREDITO.AsCurrency := 0 ;
-  cdsVL_DEBITO.AsCurrency := 0 ;
+  cds.FieldByName('CODIGO').AsInteger := 0 ;
+  cds.FieldByName('DT_CADASTRO').AsDateTime := Date ;
+  cds.FieldByName('VL_CREDITO').AsCurrency := 0 ;
+  cds.FieldByName('VL_DEBITO').AsCurrency := 0 ;
+  cds.FieldByName('LIMITE_CREDITO').AsCurrency := DM.Empresa.Cred_Novo_Cliente;
   chkMesmoCob.Checked := True;
   chkMesmoEnt.Checked := True;
 end;
@@ -436,7 +437,7 @@ end;
 procedure TFrm_Cliente.cdsDATA_NASCSetText(Sender: TField; const Text: string);
 begin
   inherited;
-  if Text = '  /  /    ' then
+  if (Text = '  /  /    ') then
     Sender.clear
   else
     Sender.AsDateTime := StrToDate(Text);

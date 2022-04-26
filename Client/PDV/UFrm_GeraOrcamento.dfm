@@ -11,16 +11,14 @@ inherited Frm_GeraOrcamento: TFrm_GeraOrcamento
     Width = 548
     ExplicitWidth = 548
     inherited lblTitulo: TLabel
-      Width = 523
+      Width = 513
       Caption = '         GERAR OR'#199'AMENTO'
       ExplicitWidth = 523
     end
     inherited pnlBotaoSair: TPanel
-      Left = 523
+      Left = 518
       Visible = False
-      ExplicitLeft = 523
-      ExplicitTop = 0
-      ExplicitHeight = 30
+      ExplicitLeft = 518
     end
   end
   object pnlFundo0: TPanel [1]

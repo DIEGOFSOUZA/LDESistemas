@@ -141,6 +141,41 @@ type
     cdsLOGOTIPO: TBlobField;
     btnGerarCripto: TSpeedButton;
     actVisualizaVencimento: TAction;
+    pnlParamVenda: TPanel;
+    pgcParamVenda: TPageControl;
+    tsEstoque: TTabSheet;
+    Panel5: TPanel;
+    dbchkBloqProdcNegativo: TDBCheckBox;
+    dbchkBlqVenda: TDBCheckBox;
+    lblTtiEstoque: TLabel;
+    tsPrazos: TTabSheet;
+    pnlPrazos: TPanel;
+    pnlDiasEntPed: TPanel;
+    Label33: TLabel;
+    Panel3: TPanel;
+    Label34: TLabel;
+    DBEdit27: TDBEdit;
+    pnlDiasEntCompra: TPanel;
+    lbl1: TLabel;
+    pnl2: TPanel;
+    lbl3: TLabel;
+    dbedt1: TDBEdit;
+    pnlDiasValidOrcamento: TPanel;
+    lbl4: TLabel;
+    pnl3: TPanel;
+    lbl5: TLabel;
+    dbedt2: TDBEdit;
+    pnlCredNovoCliente: TPanel;
+    lbl6: TLabel;
+    pnl4: TPanel;
+    lbl7: TLabel;
+    dbedt3: TDBEdit;
+    cdsBLOQ_VENDA_NEGATIVO: TBooleanField;
+    cdsBLOQ_PRODUC_NEGATIVO: TBooleanField;
+    cdsDIAS_ENT_PEDVENDA: TIntegerField;
+    cdsDIAS_ENT_COMPRA: TIntegerField;
+    cdsDIAS_VALID_ORCAMENTO: TIntegerField;
+    cdsCRED_CLI_NOVO: TFMTBCDField;
     procedure FormCreate(Sender: TObject);
     procedure Label1Click(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
@@ -153,6 +188,7 @@ type
     procedure actLiberarSistemaExecute(Sender: TObject);
     procedure Panel4DblClick(Sender: TObject);
     procedure actVisualizaVencimentoExecute(Sender: TObject);
+    procedure DBEdit27KeyPress(Sender: TObject; var Key: Char);
   private
     function ExisteCadEmpresa(): Boolean;
     procedure MontaSql(pCodigo : Integer) ;
@@ -241,6 +277,13 @@ begin
   cdsREGIME_TRIBUT.AsString := 'Simples Nacional' ;
 end;
 
+procedure TFrm_Empresa.DBEdit27KeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+  if not (Key in ['0'..'9', #8, #13]) then
+    Key := #0; //apenas numero
+end;
+
 procedure TFrm_Empresa.dsDataChange(Sender: TObject; Field: TField);
 begin
   inherited;
@@ -273,11 +316,11 @@ end;
 procedure TFrm_Empresa.FormCreate(Sender: TObject);
 begin
   inherited;
+  pgcParamVenda.TabIndex := 0 ;
   cds.Close ;
   cds.CreateDataSet ;
   if ExisteCadEmpresa then
     MontaSql(1);
-//  PageControl1.TabIndex := 0 ;
 end;
 
 procedure TFrm_Empresa.FormShow(Sender: TObject);

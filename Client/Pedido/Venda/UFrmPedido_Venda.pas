@@ -611,7 +611,7 @@ begin
   cdsPEDIDO_VENDA.FieldByName('ID').AsInteger := 0;
   cdsPEDIDO_VENDA.FieldByName('EMISSAO').AsDateTime := Date;
   cdsPEDIDO_VENDA.FieldByName('ENTRADA').AsDateTime := Date;
-  cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + 7;
+  cdsPEDIDO_VENDA.FieldByName('ENTREGA').AsDateTime := Date + DM.Empresa.Dias_Ent_Ped;
   cdsPEDIDO_VENDA.FieldByName('USUARIO').AsString := DM.Usuario.Login;
   cdsPEDIDO_VENDA.FieldByName('GERAR_ORDEM_PRODUCAO').AsInteger := 1;
 end;

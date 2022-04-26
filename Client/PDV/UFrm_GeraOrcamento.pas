@@ -151,7 +151,7 @@ begin
   dsOrcamento.FieldByName('id').AsInteger := 0;
   dsOrcamento.FieldByName('emissao').AsDateTime := Date;
   dsOrcamento.FieldByName('id_cliente').AsInteger := IdCli;
-  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date, 30);
+  dsOrcamento.FieldByName('dt_validade').AsDateTime := IncDay(Date, DM.Empresa.Dias_Valid_Orcamento);
   dsOrcamento.FieldByName('usuario').AsString := DM.UsuarioDataHora;
   dsOrcamento.FieldByName('status').AsString := 'EM ABERTO'; //EM ABERTO|VENDIDO|CANCELADO
   if (edpesParc.Campo.Text <> '') then

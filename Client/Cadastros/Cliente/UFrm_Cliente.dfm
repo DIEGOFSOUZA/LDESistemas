@@ -315,7 +315,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Height = 117
               Align = alBottom
               BorderStyle = bsSingle
-              TabOrder = 13
+              TabOrder = 16
               object lblDtNasc: TLabel
                 Left = 211
                 Top = 8
@@ -508,7 +508,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 5
+              TabOrder = 7
             end
             object DBEdit12: TDBEdit
               Left = 7
@@ -524,7 +524,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 6
+              TabOrder = 9
             end
             object DBEdit15: TDBEdit
               Left = 323
@@ -540,7 +540,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 7
+              TabOrder = 10
             end
             object DBEdit16: TDBEdit
               Left = 7
@@ -555,7 +555,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 8
+              TabOrder = 11
             end
             object dbedtTELEFONE1: TDBEdit
               Left = 48
@@ -570,7 +570,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 9
+              TabOrder = 12
             end
             object dbedtTELEFONE2: TDBEdit
               Left = 145
@@ -585,7 +585,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 10
+              TabOrder = 13
             end
             object DBEdit19: TDBEdit
               Left = 323
@@ -600,7 +600,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 11
+              TabOrder = 14
             end
             object DBEdit20: TDBEdit
               Left = 364
@@ -615,7 +615,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 12
+              TabOrder = 15
             end
             object cbbPessoa: TComboBox
               Left = 7
@@ -685,7 +685,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Campo.ParentFont = False
               Campo.TabOrder = 0
               OnPesquisa = DBPesquisa1Pesquisa
-              TabOrder = 14
+              TabOrder = 8
               TabStop = True
             end
             object DBEdit32: TDBEdit
@@ -702,7 +702,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Name = 'Segoe UI'
               Font.Style = []
               ParentFont = False
-              TabOrder = 15
+              TabOrder = 5
               OnKeyPress = DBEdit32KeyPress
             end
             object DBEdit33: TDBEdit
@@ -720,7 +720,7 @@ inherited Frm_Cliente: TFrm_Cliente
               Font.Style = []
               ParentFont = False
               ReadOnly = True
-              TabOrder = 16
+              TabOrder = 6
               OnKeyPress = DBEdit32KeyPress
             end
           end
@@ -18524,7 +18524,6 @@ inherited Frm_Cliente: TFrm_Cliente
       ' '#13#10'left outer join REPRESENTANTE c on (c.codigo = a.cod_represen' +
       'tante) '#13#10'where 1 = 2'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsAfterInsert
     Left = 48
     Top = 14

@@ -1,44 +1,81 @@
 inherited Frm_Empresa: TFrm_Empresa
   Caption = 'Cadastro de Empresa'
-  ClientWidth = 771
+  ClientHeight = 643
+  ClientWidth = 806
   OnShow = FormShow
-  ExplicitWidth = 771
+  ExplicitWidth = 806
+  ExplicitHeight = 643
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblTitulo: TLabel
-    Width = 771
+    Width = 806
     Caption = '         INFORMA'#199#213'ES DA EMPRESA'
     ExplicitLeft = 1
     ExplicitTop = -4
     ExplicitWidth = 771
   end
   inherited pnlFundo0: TPanel
-    Width = 771
+    Width = 806
+    Height = 613
     ExplicitWidth = 771
     inherited Panel1: TPanel
+      Height = 611
       Color = 14803681
+      inherited pnlSair: TPanel
+        Top = 531
+        ExplicitTop = 531
+      end
+      inherited pnlGravar: TPanel
+        Top = 446
+        ExplicitTop = 446
+      end
+      inherited pnlCancelar: TPanel
+        Top = 361
+        ExplicitTop = 361
+      end
+      inherited pnlLocalizar: TPanel
+        Top = 276
+        ExplicitTop = 276
+      end
+      inherited pnlExcluir: TPanel
+        Top = 191
+        ExplicitTop = 191
+      end
+      inherited pnlEditar: TPanel
+        Top = 106
+        ExplicitTop = 106
+      end
+      inherited pnlAdicionar: TPanel
+        Top = 21
+        ExplicitTop = 21
+      end
     end
     inherited pnlFundo1: TPanel
-      Width = 688
+      Width = 723
+      Height = 611
       Color = 14803681
       ParentColor = False
       ExplicitWidth = 688
       inherited Panel4: TPanel
-        Width = 686
-        TabOrder = 2
+        Top = 590
+        Width = 721
+        TabOrder = 3
         OnDblClick = Panel4DblClick
+        ExplicitLeft = -15
+        ExplicitTop = 572
         ExplicitWidth = 686
       end
       object pnlHeader: TPanel
         Left = 1
         Top = 1
-        Width = 686
+        Width = 721
         Height = 248
         Align = alTop
         BevelOuter = bvNone
         Caption = 'pnlHeader'
         ShowCaption = False
         TabOrder = 0
+        ExplicitWidth = 686
         object Label1: TLabel
           Left = 2
           Top = 122
@@ -66,7 +103,7 @@ inherited Frm_Empresa: TFrm_Empresa
           ParentFont = False
         end
         object pnlHeaderRight: TPanel
-          Left = 169
+          Left = 204
           Top = 0
           Width = 517
           Height = 248
@@ -76,6 +113,7 @@ inherited Frm_Empresa: TFrm_Empresa
           Caption = 'pnlHeaderRight'
           ShowCaption = False
           TabOrder = 0
+          ExplicitLeft = 169
           object Label20: TLabel
             Left = 10
             Top = 13
@@ -592,20 +630,22 @@ inherited Frm_Empresa: TFrm_Empresa
       object pnlDetail: TPanel
         Left = 1
         Top = 249
-        Width = 686
-        Height = 243
+        Width = 721
+        Height = 161
         Align = alClient
         BevelOuter = bvNone
         Caption = 'pnlDetail'
         TabOrder = 1
+        ExplicitWidth = 686
+        ExplicitHeight = 243
         object lbl2: TLabel
           Left = 0
           Top = 0
-          Width = 686
+          Width = 721
           Height = 20
           Align = alTop
           AutoSize = False
-          Caption = '         ENDERE'#199'OS'
+          Caption = '  ENDERE'#199'OS'
           Color = 10114859
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite
@@ -618,22 +658,27 @@ inherited Frm_Empresa: TFrm_Empresa
           Layout = tlCenter
           OnMouseMove = lblTituloMouseMove
           ExplicitTop = 8
+          ExplicitWidth = 686
         end
         object pgcEnderecos: TPageControl
           Left = 0
           Top = 20
-          Width = 686
-          Height = 223
+          Width = 721
+          Height = 141
           ActivePage = tsFat
           Align = alClient
           TabOrder = 0
+          ExplicitWidth = 686
+          ExplicitHeight = 197
           object tsFat: TTabSheet
             Caption = 'FATURAMENTO'
+            ExplicitWidth = 678
+            ExplicitHeight = 195
             object pnlEndFat: TPanel
               Left = 0
               Top = 0
-              Width = 678
-              Height = 195
+              Width = 713
+              Height = 113
               Align = alClient
               BevelOuter = bvNone
               Caption = 'pnlEndFat'
@@ -641,6 +686,8 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
+              ExplicitWidth = 678
+              ExplicitHeight = 195
               object Label2: TLabel
                 Left = 8
                 Top = 5
@@ -871,15 +918,13 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsEnt: TTabSheet
             Caption = 'ENTREGAS'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
+            ExplicitWidth = 678
+            ExplicitHeight = 195
             object pnlEndEnt: TPanel
               Left = 0
               Top = 0
-              Width = 678
-              Height = 195
+              Width = 713
+              Height = 113
               Align = alClient
               BevelOuter = bvNone
               Caption = 'pnlEndFat'
@@ -887,6 +932,8 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
+              ExplicitWidth = 678
+              ExplicitHeight = 195
               object Label9: TLabel
                 Left = 8
                 Top = 5
@@ -1117,15 +1164,13 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsCorresp: TTabSheet
             Caption = 'CORRESPOND'#202'NCIAS'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
+            ExplicitWidth = 678
+            ExplicitHeight = 195
             object pnlEndCorresp: TPanel
               Left = 0
               Top = 0
-              Width = 678
-              Height = 195
+              Width = 713
+              Height = 113
               Align = alClient
               BevelOuter = bvNone
               Caption = 'pnlEndFat'
@@ -1133,6 +1178,8 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
+              ExplicitWidth = 678
+              ExplicitHeight = 195
               object Label16: TLabel
                 Left = 8
                 Top = 5
@@ -1362,6 +1409,354 @@ inherited Frm_Empresa: TFrm_Empresa
           end
         end
       end
+      object pnlParamVenda: TPanel
+        Left = 1
+        Top = 410
+        Width = 721
+        Height = 180
+        Align = alBottom
+        BevelOuter = bvNone
+        Caption = 'pnlEndFat'
+        Color = 14803681
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 2
+        object lblTtiEstoque: TLabel
+          Left = 0
+          Top = 0
+          Width = 721
+          Height = 20
+          Align = alTop
+          AutoSize = False
+          Caption = '  PAR'#194'METROS DE VENDA'
+          Color = 10114859
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWhite
+          Font.Height = -15
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentColor = False
+          ParentFont = False
+          Transparent = False
+          Layout = tlCenter
+          OnMouseMove = lblTituloMouseMove
+          ExplicitTop = 8
+          ExplicitWidth = 686
+        end
+        object pgcParamVenda: TPageControl
+          Left = 0
+          Top = 20
+          Width = 721
+          Height = 160
+          ActivePage = tsPrazos
+          Align = alClient
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          ExplicitWidth = 686
+          ExplicitHeight = 130
+          object tsEstoque: TTabSheet
+            Caption = 'ESTOQUE'
+            ExplicitTop = 24
+            ExplicitWidth = 678
+            ExplicitHeight = 65
+            object Panel5: TPanel
+              Left = 0
+              Top = 0
+              Width = 713
+              Height = 128
+              Align = alClient
+              BevelOuter = bvNone
+              Caption = 'pnlEndFat'
+              Color = 14803681
+              ParentBackground = False
+              ShowCaption = False
+              TabOrder = 0
+              ExplicitLeft = 3
+              ExplicitTop = -2
+              ExplicitWidth = 678
+              ExplicitHeight = 98
+              object dbchkBloqProdcNegativo: TDBCheckBox
+                Left = 10
+                Top = 59
+                Width = 315
+                Height = 17
+                Caption = 'BLOQUEAR PRODU'#199#195'O COM ESTOQUE NEGATIVO'
+                DataField = 'BLOQ_PRODUC_NEGATIVO'
+                DataSource = ds
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Style = []
+                ParentFont = False
+                TabOrder = 1
+              end
+              object dbchkBlqVenda: TDBCheckBox
+                Left = 10
+                Top = 29
+                Width = 315
+                Height = 17
+                Caption = 'BLOQUEAR VENDA COM ESTOQUE NEGATIVO'
+                DataField = 'BLOQ_VENDA_NEGATIVO'
+                DataSource = ds
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Style = []
+                ParentFont = False
+                TabOrder = 0
+              end
+            end
+          end
+          object tsPrazos: TTabSheet
+            Caption = 'PRAZOS'
+            ImageIndex = 1
+            ExplicitLeft = 5
+            ExplicitTop = 25
+            ExplicitWidth = 678
+            ExplicitHeight = 102
+            object pnlPrazos: TPanel
+              Left = 0
+              Top = 0
+              Width = 713
+              Height = 128
+              Align = alClient
+              BevelOuter = bvNone
+              Caption = 'pnlEndFat'
+              Color = 14803681
+              ParentBackground = False
+              ShowCaption = False
+              TabOrder = 0
+              ExplicitLeft = 1
+              ExplicitTop = -2
+              object pnlDiasEntPed: TPanel
+                Left = 7
+                Top = 8
+                Width = 230
+                Height = 45
+                TabOrder = 0
+                object Label33: TLabel
+                  Left = 1
+                  Top = 1
+                  Width = 228
+                  Height = 17
+                  Align = alTop
+                  Alignment = taCenter
+                  Caption = 'ENTREGA PARA PEDIDO DE VENDA'
+                  ExplicitWidth = 205
+                end
+                object Panel3: TPanel
+                  Left = 1
+                  Top = 19
+                  Width = 228
+                  Height = 25
+                  Align = alBottom
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  object Label34: TLabel
+                    Left = 188
+                    Top = 0
+                    Width = 40
+                    Height = 25
+                    Align = alRight
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = 'DIAS'
+                    Layout = tlCenter
+                    ExplicitLeft = 189
+                  end
+                  object DBEdit27: TDBEdit
+                    Left = 74
+                    Top = 0
+                    Width = 80
+                    Height = 25
+                    DataField = 'DIAS_ENT_PEDVENDA'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    TabOrder = 0
+                    OnKeyPress = DBEdit27KeyPress
+                  end
+                end
+              end
+              object pnlDiasEntCompra: TPanel
+                Left = 241
+                Top = 8
+                Width = 230
+                Height = 45
+                TabOrder = 1
+                object lbl1: TLabel
+                  Left = 1
+                  Top = 1
+                  Width = 228
+                  Height = 17
+                  Align = alTop
+                  Alignment = taCenter
+                  Caption = 'ENTREGA PARA PEDIDO DE COMPRA'
+                  ExplicitWidth = 216
+                end
+                object pnl2: TPanel
+                  Left = 1
+                  Top = 19
+                  Width = 228
+                  Height = 25
+                  Align = alBottom
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  object lbl3: TLabel
+                    Left = 188
+                    Top = 0
+                    Width = 40
+                    Height = 25
+                    Align = alRight
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = 'DIAS'
+                    Layout = tlCenter
+                    ExplicitLeft = 201
+                  end
+                  object dbedt1: TDBEdit
+                    Left = 74
+                    Top = 0
+                    Width = 80
+                    Height = 25
+                    DataField = 'DIAS_ENT_COMPRA'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    TabOrder = 0
+                    OnKeyPress = DBEdit27KeyPress
+                  end
+                end
+              end
+              object pnlDiasValidOrcamento: TPanel
+                Left = 475
+                Top = 8
+                Width = 230
+                Height = 45
+                TabOrder = 2
+                object lbl4: TLabel
+                  Left = 1
+                  Top = 1
+                  Width = 228
+                  Height = 17
+                  Align = alTop
+                  Alignment = taCenter
+                  Caption = 'VALIDADE PARA OR'#199'AMENTO(VENDA)'
+                  ExplicitWidth = 224
+                end
+                object pnl3: TPanel
+                  Left = 1
+                  Top = 19
+                  Width = 228
+                  Height = 25
+                  Align = alBottom
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  ExplicitTop = 24
+                  ExplicitWidth = 278
+                  object lbl5: TLabel
+                    Left = 188
+                    Top = 0
+                    Width = 40
+                    Height = 25
+                    Align = alRight
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = 'DIAS'
+                    Layout = tlCenter
+                    ExplicitLeft = 201
+                  end
+                  object dbedt2: TDBEdit
+                    Left = 74
+                    Top = 0
+                    Width = 80
+                    Height = 25
+                    DataField = 'DIAS_VALID_ORCAMENTO'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    TabOrder = 0
+                    OnKeyPress = DBEdit27KeyPress
+                  end
+                end
+              end
+              object pnlCredNovoCliente: TPanel
+                Left = 8
+                Top = 63
+                Width = 230
+                Height = 45
+                TabOrder = 3
+                object lbl6: TLabel
+                  Left = 1
+                  Top = 1
+                  Width = 228
+                  Height = 17
+                  Align = alTop
+                  Alignment = taCenter
+                  Caption = 'LIMITE CR'#201'DITO P/ NOVOS CLIENTES'
+                  ExplicitWidth = 217
+                end
+                object pnl4: TPanel
+                  Left = 1
+                  Top = 19
+                  Width = 228
+                  Height = 25
+                  Align = alBottom
+                  BevelOuter = bvNone
+                  TabOrder = 0
+                  object lbl7: TLabel
+                    Left = 188
+                    Top = 0
+                    Width = 40
+                    Height = 25
+                    Align = alRight
+                    Alignment = taCenter
+                    AutoSize = False
+                    Caption = 'R$'
+                    Layout = tlCenter
+                    ExplicitLeft = 213
+                  end
+                  object dbedt3: TDBEdit
+                    Left = 74
+                    Top = 0
+                    Width = 80
+                    Height = 25
+                    DataField = 'CRED_CLI_NOVO'
+                    DataSource = ds
+                    Font.Charset = ANSI_CHARSET
+                    Font.Color = clWindowText
+                    Font.Height = -13
+                    Font.Name = 'Segoe UI Semibold'
+                    Font.Style = [fsBold]
+                    ParentFont = False
+                    TabOrder = 0
+                    OnKeyPress = DBEdit27KeyPress
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
   inherited ds: TDataSource
@@ -1372,6 +1767,7 @@ inherited Frm_Empresa: TFrm_Empresa
   inherited cds: TClientDataSet
     CommandText = 'SELECT e.* '#13#10'FROM EMPRESA e'#13#10'WHERE 1=2;'
     ProviderName = 'DSPLer1'
+    RemoteServer = DM.dspRLer
     AfterInsert = cdsAfterInsert
     Left = 464
     Top = 384
@@ -1525,6 +1921,37 @@ inherited Frm_Empresa: TFrm_Empresa
     end
     object cdsLOGOTIPO: TBlobField
       FieldName = 'LOGOTIPO'
+    end
+    object cdsBLOQ_VENDA_NEGATIVO: TBooleanField
+      FieldName = 'BLOQ_VENDA_NEGATIVO'
+      Required = True
+    end
+    object cdsBLOQ_PRODUC_NEGATIVO: TBooleanField
+      FieldName = 'BLOQ_PRODUC_NEGATIVO'
+      Required = True
+    end
+    object cdsDIAS_ENT_PEDVENDA: TIntegerField
+      Alignment = taCenter
+      FieldName = 'DIAS_ENT_PEDVENDA'
+      Required = True
+    end
+    object cdsDIAS_ENT_COMPRA: TIntegerField
+      Alignment = taCenter
+      FieldName = 'DIAS_ENT_COMPRA'
+      Required = True
+    end
+    object cdsDIAS_VALID_ORCAMENTO: TIntegerField
+      Alignment = taCenter
+      FieldName = 'DIAS_VALID_ORCAMENTO'
+      Required = True
+    end
+    object cdsCRED_CLI_NOVO: TFMTBCDField
+      Alignment = taCenter
+      FieldName = 'CRED_CLI_NOVO'
+      Required = True
+      DisplayFormat = '#,##0.00'
+      Precision = 18
+      Size = 2
     end
   end
   inherited actMaster: TActionList

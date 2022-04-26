@@ -28,6 +28,12 @@ type
     Fone: string;
     Celular: string;
     Cep: string;
+    Bloq_Venda_Negativo: Boolean;
+    Bloq_Producao_Negativo: Boolean;
+    Dias_Ent_Ped: Integer;
+    Dias_Ent_Comp: Integer;
+    Dias_Valid_Orcamento: Integer;
+    Cred_Novo_Cliente: Currency;
   end;
 
 type
@@ -214,11 +220,13 @@ var
 begin
   Aux := TClientDataSet.Create(nil);
   try
-    Aux.Data := LerDataSet('select a.CNPJ,a.INSC,a.RAZAO,a.FANTASIA,'+
-                           'a.ENDERECO,a.NUMERO,a.BAIRRO,a.CIDADE,'+
-                           'a.UF,a.FONE,a.CEL,a.EMAIL,a.CEP,'+
-                           '(select c.db_versao from control c)db_versao '+
-                           'from EMPRESA a ');
+    Aux.Data := LerDataSet('select A.CNPJ, A.INSC, A.RAZAO, A.FANTASIA, A.ENDERECO, A.NUMERO, A.BAIRRO, A.CIDADE, A.UF, A.FONE, A.CEL, A.EMAIL,'+
+                           '       A.CEP, A.BLOQ_VENDA_NEGATIVO, A.BLOQ_PRODUC_NEGATIVO, A.DIAS_ENT_PEDVENDA, A.DIAS_ENT_COMPRA,'+
+                           '       A.DIAS_VALID_ORCAMENTO, A.CRED_CLI_NOVO,'+
+                           '       (select C.DB_VERSAO'+
+                           '        from CONTROL C) DB_VERSAO '+
+                           'from EMPRESA A '+
+                           'where A.CODIGO = 1');
     fEmpresa.Fantasia := Aux.FieldByName('fantasia').AsString;
     fEmpresa.RazaoSocial := Aux.FieldByName('razao').AsString;
     fEmpresa.CNPJ := Aux.FieldByName('cnpj').AsString;
@@ -232,6 +240,12 @@ begin
     fEmpresa.Fone := Aux.FieldByName('fone').AsString;
     fEmpresa.Celular := Aux.FieldByName('cel').AsString;
     fEmpresa.Email := Aux.FieldByName('email').AsString;
+    fEmpresa.Bloq_Venda_Negativo := Aux.FieldByName('BLOQ_VENDA_NEGATIVO').AsBoolean;
+    fEmpresa.Bloq_Producao_Negativo := Aux.FieldByName('BLOQ_PRODUC_NEGATIVO').AsBoolean;
+    fEmpresa.Dias_Ent_Ped := Aux.FieldByName('DIAS_ENT_PEDVENDA').AsInteger;
+    fEmpresa.Dias_Ent_Comp := Aux.FieldByName('DIAS_ENT_COMPRA').AsInteger;
+    fEmpresa.Dias_Valid_Orcamento := Aux.FieldByName('DIAS_VALID_ORCAMENTO').AsInteger;
+    fEmpresa.Cred_Novo_Cliente := Aux.FieldByName('CRED_CLI_NOVO').AsCurrency;
 
     fVersao.BDRelease := Aux.FieldByName('db_versao').AsString;
     fVersao.BDBuild := '0';
