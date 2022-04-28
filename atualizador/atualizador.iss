@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "LDE Sistemas"
-#define MyAppVersion "1.0"
+#define MyAppVersion "40.2"
 #define MyAppPublisher "LDE Sistemas"
 #define MyAppURL "http://www.ldesistemas.com.br"
 #define MyAppExeName "Sistema.exe"
