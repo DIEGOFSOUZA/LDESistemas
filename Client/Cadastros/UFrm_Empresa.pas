@@ -176,6 +176,8 @@ type
     cdsDIAS_ENT_COMPRA: TIntegerField;
     cdsDIAS_VALID_ORCAMENTO: TIntegerField;
     cdsCRED_CLI_NOVO: TFMTBCDField;
+    dbchkRastreabilidade: TDBCheckBox;
+    cdsRASTREABILIDADE_PRODUCAO: TBooleanField;
     procedure FormCreate(Sender: TObject);
     procedure Label1Click(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);

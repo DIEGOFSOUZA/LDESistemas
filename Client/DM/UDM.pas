@@ -34,6 +34,7 @@ type
     Dias_Ent_Comp: Integer;
     Dias_Valid_Orcamento: Integer;
     Cred_Novo_Cliente: Currency;
+    Rastreabilidade: Boolean;
   end;
 
 type
@@ -222,7 +223,7 @@ begin
   try
     Aux.Data := LerDataSet('select A.CNPJ, A.INSC, A.RAZAO, A.FANTASIA, A.ENDERECO, A.NUMERO, A.BAIRRO, A.CIDADE, A.UF, A.FONE, A.CEL, A.EMAIL,'+
                            '       A.CEP, A.BLOQ_VENDA_NEGATIVO, A.BLOQ_PRODUC_NEGATIVO, A.DIAS_ENT_PEDVENDA, A.DIAS_ENT_COMPRA,'+
-                           '       A.DIAS_VALID_ORCAMENTO, A.CRED_CLI_NOVO,'+
+                           '       A.DIAS_VALID_ORCAMENTO, A.CRED_CLI_NOVO, A.RASTREABILIDADE_PRODUCAO,'+
                            '       (select C.DB_VERSAO'+
                            '        from CONTROL C) DB_VERSAO '+
                            'from EMPRESA A '+
@@ -246,6 +247,7 @@ begin
     fEmpresa.Dias_Ent_Comp := Aux.FieldByName('DIAS_ENT_COMPRA').AsInteger;
     fEmpresa.Dias_Valid_Orcamento := Aux.FieldByName('DIAS_VALID_ORCAMENTO').AsInteger;
     fEmpresa.Cred_Novo_Cliente := Aux.FieldByName('CRED_CLI_NOVO').AsCurrency;
+    fEmpresa.Rastreabilidade := Aux.FieldByName('RASTREABILIDADE_PRODUCAO').AsBoolean;
 
     fVersao.BDRelease := Aux.FieldByName('db_versao').AsString;
     fVersao.BDBuild := '0';

@@ -41,6 +41,7 @@ type
     cdsLER: TClientDataSet;
   private
     procedure getClientDataSet(aClientDataSet: OleVariant);
+    function EstoqueInsumoAbaixo(aBD : string; aIdLote: integer): Boolean;
   public
     function setProducao(const BD: string; pID: integer; const Dados: OleVariant): OleVariant;
     function getProducao(const BD: string; pID: integer): OleVariant;
@@ -50,6 +51,7 @@ type
     function setProducao_Insert(const BD: string; aTabelas: OleVariant): Boolean;
     function setProducao_Cancelar(const BD: string; aIDLote: integer): Boolean;
     function getLote(const BD: string; aValue: integer): OleVariant;
+    function setProducao_Baixa(const BD: string; aIDLote: integer; aBloqNegativo: Boolean; aRastreabilidade: Boolean): string;
   end;
 
 implementation
@@ -58,13 +60,44 @@ uses
   uServerDM, System.Variants;
 
 
-
-
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
 
 { TSMProducao }
+
+function TSMProducao.EstoqueInsumoAbaixo(aBD : string; aIdLote: integer): Boolean;
+const
+  SQL = 'with BUSCA '+
+        'as (select M.ID_MATPRIMA,'+
+        '           (P.QTDE_ESTOQUE - sum(M.QTDE)) DIF'+
+        '    from LOTE_ITENS I'+
+        '    left join LOTE_MATPRIMA M on (I.ID = M.ID_LOTE_ITEM)'+
+        '    left join PRODUTO P on (P.CODIGO = M.ID_MATPRIMA)'+
+        '    where I.ID_LOTE = %s'+
+        '    group by M.ID_MATPRIMA, P.QTDE_ESTOQUE) '+
+        'select ID_MATPRIMA '+
+        'from BUSCA '+
+        'where DIF < 0';
+var
+  DM: TServerDM;
+begin
+  Result := True;
+  DM := TServerDM.Create(aBD);
+  try
+   try
+      DM.SQLLer.SQL.Clear;
+      DM.SQLLer.Open(Format(SQL,[aIdLote.ToString]));
+      if DM.SQLLer.IsEmpty then
+        Result := False;
+    except
+      
+    end;
+  finally
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
 
 procedure TSMProducao.getClientDataSet(aClientDataSet: OleVariant);
 begin
@@ -215,6 +248,114 @@ begin
     end;
   finally
     dsProducao.Close;
+    DM.FecharConexao;
+    FreeAndNil(DM);
+  end;
+end;
+
+function TSMProducao.setProducao_Baixa(const BD: string; aIDLote: integer; aBloqNegativo: Boolean; aRastreabilidade: Boolean): string;
+const
+  SQLItens          = 'select I.ID '+
+                      'from LOTE_ITENS I '+
+                      'where I.ID_LOTE = %s';
+  SQLInsumo         = 'select M.ID,M.ID_MATPRIMA,'+
+                      'M.QTDE '+
+                      'from LOTE_ITENS I '+
+                      'left join LOTE_MATPRIMA M on (I.ID = M.ID_LOTE_ITEM) '+
+                      'where I.ID_LOTE = %s '+
+                      'order by i.id';
+  SQLLotesDisponivel = 'select '+
+                       '  fl.id, fl.qtde_disponivel '+
+                       'from fabricante_lote fl '+
+                       'where fl.id_produto = %s and '+
+                       'fl.qtde_disponivel > 0 '+
+                       'order by fl.dt_validade';
+  SQLUpdateDisponivel = 'update fabricante_lote fl '+
+                        'set fl.qtde_disponivel = %s '+
+                        'where fl.id = %s';
+  SQLInsert           = 'insert into LOTE_MATPRIMA_FABRICANTE (ID_LOTEMATPRIMA, ID_LOTEFABRICANTE, QTDE) '+
+                        'values (%s, %s, %s)';
+  SQLBaixaInsumo      = 'update LOTE_MATPRIMA '+
+                        'set QTDE_FECHADA = QTDE '+
+                        'where (ID = %s)';
+  SQLEntItemLote      = 'update LOTE_ITENS '+
+                        'set QTDE_FECHADA = QTDE '+
+                        'where (ID_LOTE = %s)';
+  SQLUpdateStatusLote = 'update LOTE '+
+                        'set STATUS = ''PRODUZIDA'' '+
+                        'where (ID = %s)';
+var
+  DM: TServerDM;
+  lItens, lInsumos, lLotesDisponivel: TClientDataSet;
+  lRestante: Extended;
+begin
+  if (aBloqNegativo and EstoqueInsumoAbaixo(BD, aIDLote)) then
+  begin
+    Result := 'Insumo:Estoque abaixo';
+    Exit;
+  end;
+
+  lItens := TClientDataSet.Create(nil);
+  lInsumos := TClientDataSet.Create(nil);
+  lLotesDisponivel := TClientDataSet.Create(nil);
+  DM := TServerDM.Create(BD);
+  FormatSettings.DecimalSeparator := '.';
+  FormatSettings.ThousandSeparator := ',';
+  try
+    try
+      lItens.Data := DM.LerDataSet(Format(SQLItens, [aIDLote.ToString]));
+      lInsumos.Data := DM.LerDataSet(Format(SQLInsumo, [aIDLote.ToString]));
+
+      lInsumos.First;
+      while not lInsumos.Eof do
+      begin
+      {Parametrizado no cadastro da Empresa}
+        if aRastreabilidade then
+        begin
+          lLotesDisponivel.Close;
+          lLotesDisponivel.Data := DM.LerDataSet(Format(SQLLotesDisponivel, [lInsumos.FieldByName('ID_MATPRIMA').AsString]));
+          if not lLotesDisponivel.IsEmpty then
+          begin
+            lRestante := lInsumos.FieldByName('QTDE').AsFloat;
+            lLotesDisponivel.First;
+            while not lLotesDisponivel.Eof do
+            begin
+              if (lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat > lRestante) then
+              begin
+                DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat - lRestante),
+                                                         lLotesDisponivel.FieldByName('ID').AsString]));
+                {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
+                DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
+                lRestante := 0;
+                Break;
+              end
+              else
+              begin
+                DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(0), lLotesDisponivel.FieldByName('ID').AsString]));
+                {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
+                DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
+                lRestante := lRestante - lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat;
+              end;
+              lLotesDisponivel.Next;
+            end;
+          end;
+        end;
+
+        DM.Executar(Format(SQLBaixaInsumo, [lInsumos.FieldByName('ID').AsString]));
+        lInsumos.Next;
+      end;
+      DM.Executar(Format(SQLEntItemLote, [aIDLote.ToString]));
+      DM.Executar(Format(SQLUpdateStatusLote, [aIDLote.ToString]));
+      Result := 'sucesso';
+    except
+      Result := 'erro';
+    end;
+  finally
+    FormatSettings.DecimalSeparator := ',';
+    FormatSettings.ThousandSeparator := '.';
+    FreeAndNil(lLotesDisponivel);
+    FreeAndNil(lItens);
+    FreeAndNil(lInsumos);
     DM.FecharConexao;
     FreeAndNil(DM);
   end;

@@ -17,10 +17,12 @@ inherited Frm_Empresa: TFrm_Empresa
   inherited pnlFundo0: TPanel
     Width = 806
     Height = 613
-    ExplicitWidth = 771
+    ExplicitWidth = 806
+    ExplicitHeight = 613
     inherited Panel1: TPanel
       Height = 611
       Color = 14803681
+      ExplicitHeight = 611
       inherited pnlSair: TPanel
         Top = 531
         ExplicitTop = 531
@@ -55,15 +57,15 @@ inherited Frm_Empresa: TFrm_Empresa
       Height = 611
       Color = 14803681
       ParentColor = False
-      ExplicitWidth = 688
+      ExplicitWidth = 723
+      ExplicitHeight = 611
       inherited Panel4: TPanel
         Top = 590
         Width = 721
         TabOrder = 3
         OnDblClick = Panel4DblClick
-        ExplicitLeft = -15
-        ExplicitTop = 572
-        ExplicitWidth = 686
+        ExplicitTop = 590
+        ExplicitWidth = 721
       end
       object pnlHeader: TPanel
         Left = 1
@@ -75,7 +77,6 @@ inherited Frm_Empresa: TFrm_Empresa
         Caption = 'pnlHeader'
         ShowCaption = False
         TabOrder = 0
-        ExplicitWidth = 686
         object Label1: TLabel
           Left = 2
           Top = 122
@@ -113,7 +114,6 @@ inherited Frm_Empresa: TFrm_Empresa
           Caption = 'pnlHeaderRight'
           ShowCaption = False
           TabOrder = 0
-          ExplicitLeft = 169
           object Label20: TLabel
             Left = 10
             Top = 13
@@ -636,8 +636,6 @@ inherited Frm_Empresa: TFrm_Empresa
         BevelOuter = bvNone
         Caption = 'pnlDetail'
         TabOrder = 1
-        ExplicitWidth = 686
-        ExplicitHeight = 243
         object lbl2: TLabel
           Left = 0
           Top = 0
@@ -668,12 +666,8 @@ inherited Frm_Empresa: TFrm_Empresa
           ActivePage = tsFat
           Align = alClient
           TabOrder = 0
-          ExplicitWidth = 686
-          ExplicitHeight = 197
           object tsFat: TTabSheet
             Caption = 'FATURAMENTO'
-            ExplicitWidth = 678
-            ExplicitHeight = 195
             object pnlEndFat: TPanel
               Left = 0
               Top = 0
@@ -686,8 +680,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitWidth = 678
-              ExplicitHeight = 195
               object Label2: TLabel
                 Left = 8
                 Top = 5
@@ -918,8 +910,6 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsEnt: TTabSheet
             Caption = 'ENTREGAS'
             ImageIndex = 1
-            ExplicitWidth = 678
-            ExplicitHeight = 195
             object pnlEndEnt: TPanel
               Left = 0
               Top = 0
@@ -932,8 +922,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitWidth = 678
-              ExplicitHeight = 195
               object Label9: TLabel
                 Left = 8
                 Top = 5
@@ -1164,8 +1152,6 @@ inherited Frm_Empresa: TFrm_Empresa
           object tsCorresp: TTabSheet
             Caption = 'CORRESPOND'#202'NCIAS'
             ImageIndex = 2
-            ExplicitWidth = 678
-            ExplicitHeight = 195
             object pnlEndCorresp: TPanel
               Left = 0
               Top = 0
@@ -1178,8 +1164,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitWidth = 678
-              ExplicitHeight = 195
               object Label16: TLabel
                 Left = 8
                 Top = 5
@@ -1448,7 +1432,7 @@ inherited Frm_Empresa: TFrm_Empresa
           Top = 20
           Width = 721
           Height = 160
-          ActivePage = tsPrazos
+          ActivePage = tsEstoque
           Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
@@ -1457,13 +1441,8 @@ inherited Frm_Empresa: TFrm_Empresa
           Font.Style = []
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 686
-          ExplicitHeight = 130
           object tsEstoque: TTabSheet
             Caption = 'ESTOQUE'
-            ExplicitTop = 24
-            ExplicitWidth = 678
-            ExplicitHeight = 65
             object Panel5: TPanel
               Left = 0
               Top = 0
@@ -1476,15 +1455,12 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 3
-              ExplicitTop = -2
-              ExplicitWidth = 678
-              ExplicitHeight = 98
               object dbchkBloqProdcNegativo: TDBCheckBox
                 Left = 10
                 Top = 59
                 Width = 315
                 Height = 17
+                TabStop = False
                 Caption = 'BLOQUEAR PRODU'#199#195'O COM ESTOQUE NEGATIVO'
                 DataField = 'BLOQ_PRODUC_NEGATIVO'
                 DataSource = ds
@@ -1494,13 +1470,14 @@ inherited Frm_Empresa: TFrm_Empresa
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 2
               end
               object dbchkBlqVenda: TDBCheckBox
                 Left = 10
                 Top = 29
                 Width = 315
                 Height = 17
+                TabStop = False
                 Caption = 'BLOQUEAR VENDA COM ESTOQUE NEGATIVO'
                 DataField = 'BLOQ_VENDA_NEGATIVO'
                 DataSource = ds
@@ -1512,15 +1489,28 @@ inherited Frm_Empresa: TFrm_Empresa
                 ParentFont = False
                 TabOrder = 0
               end
+              object dbchkRastreabilidade: TDBCheckBox
+                Left = 362
+                Top = 29
+                Width = 315
+                Height = 17
+                TabStop = False
+                Caption = 'GERAR RASTREABILIDADE DA PRODU'#199#195'O'
+                DataField = 'RASTREABILIDADE_PRODUCAO'
+                DataSource = ds
+                Font.Charset = ANSI_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -13
+                Font.Name = 'Segoe UI'
+                Font.Style = []
+                ParentFont = False
+                TabOrder = 1
+              end
             end
           end
           object tsPrazos: TTabSheet
             Caption = 'PRAZOS'
             ImageIndex = 1
-            ExplicitLeft = 5
-            ExplicitTop = 25
-            ExplicitWidth = 678
-            ExplicitHeight = 102
             object pnlPrazos: TPanel
               Left = 0
               Top = 0
@@ -1533,8 +1523,6 @@ inherited Frm_Empresa: TFrm_Empresa
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 1
-              ExplicitTop = -2
               object pnlDiasEntPed: TPanel
                 Left = 7
                 Top = 8
@@ -1667,8 +1655,6 @@ inherited Frm_Empresa: TFrm_Empresa
                   Align = alBottom
                   BevelOuter = bvNone
                   TabOrder = 0
-                  ExplicitTop = 24
-                  ExplicitWidth = 278
                   object lbl5: TLabel
                     Left = 188
                     Top = 0
@@ -1952,6 +1938,10 @@ inherited Frm_Empresa: TFrm_Empresa
       DisplayFormat = '#,##0.00'
       Precision = 18
       Size = 2
+    end
+    object cdsRASTREABILIDADE_PRODUCAO: TBooleanField
+      FieldName = 'RASTREABILIDADE_PRODUCAO'
+      Required = True
     end
   end
   inherited actMaster: TActionList

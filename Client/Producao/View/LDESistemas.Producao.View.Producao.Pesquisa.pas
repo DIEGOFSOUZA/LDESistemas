@@ -59,14 +59,28 @@ uses
 {$R *.dfm}
 
 procedure TFrmProducaoPesquisa.actProduzirLoteExecute(Sender: TObject);
+var
+  lIdLote: Integer;
+  lRetorno: string;
 begin
   inherited;
   if (cdsLote.FieldByName('STATUS').AsString <> 'PENDENTE') then
     Exit;
 
-  if Tmensagem.Pergunta('Confirma a total produção do Lote Nº '+cdsLoteID.AsString+'?') then
+  lIdLote := cdsLote.FieldByName('ID').AsInteger;
+  if Tmensagem.Pergunta('Confirma a total produção do Lote Nº ' + lIdLote.ToString + '?') then
   begin
-    //
+    lRetorno := DM.SMProducao.setProducao_Baixa(DM.BancoDados, lIdLote, DM.Empresa.Bloq_Producao_Negativo, DM.Empresa.Rastreabilidade);
+    if (lRetorno = 'sucesso') then
+    begin
+      CarregarGrid;
+      cdsLote.Locate('ID', lIdLote, []);
+    end;
+    if (lRetorno = 'Insumo:Estoque abaixo') then
+      TMensagem.Informacao('Não há Insumo(Matéria-Prima) suficiente para gerar a produção.'+sLineBreak+
+                           'Parametrizado no cadastro de Empresa que Estoque não pode ser negativo.');
+    if (lRetorno = 'erro') then
+      TMensagem.Erro('Erro: Produção não foi gerada.' + sLineBreak + 'Tente novamente.');
   end;
 end;
 

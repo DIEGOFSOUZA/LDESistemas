@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 22/04/2022 14:40:32
+// 28/04/2022 16:22:14
 //
 
 unit UClassDataSnap;
@@ -254,6 +254,7 @@ type
     FsetProducao_InsertCommand: TDBXCommand;
     FsetProducao_CancelarCommand: TDBXCommand;
     FgetLoteCommand: TDBXCommand;
+    FsetProducao_BaixaCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -264,6 +265,7 @@ type
     function setProducao_Insert(BD: string; aTabelas: OleVariant): Boolean;
     function setProducao_Cancelar(BD: string; aIDLote: Integer): Boolean;
     function getLote(BD: string; aValue: Integer): OleVariant;
+    function setProducao_Baixa(BD: string; aIDLote: Integer; aBloqNegativo: Boolean; aRastreabilidade: Boolean): string;
   end;
 
   TSMProdutoClient = class(TDSAdminClient)
@@ -2060,6 +2062,23 @@ begin
   Result := FgetLoteCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSMProducaoClient.setProducao_Baixa(BD: string; aIDLote: Integer; aBloqNegativo: Boolean; aRastreabilidade: Boolean): string;
+begin
+  if FsetProducao_BaixaCommand = nil then
+  begin
+    FsetProducao_BaixaCommand := FDBXConnection.CreateCommand;
+    FsetProducao_BaixaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetProducao_BaixaCommand.Text := 'TSMProducao.setProducao_Baixa';
+    FsetProducao_BaixaCommand.Prepare;
+  end;
+  FsetProducao_BaixaCommand.Parameters[0].Value.SetWideString(BD);
+  FsetProducao_BaixaCommand.Parameters[1].Value.SetInt32(aIDLote);
+  FsetProducao_BaixaCommand.Parameters[2].Value.SetBoolean(aBloqNegativo);
+  FsetProducao_BaixaCommand.Parameters[3].Value.SetBoolean(aRastreabilidade);
+  FsetProducao_BaixaCommand.ExecuteUpdate;
+  Result := FsetProducao_BaixaCommand.Parameters[4].Value.GetWideString;
+end;
+
 constructor TSMProducaoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -2078,6 +2097,7 @@ begin
   FsetProducao_InsertCommand.DisposeOf;
   FsetProducao_CancelarCommand.DisposeOf;
   FgetLoteCommand.DisposeOf;
+  FsetProducao_BaixaCommand.DisposeOf;
   inherited;
 end;
 
