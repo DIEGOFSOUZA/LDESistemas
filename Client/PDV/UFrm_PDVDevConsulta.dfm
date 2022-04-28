@@ -197,9 +197,11 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
         Height = 503
         Align = alRight
         TabOrder = 1
+        ExplicitLeft = 624
+        ExplicitTop = 6
         object pnlTroca: TPanel
           Left = 10
-          Top = 26
+          Top = 127
           Width = 110
           Height = 30
           BevelOuter = bvNone
@@ -226,15 +228,12 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 1
-            ExplicitTop = 7
-            ExplicitWidth = 23
-            ExplicitHeight = 23
+            ExplicitLeft = -4
           end
         end
         object pnlImprimir: TPanel
           Left = 10
-          Top = 96
+          Top = 237
           Width = 110
           Height = 30
           BevelOuter = bvNone
@@ -269,7 +268,7 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
         end
         object pnlCancelarVenda: TPanel
           Left = 10
-          Top = 166
+          Top = 347
           Width = 110
           Height = 30
           BevelOuter = bvNone
@@ -296,10 +295,7 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
             ParentFont = False
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 1
-            ExplicitTop = 7
-            ExplicitWidth = 23
-            ExplicitHeight = 23
+            ExplicitLeft = -4
           end
         end
       end
@@ -441,7 +437,6 @@ inherited Frm_PDVDevConsulta: TFrm_PDVDevConsulta
       ' (c.codigo=pm.id_cliente)'#13#10'where 1=2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 377
     Top = 311
     object cdsVendaTIPO: TStringField
