@@ -348,12 +348,12 @@ begin
           CodigoMoraJuros := cjValorDia;
           DataMoraJuros := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
 
-          //Multa
-          //***Com multa***
+          {Multa}
+          {Com multa}
 //          CodigoMulta := cmPercentual;
 //          PercentualMulta := 2;
 //          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
-          //***Sem multa***
+          {Sem multa}
           CodigoMulta := TACBrCodigoMulta(0);
           PercentualMulta := 0;
           DataMulta := 0;
