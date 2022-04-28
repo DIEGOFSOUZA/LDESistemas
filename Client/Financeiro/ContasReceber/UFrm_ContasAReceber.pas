@@ -349,9 +349,15 @@ begin
           DataMoraJuros := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
 
           //Multa
-          CodigoMulta := cmPercentual;
-          PercentualMulta := 2;
-          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+          //***Com multa***
+//          CodigoMulta := cmPercentual;
+//          PercentualMulta := 2;
+//          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+          //***Sem multa***
+          CodigoMulta := TACBrCodigoMulta(0);
+          PercentualMulta := 0;
+          DataMulta := 0;
+
 
           //Limite p pagamento
           DataLimitePagto := IncDay(cdsGrid.FieldByName('DT_VENC').AsDateTime,90);
