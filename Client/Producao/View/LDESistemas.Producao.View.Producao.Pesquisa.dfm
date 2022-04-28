@@ -139,7 +139,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
-              Title.Font.Name = 'Segoe UI'
+              Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
             end
@@ -149,7 +149,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
-              Title.Font.Name = 'Segoe UI'
+              Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
             end
@@ -159,7 +159,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
-              Title.Font.Name = 'Segoe UI'
+              Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
             end
@@ -169,7 +169,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
               Title.Font.Height = -16
-              Title.Font.Name = 'Segoe UI'
+              Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
             end>
