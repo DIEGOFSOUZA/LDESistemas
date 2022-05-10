@@ -102,19 +102,19 @@ uses
 procedure TFrmProducaoNova.actCancelarProducaoExecute(Sender: TObject);
 begin
   inherited;
-  if TMensagem.Pergunta('Confirma o cancelamento da Proução ?') then
-    try
-      if DM.SMProducao.setProducao_Cancelar(DM.BancoDados, FIDLote) then
-      begin
-        TMensagem.Informacao('Ordem de produção cancelada com sucesso.');
-        Retorno := 'sucesso';
-        actSair.Execute;
-      end
-      else
-        TMensagem.Erro('Não foi posível cancelar a produção.' + sLineBreak + 'Tente novamente.');
-    except
+  if TMensagem.Pergunta('Confirma o cancelamento da Produção ?') then
+  try
+    if DM.SMProducao.setProducao_Cancelar(DM.BancoDados, FIDLote) then
+    begin
+      TMensagem.Informacao('Ordem de produção cancelada com sucesso.');
+      Retorno := 'sucesso';
+      actSair.Execute;
+    end
+    else
       TMensagem.Erro('Não foi posível cancelar a produção.' + sLineBreak + 'Tente novamente.');
-    end;
+  except
+    TMensagem.Erro('Não foi posível cancelar a produção.' + sLineBreak + 'Tente novamente.');
+  end;
 end;
 
 procedure TFrmProducaoNova.actSairExecute(Sender: TObject);

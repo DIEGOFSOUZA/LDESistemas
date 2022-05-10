@@ -16,3 +16,5 @@ where l.status = 'FINALIZADO';
 
 update CONTROL C
 set C.DB_VERSAO = 10;
+
+commit work;

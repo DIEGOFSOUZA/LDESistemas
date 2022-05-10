@@ -44,6 +44,7 @@ type
     function ExecuteDirect(pSQL : string) : integer ;
     function Executar(pSQL : string) : integer ;
     function CDSIsEmpty(aSQL: string): Boolean;
+    function EmpresaRastreio():Boolean;
 
     function TesteDataBase: Boolean;
 
@@ -147,6 +148,20 @@ end;
 procedure TServerDM.DataModuleDestroy(Sender: TObject);
 begin
   Conexao.Close;
+end;
+
+function TServerDM.EmpresaRastreio: Boolean;
+const
+  SQL = 'select e.rastreabilidade_producao '+
+        'from empresa e';
+begin
+  Result := False;
+  try
+    LerDataSet(SQL);
+    Result := Ler.FieldByName('rastreabilidade_producao').AsBoolean;
+  except
+
+  end;
 end;
 
 function TServerDM.Executar(pSQL: string): integer;

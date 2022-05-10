@@ -3,12 +3,12 @@ unit USM_PDV;
 interface
 
 uses
-  System.SysUtils, System.Classes, Datasnap.DSServer, 
-  Datasnap.DSAuth, Datasnap.DSProviderDataModuleAdapter, FireDAC.Stan.Intf,
-  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
-  FireDAC.Comp.Client, Data.DB, Datasnap.DBClient, Datasnap.Provider,
-  FireDAC.Comp.DataSet, System.Variants;
+  System.SysUtils, System.Classes, Datasnap.DSServer, Datasnap.DSAuth,
+  Datasnap.DSProviderDataModuleAdapter, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.Client,
+  Data.DB, Datasnap.DBClient, Datasnap.Provider, FireDAC.Comp.DataSet,
+  System.Variants, uServerDM;
 
 type
   TsmPDV = class(TDSServerModule)
@@ -43,7 +43,7 @@ type
     fdqryOrcamentoTIPO_LIBERACAO: TStringField;
     fdqryOrcamentoUSU_LIBEROU: TStringField;
   private
-    { Private declarations }
+    procedure VincularLote(aDM: TServerDM; aItens: OleVariant);
   public
     function setOrcamento(const BD: string; pID: integer; const Dados: OleVariant): Boolean;
     function getOrcamento(const BD: string; pID: integer): OleVariant;
@@ -67,9 +67,6 @@ const
                  'from campos' ;
 
 implementation
-
-uses
-  uServerDM;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -317,8 +314,7 @@ begin
   end;
 end;
 
-function TsmPDV.setFechaVenda(const BD: string; Dados: OleVariant; pID,
-  pTipo: string): Boolean;
+function TsmPDV.setFechaVenda(const BD: string; Dados: OleVariant; pID, pTipo: string): Boolean;
 var
   txt: string;
   DM: TServerDM;
@@ -359,6 +355,11 @@ begin
       DM.Commit;
 
       Result := True;
+
+      if DM.EmpresaRastreio then
+      begin
+        VincularLote(DM, Dados[1]);
+      end;
     except
       on E: Exception do
       begin
@@ -402,6 +403,77 @@ begin
     DM.FecharConexao;
     FreeAndNil(DM);
   end;
+end;
+
+procedure TsmPDV.VincularLote(aDM: TServerDM; aItens: OleVariant);
+const
+  SQLDisponivel    = 'select '+
+                     '  i.id,coalesce(i.qtde_disponivel,0)qtde_disponivel '+
+                     'from lote_itens i '+
+                     'where i.codpro = :codpro and'+
+                     'i.qtde_disponivel > 0 '+
+                     'order by i.dt_validade';
+
+  SQLUpdDisponivel = 'update lote_itens i '+
+                     ' set i.qtde_disponivel = :qtde '+
+                     'where i.id = :id';
+
+  SQLInsPDV_LOTE   = 'insert into PDV_LOTE (PDV_TIPO, PDV_ID, PDV_ORDEM, LOTE_ID, QTDE) '+
+                     'values (:PDV_TIPO, :PDV_ID, :PDV_ORDEM, :LOTE_ID, :QTDE)';
+var
+  lItens,lDisponiveis: TClientDataSet;
+  lRestante : Double;
+begin
+  lItens := TClientDataSet.Create(nil);
+  lDisponiveis := TClientDataSet.Create(nil);
+
+  lItens.Data := aItens;
+  lItens.DisableControls;
+  try
+    lItens.First;
+    while not lItens.Eof do
+    begin
+      lDisponiveis.Close;
+      lDisponiveis.Data := aDM.LerDataSet(Format(SQLDisponivel, [lItens.FieldByName('ID_PRODUTO').AsString]));
+      if not lDisponiveis.IsEmpty then
+      begin
+        lRestante := lItens.FieldByName('QTDE_BAIXA').AsFloat;
+        lDisponiveis.First;
+        while not lDisponiveis.Eof do
+        begin
+          if (lDisponiveis.FieldByName('qtde_disponivel').AsFloat > lRestante) then
+          begin
+            aDM.Executar(Format(SQLUpdDisponivel, [FloatToStr(lDisponiveis.FieldByName('qtde_disponivel').AsFloat - lRestante),
+                                                   lDisponiveis.FieldByName('ID').AsString]));
+            {alimenta tabela PDV_LOTE que faz o vinculo entre VENDA e LOTE DE PRODUCAO}
+            aDM.Executar(Format(SQLInsPDV_LOTE, [lItens.FieldByName('TIPO').AsString, lItens.FieldByName('ID').AsString,
+                                                 lItens.FieldByName('ORDEM').AsString, lDisponiveis.FieldByName('ID').AsString,
+                                                 lRestante.ToString]));
+            lRestante := 0;
+            Break;
+          end
+          else
+          begin
+            aDM.Executar(Format(SQLUpdDisponivel, [FloatToStr(0), lDisponiveis.FieldByName('ID').AsString]));
+            {alimenta tabela PDV_LOTE que faz o vinculo entre VENDA e LOTE DE PRODUCAO}
+            aDM.Executar(Format(SQLInsPDV_LOTE, [lItens.FieldByName('TIPO').AsString, lItens.FieldByName('ID').AsString,
+                                                 lItens.FieldByName('ORDEM').AsString, lDisponiveis.FieldByName('ID').AsString,
+                                                 lRestante.ToString]));
+            lRestante := lRestante - lDisponiveis.FieldByName('qtde_disponivel').AsFloat;
+          end;
+          lDisponiveis.Next;
+        end;
+      end;
+
+      lItens.Next;
+    end;
+
+  finally
+    lItens.EnableControls;
+    FreeAndNil(lDisponiveis);
+    FreeAndNil(lItens);
+  end;
+
 end;
 
 end.

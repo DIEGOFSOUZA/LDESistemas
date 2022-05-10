@@ -9,8 +9,8 @@ const
   cor03 = $00E1E2E1;
 
   //Versao do Sistema
-  Release = '40';
-  Build =   '1';
+  Release = '41';
+  Build =   '0';
 
   //Versao BD - busca versao do banco
 //  BDRelease = '5';

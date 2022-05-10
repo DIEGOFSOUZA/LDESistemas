@@ -152,6 +152,7 @@ type
 
     procedure InibirMenus();
 
+    procedure LiberaPerfil(aPerfil: string);
     procedure LiberaPDV(aPDV:Boolean);
     procedure LiberaOP(aOP:Boolean);
     procedure LiberaFINANCEIRO(aFinanceiro:Boolean);
@@ -557,9 +558,7 @@ begin
   if aPDV then
   begin
     MenuCadastros.Visible := True;
-    MenuCad_Funcionario.Visible := True;
-    MenuCad_Usuario.Visible := True;
-    MenuCad_Empresa.Visible := True;
+    LiberaPerfil(DM.Usuario.Perfil);
 
     MenuProduto.Visible := True;
     MenuProd_Produto.Visible := True;
@@ -597,6 +596,16 @@ begin
     MenuRel_PDV_VendaPerVendCli.Visible := True;
     MenuRel_PDV_CaixaFechado.Visible := True;
     MenuRel_PDV_Sangria.Visible := True;
+  end;
+end;
+
+procedure TFrm_Inicial.LiberaPerfil(aPerfil: string);
+begin
+  if (UpperCase(aPerfil) = 'ADMINISTRADOR') then
+  begin
+    MenuCad_Funcionario.Visible := True;
+    MenuCad_Usuario.Visible := True;
+    MenuCad_Empresa.Visible := True;
   end;
 end;
 

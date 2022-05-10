@@ -849,7 +849,7 @@ inherited Frm_Produto: TFrm_Produto
             Top = 0
             Width = 663
             Height = 232
-            ActivePage = tsFiscal
+            ActivePage = tsEstoque
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -988,6 +988,8 @@ inherited Frm_Produto: TFrm_Produto
                   Align = alTop
                   ShowCaption = False
                   TabOrder = 0
+                  ExplicitLeft = 0
+                  ExplicitTop = -4
                   object Label26: TLabel
                     Left = 1
                     Top = 1
@@ -1028,7 +1030,7 @@ inherited Frm_Produto: TFrm_Produto
                   object Label4: TLabel
                     Left = 105
                     Top = 26
-                    Width = 150
+                    Width = 200
                     Height = 15
                     Alignment = taCenter
                     AutoSize = False
@@ -1040,18 +1042,18 @@ inherited Frm_Produto: TFrm_Produto
                     Font.Style = [fsBold]
                     ParentFont = False
                   end
-                  object dbtxtQTDE_ESTOQUE: TDBText
+                  object lblEstoqueAtual: TLabel
                     Left = 105
-                    Top = 45
-                    Width = 150
-                    Height = 17
+                    Top = 42
+                    Width = 200
+                    Height = 21
                     Alignment = taCenter
-                    DataField = 'QTDE_ESTOQUE'
-                    DataSource = ds
+                    AutoSize = False
+                    Caption = '26 SACO COM 40 KG'
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clGreen
-                    Font.Height = -13
-                    Font.Name = 'Segoe UI Black'
+                    Font.Height = -16
+                    Font.Name = 'Segoe UI Semibold'
                     Font.Style = [fsBold]
                     ParentFont = False
                   end
@@ -2223,6 +2225,7 @@ inherited Frm_Produto: TFrm_Produto
     AfterInsert = cdsAfterInsert
     BeforePost = cdsBeforePost
     AfterCancel = cdsAfterCancel
+    AfterDelete = cdsAfterDelete
     Left = 144
     Top = 495
     object cdsCODIGO: TIntegerField
@@ -2249,7 +2252,6 @@ inherited Frm_Produto: TFrm_Produto
     object cdsQTDE_ESTOQUE: TFMTBCDField
       FieldName = 'QTDE_ESTOQUE'
       Origin = 'QTDE_ESTOQUE'
-      OnGetText = cdsQTDE_ESTOQUEGetText
       Precision = 18
       Size = 3
     end

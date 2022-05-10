@@ -88,7 +88,6 @@ type
     Label9: TLabel;
     DBEdit10: TDBEdit;
     Label4: TLabel;
-    dbtxtQTDE_ESTOQUE: TDBText;
     tsFiscal: TTabSheet;
     pnlFundoFiscal: TPanel;
     Label24: TLabel;
@@ -206,6 +205,7 @@ type
     btnExcFragmentacao: TSpeedButton;
     actExcFragmentacao: TAction;
     cdsPRECO_ATACADO: TFMTBCDField;
+    lblEstoqueAtual: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
@@ -232,15 +232,15 @@ type
     procedure actExcItemExecute(Sender: TObject);
     procedure cdsDESCRI_UNIDADEGetText(Sender: TField; var Text: string;
       DisplayText: Boolean);
-    procedure cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
-      DisplayText: Boolean);
     procedure actExcFragmentacaoExecute(Sender: TObject);
+    procedure cdsAfterDelete(DataSet: TDataSet);
 
   private
     FCustoEstimado: Currency;
     FQtde: Double;
     FvUnitario: Double;
     FExibirMsg: Boolean;
+    FEstoque: Double;
     procedure MontaSql(pCodigo : Integer) ;
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
@@ -253,11 +253,13 @@ type
     procedure CalcCustoComposicao();
     procedure SetQtde(const Value: Double);
     procedure setvUnitario(const Value: Double);
+    procedure SetEstoque(const Value: Double);
   public
     property CustoEstimado: Currency  read FCustoEstimado;
     property Qtde: Double read FQtde write SetQtde;
     property vUnitario: Double read FvUnitario write setvUnitario;
     property ExibirMsg: Boolean read FExibirMsg;
+    property Estoque : Double read FEstoque write SetEstoque;
 
     procedure Novo() ; override ;
     procedure Gravar(); override;
@@ -410,6 +412,12 @@ begin
   cdsHistCusto.CancelUpdates;
 end;
 
+procedure TFrm_Produto.cdsAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  Estoque := 0;
+end;
+
 procedure TFrm_Produto.cdsAfterInsert(DataSet: TDataSet);
 const
   SQL = 'select gen_id(GEN_PRODUTO,1) id from RDB$DATABASE';
@@ -425,6 +433,7 @@ begin
   cdsTIPO_PRODUTO.AsString := 'PA';
   cdsDT_CADASTRO.AsDateTime := Date;
   cdsSITUACAO.AsString := 'ATIVO';
+  Estoque := 0;
 end;
 
 procedure TFrm_Produto.cdsBeforePost(DataSet: TDataSet);
@@ -459,16 +468,6 @@ begin
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
   if pnlQtdeMinAtac.Visible then
     dbedtQTDE_MIN_ATACADO.SetFocus;
-end;
-
-procedure TFrm_Produto.cdsQTDE_ESTOQUEGetText(Sender: TField; var Text: string;
-  DisplayText: Boolean);
-begin
-  inherited;
-  if (not cds.FieldByName('CONV_QTDE').IsNull) then
-    Text := FormatFloat('#,##0',(Sender.AsFloat/cds.FieldByName('CONV_QTDE').AsFloat))
-  else
-    Text := FormatFloat('##0.000',Sender.AsFloat);
 end;
 
 procedure TFrm_Produto.DBPesquisa1Pesquisa(Sender: TObject;
@@ -602,7 +601,8 @@ end;
 procedure TFrm_Produto.FormCreate(Sender: TObject);
 begin
   inherited;
-  ResetaCDS ;
+  Estoque := 0;
+  ResetaCDS;
   pgc1.TabIndex := 0;
   pnlDescMaximo.Enabled := DM.Usuario.Perfil = 'Administrador';
   pnlMovimentar.Enabled := DM.Usuario.Perfil = 'Administrador';
@@ -705,6 +705,7 @@ begin
   CalcCustoComposicao;
 
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
+  Estoque := cdsQTDE_ESTOQUE.AsFloat;
 end;
 
 procedure TFrm_Produto.Novo;
@@ -733,6 +734,25 @@ begin
   cds.FieldDefs.Clear;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
   FExibirMsg := True;
+end;
+
+procedure TFrm_Produto.SetEstoque(const Value: Double);
+var
+  lEstoque: string;
+begin
+  FEstoque := Value;
+  lEstoque := FormatFloatBr(Value);
+  if (Value = 0) then
+    lEstoque := FormatFloatBr(Value,'#,##0.000')
+  else
+  begin
+    if (not cds.FieldByName('CONV_QTDE').IsNull) then
+      lEstoque := FormatFloatBr((Value / cds.FieldByName('CONV_QTDE').AsFloat),'#,##0.000') + ' ' + DBPesquisa1.Mostrar.Text
+    else
+      lEstoque := FormatFloatBr(Value,'#,##0.000') + ' ' + DBPesquisa1.Mostrar.Text;
+  end;
+
+  lblEstoqueAtual.Caption := lEstoque;
 end;
 
 procedure TFrm_Produto.SetItem(aIDMatPrima: integer);
