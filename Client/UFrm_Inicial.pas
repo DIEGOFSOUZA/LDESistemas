@@ -630,6 +630,11 @@ begin
   TRelListaEtoque.CreateChild(self);
 end;
 
+procedure TFrm_Inicial.MenuProd_ProdutoClick(Sender: TObject);
+begin
+  TFrm_Produto.CreateChild(Self);
+end;
+
 procedure TFrm_Inicial.MenuProd_InsumoClick(Sender: TObject);
 begin
   TFrm_MateriaPrima.CreateChild(Self);
@@ -656,11 +661,6 @@ begin
       FreeAndNil(Rel_Venda0);
     end;
   end;
-end;
-
-procedure TFrm_Inicial.MenuProd_ProdutoClick(Sender: TObject);
-begin
-  TFrm_Produto.CreateChild(Self);
 end;
 
 procedure TFrm_Inicial.RamodeAtividade1Click(Sender: TObject);

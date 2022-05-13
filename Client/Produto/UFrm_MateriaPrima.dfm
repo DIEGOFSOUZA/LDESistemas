@@ -230,7 +230,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                   object Label13: TLabel
                     Left = 105
                     Top = 26
-                    Width = 150
+                    Width = 200
                     Height = 15
                     Alignment = taCenter
                     AutoSize = False
@@ -242,18 +242,18 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
                     Font.Style = [fsBold]
                     ParentFont = False
                   end
-                  object dbtxtQTDE_ESTOQUE: TDBText
+                  object lblEstoqueAtual: TLabel
                     Left = 105
-                    Top = 45
-                    Width = 150
-                    Height = 17
+                    Top = 42
+                    Width = 200
+                    Height = 21
                     Alignment = taCenter
-                    DataField = 'QTDE_ESTOQUE'
-                    DataSource = ds
+                    AutoSize = False
+                    Caption = '26 SACO COM 40 KG'
                     Font.Charset = ANSI_CHARSET
                     Font.Color = clGreen
-                    Font.Height = -13
-                    Font.Name = 'Segoe UI Black'
+                    Font.Height = -16
+                    Font.Name = 'Segoe UI Semibold'
                     Font.Style = [fsBold]
                     ParentFont = False
                   end
@@ -279,10 +279,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
               Caption = 'FORNECEDOR'
               ImageIndex = 1
               TabVisible = False
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnlFornecedores: TPanel
                 Left = 0
                 Top = 0
@@ -582,10 +578,6 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
             object tsHistPreco: TTabSheet
               Caption = 'HIST'#211'RICO DE PRE'#199'O'
               ImageIndex = 5
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object pnlHistorico: TPanel
                 Left = 0
                 Top = 0
@@ -1801,6 +1793,7 @@ inherited Frm_MateriaPrima: TFrm_MateriaPrima
     AfterInsert = cdsAfterInsert
     BeforePost = cdsBeforePost
     AfterCancel = cdsAfterCancel
+    AfterDelete = cdsAfterDelete
     Left = 168
     Top = 506
     object cdsCODIGO: TIntegerField

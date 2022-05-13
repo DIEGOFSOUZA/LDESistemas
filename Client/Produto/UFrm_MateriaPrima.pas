@@ -8,7 +8,7 @@ uses
   System.Actions, Vcl.ActnList, Data.DB, Datasnap.DBClient, Vcl.ComCtrls,
   Vcl.Buttons, PngSpeedButton, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
   UDBPesquisa, Vcl.Mask, Vcl.DBGrids, UEDPesquisa, Vcl.Menus,
-  Vcl.Imaging.pngimage, Vcl.Grids;
+  Vcl.Imaging.pngimage, Vcl.Grids, ACBrUtil;
 
 type
   TFrm_MateriaPrima = class(TPdr_Cad)
@@ -32,7 +32,6 @@ type
     Label26: TLabel;
     Label12: TLabel;
     Label13: TLabel;
-    dbtxtQTDE_ESTOQUE: TDBText;
     DBEdit12: TDBEdit;
     pnlFundoFragm: TPanel;
     lblTitConversao: TLabel;
@@ -177,6 +176,7 @@ type
     imgExcFrag: TImage;
     btnExcFragmentacao: TSpeedButton;
     actExcFragmentacao: TAction;
+    lblEstoqueAtual: TLabel;
     procedure EdPesquisa5Pesquisa(Sender: TObject; var Retorno: string);
     procedure cdsAfterInsert(DataSet: TDataSet);
     procedure DBPesquisa1Pesquisa(Sender: TObject; var Retorno: string);
@@ -201,7 +201,9 @@ type
     procedure dbpsqsCESTPesquisa(Sender: TObject; var Retorno: string);
     procedure dbpsqsGrupoPesquisa(Sender: TObject; var Retorno: string);
     procedure dbpsqsSubGrupoPesquisa(Sender: TObject; var Retorno: string);
+    procedure cdsAfterDelete(DataSet: TDataSet);
   private
+    FEstoque: Double;
     function Validar(): Boolean;
     function ValidarMovimentacao(): Boolean;
     function VoltaQtde(aQtde: Extended): Extended;
@@ -209,7 +211,9 @@ type
     procedure MontaSql(pCodigo : Integer) ;
     procedure ResetaCDS() ;
     procedure MargemLucro(aTipo:integer);
+    procedure SetEstoque(const Value: Double);
   public
+    property Estoque : Double read FEstoque write SetEstoque;
     procedure Novo() ; override ;
     procedure Gravar() ; override ;
     procedure Excluir() ; override ;
@@ -291,6 +295,12 @@ begin
   cdsHistCusto.CancelUpdates;
 end;
 
+procedure TFrm_MateriaPrima.cdsAfterDelete(DataSet: TDataSet);
+begin
+  inherited;
+  Estoque := 0;
+end;
+
 procedure TFrm_MateriaPrima.cdsAfterInsert(DataSet: TDataSet);
 begin
   inherited;
@@ -304,6 +314,7 @@ begin
   cdsTIPO_PRODUTO.AsString  := 'MP' ;
   cdsDT_CADASTRO.AsDateTime := Date;
   cdsSITUACAO.AsString := 'ATIVO';
+  Estoque := 0;
 end;
 
 procedure TFrm_MateriaPrima.cdsBeforePost(DataSet: TDataSet);
@@ -451,6 +462,7 @@ begin
   pgc1.TabIndex := 0 ;
   pnlDescMaximo.Enabled := DM.Usuario.Perfil = 'Administrador';
   pnlMovimentar.Enabled := DM.Usuario.Perfil = 'Administrador';
+  Estoque := 0;
 end;
 
 procedure TFrm_MateriaPrima.Gravar;
@@ -546,6 +558,7 @@ begin
 
   cds.Close ;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, pCodigo);
+  Estoque := cdsQTDE_ESTOQUE.AsFloat;
 
   pnlQtdeMinAtac.Visible := (cds.FieldByName('PRECO_ATACADO').AsCurrency > 0);
 
@@ -644,6 +657,25 @@ begin
   cds.Close;
   cds.FieldDefs.Clear;
   cds.Data := DM.SMProduto.getProduto(DM.BancoDados, -1);
+end;
+
+procedure TFrm_MateriaPrima.SetEstoque(const Value: Double);
+var
+  lEstoque: string;
+begin
+  FEstoque := Value;
+  lEstoque := FormatFloatBr(Value);
+  if (Value = 0) then
+    lEstoque := FormatFloatBr(Value,'#,##0.000')
+  else
+  begin
+    if (not cds.FieldByName('CONV_QTDE').IsNull) then
+      lEstoque := FormatFloatBr((Value / cds.FieldByName('CONV_QTDE').AsFloat),'#,##0.000') + ' ' + dbpsqsUnidade.Mostrar.Text
+    else
+      lEstoque := FormatFloatBr(Value,'#,##0.000') + ' ' + dbpsqsUnidade.Mostrar.Text;
+  end;
+
+  lblEstoqueAtual.Caption := lEstoque;
 end;
 
 function TFrm_MateriaPrima.Validar: Boolean;
