@@ -562,7 +562,7 @@ object frmVendaMain: TfrmVendaMain
             OnClick = actDescontoItemExecute
             object lblDesconto: TLabel
               Left = 12
-              Top = 4
+              Top = 3
               Width = 71
               Height = 34
               Alignment = taCenter

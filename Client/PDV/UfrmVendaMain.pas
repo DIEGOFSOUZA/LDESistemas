@@ -221,6 +221,7 @@ type
     FOrcamentoId: integer;
     FOrcLiberado: Boolean;
     FCreditoUtilizado: Currency;
+    FItemDescMaximoAtingido: Boolean;
     { Private declarations }
     procedure TelaCheia() ;
 
@@ -264,6 +265,7 @@ type
     property OrcamentoID: integer read FOrcamentoId write SetOrcamentoId;
     property OrcLiberado: Boolean read FOrcLiberado;
     property CreditoUtilizado: Currency read FCreditoUtilizado;
+    property ItemDescMaximoAtingido : Boolean read FItemDescMaximoAtingido;
     constructor CreateChild(AOwner : TComponent) ;
   end;
 
@@ -453,6 +455,11 @@ begin
       if not Assigned(Frm_GeraOrcamento) then
         Frm_GeraOrcamento := TFrm_GeraOrcamento.Create(Self);
       try
+        if ((FItemDescMaximoAtingido) or (ValidaDebitoCliente(IdCliente) > 5))then
+        begin
+          Frm_GeraOrcamento.chkSolic.Checked := True;
+          Frm_GeraOrcamento.chkSolic.Enabled := False;
+        end;
         Frm_GeraOrcamento.Executa(cdsItens, IdCliente);
         lRet := Frm_GeraOrcamento.Retorno;
         if (lRet = 'sucesso') then
@@ -1285,8 +1292,8 @@ begin
                                         VarArrayOf([aMaster, aDetail, aReceber]),
                                         cdsMasterID.AsString, cdsMasterTIPO.AsString) then
   begin
-    if (OrcamentoID > 0) then
-      lIdOrcamento := OrcamentoID;
+    if (fOrcamentoID > 0) then
+      lIdOrcamento := fOrcamentoID;
     if (CreditoUtilizado > 0) then
     begin
       lIdCliente := IdCliente;
@@ -1609,13 +1616,6 @@ begin
     end;
   end;
 
-//  if not VendedorInformado then
-//  begin
-//    Result := False ;
-//    TMensagem.Atencao('Vendedor(a) não informado.');
-//    Exit;
-//  end;
-
   lCaixa := CaixaFechado;
   if lCaixa.Fechado then
   begin
@@ -1626,6 +1626,13 @@ begin
   end
   else
     IdCaixa := lCaixa.ID;
+
+//  if ((FOrcamentoId > 0) and (not OrcLiberado)) then
+//  begin
+//    Result := False;
+//    TMensagem.Atencao('Venda não pode ser fechada. Orçamento não liberado.');
+//    Exit;
+//  end;
 
   if (not OrcLiberado) then
     if (tpPagto = 'CREDIARIO') then
@@ -1644,13 +1651,15 @@ begin
   if not ValidaDescMaximo then
   begin
     Result := False;
-    TMensagem.Atencao('Venda contém item com Desconto acima do permitido. Necessário gerar orçamento de liberação.');
+    FItemDescMaximoAtingido := True;
+    TMensagem.Atencao('Venda contém item com Desconto acima do permitido.'+sLineBreak+
+                      'Necessário gerar orçamento de liberação.');
     Exit;
   end;
 
 
     //validar se tem estoque caso seja orcamento
-    if (OrcamentoID > 0) then
+    if (fOrcamentoID > 0) then
     begin
       cdsItens.First;
       while not cdsItens.Eof do
@@ -1783,6 +1792,7 @@ end;
 procedure TfrmVendaMain.ZerarCDS;
 begin
   fUsuarioAutorizou := '';
+  FItemDescMaximoAtingido := False;
   cdsItens.Close;
   cdsItens.FieldDefs.Clear;
   cdsItens.CreateDataSet;
