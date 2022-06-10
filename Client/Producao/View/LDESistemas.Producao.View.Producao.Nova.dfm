@@ -4,6 +4,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
   ClientWidth = 1000
   Visible = False
   OnCreate = FormCreate
+  OnKeyDown = FormKeyDown
   OnShow = FormShow
   ExplicitWidth = 1000
   ExplicitHeight = 527
@@ -203,7 +204,7 @@ inherited FrmProducaoNova: TFrmProducaoNova
           Font.Height = -13
           Font.Name = 'Segoe UI'
           Font.Style = []
-          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
           TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET

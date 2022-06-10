@@ -279,7 +279,8 @@ const
                         'set QTDE_FECHADA = QTDE '+
                         'where (ID = %s)';
   SQLEntItemLote      = 'update LOTE_ITENS '+
-                        'set QTDE_FECHADA = QTDE '+
+                        'set QTDE_FECHADA = QTDE,'+
+                        'QTDE_DISPONIVEL = QTDE '+
                         'where (ID_LOTE = %s)';
   SQLUpdateStatusLote = 'update LOTE '+
                         'set STATUS = ''PRODUZIDA'' '+

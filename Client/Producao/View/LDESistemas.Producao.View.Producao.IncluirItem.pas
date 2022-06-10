@@ -66,6 +66,7 @@ type
     FUNIDADE: String;
     FVALIDADE: TDate;
     FRetorno: string;
+    FQtdeConversao: Double;
     procedure SetCustoProducao(const Value: Currency);
     procedure SetEstoques(aValue: string);
     procedure Iniciar();
@@ -75,6 +76,7 @@ type
   public
     property EstoqueAtual : Extended read FEstoqueAtual write FEstoqueAtual;
     property Qtde : Extended read FQtde write SetQtde;
+    property QtdeConversao : Double read FQtdeConversao write FQtdeConversao;
     property CustoProducao : Currency read FCustoProducao write SetCustoProducao;
     property ID_PRODUTO: Integer read FID_PRODUTO write FID_PRODUTO;
     property PRODUTO: string read FPRODUTO write FPRODUTO;
@@ -234,8 +236,6 @@ begin
     SetEstoques(edtQtde.Text);
     CustoProducao := lCusto;
   end;
-
-
 end;
 
 procedure TFrmProducaoIncluirItem.SetCustoProducao(const Value: Currency);
@@ -258,9 +258,16 @@ begin
 end;
 
 procedure TFrmProducaoIncluirItem.SetQtde(const Value: Extended);
+const
+  SQL = 'select cast((coalesce(p.conv_qtde,1) * %s) as numeric(15,3)) qtde ' +
+        'from produto p ' +
+        'where p.codigo = %s';
 begin
   FQtde := Value;
-//  edtQtde.Text := FormatFloat('##0.000',Value);
+  if FQtde = 0 then
+    FQtdeConversao := 0
+  else
+    FQtdeConversao := DM.GetFloat(Format(SQL, [Value.ToString,FID_PRODUTO.ToString]), 'qtde');
 end;
 
 procedure TFrmProducaoIncluirItem.Unidades(aValue,aValue2: string);

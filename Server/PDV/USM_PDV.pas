@@ -357,9 +357,7 @@ begin
       Result := True;
 
       if DM.EmpresaRastreio then
-      begin
         VincularLote(DM, Dados[1]);
-      end;
     except
       on E: Exception do
       begin
@@ -410,16 +408,16 @@ const
   SQLDisponivel    = 'select '+
                      '  i.id,coalesce(i.qtde_disponivel,0)qtde_disponivel '+
                      'from lote_itens i '+
-                     'where i.codpro = :codpro and'+
+                     'where i.codpro = %s and '+
                      'i.qtde_disponivel > 0 '+
                      'order by i.dt_validade';
 
   SQLUpdDisponivel = 'update lote_itens i '+
-                     ' set i.qtde_disponivel = :qtde '+
+                     ' set i.qtde_disponivel = %s '+
                      'where i.id = :id';
 
   SQLInsPDV_LOTE   = 'insert into PDV_LOTE (PDV_TIPO, PDV_ID, PDV_ORDEM, LOTE_ID, QTDE) '+
-                     'values (:PDV_TIPO, :PDV_ID, :PDV_ORDEM, :LOTE_ID, :QTDE)';
+                     'values (%s,%s,%s,%s,%s)';
 var
   lItens,lDisponiveis: TClientDataSet;
   lRestante : Double;

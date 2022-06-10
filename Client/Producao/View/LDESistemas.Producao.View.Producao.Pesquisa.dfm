@@ -98,7 +98,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
         BevelOuter = bvNone
         Color = 14803681
         TabOrder = 0
-        object dbgrdPedidos: TDBGrid
+        object dbgrdLotes: TDBGrid
           Left = 0
           Top = 0
           Width = 1046
@@ -112,7 +112,7 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           Font.Height = -21
           Font.Name = 'Segoe UI'
           Font.Style = []
-          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
           PopupMenu = pm1
           TabOrder = 0
@@ -121,7 +121,8 @@ inherited FrmProducaoPesquisa: TFrmProducaoPesquisa
           TitleFont.Height = -11
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
-          OnDblClick = dbgrdPedidosDblClick
+          OnDblClick = dbgrdLotesDblClick
+          OnKeyPress = dbgrdLotesKeyPress
           Columns = <
             item
               Expanded = False

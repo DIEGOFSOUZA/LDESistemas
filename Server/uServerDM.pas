@@ -152,13 +152,14 @@ end;
 
 function TServerDM.EmpresaRastreio: Boolean;
 const
-  SQL = 'select e.rastreabilidade_producao '+
-        'from empresa e';
+  SQL = 'select e.rastreabilidade_producao rp from empresa e';
 begin
   Result := False;
   try
-    LerDataSet(SQL);
-    Result := Ler.FieldByName('rastreabilidade_producao').AsBoolean;
+    SQLLer.SQL.Clear;
+    SQLLer.Open(SQL);
+    Result := SQLLer.FieldByName('rp').AsBoolean;
+    SQLLer.Close;
   except
 
   end;

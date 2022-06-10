@@ -13,6 +13,14 @@ update lote l
  set l.status = 'PRODUZIDA'
 where l.status = 'FINALIZADO';
 
+/*  --rodar para empresa Takano
+update empresa e
+set
+  e.rastreabilidade_producao = true,
+  e.bloq_venda_negativo = true, 
+  e.bloq_produc_negativo = true
+where e.codigo = 1;
+*/
 
 update CONTROL C
 set C.DB_VERSAO = 10;

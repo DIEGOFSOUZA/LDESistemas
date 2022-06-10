@@ -462,7 +462,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Height = -13
           Font.Name = 'Segoe UI'
           Font.Style = []
-          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+          Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
           TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET

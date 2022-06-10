@@ -17,7 +17,7 @@ type
     btnIncluir: TSpeedButton;
     pnlCenter: TPanel;
     pnlGrid: TPanel;
-    dbgrdPedidos: TDBGrid;
+    dbgrdLotes: TDBGrid;
     pnlTop: TPanel;
     pnlPeriodo: TPanel;
     Label1: TLabel;
@@ -39,8 +39,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure pngspdbtnBuscarClick(Sender: TObject);
-    procedure dbgrdPedidosDblClick(Sender: TObject);
+    procedure dbgrdLotesDblClick(Sender: TObject);
     procedure actProduzirLoteExecute(Sender: TObject);
+    procedure dbgrdLotesKeyPress(Sender: TObject; var Key: Char);
   private
     procedure Iniciar();
     procedure CarregarGrid();
@@ -70,7 +71,9 @@ begin
   lIdLote := cdsLote.FieldByName('ID').AsInteger;
   if Tmensagem.Pergunta('Confirma a total produção do Lote Nº ' + lIdLote.ToString + '?') then
   begin
-    lRetorno := DM.SMProducao.setProducao_Baixa(DM.BancoDados, lIdLote, DM.Empresa.Bloq_Producao_Negativo, DM.Empresa.Rastreabilidade);
+    lRetorno := DM.SMProducao.setProducao_Baixa(DM.BancoDados, lIdLote,
+                                                DM.Empresa.Bloq_Producao_Negativo,
+                                                DM.Empresa.Rastreabilidade);
     if (lRetorno = 'sucesso') then
     begin
       CarregarGrid;
@@ -110,7 +113,8 @@ const
         'from LOTE L '+
         'left join LOTE_ITENS I on (I.ID_LOTE = L.ID) '+
         'where L.EMISSAO between %s and %s '+
-        'group by L.ID, L.EMISSAO, L.STATUS, L.USUARIO  ';
+        'group by L.ID, L.EMISSAO, L.STATUS, L.USUARIO '+
+        'order by L.ID desc';
 begin
   cdsLote.Close;
   cdsLote.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',dtp1.Date)),
@@ -118,7 +122,7 @@ begin
 
 end;
 
-procedure TFrmProducaoPesquisa.dbgrdPedidosDblClick(Sender: TObject);
+procedure TFrmProducaoPesquisa.dbgrdLotesDblClick(Sender: TObject);
 begin
   inherited;
   if not Assigned(FrmProducaoNova) then
@@ -130,10 +134,20 @@ begin
     FrmProducaoNova.ShowModal;
     if (FrmProducaoNova.Retorno = 'sucesso') then
       CarregarGrid;
+
+    dbgrdLotes.SetFocus;
   finally
     FreeAndNil(FrmProducaoNova);
     AlphaBlend := False;
   end;
+end;
+
+procedure TFrmProducaoPesquisa.dbgrdLotesKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if Key = #13 then
+    dbgrdLotesDblClick(Self);
 end;
 
 procedure TFrmProducaoPesquisa.FormCreate(Sender: TObject);

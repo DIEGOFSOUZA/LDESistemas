@@ -70,6 +70,7 @@ type
     procedure actCancelarProducaoExecute(Sender: TObject);
     procedure actSairExecute(Sender: TObject);
     procedure pnlBotaoSairClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     FCustoTotal: Currency;
     FIDLote: integer;
@@ -157,7 +158,7 @@ begin
       cdsItem.Append;
       cdsItemLOTE.AsString := FrmProducaoIncluirItem.LOTE;
       cdsItemCODPRO.AsInteger := FrmProducaoIncluirItem.ID_PRODUTO;
-      cdsItemQTDE.AsFloat := FrmProducaoIncluirItem.Qtde;
+      cdsItemQTDE.AsFloat := FrmProducaoIncluirItem.QtdeConversao;
       cdsItemQTDE_FECHADA.AsFloat := 0;
       cdsItemCOD_UM.AsInteger := FrmProducaoIncluirItem.ID_UND;
       if FrmProducaoIncluirItem.VALIDADE <> 0  then
@@ -246,6 +247,14 @@ begin
   cdsLote.CreateDataSet;
   cdsItem.Close;
   cdsItem.CreateDataSet;
+end;
+
+procedure TFrmProducaoNova.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = Vk_Escape) then
+    pnlBotaoSairClick(Self);
 end;
 
 procedure TFrmProducaoNova.FormShow(Sender: TObject);
