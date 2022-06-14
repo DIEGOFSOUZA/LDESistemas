@@ -131,7 +131,7 @@ var
   aRet: TRetornoProduto;
 begin
   inherited;
-  aRet := Consulta.Produto(QuotedStr('PA'), 'Consulta de Produto');
+  aRet := Consulta.Produto(QuotedStr('PA')+','+QuotedStr('A'), 'Consulta de Produto');
   if (aRet.iCodigo > 0) then
   begin
     Retorno := aRet.iCodigo.ToString;

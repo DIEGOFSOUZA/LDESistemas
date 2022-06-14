@@ -158,7 +158,7 @@ begin
       cdsItem.Append;
       cdsItemLOTE.AsString := FrmProducaoIncluirItem.LOTE;
       cdsItemCODPRO.AsInteger := FrmProducaoIncluirItem.ID_PRODUTO;
-      cdsItemQTDE.AsFloat := FrmProducaoIncluirItem.QtdeConversao;
+      cdsItemQTDE.AsFloat := FrmProducaoIncluirItem.Qtde;
       cdsItemQTDE_FECHADA.AsFloat := 0;
       cdsItemCOD_UM.AsInteger := FrmProducaoIncluirItem.ID_UND;
       if FrmProducaoIncluirItem.VALIDADE <> 0  then

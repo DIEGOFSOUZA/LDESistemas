@@ -278,10 +278,14 @@ const
   SQLBaixaInsumo      = 'update LOTE_MATPRIMA '+
                         'set QTDE_FECHADA = QTDE '+
                         'where (ID = %s)';
-  SQLEntItemLote      = 'update LOTE_ITENS '+
-                        'set QTDE_FECHADA = QTDE,'+
-                        'QTDE_DISPONIVEL = QTDE '+
-                        'where (ID_LOTE = %s)';
+  SQLEntItemLote      = 'update LOTE_ITENS I '+
+                        'set I.QTDE_FECHADA = I.QTDE * (select cast(coalesce(P.CONV_QTDE, 1) as numeric(15,3)) '+
+                        '                               from PRODUTO P '+
+                        '                               where P.CODIGO = I.CODPRO), '+
+                        '    I.QTDE_DISPONIVEL = I.QTDE * (select cast(coalesce(P.CONV_QTDE, 1) as numeric(15,3)) '+
+                        '                                  from PRODUTO P '+
+                        '                                  where P.CODIGO = I.CODPRO) '+
+                        'where (I.ID_LOTE = %s)';
   SQLUpdateStatusLote = 'update LOTE '+
                         'set STATUS = ''PRODUZIDA'' '+
                         'where (ID = %s)';
@@ -307,43 +311,46 @@ begin
       lItens.Data := DM.LerDataSet(Format(SQLItens, [aIDLote.ToString]));
       lInsumos.Data := DM.LerDataSet(Format(SQLInsumo, [aIDLote.ToString]));
 
-      lInsumos.First;
-      while not lInsumos.Eof do
+      if ((lInsumos.RecordCount > 0) and (lInsumos.FieldByName('QTDE').AsFloat > 0)) then
       begin
-      {Parametrizado no cadastro da Empresa}
-        if aRastreabilidade then
+        lInsumos.First;
+        while not lInsumos.Eof do
         begin
-          lLotesDisponivel.Close;
-          lLotesDisponivel.Data := DM.LerDataSet(Format(SQLLotesDisponivel, [lInsumos.FieldByName('ID_MATPRIMA').AsString]));
-          if not lLotesDisponivel.IsEmpty then
+        {Parametrizado no cadastro da Empresa}
+          if aRastreabilidade then
           begin
-            lRestante := lInsumos.FieldByName('QTDE').AsFloat;
-            lLotesDisponivel.First;
-            while not lLotesDisponivel.Eof do
+            lLotesDisponivel.Close;
+            lLotesDisponivel.Data := DM.LerDataSet(Format(SQLLotesDisponivel, [lInsumos.FieldByName('ID_MATPRIMA').AsString]));
+            if not lLotesDisponivel.IsEmpty then
             begin
-              if (lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat > lRestante) then
+              lRestante := lInsumos.FieldByName('QTDE').AsFloat;
+              lLotesDisponivel.First;
+              while not lLotesDisponivel.Eof do
               begin
-                DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat - lRestante),
-                                                         lLotesDisponivel.FieldByName('ID').AsString]));
-                {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
-                DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
-                lRestante := 0;
-                Break;
-              end
-              else
-              begin
-                DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(0), lLotesDisponivel.FieldByName('ID').AsString]));
-                {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
-                DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
-                lRestante := lRestante - lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat;
+                if (lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat > lRestante) then
+                begin
+                  DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat - lRestante),
+                                                           lLotesDisponivel.FieldByName('ID').AsString]));
+                  {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
+                  DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
+                  lRestante := 0;
+                  Break;
+                end
+                else
+                begin
+                  DM.Executar(Format(SQLUpdateDisponivel, [FloatToStr(0), lLotesDisponivel.FieldByName('ID').AsString]));
+                  {alimenta tabela LOTE_MATPRIMA_FABRICANTE que faz o vinculo entre producao e lote do Fornecedor}
+                  DM.Executar(Format(SQLInsert, [lInsumos.FieldByName('ID').AsString, lLotesDisponivel.FieldByName('ID').AsString, lRestante.ToString]));
+                  lRestante := lRestante - lLotesDisponivel.FieldByName('qtde_disponivel').AsFloat;
+                end;
+                lLotesDisponivel.Next;
               end;
-              lLotesDisponivel.Next;
             end;
           end;
-        end;
 
-        DM.Executar(Format(SQLBaixaInsumo, [lInsumos.FieldByName('ID').AsString]));
-        lInsumos.Next;
+          DM.Executar(Format(SQLBaixaInsumo, [lInsumos.FieldByName('ID').AsString]));
+          lInsumos.Next;
+        end;
       end;
       DM.Executar(Format(SQLEntItemLote, [aIDLote.ToString]));
       DM.Executar(Format(SQLUpdateStatusLote, [aIDLote.ToString]));
@@ -418,8 +425,8 @@ const
                 'values (:EMISSAO, :DT_FIM_PRODUCAO, :OBS, :STATUS, :GERA_MATPRIMA, :USUARIO, :LOTE_ACERTO) '+
                 'returning ID '+
                 '{into :ID}';
-  insert_item = 'insert into LOTE_ITENS (ID_LOTE, LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DT_VALIDADE, VL_CUSTO) '+
-                'values (:ID_LOTE, :LOTE, :CODPRO, :QTDE, :QTDE_FECHADA, :COD_UM, :ENTSAI, :DT_VALIDADE, :VL_CUSTO) '+
+  insert_item = 'insert into LOTE_ITENS (ID_LOTE, LOTE, CODPRO, QTDE, QTDE_FECHADA, COD_UM, ENTSAI, DT_VALIDADE, VL_CUSTO, QTDE_DISPONIVEL) '+
+                'values (:ID_LOTE, :LOTE, :CODPRO, :QTDE, :QTDE_FECHADA, :COD_UM, :ENTSAI, :DT_VALIDADE, :VL_CUSTO, :QTDE_DISPONIVEL) '+
                 'returning ID '+
                 '{into :ID}';
   insert_mtpm = 'insert into LOTE_MATPRIMA (ID_LOTE_ITEM, ID_MATPRIMA, QTDE, QTDE_FECHADA) '+
@@ -470,8 +477,9 @@ begin
           DM.Gravar.ParamByName('ENTSAI').AsString := cdsLER.FieldByName('ENTSAI').AsString;
           DM.Gravar.ParamByName('DT_VALIDADE').AsDate := cdsLER.FieldByName('VALIDADE').AsDateTime;
           DM.Gravar.ParamByName('VL_CUSTO').AsCurrency := cdsLER.FieldByName('CUSTO').AsCurrency;
+          DM.Gravar.ParamByName('QTDE_DISPONIVEL').AsFloat := 0;
           DM.Gravar.ExecSQL;
-          lIdLoteItem := DM.Gravar.Params[9].Value;
+          lIdLoteItem := DM.Gravar.Params[10].Value;
 
 //      *****************LOTE_MATPRIMA******************************
           DM.SQLLer.SQL.Clear;

@@ -90,6 +90,8 @@ type
     MenuRel_Cliente_SemCompra: TMenuItem;
     MenuPedido_GERENCIAR: TMenuItem;
     MenuCadServico: TMenuItem;
+    MenuRel_Rastreabilidade: TMenuItem;
+    MenuRel_Rastreabilidade_OP: TMenuItem;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
@@ -143,6 +145,7 @@ type
     procedure MenuRel_Cliente_SemCompraClick(Sender: TObject);
     procedure MenuPedido_GERENCIARClick(Sender: TObject);
     procedure MenuCadServicoClick(Sender: TObject);
+    procedure MenuRel_Rastreabilidade_OPClick(Sender: TObject);
   private
     Ativar: Boolean;
     procedure CarregaLogoEmpresa();
@@ -179,7 +182,8 @@ uses
   uRel_VendaPorItem, uFrm_PesquisaContasAReceber, uFrm_NF_Entrada, uRel_Sangria,
   UFrm_AcertoEstoque, UCriptografia, UFrm_GerenciaOrcamento, UFrm_PDVDevConsulta,
   uRel_VendaPorGrupo, URel_NFEntradaPorClassificacao, URel_ClienteNaoComprou,
-  UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico, LDESistemas.Producao.View.Producao.Pesquisa;
+  UFuncoes, UFrm_PedidoVendaGerencia, UFrmCad_Servico,
+  LDESistemas.Producao.View.Producao.Pesquisa, LDESistemas.Client.Producao.Relatorio.Rastr.Insumo;
 
 function Saudacao: string;
 begin
@@ -513,6 +517,9 @@ begin
   MenuRel_Compra.Visible := False;
   MenuRel_Compra_NFPorClassif.Visible := False;
 
+  MenuRel_Rastreabilidade.Visible := False;
+  MenuRel_Rastreabilidade_OP.Visible := False;
+
   MenuPedido_GERENCIAR.Visible := False;
 end;
 
@@ -550,6 +557,9 @@ begin
 
     MenuProd_Insumo.Visible := True;
     MenuPedido_GERENCIAR.Visible := True;
+
+    MenuRel_Rastreabilidade.Visible := True;
+    MenuRel_Rastreabilidade_OP.Visible := True;
   end;
 end;
 
@@ -628,6 +638,11 @@ end;
 procedure TFrm_Inicial.MenuRel_Produto_EstoqueClick(Sender: TObject);
 begin
   TRelListaEtoque.CreateChild(self);
+end;
+
+procedure TFrm_Inicial.MenuRel_Rastreabilidade_OPClick(Sender: TObject);
+begin
+  TRel_Rastr_Insumo.Create(Self);
 end;
 
 procedure TFrm_Inicial.MenuProd_ProdutoClick(Sender: TObject);

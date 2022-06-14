@@ -4689,6 +4689,13 @@ object Frm_Inicial: TFrm_Inicial
           OnClick = MenuRel_Compra_NFPorClassifClick
         end
       end
+      object MenuRel_Rastreabilidade: TMenuItem
+        Caption = 'RASTREABILIDADE'
+        object MenuRel_Rastreabilidade_OP: TMenuItem
+          Caption = 'ORDEM DE PRODU'#199#195'O'
+          OnClick = MenuRel_Rastreabilidade_OPClick
+        end
+      end
     end
     object MenuSobre: TMenuItem
       Caption = 'SOBRE'

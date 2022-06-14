@@ -526,6 +526,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils\uFormat.pas"/>
+        <DCCReference Include="Producao\Relatorios\LDESistemas.Client.Producao.Relatorio.Rastr.Insumo.pas">
+            <Form>Rel_Rastr_Insumo</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Debug">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

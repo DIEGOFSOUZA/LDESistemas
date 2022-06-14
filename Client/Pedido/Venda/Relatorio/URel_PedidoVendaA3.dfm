@@ -1,15 +1,12 @@
 inherited Rel_PedidoVendaA3: TRel_PedidoVendaA3
-  Width = 1053
-  VertScrollBar.Position = 310
+  Width = 972
   AutoScroll = True
   Caption = 'Rel_PedidoVendaA3'
-  ExplicitWidth = 1053
+  ExplicitWidth = 972
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
-    Top = -290
     DataSource = dsPedidoVenda
-    ExplicitTop = -290
     inherited rlbndTitulo: TRLBand
       Height = 30
       ExplicitHeight = 30

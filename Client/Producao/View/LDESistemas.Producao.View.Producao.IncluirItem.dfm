@@ -209,7 +209,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Left = 10
           Top = 0
           Width = 293
-          Height = 49
+          Height = 25
           Align = alLeft
           Caption = 'ESTOQUE ATUAL(AP'#211'S PRODU'#199#195'O)'
           Font.Charset = ANSI_CHARSET
@@ -219,13 +219,12 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = []
           ParentFont = False
           Layout = tlCenter
-          ExplicitHeight = 25
         end
         object lblEstoque: TLabel
-          Left = 303
+          Left = 414
           Top = 0
-          Width = 250
-          Height = 49
+          Width = 139
+          Height = 25
           Align = alClient
           Alignment = taRightJustify
           Caption = '15.000 (18.000)'
@@ -236,9 +235,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
-          ExplicitLeft = 414
-          ExplicitWidth = 139
-          ExplicitHeight = 25
         end
       end
       object pnlCusto: TPanel
@@ -256,7 +252,7 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Left = 10
           Top = 0
           Width = 232
-          Height = 50
+          Height = 25
           Align = alLeft
           Caption = 'CUSTO TOTAL DO PRODUTO'
           Font.Charset = ANSI_CHARSET
@@ -266,13 +262,12 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = []
           ParentFont = False
           Layout = tlCenter
-          ExplicitHeight = 25
         end
         object lblCusto: TLabel
-          Left = 242
+          Left = 487
           Top = 0
-          Width = 311
-          Height = 50
+          Width = 66
+          Height = 25
           Align = alClient
           Alignment = taRightJustify
           Caption = 'R$ 0,00'
@@ -283,9 +278,6 @@ inherited FrmProducaoIncluirItem: TFrmProducaoIncluirItem
           Font.Style = [fsBold]
           ParentFont = False
           Layout = tlCenter
-          ExplicitLeft = 487
-          ExplicitWidth = 66
-          ExplicitHeight = 25
         end
       end
       object edtQtde: TEdit

@@ -93,7 +93,7 @@ inherited Pdr_Consulta: TPdr_Consulta
       Font.Name = 'Segoe UI Semibold'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 0
+      TabOrder = 1
       OnKeyDown = edTextoKeyDown
     end
     object cbCampoConsulta: TComboBox
@@ -108,7 +108,7 @@ inherited Pdr_Consulta: TPdr_Consulta
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
-      TabOrder = 1
+      TabOrder = 0
       TabStop = False
       OnClick = cbCampoConsultaClick
     end

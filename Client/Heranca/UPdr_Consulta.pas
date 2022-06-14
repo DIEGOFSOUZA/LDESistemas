@@ -159,40 +159,18 @@ begin
     end;
   end;
 
-  if edTexto.Text <> '' then
+  if (edTexto.Text <> '') then
   begin
-    if Pos('WHERE', UpperCase(tmp)) > 0 then
+    if (Pos('WHERE', UpperCase(tmp)) > 0) then
       WhereAnd := ' and '
     else
       WhereAnd := ' where ';
 
     if (Pos('%', edTexto.Text) > 0) then
-      tmp := tmp + WhereAnd + 'upper(' + CampoConsulta + ') like '+QuotedStr(UpperCase(edTexto.Text))
+      tmp := tmp + WhereAnd + 'upper(' + CampoConsulta + ') like '+QuotedStr(AnsiUpperCase(edTexto.Text))
     else
-      tmp := tmp + WhereAnd + 'upper(' + CampoConsulta + ') like '+QuotedStr('%'+UpperCase(edTexto.Text)+'%');
+      tmp := tmp + WhereAnd + 'upper(' + CampoConsulta + ') like '+QuotedStr('%'+AnsiUpperCase(edTexto.Text)+'%');
   end;
-
-
-//    case RadioGroup1.ItemIndex of
-//      0:
-//        tmp := tmp + WhereAnd + 'upper('+CampoConsulta + ') like ''' + edTexto.Text + '%''';
-//      1:
-//        tmp := tmp + WhereAnd + 'upper('+CampoConsulta + ') like ''%' + edTexto.Text + '%''';
-//      2:
-//        begin
-//          if Pos('DATA',UpperCase(cbCampoConsulta.Text)) > 0 then
-//            tmp := tmp + WhereAnd + 'upper('+CampoConsulta + ') = ' + QuotedStr( FormatDateTime('dd.mm.yyyy', StrToDate(edTexto.Text)) ) + ' '
-//          else
-//            tmp := tmp + WhereAnd + 'upper('+CampoConsulta + ')= ' + QuotedStr(edTexto.Text) + ' ';
-//        end;
-//    end;
-//  end;
-//
-//  if ConsultaTipoPessoa then
-//    if Pos('WHERE', UpperCase(tmp)) > 0 then
-//      WhereAnd := ' and '
-//    else
-//      WhereAnd := ' where ';
 
   if OrdenacaoDbGrid <> '' then
     tmp := tmp + ' order by ' + OrdenacaoDbGrid;
