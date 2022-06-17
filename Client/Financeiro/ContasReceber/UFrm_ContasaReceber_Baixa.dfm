@@ -492,7 +492,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
       TabStop = True
       object pnlCancelar: TPanel
         Left = 5
-        Top = 131
+        Top = 170
         Width = 100
         Height = 30
         BevelOuter = bvNone
@@ -520,7 +520,7 @@ inherited Frm_ContasaReceber_Baixa: TFrm_ContasaReceber_Baixa
       end
       object pnlBtnBaixar: TPanel
         Left = 5
-        Top = 59
+        Top = 98
         Width = 100
         Height = 40
         BevelOuter = bvNone
