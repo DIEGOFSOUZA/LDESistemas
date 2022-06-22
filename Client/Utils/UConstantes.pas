@@ -10,7 +10,7 @@ const
 
   //Versao do Sistema
   Release = '40';
-  Build =   '2';
+  Build =   '3';
 
 
   //Versao BD - busca versao do banco

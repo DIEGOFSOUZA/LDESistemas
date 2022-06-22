@@ -341,7 +341,7 @@ begin
 
           //Protesto
           CodigoNegativacao := cnNaoProtestar;
-          DiasDeProtesto := 7;
+          DiasDeProtesto := 5;
 
           //Juros por dia
           ValorMoraJuros :=  (ValorDocumento*(8/100))/DaysInMonth(Vencimento);
