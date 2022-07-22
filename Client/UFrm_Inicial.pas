@@ -90,6 +90,7 @@ type
     MenuRel_Cliente_SemCompra: TMenuItem;
     MenuPedido_GERENCIAR: TMenuItem;
     MenuCadServico: TMenuItem;
+    Image1: TImage;
     procedure MenuVenda_ClienteClick(Sender: TObject);
     procedure MenuCad_SairClick(Sender: TObject);
     procedure MenuCad_FuncionarioClick(Sender: TObject);
