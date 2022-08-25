@@ -110,11 +110,14 @@ end;
 
 procedure TRel_ProdutoTrilha.MontaSQL;
 const
-  SQL = 'SELECT p.* FROM PRO_MOVIMENTOPRODUTO(%s) p';
+  SQL = 'select P.id_produto, P.ENTSAI, iif(P.QTDE < 0, P.QTDE * -1, P.QTDE) QTDE,'+
+        'iif(P.QTDE_FECHADA < 0, P.QTDE_FECHADA * -1, P.QTDE_FECHADA) QTDE_FECHADA, P.DTMOVTO, P.LOTE, P.TIPO_MOVIMENTO,'+
+        'P.USUARIO, P.ID_PRODUTO, P.DESCRI, P.TIPO_PRODUTO, P.CODBARRA, P.ESTOQUE_MINIMO, P.SIGLA_UM '+
+        'from PRO_MOVIMENTOPRODUTO(%s) P';
 begin
   cdsTrilha.IndexFieldNames := 'DTMOVTO';
   cdsTrilha.Close ;
-  cdsTrilha.Data := DM.LerDataSet(Format(SQL,[inttoStr(aCodProduto)])) ;
+  cdsTrilha.Data := DM.LerDataSet(Format(SQL,[IntToStr(aCodProduto)])) ;
 end;
 
 procedure TRel_ProdutoTrilha.RLBand2BeforePrint(Sender: TObject;

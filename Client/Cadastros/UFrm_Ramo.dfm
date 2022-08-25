@@ -1,7 +1,6 @@
 inherited Frm_Ramo: TFrm_Ramo
   Caption = 'Cadastro de Ramo de Atividade'
   ClientHeight = 206
-  OnCreate = FormCreate
   ExplicitHeight = 206
   PixelsPerInch = 96
   TextHeight = 13
@@ -56,6 +55,7 @@ inherited Frm_Ramo: TFrm_Ramo
   end
   inherited pnlFundo0: TPanel
     Height = 176
+    ExplicitHeight = 176
     inherited Panel1: TPanel
       ExplicitWidth = 512
     end

@@ -19,7 +19,7 @@ type
     Label1: TLabel;
     lblVersaoSistema: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
+    lblVersaoBD: TLabel;
     lblTitulo: TLabel;
     procedure btnOkClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -35,6 +35,9 @@ var
 
 implementation
 
+uses
+  UDM;
+
 {$R *.dfm}
 
 procedure TFrm_Sobre.btnOkClick(Sender: TObject);
@@ -47,7 +50,12 @@ end;
 procedure TFrm_Sobre.FormShow(Sender: TObject);
 begin
   inherited;
-  lblVersaoSistema.Caption := GetBuildInfo(ParamStr(0));
+//  lblVersaoSistema.Caption := GetBuildInfo(ParamStr(0));
+  with DM.SistemaVersao do
+  begin
+    lblVersaoSistema.Caption := SistemaRelease + '.' + SistemaBuild;
+    lblVersaoBD.Caption := BDRelease + '.' + BDBuild;
+  end;
 end;
 
 function TFrm_Sobre.GetBuildInfo(Prog: string): string;

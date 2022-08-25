@@ -3,7 +3,7 @@ object smPDV: TsmPDV
   Height = 247
   Width = 313
   object fdqryOrcamento: TFDQuery
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranOrcamento
     SQL.Strings = (
       'SELECT a.* from ORCAMENTO a'
@@ -49,11 +49,32 @@ object smPDV: TsmPDV
       FieldName = 'DT_VALIDADE'
       Origin = 'DT_VALIDADE'
     end
+    object fdqryOrcamentoSOLICITACAO: TMemoField
+      FieldName = 'SOLICITACAO'
+      Origin = 'SOLICITACAO'
+      BlobType = ftMemo
+    end
+    object fdqryOrcamentoLIBERADO: TStringField
+      FieldName = 'LIBERADO'
+      Origin = 'LIBERADO'
+      FixedChar = True
+      Size = 3
+    end
+    object fdqryOrcamentoTIPO_LIBERACAO: TStringField
+      FieldName = 'TIPO_LIBERACAO'
+      Origin = 'TIPO_LIBERACAO'
+      Size = 50
+    end
+    object fdqryOrcamentoUSU_LIBEROU: TStringField
+      FieldName = 'USU_LIBEROU'
+      Origin = 'USU_LIBEROU'
+      Size = 100
+    end
   end
   object fdqryOrItem: TFDQuery
     MasterSource = sOrcamento
     MasterFields = 'ID'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranOrcamento
     FetchOptions.AssignedValues = [evCache]
     FetchOptions.Cache = [fiBlobs]
@@ -117,7 +138,7 @@ object smPDV: TsmPDV
   object fdqryOrPagar: TFDQuery
     MasterSource = sOrcamento
     MasterFields = 'ID'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = TranOrcamento
     SQL.Strings = (
       'select a.* from ORCAMENTO_PAGTO a'
@@ -173,7 +194,7 @@ object smPDV: TsmPDV
     Top = 120
   end
   object TranOrcamento: TFDTransaction
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Left = 224
     Top = 8
   end

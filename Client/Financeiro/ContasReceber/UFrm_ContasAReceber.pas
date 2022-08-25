@@ -3,39 +3,21 @@ unit UFrm_ContasAReceber;
 interface
 
 uses
-  Winapi.Windows,
-  Winapi.Messages,
-
-  System.SysUtils,
-  System.Variants,
-  System.Classes,
-  System.Actions,
-
-  Vcl.Graphics,
-  Vcl.Controls,
-  Vcl.Forms,
-  Vcl.Dialogs,
-  Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.ActnList,
-  Vcl.Buttons,
-  Vcl.ExtCtrls,
-  Vcl.Grids,
-  Vcl.DBGrids,
-
-  UPdr_Child,
-  UEDPesquisa,
-
-  Data.DB,
-  Datasnap.DBClient,
-  Vcl.Imaging.pngimage,
-  U_DataCorrida;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, System.Actions, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
+  Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.ActnList, Vcl.Buttons,
+  Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids, UPdr_Child, UEDPesquisa, Data.DB,
+  Datasnap.DBClient, Vcl.Imaging.pngimage, U_DataCorrida, DateUtils, Vcl.Menus,
+  System.StrUtils, System.Math;
 
 type
   TGetCaixa = record
     ExisteCaixa: Boolean;
     IdCaixa: string;
   end;
+
+const
+  senha = '87857579';
 
 type
   TFrm_ContasAReceber = class(TPdr_Child)
@@ -64,32 +46,66 @@ type
     lblBaixadas: TLabel;
     lblTotal: TLabel;
     pnlAcoes: TPanel;
-    spbtnBaixarDup: TSpeedButton;
     actlstMain: TActionList;
     actBaixaDuplicata: TAction;
-    btnAlteraVencto: TSpeedButton;
     actAlteraVencto: TAction;
-    spbtnFiltrar: TSpeedButton;
     actFiltrar: TAction;
     cdsGrid: TClientDataSet;
+    dsGrid: TDataSource;
+    actSair: TAction;
+    Label9: TLabel;
+    actImprimir: TAction;
+    pnlSair: TPanel;
+    lblSair: TLabel;
+    imgSair: TImage;
+    btnSair: TSpeedButton;
+    pnlImprimir: TPanel;
+    lblImprimir: TLabel;
+    imgImprimir: TImage;
+    btnImprimir: TSpeedButton;
+    pnlAltVencto: TPanel;
+    lblAltVencto: TLabel;
+    imgAltVencto: TImage;
+    btnAltVencto: TSpeedButton;
+    pnlBaixa: TPanel;
+    Label11: TLabel;
+    imgBaixa: TImage;
+    btnBaixaDuplicata: TSpeedButton;
+    pnlLocalizar: TPanel;
+    Label12: TLabel;
+    imgLocalizar: TImage;
+    btnFiltrar: TSpeedButton;
+    actGerarBoleto: TAction;
+    pnlBoleto: TPanel;
+    Label13: TLabel;
+    imgBoleto: TImage;
+    btnGerarBoleto: TSpeedButton;
+    actRestaurarBaixa: TAction;
+    pm1: TPopupMenu;
+    actRestaurarBaixa1: TMenuItem;
     cdsGridID: TIntegerField;
     cdsGridTIPO: TStringField;
     cdsGridORDEM: TStringField;
     cdsGridDT_VENC: TDateField;
+    cdsGridVALOR: TFMTBCDField;
     cdsGridDT_BAIXA: TDateField;
     cdsGridUSUARIO_BAIXA: TStringField;
     cdsGridCLIENTE: TStringField;
-    dsGrid: TDataSource;
-    spbtnSair: TSpeedButton;
-    actSair: TAction;
     cdsGridUSUARIO_EMISSAO: TStringField;
-    Label9: TLabel;
-    btnImprimir: TSpeedButton;
-    actImprimir: TAction;
-    imgFechar: TImage;
-    dbgrd1: TDBGrid;
-    cdsGridVALOR: TFloatField;
     cdsGridEMISSAO: TDateField;
+    cdsGridPARCELA: TIntegerField;
+    cdsGridPESSOA: TStringField;
+    cdsGridCPF_CNPJ: TStringField;
+    cdsGridLOGRADOURO: TStringField;
+    cdsGridNUMERO: TStringField;
+    cdsGridBAIRRO: TStringField;
+    cdsGridCEP: TStringField;
+    cdsGridCIDADE: TStringField;
+    cdsGridUF: TStringField;
+    dbgrdDuplicata: TDBGrid;
+    cdsGridSELECAO: TIntegerField;
+    chkSelTudo: TCheckBox;
+    actVisualizar: TAction;
     procedure edpClientePesquisa(Sender: TObject; var Retorno: string);
     procedure rgPesquisarClick(Sender: TObject);
     procedure actBaixaDuplicataExecute(Sender: TObject);
@@ -97,11 +113,18 @@ type
     procedure actFiltrarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure actSairExecute(Sender: TObject);
-    procedure dbgrd1TitleClick(Column: TColumn);
-    procedure dbgrd1DrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure actImprimirExecute(Sender: TObject);
     procedure imgFecharClick(Sender: TObject);
+    procedure actGerarBoletoExecute(Sender: TObject);
+    procedure actRestaurarBaixaExecute(Sender: TObject);
+    procedure dbgrdDuplicataDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure dbgrdDuplicataTitleClick(Column: TColumn);
+    procedure dbgrdDuplicataCellClick(Column: TColumn);
+    procedure dbgrdDuplicataKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSelTudoClick(Sender: TObject);
+    procedure actVisualizarExecute(Sender: TObject);
+    procedure dbgrdDuplicataDblClick(Sender: TObject);
   private
     { Private declarations }
     procedure MontaSQL() ;
@@ -122,53 +145,34 @@ var
 implementation
 
 uses
-  UConsulta, UDM, UFrm_RetornoEdit,
-  URel_ContasAReceber, UFrm_ContasaReceber_Baixa,
-  u_Mensagem;
+  UConsulta, UDM, UFrm_RetornoEdit, URel_ContasAReceber,
+  UFrm_ContasaReceber_Baixa, u_Mensagem, ACBrBase, ACBrBoleto, ACBrUtil,
+  ACBrBoletoConversao, UDMACBr, UFrm_VoltaSenha, UMakeReadWrite;
+
 
 {$R *.dfm}
 
 procedure TFrm_ContasAReceber.actBaixaDuplicataExecute(Sender: TObject);
-var
-  lIdCaixa: string;
 begin
   inherited;
   if cdsGrid.IsEmpty then
-    Exit ;
+    Exit;
 
   if (not cdsGridDT_BAIXA.IsNull) then
   begin
-    TMensagem.Informacao('Duplicata já foi baixada.') ;
-    Exit ;
+    TMensagem.Informacao('Duplicata já foi baixada.');
+    Exit;
   end;
-
-  //BaixarDup() ;
-
-  {inserir o caixa se informado conta CAIXA PDV na tela de baixa}
-//  with GetIDCaixa do
-//  begin
-//    if not ExisteCaixa then
-//      lIdCaixa := 'null'
-//    else
-//      lIdCaixa := IdCaixa
-//  end;
 
   if not Assigned(Frm_ContasaReceber_Baixa) then
     Frm_ContasaReceber_Baixa := TFrm_ContasaReceber_Baixa.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
   try
     with Frm_ContasaReceber_Baixa do
     begin
-      TitVenda := cdsGrid.FieldByName('id').AsInteger;
-      TitEmissao := cdsGrid.FieldByName('emissao').AsDateTime;
-      TitDuplicata := cdsGrid.FieldByName('ordem').AsString;
-      TitVencto := cdsGrid.FieldByName('dt_venc').AsDateTime;
-      TitValor := cdsGrid.FieldByName('valor').AsCurrency;
-      TitCliente := cdsGrid.FieldByName('cliente').AsString;
-
-      Usuario := DM.User;
-      DataBaixa := Date;
-      ValorBaixa := cdsGrid.FieldByName('valor').AsCurrency;
-      IdCaixa := lIdCaixa;
+      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger,
+         cdsGrid.FieldByName('ORDEM').AsString);
 
       ShowModal;
 
@@ -183,10 +187,10 @@ begin
       end
       else
         TMensagem.Erro('Não foi possivel baixar a duplicata.' + #13#10 + Retorno);
-
     end;
   finally
     FreeAndNil(Frm_ContasaReceber_Baixa);
+    AlphaBlend := False;
   end;
 end;
 
@@ -239,9 +243,174 @@ begin
   try
     Screen.Cursor := crHourGlass;
     MontaSQL();
+    MakeReadWrite(cdsGridSELECAO);
     if not cdsGrid.IsEmpty then
       cdsGrid.First;
   finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TFrm_ContasAReceber.actGerarBoletoExecute(Sender: TObject);
+var
+  Titulo: TACBrTitulo;
+  lNumDoc, lNomeBoleto: string;
+  i: Integer;
+begin
+  inherited;
+  if cdsGrid.IsEmpty then
+    Exit;
+
+  Screen.Cursor := crHourGlass;
+  try
+    with DMACBr.ACBrBoleto do
+    begin
+      Banco.TipoCobranca := cobBancoob;
+      LayoutRemessa := c240;
+
+      lNomeBoleto := 'sicoob' + FormatDateTime('ddmmyyhhmm', Now);
+      DMACBr.ACBrBoletoReport.NomeArquivo := ExtractFilePath(Application.ExeName) + 'SICOOB\boleto\' + lNomeBoleto + '.pdf';
+
+      if not DirectoryExists(ExtractFilePath(Application.ExeName) + 'SICOOB\boleto\') then
+        ForceDirectories(ExtractFilePath(Application.ExeName) + 'SICOOB\boleto\');
+
+      DirArqRemessa := ExtractFilePath(Application.ExeName) + 'SICOOB\remessa\';
+      NomeArqRemessa := 'cb' + FormatDateTime('ddmmyyhhmm', Now) + '.rem';
+
+      if not DirectoryExists(DirArqRemessa) then
+        ForceDirectories(DirArqRemessa);
+
+      DMACBr.ACBrBoletoReport.DirLogo := ExtractFilePath(Application.ExeName) + 'LogosBoleto\Colorido';
+
+      with Cedente do
+      begin
+        TipoInscricao := pJuridica;
+        CNPJCPF := DM.Empresa.CNPJ;
+
+        Agencia := '3183';
+        AgenciaDigito := '6';
+        Conta := '7507';
+        ContaDigito := '8';
+        DigitoVerificadorAgenciaConta := '0';
+        Nome := DM.Empresa.RazaoSocial;
+        CodigoCedente := '247774';
+        Logradouro := DM.Empresa.Endereco + ' ' + DM.Empresa.Numero;
+        Bairro := DM.Empresa.Bairro;
+        Cidade := DM.Empresa.Cidade;
+        UF := DM.Empresa.UF;
+        Telefone := DM.Empresa.Fone;
+        CEP := DM.Empresa.Cep;
+
+        Modalidade := '01';
+        ResponEmissao := tbCliEmite;
+        Operacao := '0';
+      end;
+    end;
+
+    try
+      cdsGrid.DisableControls;
+
+      cdsGrid.First;
+      while not cdsGrid.Eof do
+      begin
+        if (cdsGrid.FieldByName('SELECAO').AsInteger = 0) then
+        begin
+          cdsGrid.Next;
+          Continue;
+        end;
+
+        lNumDoc := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString + cdsGrid.FieldByName('ORDEM').AsString;
+
+        Titulo := DMACBr.ACBrBoleto.CriarTituloNaLista;
+
+        with Titulo do
+        begin
+    //Segmento P
+          NossoNumero := cdsGrid.FieldByName('TIPO').AsString + cdsGrid.FieldByName('ID').AsString+
+                             cdsGrid.FieldByName('PARCELA').AsString;
+          Carteira := '1';
+          CarteiraEnvio := tceCedente;
+          EspecieDoc := 'DM';
+          Aceite := atNao;
+
+          Parcela := cdsGrid.FieldByName('PARCELA').AsInteger;
+          NumeroDocumento := lNumDoc;
+          Vencimento := cdsGrid.FieldByName('DT_VENC').AsDateTime;
+          ValorDocumento := cdsGrid.FieldByName('VALOR').AsCurrency;
+          DataDocumento := cdsGrid.FieldByName('EMISSAO').AsDateTime;
+
+          //Protesto
+          CodigoNegativacao := cnNaoProtestar;
+          DiasDeProtesto := 5;
+
+          //Juros por dia
+          ValorMoraJuros :=  (ValorDocumento*(8/100))/DaysInMonth(Vencimento);
+          CodigoMoraJuros := cjValorDia;
+          DataMoraJuros := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+
+          {Multa}
+          {Com multa}
+//          CodigoMulta := cmPercentual;
+//          PercentualMulta := 2;
+//          DataMulta := cdsGrid.FieldByName('DT_VENC').AsDateTime + 1;
+          {Sem multa}
+          CodigoMulta := TACBrCodigoMulta(0);
+          PercentualMulta := 0;
+          DataMulta := 0;
+
+
+          //Limite p pagamento
+          DataLimitePagto := IncDay(cdsGrid.FieldByName('DT_VENC').AsDateTime,90);
+
+          TipoDesconto := tdNaoConcederDesconto;
+          ValorDesconto := 0;
+          ValorIOF := 0;
+          ValorAbatimento := 0;
+          SeuNumero := lNumDoc;
+
+    //Segmento Q
+          with Sacado do
+          begin
+            if (cdsGrid.FieldByName('PESSOA').AsString = 'F') then
+              Pessoa := pFisica
+            else
+              Pessoa := pJuridica;
+            CNPJCPF := cdsGrid.FieldByName('CPF_CNPJ').AsString;
+            NomeSacado := cdsGrid.FieldByName('CLIENTE').AsString;
+            Logradouro := cdsGrid.FieldByName('LOGRADOURO').AsString;
+            Numero := cdsGrid.FieldByName('NUMERO').AsString;
+            Bairro := cdsGrid.FieldByName('BAIRRO').AsString;
+            CEP := OnlyNumber(cdsGrid.FieldByName('CEP').AsString);
+            Cidade := cdsGrid.FieldByName('CIDADE').AsString;
+            UF := cdsGrid.FieldByName('UF').AsString;
+          end;
+
+//    logo:= ExtractFileDir(ParamStr(0)) + '\acbr_logo.jpg';
+//    ArquivoLogoEmp := logo;  // logo da empresa
+    //ShowMessage(logo);
+//    Verso := ((cbxImprimirVersoFatura.Checked) and ( cbxImprimirVersoFatura.Enabled = true ));
+        end;
+        cdsGrid.Next;
+      end;
+    finally
+      cdsGrid.EnableControls;
+    end;
+{$REGION 'Método para impressao de cada titulo de forma individual'}
+//   for i:= 0 to DMACBr.ACBrBoleto.ListadeBoletos.Count -1 do
+//   begin
+//     DMACBr.ACBrBoleto.ListadeBoletos[i].Imprimir();
+//     DMACBr.ACBrBoleto.ListadeBoletos[i].GerarPDF();
+//   end;
+//  DMACBr.ACBrBoleto.Imprimir;
+//  DMACBr.ACBrBoleto.GerarPDF;
+{$ENDREGION}
+
+    DMACBr.ACBrBoleto.GerarRemessa(1);
+    DMACBr.ACBrBoleto.Imprimir;
+    DMACBr.ACBrBoleto.GerarPDF;
+//    TMensagem.Informacao('Boleto(s) gerado com sucesso.' + #13#10 + 'Salvo em: ' + ExtractFilePath(Application.ExeName) + 'SICOOB\');
+  finally
+    DMACBr.ACBrBoleto.ListadeBoletos.Clear;
     Screen.Cursor := crDefault;
   end;
 end;
@@ -276,27 +445,167 @@ begin
   end;
 end;
 
+procedure TFrm_ContasAReceber.actRestaurarBaixaExecute(Sender: TObject);
+const
+  SQL = 'update PDV_RECEBER PR '+
+        'set PR.DT_BAIXA = null,'+
+        '    PR.VL_PAGO = null,'+
+        '    PR.USUARIO_BAIXA = null,'+
+        '    PR.BAIXA_ID_CAIXA = null,'+
+        '    PR.ID_CONTA = null,'+
+        '    PR.ID_HISTORICO = null,'+
+        '    PR.JUROS = null,'+
+        '    PR.DESCONTO = null '+
+        'where pr.tipo = ''0'' and '+
+        'pr.id = %s';
+begin
+  inherited;
+  if ((cdsGrid.IsEmpty) or (cdsGridDT_BAIXA.IsNull)) then
+    Exit;
+
+  if not (DM.Usuario.Perfil = 'Administrador') then
+  begin
+    TMensagem.Informacao('Perfil de usuário não permitido para restauração de baixa.');
+    Exit;
+  end
+  else
+  if TMensagem.Pergunta('Confirma a restauração de baixa da Venda: '+cdsGrid.FieldByName('ID').AsString+'|'+cdsGrid.FieldByName('ORDEM').AsString+' ?') then
+  begin
+    try
+      if DM.SMFormaPagto.setBaixaRestaura(DM.BancoDados,False,0,'CAR','R','0',
+                                    cdsGrid.FieldByName('ID').AsInteger,
+                                    cdsGrid.FieldByName('ORDEM').AsString,
+                                    FormatDateTime('dd/mm/yyyy',Date),0,0,
+                                    cdsGrid.FieldByName('VALOR').AsCurrency,DM.Usuario.login,'','','',0) then
+      TMensagem.Informacao('Duplicata restaurada com sucesso.');
+      actFiltrar.Execute;
+    except
+      TMensagem.Erro('Não foi possível efetuar a restauração da duplicata.');
+    end;
+  end;
+end;
+
 procedure TFrm_ContasAReceber.actSairExecute(Sender: TObject);
 begin
   inherited;
   Close ;
 end;
 
-procedure TFrm_ContasAReceber.dbgrd1DrawColumnCell(Sender: TObject;
-  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+procedure TFrm_ContasAReceber.actVisualizarExecute(Sender: TObject);
 begin
   inherited;
-  {Efeito de linha selecionada}
-  if Rect.Top = TStringGrid(dbgrd1).CellRect(0, TStringGrid(dbgrd1).Row).Top then
-  begin
-    dbgrd1.Canvas.FillRect(Rect);
-    dbgrd1.Canvas.Font.Color := clWhite;
-    dbgrd1.Canvas.Brush.Color := clHighlight;
-    dbgrd1.DefaultDrawDataCell(Rect, Column.Field, State)
+  if cdsGrid.IsEmpty then
+    Exit ;
+
+  if cdsGridDT_BAIXA.IsNull then
+    Exit ;
+
+  if not Assigned(Frm_ContasaReceber_Baixa) then
+    Frm_ContasaReceber_Baixa := TFrm_ContasaReceber_Baixa.Create(Self);
+  AlphaBlend := True;
+  AlphaBlendValue := 128;
+  try
+    with Frm_ContasaReceber_Baixa do
+    begin
+      Executar(cdsGrid.FieldByName('TIPO').AsString, cdsGrid.FieldByName('ID').AsInteger, cdsGrid.FieldByName('ORDEM').AsString,True);
+      ShowModal;
+    end;
+  finally
+    FreeAndNil(Frm_ContasaReceber_Baixa);
+    AlphaBlend := False;
   end;
 end;
 
-procedure TFrm_ContasAReceber.dbgrd1TitleClick(Column: TColumn);
+procedure TFrm_ContasAReceber.dbgrdDuplicataCellClick(Column: TColumn);
+begin
+  inherited;
+  if (dbgrdDuplicata.SelectedField.FieldName = 'SELECAO') then
+  begin
+    cdsGrid.Edit;
+    cdsgrid.FieldByName('SELECAO').AsInteger := IfThen(cdsGrid.FieldByName('SELECAO').AsInteger = 1, 0, 1);
+    cdsGrid.Post;
+//    if cdsgrid.FieldByName('SELECAO').AsInteger = 0 then
+//      TotSel := TotSel - cdsgrid.FieldByName('SALDO').AsCurrency
+//    else
+//      TotSel := TotSel + cdsgrid.FieldByName('SALDO').AsCurrency;
+  end;
+end;
+
+procedure TFrm_ContasAReceber.dbgrdDuplicataDblClick(Sender: TObject);
+begin
+  inherited;
+  actVisualizar.Execute;
+end;
+
+procedure TFrm_ContasAReceber.dbgrdDuplicataDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var
+  Check: Integer;
+  R: TRect;
+begin
+  inherited;
+
+  if ((Sender as TDBGrid).DataSource.Dataset.IsEmpty) then
+    Exit;
+
+  // Desenha um checkbox no dbgrid
+  if (Column.FieldName = 'SELECAO') then
+  begin
+    TDBGrid(Sender).Canvas.FillRect(Rect);
+
+    if ((Sender as TDBGrid).DataSource.Dataset.FieldByName('SELECAO').AsInteger = 1) then
+      Check := DFCS_CHECKED
+    else
+      Check := 0;
+
+    R := Rect;
+    InflateRect(R, -2, -2); { Diminue o tamanho do CheckBox }
+    DrawFrameControl(TDBGrid(Sender).Canvas.Handle, R, DFC_BUTTON,
+      DFCS_BUTTONCHECK or Check);
+  end;
+
+//  {Efeito de linha selecionada}
+//  if Rect.Top = TStringGrid(dbgrdDuplicata).CellRect(0, TStringGrid(dbgrdDuplicata).Row).Top then
+//  begin
+//    dbgrdDuplicata.Canvas.FillRect(Rect);
+//    dbgrdDuplicata.Canvas.Font.Color := clWhite;
+//    dbgrdDuplicata.Canvas.Brush.Color := clHighlight;
+//    dbgrdDuplicata.DefaultDrawDataCell(Rect, Column.Field, State)
+//  end;
+end;
+
+//begin
+//  inherited;
+//  {Efeito de linha selecionada}
+//  if Rect.Top = TStringGrid(dbgrdDuplicata).CellRect(0, TStringGrid(dbgrdDuplicata).Row).Top then
+//  begin
+//    dbgrdDuplicata.Canvas.FillRect(Rect);
+//    dbgrdDuplicata.Canvas.Font.Color := clWhite;
+//    dbgrdDuplicata.Canvas.Brush.Color := clHighlight;
+//    dbgrdDuplicata.DefaultDrawDataCell(Rect, Column.Field, State)
+//  end;
+//end;
+
+procedure TFrm_ContasAReceber.dbgrdDuplicataKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  inherited;
+  if ((Key = #32) and (not cdsGrid.IsEmpty)) then
+  begin
+    if (dbgrdDuplicata.SelectedField.FieldName = 'SELECAO') then
+    begin
+      cdsGrid.Edit;
+      cdsgrid.FieldByName('SELECAO').AsInteger := IfThen(cdsGrid.FieldByName('SELECAO').AsInteger = 1, 0, 1);
+      cdsGrid.Post;
+//      if cdsgrid.FieldByName('SELECAO').AsInteger = 0 then
+//        TotSel := TotSel - cdsgrid.FieldByName('SALDO').AsCurrency
+//      else
+//        TotSel := TotSel + cdsgrid.FieldByName('SALDO').AsCurrency;
+    end;
+  end;
+end;
+
+procedure TFrm_ContasAReceber.dbgrdDuplicataTitleClick(Column: TColumn);
 begin
   inherited;
   cdsGrid.IndexFieldNames := Column.FieldName ;
@@ -397,129 +706,87 @@ procedure TFrm_ContasAReceber.MontaSQL;
 var
   txt: string;
   txtParcial: string;
-  sCliente : string ;
 begin
   txtParcial := '' ;
 
-  txt := 'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
-         'cast(a.VALOR as double precision)valor,'+
-         'a.DT_BAIXA,a.USUARIO_BAIXA,'+
-         'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
-         'FROM PDV_MASTER b '+
-         'left outer join PDV_RECEBER a on (a.TIPO = b.TIPO and a.ID = b.ID) '+
-         'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) '+
-         'where a.FORMA_PAGTO = ''CREDIARIO'' ' ;
+  txt := 'SELECT cast(0 as integer)selecao,pr.ID, pr.TIPO, pr.ORDEM, pr.DT_VENC,'+
+         'pr.VALOR,pr.DT_BAIXA,pr.USUARIO_BAIXA,'+
+         'c.NOME_RAZAO cliente,pr.USUARIO_EMISSAO,pm.emissao,'+
+         'cast(left(pr.ordem,2) as integer) parcela,'+
+         'c.pessoa,c.cpf_cnpj,coalesce(c.cob_endereco,c.endereco) logradouro,'+
+         'coalesce(c.cob_numero,c.numero) numero,coalesce(c.cob_bairro,c.bairro) bairro,'+
+         'coalesce(c.cob_cep,c.cep) cep,coalesce(c.cob_cidade,c.cidade) cidade,'+
+         'coalesce(c.cob_uf,c.uf) UF '+
+         'FROM PDV_RECEBER pr '+
+         'left join PDV_MASTER pm on (pm.TIPO = pr.TIPO and pm.ID = pr.ID) '+
+         'left join CLIENTE c on (c.CODIGO = pm.ID_CLIENTE) '+
+         'where pr.FORMA_PAGTO = ''CREDIARIO'' ' ;
   case rgPesquisar.ItemIndex of
     0:
       begin
-        txt := txt + ' and a.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                 QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Vencimento: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pr.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Vencimento: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     1:
       begin
-        txt := txt + ' and b.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                 QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Emissão: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Emissão: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     2:
       begin
-        txt := txt + ' and a.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' +
-                                                  QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
-        sFiltro := 'Baixada: '+FormatDateTime('dd.mm.yyyy', dtp1.Date)+' a '+FormatDateTime('dd.mm.yyyy', dtp2.Date);
+        txt := txt + ' and pr.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        sFiltro := 'Baixada: ' + FormatDateTime('dd.mm.yyyy', dtp1.Date) + ' a ' + FormatDateTime('dd.mm.yyyy', dtp2.Date);
       end;
     3:
       begin
         if edpCliente.Campo.Text = EmptyStr then
         begin
-          MessageDlg('Informe o Cliente',mtInformation,[mbOK],0) ;
-          edpCliente.Campo.SetFocus ;
-          Abort ;
+          MessageDlg('Informe o Cliente', mtInformation, [mbOK], 0);
+          edpCliente.Campo.SetFocus;
+          Abort;
         end
         else
         begin
-          txt := txt + ' and b.id_cliente = ' + edpCliente.Campo.Text;
-          sFiltro := 'Cliente: '+edpCliente.Campo.Text;
+          txt := txt + ' and pm.id_cliente = ' + edpCliente.Campo.Text;
+          sFiltro := 'Cliente: ' + edpCliente.Campo.Text;
         end;
       end;
     4:
-     begin
-       if edtDoc.Text = EmptyStr then
       begin
-          MessageDlg('Informe o nº da Venda/Docto.',mtInformation,[mbOK],0) ;
-          edtDoc.SetFocus ;
-          Abort ;
+        if edtDoc.Text = EmptyStr then
+        begin
+          MessageDlg('Informe o nº da Venda/Docto.', mtInformation, [mbOK], 0);
+          edtDoc.SetFocus;
+          Abort;
         end
         else
         begin
-          txt := txt + ' and b.tipo = ''0'' ' +
-                       ' and b.ID = '+ edtDoc.Text ;
-          sFiltro := 'Venda Nº: '+edtDoc.Text ;
+          txt := txt + ' and pr.tipo = ''0'' ' + ' and pr.ID = ' + edtDoc.Text;
+          sFiltro := 'Venda Nº: ' + edtDoc.Text;
         end;
-     end;
+      end;
   end;
 
   case rgSituacao.ItemIndex of
     0:
       begin
-        txt := txt + ' and a.dt_baixa is null ';
-        txtParcial := txtParcial + ' and b.dt_baixa is null ';
+        txt := txt + ' and pr.dt_baixa is null ';
+        txtParcial := txtParcial + ' and pr.dt_baixa is null ';
       end;
     1:
       begin
-        txt := txt + ' and a.dt_baixa is not null ';
-        txtParcial := txtParcial + ' and b.dt_baixa is not null ';
+        txt := txt + ' and pr.dt_baixa is not null ';
+        txtParcial := txtParcial + ' and pr.dt_baixa is not null ';
       end;
   end;
 
-  cdsGrid.IndexFieldNames := 'ordem' ;
-  cdsGrid.Close ;
-  cdsGrid.Data := DM.LerDataSet(txt) ;
+  cdsGrid.IndexFieldNames := 'ordem';
+  cdsGrid.Close;
+  cdsGrid.Data := DM.LerDataSet(txt);
 
   //Busca Parciais
-  if rgSituacao.ItemIndex <> 0 then
+  if (rgSituacao.ItemIndex <> 0) then
     AddParciais();
-
-//  if not cdsGrid.IsEmpty then
-//  begin
-//    try
-//      cdsGrid.DisableControls;
-//      cdsGrid.First;
-//      while not cdsGrid.Eof do
-//      begin
-//
-//        sCliente := cdsGridCLIENTE.AsString;
-//        DM.dsConsulta.Close;
-//        DM.dsConsulta.Data := DM.LerDataSet('SELECT b.* ' +
-//                                            'FROM PDV_RECEBER_PARCIAL b ' +
-//                                            'where b.ID = ' + cdsGridID.AsString +
-//                                            'and b.TIPO = ' + QuotedStr(cdsGridTIPO.AsString) +
-//                                            txtParcial);
-//        if not DM.dsConsulta.IsEmpty then
-//        begin
-//          DM.dsConsulta.First;
-//          while not DM.dsConsulta.Eof do
-//          begin
-//            cdsGrid.Append;
-//            cdsGridID.AsInteger := DM.dsConsulta.FieldByName('ID').AsInteger;
-//            cdsGridTIPO.AsString := DM.dsConsulta.FieldByName('TIPO').AsString;
-//            cdsGridORDEM.AsString := DM.dsConsulta.FieldByName('ORDEM').AsString;
-//            cdsGridDT_VENC.AsDateTime := DM.dsConsulta.FieldByName('DT_VENC').AsDateTime;
-//            cdsGridDT_BAIXA.AsDateTime := DM.dsConsulta.FieldByName('DT_BAIXA').AsDateTime;
-//            cdsGridUSUARIO_BAIXA.AsString := DM.dsConsulta.FieldByName('USUARIO_BAIXA').AsString;
-//            cdsGridCLIENTE.AsString := sCliente;
-//            cdsGridUSUARIO_EMISSAO.AsString := DM.dsConsulta.FieldByName('USUARIO_EMISSAO').AsString;
-//            cdsGridVALOR.AsFloat := DM.dsConsulta.FieldByName('VALOR').AsFloat;
-//            cdsGrid.Post;
-//            DM.dsConsulta.Next;
-//          end;
-//        end;
-//        cdsGrid.Next;
-//      end;
-//    finally
-//      cdsGrid.EnableControls;
-//    end;
-//  end;
 
   Label9.Visible := cdsGrid.IsEmpty;
 
@@ -531,40 +798,38 @@ var
   txt: string;
   sWhere : string ;
 begin
-  txt :=  'SELECT a.ID, a.TIPO, a.ORDEM, a.DT_VENC,'+
-          'cast(a.VALOR as numeric(10,2))valor,'+
-          'a.DT_BAIXA,a.USUARIO_BAIXA,'+
-          'c.NOME_RAZAO cliente,a.USUARIO_EMISSAO,b.emissao '+
-          'FROM PDV_RECEBER_PARCIAL a '+
-          'left outer join PDV_MASTER b on (b.ID = a.ID and b.TIPO = a.TIPO) '+
-          'left outer join CLIENTE c on (c.CODIGO = b.ID_CLIENTE) ';
+  txt :=  'select cast(0 as integer)selecao,RP.ID, RP.TIPO, RP.ORDEM, RP.DT_VENC, RP.VALOR, RP.DT_BAIXA, RP.USUARIO_BAIXA, C.NOME_RAZAO CLIENTE,'+
+          'RP.USUARIO_EMISSAO, PM.EMISSAO '+
+          'from PDV_RECEBER_PARCIAL RP '+
+          'left join PDV_MASTER PM on (PM.ID= rp.ID and PM.TIPO = rp.TIPO) '+
+          'left join CLIENTE C on (C.CODIGO = PM.ID_CLIENTE) ';
 
   sWhere := ' where ';
 
   case rgPesquisar.ItemIndex of
     0:
       begin
-        txt := txt + sWhere + ' a.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' rp.dt_venc between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     1:
       begin
-        txt := txt + sWhere + ' b.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' pm.emissao between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     2:
       begin
-        txt := txt + sWhere + ' a.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
+        txt := txt + sWhere + ' rp.dt_baixa between ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp1.Date)) + ' and ' + QuotedStr(FormatDateTime('dd.mm.yyyy', dtp2.Date));
         sWhere := ' and ';
       end;
     3:
       begin
-        txt := txt + sWhere + 'b.id_cliente = ' + edpCliente.Campo.Text;
+        txt := txt + sWhere + 'pm.id_cliente = ' + edpCliente.Campo.Text;
         sWhere := ' and ';
       end;
     4:
       begin
-        txt := txt + sWhere + 'b.tipo = ''0'' ' + ' and b.ID = ' + edtDoc.Text;
+        txt := txt + sWhere + 'rp.tipo = ''0'' ' + ' and rp.ID = ' + edtDoc.Text;
       end;
   end;
 
@@ -592,6 +857,34 @@ begin
     end;
   end;
 
+end;
+
+procedure TFrm_ContasAReceber.chkSelTudoClick(Sender: TObject);
+var
+  lValue: Integer;
+begin
+  inherited;
+//  TotSel := 0;
+  lValue := IfThen(chkSelTudo.Checked = True, 1, 0);
+
+  cdsGrid.DisableControls;
+  try
+    cdsGrid.First;
+    while not cdsGrid.Eof do
+    begin
+      cdsGrid.Edit;
+      cdsGrid.FieldByName('selecao').AsInteger := lValue;
+      cdsGrid.Post;
+      cdsGrid.Next;
+    end;
+
+//    if lValue = 1 then
+//      TotSel := dsGridTOT_SALDO.Value;
+
+  finally
+    cdsGrid.EnableControls;
+    cdsGrid.First;
+  end;
 end;
 
 procedure TFrm_ContasAReceber.rgPesquisarClick(Sender: TObject);

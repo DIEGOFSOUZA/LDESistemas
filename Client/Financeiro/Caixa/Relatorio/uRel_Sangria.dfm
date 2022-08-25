@@ -5,19 +5,29 @@ inherited Rel_Sangria: TRel_Sangria
   TextHeight = 13
   inherited pnlFundo0: TPanel
     inherited pnlTopo: TPanel
+      inherited pnlPeriodo: TPanel
+        inherited pnlGerar: TPanel
+          inherited btnGerar: TSpeedButton
+            ExplicitTop = -6
+            ExplicitWidth = 25
+            ExplicitHeight = 25
+          end
+        end
+      end
+      inherited pnlVisualizar: TPanel
+        inherited Label3: TLabel
+          Width = 85
+        end
+      end
       inherited chkExibirResumo: TCheckBox
         Visible = False
       end
     end
     inherited pnlFundo1: TPanel
       inherited pnlRight: TPanel [0]
-        ExplicitLeft = 583
-        ExplicitTop = 5
       end
       inherited pnlGrid: TPanel [1]
         inherited pnlRodape: TPanel
-          ExplicitLeft = -4
-          ExplicitTop = 328
           object lblQtdeRegistros: TLabel
             Left = 8
             Top = 2
@@ -695,7 +705,7 @@ inherited Rel_Sangria: TRel_Sangria
       'SELECT'#13#10#9'CAST (ces.DATA_HORA AS date)DATA,'#13#10#9'iif(ces.VALOR < 0,'#13 +
       #10#9#39'SAIDA'#39','#13#10#9#39'ENTRADA'#39')entsai,'#13#10#9'CAST (iif(ces.VALOR < 0,'#13#10#9'ces.' +
       'VALOR*-1,'#13#10#9'ces.VALOR) AS NUMERIC(10,'#13#10#9'2))valor,'#13#10#9'CAST(upper (' +
-      'ces.OBS) AS varchar(100)) inf,'#13#10#9'ces.USUARIO,'#13#10#9'ces.FORMA_PAGTO'#13 +
+      'ces.OBS) AS varchar(500)) inf,'#13#10#9'ces.USUARIO,'#13#10#9'ces.FORMA_PAGTO'#13 +
       #10'FROM'#13#10#9'CAIXA_ENT_SAI ces'#13#10'WHERE 1 = 2'
     FieldDefs = <
       item
@@ -720,7 +730,7 @@ inherited Rel_Sangria: TRel_Sangria
         Name = 'INF'
         Attributes = [faReadonly]
         DataType = ftString
-        Size = 100
+        Size = 500
       end
       item
         Name = 'USUARIO'
@@ -761,14 +771,6 @@ inherited Rel_Sangria: TRel_Sangria
       Precision = 18
       Size = 2
     end
-    object dsGridINF: TStringField
-      DisplayLabel = 'Descri'#231#227'o'
-      FieldName = 'INF'
-      Origin = 'INF'
-      ProviderFlags = []
-      ReadOnly = True
-      Size = 100
-    end
     object dsGridUSUARIO: TStringField
       DisplayLabel = 'Usu'#225'rio'
       FieldName = 'USUARIO'
@@ -780,6 +782,11 @@ inherited Rel_Sangria: TRel_Sangria
       FieldName = 'FORMA_PAGTO'
       Origin = 'FORMA_PAGTO'
       Size = 30
+    end
+    object dsGridINF: TStringField
+      FieldName = 'INF'
+      ReadOnly = True
+      Size = 500
     end
   end
   inherited RLPDFFilter1: TRLPDFFilter

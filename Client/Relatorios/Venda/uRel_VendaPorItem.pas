@@ -70,6 +70,7 @@ type
     rlblCustoMedio: TRLLabel;
     rlblLucratividade: TRLLabel;
     rlblCustoDireto: TRLLabel;
+    dsGridUND: TStringField;
     procedure actGerarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure dtp1Change(Sender: TObject);
@@ -108,20 +109,23 @@ begin
   gTotCusDireto := 0;
   gTotLucrat := 0;
 
-  lSQL := 'select c.NOME produto,sum(b.QTDE) qtde_vendida,'+
-          'cast(sum(b.VL_TOTAL) as numeric(10,2)) vl_vendas,'+
-          'cast((sum(b.VL_TOTAL)/sum(b.QTDE)) as numeric(10,2)) vl_medio,'+
-          'cast( ( (sum(b.QTDE)*coalesce(c.PRECO_CUSTO,0)) / sum(b.QTDE) )as numeric(10,2)) custo_medio,'+
-          'cast( (sum(b.QTDE)*coalesce(c.PRECO_CUSTO,0)) as numeric(10,2)) custo_direto,'+
-          'cast( (sum(b.VL_TOTAL)-(sum(b.QTDE)*coalesce(c.PRECO_CUSTO,0))) as numeric(10,2)) lucratividade,'+
-          'cast( iif(c.PRECO_CUSTO > 0,((coalesce(c.PRECO_VENDA,0)-coalesce(c.PRECO_CUSTO,0)) /coalesce(c.PRECO_CUSTO,0))*100,100) as numeric(10,2)) marg_lucro '+
-          'from PDV_MASTER a '+
-          'left outer join PDV_ITENS b on (b.ID = a.ID and b.TIPO = a.TIPO) '+
-          'left outer join PRODUTO c on (c.CODIGO = b.ID_PRODUTO) '+
+  lSQL := 'select C.NOME PRODUTO, sum(B.QTDE_BAIXA) QTDE_VENDIDA, coalesce(U2.SIGLA, U1.SIGLA) UND,'+
+          '       cast(sum(B.VL_TOTAL) as numeric(10,2)) VL_VENDAS,'+
+          '       cast((sum(B.VL_TOTAL) / sum(B.QTDE_BAIXA)) as numeric(10,2)) VL_MEDIO,'+
+          '       cast(((sum(B.QTDE_BAIXA) * coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) / sum(B.QTDE_BAIXA)) as numeric(10,2)) CUSTO_MEDIO,'+
+          '       cast((sum(B.QTDE_BAIXA) * coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) as numeric(10,2)) CUSTO_DIRETO,'+
+          '       cast(((sum(B.VL_TOTAL) - (sum(B.QTDE_BAIXA)) * coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0))) as numeric(10,2)) LUCRATIVIDADE, cast(iif(C.PRECO_CUSTO > 0,'+
+          '       ((coalesce(C.PRECO_VENDA, 0) - coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) / coalesce((C.PRECO_CUSTO / C.CONV_QTDE), C.PRECO_CUSTO, 0)) * 100, 100) as numeric(10,2)) MARG_LUCRO '+
+          'from PDV_MASTER A '+
+          'left join PDV_ITENS B on (B.ID = A.ID and '+
+          '      B.TIPO = A.TIPO) '+
+          'left join PRODUTO C on (C.CODIGO = B.ID_PRODUTO) '+
+          'left join UNIDADE U1 on (U1.CODIGO = C.COD_UNIDADE) '+
+          'left join UNIDADE U2 on (U2.CODIGO = C.CONV_UNIDADE) '+
           'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                              ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-          'and a.STATUS is null '+
-          'group by c.NOME,c.PRECO_CUSTO,c.PRECO_VENDA';
+          'and a.STATUS <> ''CANCELADA'' '+
+          'group by C.NOME, C.PRECO_CUSTO, C.PRECO_VENDA, C.CONV_QTDE, U1.SIGLA, U2.SIGLA';
 
   dsGrid.Close;
   dsGrid.Data := DM.LerDataSet(lSQL);
@@ -162,7 +166,7 @@ begin
     lblResQtVendida.Caption := FormatFloat('#,##0.000', gTotQtde);
     lblResCustoMedio.Caption := 'R$ ' + FormatCurr('#,##0.00', gTotCusMedio);
     lblResVlmedioVenda.Caption := 'R$ ' + FormatCurr('#,##0.00', gTotVlMedio);
-    lblResLucMedioV.Caption := 'R$ ' + FormatCurr('#,##0.00', (gTotLucrat/gTotQtde));
+    lblResLucMedioV.Caption := 'R$ ' + FormatCurr('#,##0.00', (gTotLucrat / gTotQtde));
   end
   else
   begin
@@ -192,14 +196,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasItem.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasItem.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin
@@ -234,7 +231,7 @@ begin
 
   Self.Height := pnlFundo0.Height;
   Self.Width := pnlFundo0.Width;
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPorItem.RLBand3BeforePrint(Sender: TObject;

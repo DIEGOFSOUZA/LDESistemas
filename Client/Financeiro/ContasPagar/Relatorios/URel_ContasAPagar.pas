@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  UPdr_Relatorio.Cabecalho, RLFilters, RLPDFFilter, RLReport, Data.DB;
+  UPdr_Relatorio.Cabecalho, RLFilters, RLPDFFilter, RLReport, Data.DB,
+  Datasnap.DBClient;
 
 type
   TRel_ContasAPagar = class(TPdr_RelatorioRetratoCabecalho)
@@ -26,7 +27,25 @@ type
     RLDBText7: TRLDBText;
     RLBand4: TRLBand;
     rlblTotal: TRLLabel;
-    RLLabel5: TRLLabel;
+    cdsReport: TClientDataSet;
+    cdsReportID_NOTA: TIntegerField;
+    cdsReportEMISSAO: TDateField;
+    cdsReportN_NF: TIntegerField;
+    cdsReportFORNECEDOR: TStringField;
+    cdsReportNDUP: TIntegerField;
+    cdsReportDVENC: TDateField;
+    cdsReportVDUP: TFMTBCDField;
+    cdsReportBAIXA_DATA: TDateField;
+    cdsReportBAIXA_VALOR: TFMTBCDField;
+    cdsReportBAIXA_USUARIO: TStringField;
+    cdsReportID_HISTORICODUP: TIntegerField;
+    cdsReportID_CONTA: TStringField;
+    cdsReportID_CAIXA: TIntegerField;
+    cdsReportBAIXADA: TStringField;
+    cdsReportVDESC: TFMTBCDField;
+    cdsReportVJUROS: TFMTBCDField;
+    cdsReportCHEQUE_NUMERO: TIntegerField;
+    cdsReportDT_COMPENSA: TDateField;
     procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RelatorioBeforePrint(Sender: TObject; var PrintIt: Boolean);
@@ -34,7 +53,7 @@ type
     { Private declarations }
   public
     Total : Currency;
-    procedure Executar();
+    procedure Executar(aTemp : TClientDataSet);
   end;
 
 var
@@ -45,12 +64,15 @@ implementation
 {$R *.dfm}
 
 uses
-  UFrmContasPagar;
+  UFrmContasPagar, UDM;
 
 { TRel_ContasAPagar }
 
-procedure TRel_ContasAPagar.Executar;
+procedure TRel_ContasAPagar.Executar(aTemp : TClientDataSet);
 begin
+  cdsReport.IndexFieldNames := 'dvenc';
+  cdsReport.Close;
+  cdsReport.Data := aTemp.Data;
   Relatorio.PreviewModal;
 end;
 
@@ -72,7 +94,7 @@ procedure TRel_ContasAPagar.RLBand4BeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   inherited;
-  rlblTotal.Caption := FormatCurr('#,##0.00',Total);
+  rlblTotal.Caption := 'Total geral: R$ '+FormatCurr('#,##0.00',Total);
 end;
 
 end.

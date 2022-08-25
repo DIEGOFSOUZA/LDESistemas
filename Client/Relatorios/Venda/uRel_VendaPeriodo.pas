@@ -125,20 +125,6 @@ begin
   lProdV := 0;
   lPrecoMedio := 0;
 
-  {lSQL := 'select ''PDV'' fonte,a.ID,a.EMISSAO,iif(a.ID_CLIENTE is null,''Ao Consumidor'',b.NOME_RAZAO) cliente,'+
-          'iif(a.ID_VENDEDOR is null,''Não informado'',c.NOME) vendedor,'+
-          'cast(sum(d.QTDE) as numeric(18,3)) qtde,cast(0 as numeric(10,2))vl_entrega,'+
-          'cast(coalesce(a.VL_PRODUTO,0) as numeric(10,2))vl_bruto,cast(coalesce((a.VL_DESCONTO),0) as numeric(10,2))vl_desconto,'+
-          'cast(coalesce(a.VL_TOTAL,0) as numeric(10,2))vl_total '+
-          'from PDV_MASTER a '+
-          'left outer join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
-          'left outer join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
-          'left outer join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
-          'left outer join PDV_RECEBER e on (e.TIPO = a.TIPO and e.ID = a.TIPO) '+
-          'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
-                             ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-          ' group by 1,2,3,4,5,7,8,9,10';}
-
   lSQL := 'with RET_PERIODO as '+
           '( '+
           'select ''PDV'' fonte,a.ID,a.EMISSAO,iif(a.ID_CLIENTE is null,''Ao Consumidor'',b.NOME_RAZAO) cliente,'+
@@ -146,9 +132,9 @@ begin
           'cast(0 as numeric(10,2))vl_entrega,cast(coalesce(a.VL_PRODUTO,0) as numeric(10,2))vl_bruto,'+
           'cast(coalesce((a.VL_DESCONTO),0) as numeric(10,2))vl_desconto,a.TIPO '+
           'from PDV_MASTER a '+
-          'left outer join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
-          'left outer join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
-          'left outer join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
+          'left join CLIENTE b on (b.CODIGO = a.ID_CLIENTE) '+
+          ' join USUARIO c on (c.ID_VENDEDOR = a.ID_VENDEDOR) '+
+          'left join PDV_ITENS d on (d.TIPO = a.TIPO and d.ID = a.ID) '+
           'where a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                              ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
           'and a.STATUS <> ''CANCELADA'' '+
@@ -236,14 +222,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasPeriodo.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasPeriodo.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin
@@ -278,7 +257,7 @@ begin
 
   Self.Height := pnlFundo0.Height;
   Self.Width :=  pnlFundo0.Width;
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPeriodo.RLBand3BeforePrint(Sender: TObject;

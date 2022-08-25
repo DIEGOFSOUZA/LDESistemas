@@ -26,8 +26,8 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
     ParentFont = False
     Transparent = False
     Layout = tlCenter
-    ExplicitTop = -6
-    ExplicitWidth = 585
+    ExplicitLeft = -1
+    ExplicitTop = -2
   end
   object imgFechar: TImage
     Left = 1097
@@ -126,7 +126,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Color = 7024384
         ParentBackground = False
         ShowCaption = False
-        TabOrder = 0
+        TabOrder = 4
         OnClick = actPesquisarExecute
         object imgConsDup: TImage
           Left = 3
@@ -180,13 +180,13 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         end
       end
       object pnlPeriodo: TPanel
-        Left = 6
-        Top = 40
+        Left = 7
+        Top = 39
         Width = 170
         Height = 118
         Color = 13337441
         ParentBackground = False
-        TabOrder = 1
+        TabOrder = 0
         object lblPeriodo: TLabel
           Left = 22
           Top = 1
@@ -215,7 +215,6 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 3
-          Visible = False
         end
         object dtp1: TDateTimePicker
           Left = 35
@@ -232,7 +231,6 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           Font.Style = [fsBold]
           ParentFont = False
           TabOrder = 2
-          Visible = False
         end
         object chkPeriodo: TCheckBox
           Left = 1
@@ -240,7 +238,9 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           Width = 168
           Height = 17
           Align = alTop
+          Checked = True
           Color = 10114859
+          Enabled = False
           Font.Charset = ANSI_CHARSET
           Font.Color = clWhite
           Font.Height = -13
@@ -248,6 +248,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           Font.Style = [fsBold]
           ParentColor = False
           ParentFont = False
+          State = cbChecked
           TabOrder = 0
           OnClick = chkPeriodoClick
         end
@@ -266,7 +267,6 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           ParentFont = False
           TabOrder = 1
           Text = 'Vencimento'
-          Visible = False
           Items.Strings = (
             'Vencimento'
             'Emiss'#227'o'
@@ -280,7 +280,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 64
         Color = 13337441
         ParentBackground = False
-        TabOrder = 2
+        TabOrder = 1
         object lblFornecedor: TLabel
           Left = 22
           Top = 1
@@ -369,7 +369,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 64
         Color = 13337441
         ParentBackground = False
-        TabOrder = 3
+        TabOrder = 2
         object lblNF: TLabel
           Left = 22
           Top = 1
@@ -438,7 +438,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 125
         Color = 13337441
         ParentBackground = False
-        TabOrder = 4
+        TabOrder = 3
         object lblTipo: TLabel
           Left = 22
           Top = 1
@@ -479,7 +479,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
       Height = 486
       Align = alRight
       BorderStyle = bsSingle
-      TabOrder = 1
+      TabOrder = 2
       object pnl0: TPanel
         Left = 1
         Top = 1
@@ -524,7 +524,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           TabOrder = 0
           OnClick = actBaixarExecute
           object imgBaixaDup: TImage
-            Left = 12
+            Left = 0
             Top = 0
             Width = 32
             Height = 32
@@ -543,11 +543,11 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
             OnClick = actBaixarExecute
           end
           object lblBaixaDup: TLabel
-            Left = 48
+            Left = 32
             Top = 7
-            Width = 102
+            Width = 116
             Height = 17
-            Caption = 'Baixar/Restaurar'
+            Caption = 'PAGAR DUPLICATA'
             Color = 7237230
             Font.Charset = ANSI_CHARSET
             Font.Color = clWhite
@@ -574,7 +574,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           TabOrder = 1
           OnClick = actExcluirExecute
           object imgExDup: TImage
-            Left = 11
+            Left = 0
             Top = 0
             Width = 32
             Height = 32
@@ -591,11 +591,11 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
             OnClick = actExcluirExecute
           end
           object lblExDup: TLabel
-            Left = 47
+            Left = 32
             Top = 7
-            Width = 102
+            Width = 126
             Height = 17
-            Caption = 'Excluir duplicata'
+            Caption = 'EXCLUIR DUPLICATA'
             Color = 7237230
             Font.Charset = ANSI_CHARSET
             Font.Color = clWhite
@@ -620,6 +620,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           ParentBackground = False
           ShowCaption = False
           TabOrder = 2
+          Visible = False
           OnClick = actIncluirSimplesExecute
           object imglAddDoc: TImage
             Left = 2
@@ -684,6 +685,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Color = clWhite
         ParentBackground = False
         TabOrder = 1
+        Visible = False
         object Label3: TLabel
           Left = 1
           Top = 1
@@ -850,7 +852,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
       Width = 768
       Height = 486
       Align = alClient
-      TabOrder = 2
+      TabOrder = 1
       object pnlRodape: TPanel
         Left = 1
         Top = 456
@@ -858,7 +860,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 29
         Align = alBottom
         BorderStyle = bsSingle
-        TabOrder = 0
+        TabOrder = 1
       end
       object pnlRegistros: TPanel
         Left = 1
@@ -867,7 +869,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
         Height = 455
         Align = alClient
         BorderStyle = bsSingle
-        TabOrder = 1
+        TabOrder = 0
         object dbgrdParcela: TDBGrid
           Left = 1
           Top = 49
@@ -884,6 +886,7 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           Font.Style = []
           Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
           ParentFont = False
+          PopupMenu = pm1
           TabOrder = 0
           TitleFont.Charset = ANSI_CHARSET
           TitleFont.Color = clWindowText
@@ -891,20 +894,16 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
           TitleFont.Name = 'Segoe UI'
           TitleFont.Style = []
           OnDrawColumnCell = dbgrdParcelaDrawColumnCell
-          OnDblClick = actEditarNotaExecute
+          OnDblClick = actVisualizarDupExecute
           OnTitleClick = dbgrdParcelaTitleClick
           Columns = <
             item
+              Alignment = taCenter
               Expanded = False
               FieldName = 'BAIXADA'
-              Font.Charset = ANSI_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -13
-              Font.Name = 'Segoe UI'
-              Font.Style = [fsBold]
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
@@ -914,18 +913,19 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
               FieldName = 'N_NF'
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
-              Width = 68
               Visible = True
             end
             item
+              Alignment = taCenter
               Expanded = False
               FieldName = 'EMISSAO'
+              Title.Alignment = taCenter
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
@@ -935,10 +935,9 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
               FieldName = 'NDUP'
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
-              Width = 68
               Visible = True
             end
             item
@@ -946,17 +945,20 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
               FieldName = 'FORNECEDOR'
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
+              Width = 250
               Visible = True
             end
             item
+              Alignment = taCenter
               Expanded = False
               FieldName = 'DVENC'
+              Title.Alignment = taCenter
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
               Visible = True
@@ -966,10 +968,10 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
               FieldName = 'VDUP'
               Title.Font.Charset = ANSI_CHARSET
               Title.Font.Color = clWindowText
-              Title.Font.Height = -13
+              Title.Font.Height = -12
               Title.Font.Name = 'Segoe UI Semibold'
               Title.Font.Style = [fsBold]
-              Width = 80
+              Width = 100
               Visible = True
             end>
         end
@@ -1009,124 +1011,71 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
       Caption = 'actIncluirSimples'
       OnExecute = actIncluirSimplesExecute
     end
-    object actEditarNota: TAction
-      Caption = 'actEditarNota'
-      OnExecute = actEditarNotaExecute
+    object actRestaurarBaixa: TAction
+      Caption = 'Restaurar Duplicata'
+      OnExecute = actRestaurarBaixaExecute
+    end
+    object actVisualizarDup: TAction
+      Caption = 'actVisualizarDup'
+      OnExecute = actVisualizarDupExecute
     end
   end
   object dsPagar: TClientDataSet
     Aggregates = <>
     CommandText = 
-      'select a.ID ID_NOTA,a.EMISSAO,a.N_NF,'#13#10'b.RAZAO_NOME fornecedor,'#13 +
-      #10'c.NDUP,c.DVENC,c.VDUP,c.BAIXA_DATA,c.BAIXA_VALOR,'#13#10'c.BAIXA_USUA' +
-      'RIO,c.ID_HISTORICO ID_HISTORICODUP,c.ID_CONTA,'#13#10'c.ID_CAIXA,cast(' +
-      #39#39' as char(1)) baixada,'#13#10'c.VDESC,c.VJUROS,c.CHEQUE_NUMERO,d.DT_C' +
-      'OMPENSA'#13#10'from NOTA_ENTRADA a'#13#10'left outer join FABRICANTE b on (b' +
-      '.CODIGO = a.CODFOR)'#13#10'left outer join NOTA_ENTRADA_PAGAR c on (c.' +
-      'ID_NOTAENTRADA = a.ID)'#13#10'left outer join CHEQUE d on (d.id_banco ' +
-      '= c.id_conta and d.num_cheque = c.cheque_numero)'#13#10'WHERE'#13#10'    1 =' +
-      ' 2'
+      'select cast('#39' '#39' as char(1)) tabela, cast(iif(C.BAIXA_DATA is nul' +
+      'l, '#39'N'#194'O'#39', '#39'SIM'#39') as char(3)) BAIXADA, A.N_NF, A.EMISSAO, C.NDUP,' +
+      #13#10'       B.RAZAO_NOME FORNECEDOR,  C.DVENC, C.VDUP, cast(0 as in' +
+      'teger) ID_NOTA'#13#10'from NOTA_ENTRADA_PAGAR C'#13#10'left join NOTA_ENTRAD' +
+      'A A on (C.ID_NOTAENTRADA = A.ID)'#13#10'left join FABRICANTE B on (B.C' +
+      'ODIGO = A.CODFOR)'#13#10'left join CHEQUE D on (D.ID_BANCO = C.ID_CONT' +
+      'A and'#13#10'      D.NUM_CHEQUE = C.CHEQUE_NUMERO)'#13#10'WHERE'#13#10'    1 = 2'
     FieldDefs = <
       item
-        Name = 'ID_NOTA'
-        Attributes = [faRequired]
-        DataType = ftInteger
+        Name = 'TABELA'
+        Attributes = [faRequired, faFixed]
+        DataType = ftString
+        Size = 1
       end
       item
-        Name = 'EMISSAO'
-        Attributes = [faRequired]
-        DataType = ftDate
+        Name = 'BAIXADA'
+        Attributes = [faRequired, faFixed]
+        DataType = ftString
+        Size = 3
       end
       item
         Name = 'N_NF'
         DataType = ftInteger
       end
       item
+        Name = 'EMISSAO'
+        DataType = ftDate
+      end
+      item
+        Name = 'NDUP'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
         Name = 'FORNECEDOR'
-        Attributes = [faReadonly]
         DataType = ftString
         Size = 60
       end
       item
-        Name = 'NDUP'
-        Attributes = [faReadonly]
-        DataType = ftInteger
-      end
-      item
         Name = 'DVENC'
-        Attributes = [faReadonly]
+        Attributes = [faRequired]
         DataType = ftDate
       end
       item
         Name = 'VDUP'
-        Attributes = [faReadonly]
         DataType = ftFMTBcd
         Precision = 18
         Size = 2
       end
       item
-        Name = 'BAIXA_DATA'
-        Attributes = [faReadonly]
-        DataType = ftDate
-      end
-      item
-        Name = 'BAIXA_VALOR'
-        Attributes = [faReadonly]
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 2
-      end
-      item
-        Name = 'BAIXA_USUARIO'
-        Attributes = [faReadonly]
-        DataType = ftString
-        Size = 20
-      end
-      item
-        Name = 'ID_HISTORICODUP'
-        Attributes = [faReadonly]
+        Name = 'ID_NOTA'
+        Attributes = [faRequired]
         DataType = ftInteger
-      end
-      item
-        Name = 'ID_CONTA'
-        Attributes = [faReadonly, faFixed]
-        DataType = ftString
-        Size = 5
-      end
-      item
-        Name = 'ID_CAIXA'
-        Attributes = [faReadonly]
-        DataType = ftInteger
-      end
-      item
-        Name = 'BAIXADA'
-        Attributes = [faReadonly, faFixed]
-        DataType = ftString
-        Size = 1
-      end
-      item
-        Name = 'VDESC'
-        Attributes = [faReadonly]
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 2
-      end
-      item
-        Name = 'VJUROS'
-        Attributes = [faReadonly]
-        DataType = ftFMTBcd
-        Precision = 18
-        Size = 2
-      end
-      item
-        Name = 'CHEQUE_NUMERO'
-        Attributes = [faReadonly]
-        DataType = ftInteger
-      end
-      item
-        Name = 'DT_COMPENSA'
-        Attributes = [faReadonly]
-        DataType = ftDate
       end>
     IndexDefs = <
       item
@@ -1136,136 +1085,56 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
     IndexName = 'IndexVenc'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     Left = 619
     Top = 209
     object dsPagarBAIXADA: TStringField
-      Alignment = taCenter
-      DisplayLabel = 'Com baixa'
+      DisplayLabel = 'COM BAIXA'
       FieldName = 'BAIXADA'
-      Origin = 'BAIXADA'
-      ProviderFlags = []
-      ReadOnly = True
+      Required = True
       FixedChar = True
-      Size = 1
+      Size = 3
     end
     object dsPagarN_NF: TIntegerField
-      Alignment = taCenter
-      DisplayLabel = 'N'#186' N.F.'
-      DisplayWidth = 10
+      DisplayLabel = 'NOTA FISCAL'
       FieldName = 'N_NF'
-      Origin = 'N_NF'
       DisplayFormat = '000'
     end
     object dsPagarEMISSAO: TDateField
-      Alignment = taCenter
-      DisplayLabel = 'Data Emiss'#227'o'
+      DisplayLabel = 'EMISS'#194'O'
       FieldName = 'EMISSAO'
-      Origin = 'EMISSAO'
-      Required = True
     end
     object dsPagarNDUP: TIntegerField
-      Alignment = taCenter
-      DisplayLabel = 'Duplicata'
-      DisplayWidth = 10
+      DisplayLabel = 'N'#186' PARCELA'
       FieldName = 'NDUP'
-      Origin = 'NDUP'
-      ProviderFlags = []
-      ReadOnly = True
+      Required = True
       DisplayFormat = '000'
     end
     object dsPagarFORNECEDOR: TStringField
-      DisplayLabel = 'Fornecedor'
-      DisplayWidth = 30
       FieldName = 'FORNECEDOR'
-      Origin = 'RAZAO_NOME'
-      ProviderFlags = []
-      ReadOnly = True
       Size = 60
     end
     object dsPagarDVENC: TDateField
-      Alignment = taCenter
-      DisplayLabel = 'Vencimento'
+      DisplayLabel = 'VENCTO'
       FieldName = 'DVENC'
-      Origin = 'DVENC'
-      ProviderFlags = []
-      ReadOnly = True
+      Required = True
     end
     object dsPagarVDUP: TFMTBCDField
-      DisplayLabel = 'Valor R$'
+      DisplayLabel = 'VALOR'
       FieldName = 'VDUP'
-      Origin = 'VDUP'
-      ProviderFlags = []
-      ReadOnly = True
-      DisplayFormat = '#,##0.00'
+      DisplayFormat = 'R$ #,##0.00'
       Precision = 18
       Size = 2
     end
     object dsPagarID_NOTA: TIntegerField
       FieldName = 'ID_NOTA'
-      Origin = 'ID'
       Required = True
     end
-    object dsPagarBAIXA_DATA: TDateField
-      FieldName = 'BAIXA_DATA'
-      Origin = 'BAIXA_DATA'
-      ProviderFlags = []
-      ReadOnly = True
-    end
-    object dsPagarBAIXA_VALOR: TFMTBCDField
-      FieldName = 'BAIXA_VALOR'
-      Origin = 'BAIXA_VALOR'
-      ProviderFlags = []
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object dsPagarBAIXA_USUARIO: TStringField
-      FieldName = 'BAIXA_USUARIO'
-      Origin = 'BAIXA_USUARIO'
-      ProviderFlags = []
-      ReadOnly = True
-    end
-    object dsPagarID_HISTORICODUP: TIntegerField
-      FieldName = 'ID_HISTORICODUP'
-      Origin = 'ID_HISTORICO'
-      ProviderFlags = []
-      ReadOnly = True
-    end
-    object dsPagarID_CONTA: TStringField
-      FieldName = 'ID_CONTA'
-      Origin = 'ID_CONTA'
-      ProviderFlags = []
-      ReadOnly = True
+    object dsPagarTABELA: TStringField
+      FieldName = 'TABELA'
+      Required = True
       FixedChar = True
-      Size = 5
-    end
-    object dsPagarID_CAIXA: TIntegerField
-      FieldName = 'ID_CAIXA'
-      Origin = 'ID_CAIXA'
-      ProviderFlags = []
-      ReadOnly = True
-    end
-    object dsPagarVDESC: TFMTBCDField
-      FieldName = 'VDESC'
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object dsPagarVJUROS: TFMTBCDField
-      FieldName = 'VJUROS'
-      ReadOnly = True
-      Precision = 18
-      Size = 2
-    end
-    object dsPagarCHEQUE_NUMERO: TIntegerField
-      FieldName = 'CHEQUE_NUMERO'
-      ReadOnly = True
-    end
-    object dsPagarDT_COMPENSA: TDateField
-      FieldName = 'DT_COMPENSA'
-      ReadOnly = True
+      Size = 1
     end
   end
   object OpenDialog1: TOpenDialog
@@ -1276,5 +1145,12 @@ inherited Frm_ContasPagar: TFrm_ContasPagar
     DataSet = dsPagar
     Left = 619
     Top = 272
+  end
+  object pm1: TPopupMenu
+    Left = 755
+    Top = 216
+    object RestaurarDuplicata1: TMenuItem
+      Action = actRestaurarBaixa
+    end
   end
 end

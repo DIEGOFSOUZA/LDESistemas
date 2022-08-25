@@ -1,8 +1,6 @@
 inherited Rel_VendaPorVendedor: TRel_VendaPorVendedor
   Caption = 'Rel_VendaPorVendedor'
-  ClientWidth = 2000
   OnCreate = FormCreate
-  ExplicitWidth = 2000
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlFundo0: TPanel
@@ -720,7 +718,6 @@ inherited Rel_VendaPorVendedor: TRel_VendaPorVendedor
       'ODUTO)'#13#10'left outer join USUARIO d on (d.ID_VENDEDOR = a.ID_VENDE' +
       'DOR)'#13#10'where 1=2'#13#10'group by 1,2,d.COMISSAO'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     object dsGridVENDEDOR: TStringField
       DisplayLabel = 'Vendedor'
       FieldName = 'VENDEDOR'

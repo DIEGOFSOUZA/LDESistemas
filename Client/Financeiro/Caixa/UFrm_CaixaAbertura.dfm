@@ -82,7 +82,7 @@ inherited Frm_CaixaAbertura: TFrm_CaixaAbertura
     object Label4: TLabel
       Left = 1
       Top = 193
-      Width = 314
+      Width = 106
       Height = 21
       Align = alBottom
       Alignment = taCenter
@@ -95,7 +95,6 @@ inherited Frm_CaixaAbertura: TFrm_CaixaAbertura
       ParentFont = False
       Layout = tlCenter
       Visible = False
-      ExplicitWidth = 106
     end
     object Label5: TLabel
       Left = 10

@@ -222,7 +222,7 @@ end;
 procedure TPdr_Cad.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   inherited;
-  if cds.Active and (cds.State in [dsEdit, dsInsert]) then
+  if ((cds.Active) and (cds.State in [dsEdit, dsInsert])) then
   begin
     if not (TMensagem.Pergunta('Gravação não foi concluida, deseja sair?')) then
       CanClose := False;

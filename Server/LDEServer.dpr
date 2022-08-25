@@ -7,21 +7,27 @@ uses
   uPrincipal in 'uPrincipal.pas' {Frm_Principal},
   uSM in 'uSM.pas' {SM: TDSServerModule},
   uSC in 'uSC.pas' {SC: TDataModule},
-  UDM in 'UDM.pas' {DM: TDataModule},
   uSMCadastro in 'uSMCadastro.pas' {SMCadastro: TDSServerModule},
   UServidorStartStop in 'UServidorStartStop.pas',
   USMNota in 'Nota\USMNota.pas' {SMNota: TDSServerModule},
   USM_PDV in 'PDV\USM_PDV.pas' {smPDV: TDSServerModule},
   uSM_Financeiro in 'Financeiro\uSM_Financeiro.pas' {SM_Financeiro: TDSServerModule},
   uSM_Pedido in 'Pedido\uSM_Pedido.pas' {SM_Pedido: TDSServerModule},
-  uSMProducao in 'Producao\uSMProducao.pas' {SMProducao: TDSServerModule};
+  uSMProducao in 'Producao\uSMProducao.pas' {SMProducao: TDSServerModule},
+  USM0 in 'Heranca\USM0.pas' {SM0: TDataModule},
+  USMProduto in 'Produto\USMProduto.pas' {SMProduto: TDataModule},
+  uServerDM in 'uServerDM.pas' {ServerDM: TDataModule},
+  uDM_SaveInCloud in 'SaveInCloud\uDM_SaveInCloud.pas' {DM_SaveInCloud: TDataModule},
+  uSM_SaveInCloud in 'SaveInCloud\uSM_SaveInCloud.pas' {SM_SaveInCloud: TDataModule},
+  uFields in 'uFields.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TServerDM, ServerDM);
+  Application.CreateForm(TDM_SaveInCloud, DM_SaveInCloud);
   Application.CreateForm(TFrm_Principal, Frm_Principal);
   Application.Run;
 end.

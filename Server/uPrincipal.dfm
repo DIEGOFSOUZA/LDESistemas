@@ -46,8 +46,7 @@ object Frm_Principal: TFrm_Principal
     Height = 183
     Align = alClient
     Caption = 'pnlFundo'
-    TabOrder = 1
-    ExplicitTop = 29
+    TabOrder = 0
     object pnlIPs: TPanel
       Left = 193
       Top = 1
@@ -204,7 +203,7 @@ object Frm_Principal: TFrm_Principal
     Height = 40
     Align = alBottom
     BorderStyle = bsSingle
-    TabOrder = 0
+    TabOrder = 1
     DesignSize = (
       556
       36)

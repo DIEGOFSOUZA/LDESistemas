@@ -11,7 +11,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
   end
   inherited pnlFundo0: TPanel
     Width = 683
-    ExplicitWidth = 777
+    ExplicitWidth = 683
     object pnlEscolha: TPanel [0]
       Left = 82
       Top = 1
@@ -19,7 +19,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
       Height = 513
       Align = alClient
       TabOrder = 2
-      ExplicitWidth = 694
       object Label6: TLabel
         Left = 24
         Top = 58
@@ -59,12 +58,10 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
     end
     inherited pnlFundo1: TPanel
       Width = 600
-      ExplicitLeft = 82
-      ExplicitTop = 1
-      ExplicitWidth = 694
+      ExplicitWidth = 600
       inherited Panel4: TPanel
         Width = 598
-        ExplicitWidth = 692
+        ExplicitWidth = 598
       end
       object pnlHeader: TPanel
         Left = 1
@@ -74,7 +71,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 692
         object Label32: TLabel
           Left = 117
           Top = 16
@@ -154,7 +150,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 1
+          TabOrder = 2
         end
         object DBMemo1: TDBMemo
           Left = 3
@@ -170,7 +166,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Font.Style = []
           MaxLength = 100
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 5
         end
         object pnlLegenda: TPanel
           Left = 450
@@ -187,7 +183,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           ParentBackground = False
           ParentFont = False
           ShowCaption = False
-          TabOrder = 3
+          TabOrder = 4
           object Label5: TLabel
             Left = 15
             Top = 3
@@ -218,7 +214,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
         end
         object DBEdit3: TDBEdit
           Left = 253
@@ -234,7 +230,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Font.Name = 'Segoe UI Semibold'
           Font.Style = [fsBold]
           ParentFont = False
-          TabOrder = 4
+          TabOrder = 3
         end
         object pnlAutorizar: TPanel
           Left = 453
@@ -245,7 +241,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Color = 4868682
           ParentBackground = False
           ShowCaption = False
-          TabOrder = 5
+          TabOrder = 0
           Visible = False
           object btnAutorizar: TSpeedButton
             Left = 1
@@ -274,7 +270,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitWidth = 692
         object pnlRight: TPanel
           Left = 518
           Top = 0
@@ -282,8 +277,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Height = 346
           Align = alRight
           BevelOuter = bvLowered
-          TabOrder = 0
-          ExplicitLeft = 614
+          TabOrder = 1
           object pnlAdd: TPanel
             Left = 1
             Top = 1
@@ -297,12 +291,12 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
             ShowCaption = False
             TabOrder = 0
             TabStop = True
-            ExplicitWidth = 98
             object btnAddItem: TSpeedButton
               Left = 0
               Top = 0
               Width = 78
               Height = 73
+              Cursor = crHandPoint
               Action = actAddItem
               Align = alClient
               Flat = True
@@ -357,6 +351,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
               Top = 0
               Width = 25
               Height = 25
+              Cursor = crHandPoint
               Action = actExcItem
               Align = alClient
               Flat = True
@@ -376,8 +371,7 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
           Height = 346
           Align = alClient
           BevelOuter = bvNone
-          TabOrder = 1
-          ExplicitWidth = 592
+          TabOrder = 0
           object pnlTopGrid: TPanel
             Left = 0
             Top = 0
@@ -385,7 +379,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
             Height = 75
             Align = alTop
             TabOrder = 0
-            ExplicitWidth = 592
             object pnlProdAdd: TPanel
               Left = 1
               Top = 1
@@ -397,7 +390,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitWidth = 590
               object pnlItem: TPanel
                 Left = 1
                 Top = 1
@@ -408,7 +400,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
                 Caption = 'pnlItem'
                 ShowCaption = False
                 TabOrder = 0
-                ExplicitWidth = 588
                 object edpsqsProduto: TEdPesquisa
                   Left = 10
                   Top = 8
@@ -468,7 +459,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
               ParentBackground = False
               ShowCaption = False
               TabOrder = 1
-              ExplicitWidth = 590
               object Label53: TLabel
                 Left = 9
                 Top = 9
@@ -534,7 +524,6 @@ inherited Frm_AcertoEstoque: TFrm_AcertoEstoque
             Align = alClient
             BevelOuter = bvNone
             TabOrder = 1
-            ExplicitWidth = 592
             object dbgrdItens: TDBGrid
               Left = 0
               Top = 0

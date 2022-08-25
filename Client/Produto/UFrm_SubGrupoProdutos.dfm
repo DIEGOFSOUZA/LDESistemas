@@ -1,10 +1,9 @@
 inherited Frm_SubGrupoProdutos: TFrm_SubGrupoProdutos
   Caption = 'Cadastro Sub Grupo de Produtos'
-  ClientHeight = 290
-  ClientWidth = 514
-  OnCreate = FormCreate
-  ExplicitWidth = 514
-  ExplicitHeight = 290
+  ClientHeight = 317
+  ClientWidth = 519
+  ExplicitWidth = 519
+  ExplicitHeight = 317
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel [0]
@@ -35,8 +34,8 @@ inherited Frm_SubGrupoProdutos: TFrm_SubGrupoProdutos
     ParentFont = False
   end
   inherited lblTitulo: TLabel
-    Width = 514
-    Caption = '         Cadastro Sub Grupo de Produtos'
+    Width = 519
+    Caption = '         CADASTRO DE SUBGRUPO DE PRODUTO'
     ExplicitWidth = 514
   end
   object DBEdit2: TDBEdit [3]
@@ -64,20 +63,128 @@ inherited Frm_SubGrupoProdutos: TFrm_SubGrupoProdutos
     TabOrder = 2
   end
   inherited pnlFundo0: TPanel
-    Width = 514
-    Height = 260
+    Width = 519
+    Height = 287
     ExplicitWidth = 514
     ExplicitHeight = 260
     inherited Panel1: TPanel
-      Width = 514
-      ExplicitWidth = 514
+      Width = 517
+      Color = 14803681
+      ExplicitWidth = 512
     end
     inherited pnlFundo1: TPanel
+      Width = 517
+      Height = 212
+      ExplicitWidth = 512
+      ExplicitHeight = 185
       inherited Panel4: TPanel
-        Top = 270
-        Width = 514
-        ExplicitTop = 270
-        ExplicitWidth = 514
+        Top = 191
+        Width = 515
+        TabOrder = 1
+        ExplicitTop = 164
+        ExplicitWidth = 510
+      end
+      object pnlCentro: TPanel
+        Left = 1
+        Top = 1
+        Width = 515
+        Height = 190
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'pnlCentro'
+        Color = 14803681
+        ParentBackground = False
+        ShowCaption = False
+        TabOrder = 0
+        ExplicitLeft = 2
+        ExplicitTop = 9
+        object Label1: TLabel
+          Left = 122
+          Top = 10
+          Width = 141
+          Height = 17
+          Caption = 'NOME DO SUBGRUPO *'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label4: TLabel
+          Left = 20
+          Top = 59
+          Width = 80
+          Height = 17
+          Caption = 'OBSERVA'#199#194'O'
+          FocusControl = DBMemo2
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label5: TLabel
+          Left = 20
+          Top = 10
+          Width = 71
+          Height = 17
+          Alignment = taCenter
+          AutoSize = False
+          Caption = 'C'#211'DIGO *'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object DBText1: TDBText
+          Left = 20
+          Top = 33
+          Width = 73
+          Height = 17
+          Alignment = taCenter
+          DataField = 'CODIGO'
+          DataSource = ds
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+        end
+        object DBEdit1: TDBEdit
+          Left = 122
+          Top = 30
+          Width = 372
+          Height = 25
+          DataField = 'DESCRI'
+          DataSource = ds
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+        end
+        object DBMemo2: TDBMemo
+          Left = 20
+          Top = 78
+          Width = 474
+          Height = 103
+          DataField = 'OBS'
+          DataSource = ds
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+        end
       end
     end
   end
@@ -85,8 +192,10 @@ inherited Frm_SubGrupoProdutos: TFrm_SubGrupoProdutos
     CommandText = 'select * from SUBGRUPO_PROD where codigo = 1  '
     AfterInsert = cdsAfterInsert
     object cdsCODIGO: TIntegerField
+      Alignment = taCenter
       FieldName = 'CODIGO'
       Required = True
+      DisplayFormat = '000'
     end
     object cdsDESCRI: TStringField
       FieldName = 'DESCRI'

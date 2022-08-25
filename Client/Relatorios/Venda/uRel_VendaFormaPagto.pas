@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uPdr_ListaRelatorio, Data.DB,
   System.Actions, Vcl.ActnList, Vcl.StdCtrls, Vcl.Grids, Vcl.DBGrids,
   Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Datasnap.DBClient, RLReport, RLXLSFilter, RLFilters, RLPDFFilter;
+  Datasnap.DBClient, RLReport, RLXLSFilter, RLFilters, RLPDFFilter,
+  scExcelExport;
 
 type
   TRel_VendaFormaPagto = class(TPdr_ListaRelatorio)
@@ -43,6 +44,7 @@ type
     RLBand3: TRLBand;
     RLLabel5: TRLLabel;
     rlblTotal: TRLLabel;
+    scExcelExport1: TscExcelExport;
     procedure FormCreate(Sender: TObject);
     procedure actGerarExecute(Sender: TObject);
     procedure dtp1Change(Sender: TObject);
@@ -64,6 +66,7 @@ implementation
 uses
   System.DateUtils, UDM, u_Mensagem;
 
+
 {$R *.dfm}
 
 procedure TRel_VendaFormaPagto.actGerarExecute(Sender: TObject);
@@ -75,17 +78,6 @@ begin
   lTotaReceber := 0;
   lTotRecebido := 0;
   lTotPeriodo := 0;
-
-  {SQL :='select cast(iif(a.FORMA_PAGTO = ''CREDIARIO'',''CREDIARIO'',b.DESCRICAO) as varchar(60)) forma,'+
-        'cast(iif(a.FORMA_PAGTO = ''CREDIARIO'',d.DESCRICAO,''A VISTA'') as varchar(50)) condicao,'+
-        'cast(sum(a.VALOR) as numeric(10,2))valor '+
-        'from PDV_RECEBER a '+
-        'left outer join HISTORICO b on (b.ID = a.ID_HISTORICO) '+
-        'left outer join PDV_MASTER c on (c.TIPO = a.TIPO and c.ID = a.ID) '+
-        'left outer join CONDPAGTO d on (d.CODIGO = c.ID_CREDIARIO) '+
-        'where c.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
-                           ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+
-        ' group by 1,2'; }
 
   SQL := 'with RET_CONDICAO as '+
          '( '+
@@ -173,14 +165,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasTipoPagamento.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasTipoPagamento.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin
@@ -215,7 +200,7 @@ begin
 
   Self.Height := pnlFundo0.Height;
   Self.Width :=  pnlFundo0.Width;
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaFormaPagto.RLBand3BeforePrint(Sender: TObject;

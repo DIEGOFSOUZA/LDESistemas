@@ -165,7 +165,7 @@ const
          'where a.ID_LOTE = %s';
 begin
   inherited;
-  if (DM.UserPerfil <> 'Administrador') then
+  if (DM.Usuario.Perfil <> 'Administrador') then
   begin
     TMensagem.Informacao('Autorização pode ser concedida apenas a usuário com perfil: Administrador.');
     Abort;

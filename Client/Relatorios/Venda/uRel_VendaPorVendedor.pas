@@ -100,7 +100,7 @@ begin
           'left outer join USUARIO d on (d.ID_VENDEDOR = a.ID_VENDEDOR) '+
           'where (a.EMISSAO between '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp1.Date) )+
                               ' and '+QuotedStr( FormatDateTime('dd.mm.yyyy',dtp2.Date) )+')'+
-          'and (a.STATUS is null) '+
+          'and (a.STATUS <> ''CANCELADA'') '+
           'group by 1,2,d.COMISSAO';
 
   dsGrid.Close;
@@ -178,14 +178,7 @@ begin
         end;
       2: //excel
         begin
-          try
-            Rel_1.Prepare;
-            RLXLSFilter1.FileName := ExtractFilePath(Application.ExeName) + '\RelatorioVendasVendedor.xls';
-            Rel_1.SaveToFile(ExtractFilePath(Application.ExeName) + '\RelatorioVendasVendedor.xls');
-            TMensagem.Informacao('Arquivo gerado com sucesso.');
-          except
-            TMensagem.Erro('Erro: Arquivo não pode ser gerado.');
-          end;
+          DM.ExportarExcel(dsGrid);
         end;
       3: //impressao
         begin
@@ -230,7 +223,7 @@ begin
   Self.Width := pnlFundo0.Width;
   chkExibirResumo.Checked := True;
   chkExibirResumoClick(Self);
-  actGerar.Execute;
+//  actGerar.Execute;
 end;
 
 procedure TRel_VendaPorVendedor.RLBand3BeforePrint(Sender: TObject;

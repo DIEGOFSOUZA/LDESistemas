@@ -3,35 +3,16 @@ unit UFuncoes;
 interface
 
 uses
-    Vcl.Controls,
-    Vcl.Dialogs,
-    Vcl.Forms,
-    Vcl.DBGrids,
-
-    System.SysUtils,
-    System.Classes,
-    System.Math,
-
-    System.Character,
-    System.Variants,
-
-    Data.DB,
-    Datasnap.DBClient,
-
-    Winapi.Windows,
-
-    Winapi.Messages,
-
-    ShlObj,
-    ComObj,
-    ActiveX,
-
-    ACBrUtil;
+  Vcl.Controls, Vcl.Dialogs, Vcl.Forms, Vcl.DBGrids, System.SysUtils,
+  System.Classes, System.Math, System.Character, System.Variants, Data.DB,
+  Datasnap.DBClient, Winapi.Windows, Winapi.Messages, ShlObj, ComObj, ActiveX,
+  ACBrUtil;
 
 type
   TCaixa = record
     Fechado : Boolean ;
     ID : integer ;
+    ValorEmCaixa: Currency;
   end;
 
 type
@@ -39,6 +20,14 @@ type
     VlString: string;
     vlFloat: Double;
     Retorno: string;
+  end;
+
+type
+  TDadosProduto = record
+    DESCRI: string;
+    UND: string;
+    PRECO: Currency;
+    PRECO_CUSTO: Currency;
   end;
 
 var
@@ -60,7 +49,7 @@ function AcertaTexto  (txt : string; Tamanho : integer)           : string;
 function AcertaData   (dt: TDate)                                 : string;
 function AcertaData2  (dt : TDate)                                : string ;
 function AcertaValor  (Numero: extended; Tamanho,Decimal: integer): string;
-function TiraAcentos  (Texto: string)                             : string;
+function RemoveAccents(const AText: string): string;
 function SoNumero     (Txt : string)                              : string;
 function ValidarCEP   (const CEP: string)                         : string;
 function TextoSemPonto(txt : string)                              : string;
@@ -81,7 +70,7 @@ function IsValidEmail(const Value: string): Boolean;
 function vercgc      (snrcgc:string)             : Boolean;
 function vercpf      (snrcpf:string)             : Boolean;
 
-Function ValidaData  (Dt : String; Msg: Boolean = True) : Boolean;
+function ValidaData  (Dt : String; Msg: Boolean = True) : Boolean;
 function Bissexto    (Ano : String)              : Boolean;
 function IsDigit     (Campo : String)            : Boolean;
 function IsCarac     (Campo : String)            : Boolean;
@@ -91,7 +80,8 @@ function OnlyCarac   (InString : String)         : String;
 function ValidaFormataCurrency(pValor : string) : TFormataValor;
 function ValorFormatadoFirebird(pValor:string) : string;
 
-function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
+function QtdeConvertida(aCod: Integer; aQtde: Extended): Extended;
+function DadosProduto(aCodigo:integer): TDadosProduto;
 
 
 {procedures}
@@ -100,15 +90,15 @@ procedure RemoveLinhasEmBranco(aLista : TStrings); //Memo
 
 implementation
 
-uses UDM, u_Mensagem, UDMACBr;
+uses
+  UDM, u_Mensagem, UDMACBr;
 
 
-function QtdeConvertida(aCod: Integer; aSigla: string; aQtde: Extended): Extended;
+function QtdeConvertida(aCod: Integer; aQtde: Extended): Extended;
 const
-  SQL = 'SELECT coalesce(u2.SIGLA,'''') SIGLA,COALESCE(CONV_QTDE,0) qtde '+
-        'FROM PRODUTO p '+
-        'LEFT OUTER JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
-        'WHERE p.CODIGO = %s';
+  SQL = 'select P.CONV_UNIDADE, P.CONV_QTDE, P.CONV_PRECO '+
+        'from PRODUTO P '+
+        'where P.CODIGO = %s';
 begin
   Result := aQtde;
   if (aCod < 1) then
@@ -118,15 +108,10 @@ begin
   try
     cdsConsulta.Close;
     cdsConsulta.Data := DM.LerDataSet(Format(SQL, [aCod.ToString]));
-    if (not cdsConsulta.IsEmpty) then
+    if ((not cdsConsulta.IsEmpty) and (cdsConsulta.FieldByName('CONV_QTDE').AsFloat > 0)) then
     begin
-      if ((cdsConsulta.FieldByName('SIGLA').AsString = aSigla) and
-          (cdsConsulta.FieldByName('QTDE').AsFloat > 0)) then
-      begin
-        Result := aQtde * cdsConsulta.FieldByName('QTDE').AsFloat;
-      end;
+      Result := (aQtde * cdsConsulta.FieldByName('CONV_QTDE').AsFloat);
     end;
-
   finally
     FreeAndNil(cdsConsulta);
   end;
@@ -318,23 +303,10 @@ begin
   end ;
 end;
 
-function TiraAcentos(Texto: string): string;
-var
- Contar, Posicao: integer;
- Acentos, TiraAcentos: string;
+function RemoveAccents(const AText: string): string;
+type USAscii20127 = type AnsiString(20127);
 begin
-  Acentos     := '·‰‡„‚¡ƒ¿√¬ÈÎËÍ…À» ÌÔÏÓÕœÃŒÛˆÚıÙ”÷“’‘˙¸˘˚⁄‹Ÿ€Á«+';
-  TiraAcentos := 'aaaaaAAAAAeeeeEEEEiiiiIIIIoooooOOOOOuuuuUUUUcC ';
-  Result := '' ;
-
-  for Contar := 1 to Length(Texto) do
-  begin
-   Posicao := Pos(Copy(Texto, Contar, 1), Acentos);
-   if Posicao = 0 then
-    Result := Result + Copy(Texto, Contar, 1)
-   else
-    Result := Result + Copy(TiraAcentos, Posicao, 1);
-  end;
+  Result := string(USAscii20127(AText));
 end;
 
 function SoNumero(Txt: string): string;
@@ -1081,30 +1053,37 @@ end;
 
 function CaixaFechado() : TCaixa ;
 const
-  SQL = 'select a.ID IDCAIXA, a.ABERTO_FECHADO status ' +
-        'from CAIXA a ' +
-        'left outer join CAIXA_ABERT_FECH b on (b.ID_CAIXA = a.ID) ' +
+  SQL = 'select A.ID IDCAIXA, A.ABERTO_FECHADO STATUS,'+
+        '       (select sum(C.VALOR) VALOR '+
+        '        from CAIXA_ENT_SAI C '+
+        '        where C.FORMA_PAGTO = ''DINHEIRO'' and '+
+        '               C.ID_CAIXA = A.ID) valor '+
+        'from CAIXA A '+
+        'left join CAIXA_ABERT_FECH B on (B.ID_CAIXA = A.ID) '+
         'where a.ABERTO_FECHADO = ''A'' '+
         'and cast(b.DT_HORA_ABERT_FECH as date) = %s';
 begin
-  Result.Fechado := False ;
+{$IFDEF DEBUG}
+  Result.Fechado := False;
+  Result.ID := 442;
+  Result.ValorEmCaixa := 0;
+{$ELSE}
+  Result.Fechado := False;
   Result.ID := 0;
+  Result.ValorEmCaixa := 0;
 
-  DM.dsConsulta.Close ;
-  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[QuotedStr(FormatDateTime('dd.mm.yyyy',Now))])) ;
+  DM.dsConsulta.Close;
+  DM.dsConsulta.Data := DM.LerDataSet(Format(SQL, [QuotedStr(FormatDateTime('dd.mm.yyyy', Now))]));
 
-  if DM.dsConsulta.IsEmpty then
-  begin
-    Result.Fechado := True ;
-    Exit ;
-  end
-  else if DM.dsConsulta.FieldByName('status').AsString = 'F' then
-  begin
-    Result.Fechado := True ;
-    Exit ;
+  if ( (DM.dsConsulta.IsEmpty) or (DM.dsConsulta.FieldByName('status').AsString = 'F') ) then
+   begin
+    Result.Fechado := True;
+    Exit;
   end;
 
-  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger ;
+  Result.ID := DM.dsConsulta.FieldByName('IDCAIXA').AsInteger;
+  Result.ValorEmCaixa := DM.dsConsulta.FieldByName('valor').AsCurrency;
+{$ENDIF}
 end;
 
 function ValorFormatadoFirebird(pValor:string) : string;
@@ -1143,15 +1122,44 @@ begin
   if TryStrToFloat(s, f) then
   begin
     Result.Retorno := 'sucesso';
-    Result.VlString := FormatFloat('#,##0.00', f);
+    Result.VlString := FormatFloat('##0.00', f);
     Result.vlFloat := f;
   end
   else
   begin
     Result.Retorno := 'erro';
-    Result.VlString := FormatFloat('#,##0.00', 0);
+    Result.VlString := FormatFloat('##0.00', 0);
     Result.vlFloat := 0;
     TMensagem.Erro('Valor inv·lido');
+  end;
+end;
+
+function DadosProduto(aCodigo:integer): TDadosProduto;
+const
+  SQL = 'select a.NOME, a.PRECO_VENDA,coalesce(c.SIGLA, b.SIGLA, '''') UM,'+
+        'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO '+
+        'from PRODUTO a '+
+        'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
+        'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) '+
+        'where a.codigo = %s';
+begin
+  Result.DESCRI := '';
+  Result.UND := '';
+  Result.PRECO := 0;
+  Result.PRECO_CUSTO := 0;
+
+  try
+    DM.dsConsulta.Close;
+    DM.dsConsulta.Data := DM.LerDataSet(Format(SQL, [aCodigo.ToString]));
+    if not DM.dsConsulta.IsEmpty then
+    begin
+      Result.DESCRI := DM.dsConsulta.FieldByName('NOME').AsString;
+      Result.UND := DM.dsConsulta.FieldByName('UM').AsString;
+      Result.PRECO := DM.dsConsulta.FieldByName('PRECO_VENDA').AsCurrency;
+      Result.PRECO_CUSTO := DM.dsConsulta.FieldByName('PRECO_CUSTO').AsCurrency;
+    end;
+  except
+
   end;
 end;
 

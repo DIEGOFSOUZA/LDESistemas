@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "LDE Sistemas"
-#define MyAppVersion "1.0"
+#define MyAppVersion "40.2"
 #define MyAppPublisher "LDE Sistemas"
 #define MyAppURL "http://www.ldesistemas.com.br"
 #define MyAppExeName "Sistema.exe"
@@ -33,13 +33,14 @@ DisableWelcomePage=True
 DisableReadyPage=True
 AllowCancelDuringInstall=False
 Uninstallable=no
+PrivilegesRequired=admin
 
 
 [Languages]
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
 [Files]
-Source: "..\..\..\Executaveis\DIEGO FERNANDES\Sistema\Cliente\Win32\Release\LDESistemas.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\..\Executaveis\LDE\Client\Win32\Release\LDESistemas.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Run]

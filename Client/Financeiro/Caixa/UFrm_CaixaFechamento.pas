@@ -246,7 +246,7 @@ begin
 //  lValor := StrToFloatDef(StringReplace(edtDinheiroSaldo.Text,'.',EmptyStr,[rfReplaceAll]),0);
 
   if DM.SMCadastroClient.setCaixa(DM.BancoDados, 'FECHAMENTO', ds0ID.AsInteger,
-     DM.User, 'DINHEIRO', GetValor(edtDinheiroSaldo.Text), sObs, EmptyStr) then
+     DM.Usuario.login, 'DINHEIRO', GetValor(edtDinheiroSaldo.Text), sObs, EmptyStr) then
   begin
     TMensagem.Informacao('Fechamento de Caixa efetuado com sucesso!');
     Limpar();
@@ -371,7 +371,7 @@ end;
 procedure TFrm_CaixaFechamento.ImpressaoCaixa;
 begin
   if not Validar() then
-   Exit ;
+    Exit;
 
   if not Assigned(Rel_FechamentoCaixa) then
     Rel_FechamentoCaixa := TRel_FechamentoCaixa.Create(Self);
@@ -439,7 +439,8 @@ const
   SQLTotCred = 'SELECT coalesce(sum(r.VALOR),0) tot_cred FROM PDV_RECEBER r '+
                'left outer join PDV_MASTER a on (a.ID = r.ID and a.TIPO = a.TIPO) '+
                'where a.EMISSAO = %s '+
-               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
+               'and r.forma_pagto = ''CREDIARIO''';
+//               'and ((r.ID_HISTORICO in (50,49,51,48) ) or (r.ID_CONTA is null))';
 
 var mIDCaixa : string ;
     SQL3 : string;
@@ -447,8 +448,8 @@ var mIDCaixa : string ;
     fSaiDin,fSaiChe,fSaiTotal,
     fSaldoFinal,fSaldoDin : Extended;
 begin
+  Screen.Cursor := crHourGlass;
   try
-    Screen.Cursor := crHourGlass;
     {inicializa variaveis e componentes}
     mIDCaixa := '0';
     imgFechado.Visible := False ;
@@ -479,7 +480,7 @@ begin
       Exit;
     end;
     mIDCaixa := ds0ID.AsString;
-//    mIDCaixa := '123';
+//    mIDCaixa := '536';
 
     ds1.IndexFieldNames := 'id';
     ds1.Close ;
@@ -572,6 +573,7 @@ begin
            'where b.ID_CONTA = 1 '+
            'and b.BAIXA_ID_CAIXA = '+mIDCaixa+
            ' and b.ID_HISTORICO <> 47 '+//desconto
+           ' and b.ID_HISTORICO <> 99 '+//Credito(gerado via devolucao)
 
            ' union all '+
 
@@ -626,20 +628,20 @@ begin
     {Status}
     if ds0ABERTO_FECHADO.AsString = 'A' then
     begin
-      imgAberto.Visible := True ;
-      lblStatusCaixa.Color := clGreen ;
+      imgAberto.Visible := True;
+      lblStatusCaixa.Color := clGreen;
       lblStatusCaixa.Caption := 'ABERTO';
     end
     else
     begin
-      imgFechado.Visible := True ;
-      lblStatusCaixa.Color := clRed ;
+      imgFechado.Visible := True;
+      lblStatusCaixa.Color := clRed;
       lblStatusCaixa.Caption := 'FECHADO';
     end;
 
     {saldo inicial}
-     ds2.Locate('tipo','ABERTURA CAIXA',[]);
-     edtSaldoInicial.Text := FormatFloat('#,##0.00', ds2VALOR.AsFloat);
+    ds2.Locate('tipo', 'ABERTURA CAIXA', []);
+    edtSaldoInicial.Text := FormatFloat('#,##0.00', ds2VALOR.AsFloat);
 
     //Totalizadores
     ds3.DisableControls;
@@ -651,104 +653,68 @@ begin
         begin
           if ds3.FieldByName('id_historico').AsInteger = 0 then //sangria
           begin
-            if Pos('DINHEIRO',ds3.FieldByName('historico').AsString) > 0 then
-              fEntDin := fEntDin+ds3.FieldByName('valor').AsCurrency
+            if Pos('DINHEIRO', ds3.FieldByName('historico').AsString) > 0 then
+              fEntDin := fEntDin + ds3.FieldByName('valor').AsCurrency
             else
-              fEntChe := fEntChe+ds3.FieldByName('valor').AsCurrency;
+              fEntChe := fEntChe + ds3.FieldByName('valor').AsCurrency;
           end
           else
           begin
             case ds3.FieldByName('id_historico').AsInteger of
             //Venda/Recebimento Crediario
-              1,48:
+              1, 48:
                 fEntDin := fEntDin + ds3.FieldByName('valor').AsCurrency;
-              2,49:
+              2, 49:
                 fEntDeb := fEntDeb + ds3.FieldByName('valor').AsCurrency;
-              3,50:
+              3, 50:
                 fEntCred := fEntCred + ds3.FieldByName('valor').AsCurrency;
-              4,51:
+              4, 51:
                 fEntChe := fEntChe + ds3.FieldByName('valor').AsCurrency;
             end;
           end;
-          fEntTotal := fEntTotal+ds3.FieldByName('valor').AsCurrency;
+          fEntTotal := fEntTotal + ds3.FieldByName('valor').AsCurrency;
         end
         else //debito
         begin
           if ds3.FieldByName('id_historico').AsInteger = 0 then //sangria
           begin
-            if Pos('DINHEIRO',ds3.FieldByName('historico').AsString) > 0 then
-              fSaiDin := fSaiDin+ds3.FieldByName('valor').AsCurrency
+            if Pos('DINHEIRO', ds3.FieldByName('historico').AsString) > 0 then
+              fSaiDin := fSaiDin + ds3.FieldByName('valor').AsCurrency
             else
-              fSaiDin := fSaiDin+ds3.FieldByName('valor').AsCurrency;
+              fSaiChe := fSaiChe + ds3.FieldByName('valor').AsCurrency;
           end;
           case ds3.FieldByName('id_historico').AsInteger of
             //Pagto NF
-              34:
-                fSaiDin := fSaiDin+ds3.FieldByName('valor').AsCurrency;
-              54:
-                fSaiChe := fSaiChe+ds3.FieldByName('valor').AsCurrency;
-            end;
-          fSaiTotal := fSaiTotal+ds3.FieldByName('valor').AsCurrency;
-        end;
-
-       {$REGION 'apagar old'}
-       {if ((ds3FORMA_PAGTO.AsString = 'CREDIARIO') and
-           (ds3DT_BAIXA.AsDateTime = DATE)) then
-       begin
-         ds3.Delete;
-       end;
-
-        if ds3ENTRADA.AsFloat > 0 then
-        begin
-          if ds3FORMA_PAGTO.AsString = 'CREDIARIO' then
-            fEntParc := fEntParc + ds3ENTRADA.AsFloat
-          else
-          begin
-            if ds3FORMA_PAGTO.AsString = 'DINHEIRO' then
-              fEntDin := fEntDin + ds3ENTRADA.AsFloat
-            else if ds3FORMA_PAGTO.AsString = 'CHEQUE' then
-              fEntChe := fEntChe + ds3ENTRADA.AsFloat
-            else if ds3FORMA_PAGTO.AsString = 'CARTAO DE CREDITO' then
-              fEntCred := fEntCred + ds3ENTRADA.AsFloat
-            else if ds3FORMA_PAGTO.AsString = 'CARTAO DE DEBITO' then
-              fEntDeb := fEntDeb + ds3ENTRADA.AsFloat;
-            fEntTotal := fEntTotal + ds3ENTRADA.AsFloat;
+            34:
+              fSaiDin := fSaiDin + ds3.FieldByName('valor').AsCurrency;
+            54:
+              fSaiChe := fSaiChe + ds3.FieldByName('valor').AsCurrency;
           end;
+          fSaiTotal := fSaiTotal + ds3.FieldByName('valor').AsCurrency;
         end;
-
-        if ds3SAIDA.AsFloat < 0 then
-        begin
-           if ds3FORMA_PAGTO.AsString = 'DINHEIRO' then
-            fSaiDin := fSaiDin + ds3SAIDA.AsFloat
-          else if ds3FORMA_PAGTO.AsString = 'CHEQUE' then
-            fSaiChe := fSaiChe + ds3SAIDA.AsFloat;
-          fSaiTotal := fSaiTotal + ds3SAIDA.AsFloat;
-        end;  }
-       {$ENDREGION}
-        ds3.Next ;
+        ds3.Next;
       end;
-      fSaldoDin   := fEntDin-fSaiDin;
-      fSaldoFinal := fEntTotal-fSaiTotal;
-      fEntParc    := DM.GetFloat(Format(SQLTotCred,[QuotedStr(
-                      FormatDateTime('dd.mm.yyyy',ds1.FieldByName('DT_HORA_ABERT_FECH').AsDateTime))]),'tot_cred');
+      fSaldoDin := fEntDin - fSaiDin;
+      fSaldoFinal := fEntTotal - fSaiTotal;
+      fEntParc := DM.GetFloat(Format(SQLTotCred, [QuotedStr(FormatDateTime('dd.mm.yyyy', ds1.FieldByName('DT_HORA_ABERT_FECH').AsDateTime))]), 'tot_cred');
     finally
-      ds3.EnableControls ;
-      ds3.First ;
+      ds3.EnableControls;
+      ds3.First;
     end;
 
-    edtDinheiro.Text := FormatCurr('#,##0.00',fEntDin) ;
-    edtCartaoCredito.Text := FormatCurr('#,##0.00',fEntCred) ;
-    edtCartaoDebito.Text := FormatCurr('#,##0.00',fEntDeb) ;
-    edtCheque.Text := FormatCurr('#,##0.00',fEntChe) ;
-    edtCrediario.Text := FormatCurr('#,##0.00',fEntParc) ;
-    edtTotEntrada.Text := FormatCurr('#,##0.00',fEntTotal) ;
+    edtDinheiro.Text := FormatCurr('#,##0.00', fEntDin);
+    edtCartaoCredito.Text := FormatCurr('#,##0.00', fEntCred);
+    edtCartaoDebito.Text := FormatCurr('#,##0.00', fEntDeb);
+    edtCheque.Text := FormatCurr('#,##0.00', fEntChe);
+    edtCrediario.Text := FormatCurr('#,##0.00', fEntParc);
+    edtTotEntrada.Text := FormatCurr('#,##0.00', fEntTotal);
 
-    edtDinheiroSaida.Text := FormatCurr('#,##0.00',fSaiDin) ;
-    edtChequeSaida.Text := FormatCurr('#,##0.00',fSaiChe) ;
-    edtTotSaida.Text := FormatCurr('#,##0.00',fSaiTotal) ;
+    edtDinheiroSaida.Text := FormatCurr('#,##0.00', fSaiDin);
+    edtChequeSaida.Text := FormatCurr('#,##0.00', fSaiChe);
+    edtTotSaida.Text := FormatCurr('#,##0.00', fSaiTotal);
 
-    edtDinheiroSaldo.Text := FormatCurr('#,##0.00',fSaldoDin) ;
-    edtSaldoFinal.Text := FormatCurr('#,##0.00',fSaldoFinal) ;
+    edtDinheiroSaldo.Text := FormatCurr('#,##0.00', fSaldoDin);
+    edtSaldoFinal.Text := FormatCurr('#,##0.00', fSaldoFinal);
   finally
     Screen.Cursor := crDefault;
   end;

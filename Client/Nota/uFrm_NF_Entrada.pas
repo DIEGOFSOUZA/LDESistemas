@@ -402,6 +402,10 @@ type
     dsItemUNITARIO: TFMTBCDField;
     dsItemPRECO_CUSTO: TFMTBCDField;
     dsItemQTDE: TBCDField;
+    Label2: TLabel;
+    lblNumNF: TLabel;
+    cdsHISTORICO: TStringField;
+    dbpsqsClass: TDBPesquisa;
     procedure actAddItemExecute(Sender: TObject);
     procedure actExcluirDuplicatasExecute(Sender: TObject);
     procedure actGerarDuplicatasExecute(Sender: TObject);
@@ -438,6 +442,8 @@ type
     procedure btnUMClick(Sender: TObject);
     procedure cbbUMClick(Sender: TObject);
     procedure actGravarExecute(Sender: TObject);
+    procedure dbpsqsClassPesquisa(Sender: TObject; var Retorno: string);
+    procedure cdsBeforePost(DataSet: TDataSet);
   private
     FvUnitario: Double;
     FQtde: Double;
@@ -463,6 +469,7 @@ type
     function VNF(): Currency;
     function Validar(): Boolean;
     function PrCustoAtual(aIDProd: integer): Currency;
+    procedure OrdenaItens();
   public
     var
       Pagamento, Parcelamento, Temp: TClientDataSet;
@@ -532,9 +539,21 @@ begin
     Abort;
   end;
 
+  //Verifica se escolheu unidade fragmentada
+  if (cbbUM.ItemIndex > 0) then
+  begin                          //escolheu und fragmentada
+    lQtde := Qtde;
+    lPrCustoCalc := RoundABNT((FvUnitario*DM.GetFloat('select coalesce(CONV_QTDE,0)CONV_QTDE from PRODUTO p where p.codigo= '+edpsqsProduto.Campo.Text,'conv_qtde')),-2);
+  end
+  else
+  begin
+    lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),Qtde);
+    lPrCustoCalc := RoundABNT((FvUnitario),-2);
+  end;
+
   //Verificando se há conversao de UM
-  lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
-  lConv_UM := IfThen((lQtde<>Qtde),'S','N');
+//  lQtde := QtdeConvertida(StrToIntDef(edpsqsProduto.Campo.Text,0),lblUM.Caption,Qtde);
+//  lConv_UM := IfThen((lQtde<>Qtde),'S','N');
 
   if dsItem.Locate('ID_PRODUTO',edpsqsProduto.Campo.Text,[]) then
   begin
@@ -570,17 +589,18 @@ begin
   dsItem.FieldByName('TOTAL').AsCurrency :=
      (dsItem.FieldByName('QTDE_INFORMADA').AsFloat * vUnitario) - dsItem.FieldByName('VALORDESCONTO').AsCurrency;
 
-  if (lConv_UM = 'S') then
-    lPrCustoCalc := RoundABNT(dsItem.FieldByName('SUBTOTAL').AsCurrency / lQtde,-2)
-  else
-    lPrCustoCalc := RoundABNT(FvUnitario,-2);
+//  if (lConv_UM = 'S') then
+//    lPrCustoCalc := RoundABNT(dsItem.FieldByName('SUBTOTAL').AsCurrency / lQtde,-2)
+//  else
+//    lPrCustoCalc := RoundABNT(FvUnitario,-2);
 
-  //Verifiacao para atualizar ou nao preco de custo atual e insercao de historico preco custo(trigger)
+  //Verificacao para atualizar ou nao preco de custo atual e insercao de historico preco custo(trigger)
   if (lPrCustoCalc <> PrCustoAtual(dsItem.FieldByName('ID_PRODUTO').AsInteger))then
     dsItem.FieldByName('PRECO_CUSTO').AsCurrency := lPrCustoCalc
   else
     dsItem.FieldByName('PRECO_CUSTO').AsCurrency := 0;
 
+//  dsItem.SaveToFile('c:\temp\item.cds',dfBinary);
   dsItem.Post;
   AjustaColGridItens;
   SubTotal := FSubTotal+dsItem.FieldByName('TOTAL').AsCurrency;
@@ -634,6 +654,7 @@ begin
   cds.FieldByName('TOTNOTA').AsCurrency := VNF;
 
   fExibirMens := False;
+  OrdenaItens;
   Gravar;
 end;
 
@@ -658,16 +679,8 @@ begin
     Exit;
   end;
 
-
   lVlPago := RoundABNT(GetValor(edtPagValor.Text),-2);
   edtPagValor.OnExit(Self);
-
-//  AtualizaSaldoaPagar;
-//  if ( (SaldoAPagar = 0) or (lVlPago > SaldoAPagar) ) then
-//  begin
-//    TMensagem.Informacao('Não há Saldo a pagar / Valor maior que o Saldo a pagar.');
-//    Exit;
-//  end;
 
   if ((lVlPago > 0) and (Parcelamento.Locate('descri', cbbParcelamento.Text, []))) then
   begin
@@ -684,7 +697,7 @@ begin
       if (I = 1) then
         dsPagar.FieldByName('DVENC').AsDateTime := IncDay(Date, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger)
       else
-        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('PRIMEIRA_PARC').AsInteger);
+        dsPagar.FieldByName('DVENC').AsDateTime := IncDay(lVencto, Parcelamento.FieldByName('INTV_PARCELAS').AsInteger);
       lVencto := dsPagar.FieldByName('DVENC').AsDateTime;
       dsPagar.FieldByName('VDUP').AsCurrency := lVlParcela + lVlCentavos;
       lVlCentavos := 0;
@@ -913,7 +926,7 @@ begin
   cds.FieldByName('ID').AsInteger := 0;
   cds.FieldByName('TIPO_NOTA').AsString := 'NF-E';
   cds.FieldByName('TIPO').AsString := 'SAIDA';
-  cds.FieldByName('ID_USUARIO').AsInteger := DM.UserID;
+  cds.FieldByName('ID_USUARIO').AsInteger := DM.Usuario.ID;
 
   dtpEmissao.Date := Date;
   cds.FieldByName('EMISSAO').AsDateTime := Date;
@@ -921,7 +934,7 @@ begin
   cds.FieldByName('NAT_OPERACAO').AsString := 'COMPRA DENTRO DO ESTADO';
   dbmmoLog.Lines.Add('Data: '+FormatDateTime('dd/mm/yyyy',date));
   dbmmoLog.Lines.Add('Horario: '+FormatDateTime('hh:mm:ss',Now));
-  dbmmoLog.Lines.Add('Usuário: '+DM.User);
+  dbmmoLog.Lines.Add('Usuário: '+DM.Usuario.login);
 
   //Aba totais
   cds.FieldByName('TOTPRODUTO').AsCurrency := 0;
@@ -937,6 +950,12 @@ begin
   cds.FieldByName('VALORICMS').AsCurrency := 0;
   cds.FieldByName('VBCST').AsCurrency := 0;
   cds.FieldByName('VST').AsCurrency := 0;
+end;
+
+procedure TFrm_NF_Entrada.cdsBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  cds.FieldByName('EMISSAO').AsDateTime := dtpEmissao.Date;
 end;
 
 procedure TFrm_NF_Entrada.cdsVDESCChange(Sender: TField);
@@ -1024,6 +1043,13 @@ procedure TFrm_NF_Entrada.DBPesquisa2Pesquisa(Sender: TObject;
 begin
   inherited;
   Retorno := Consulta.Fornecedor.ToString;
+end;
+
+procedure TFrm_NF_Entrada.dbpsqsClassPesquisa(Sender: TObject;
+  var Retorno: string);
+begin
+  inherited;
+  Retorno := Consulta.Historico().ToString;
 end;
 
 procedure TFrm_NF_Entrada.dsItemBeforeDelete(DataSet: TDataSet);
@@ -1191,6 +1217,7 @@ begin
   cds.Data := DM.SMNotaClient.getNotaEntrada(DM.BancoDados, -1);
   SubTotal := 0;
   pgc1.TabIndex := 0;
+  dtpEmissao.Date := Date;
 end;
 
 procedure TFrm_NF_Entrada.Gravar();
@@ -1230,10 +1257,10 @@ end;
 procedure TFrm_NF_Entrada.LoadUnidades(aCodigo:string);
 const
   SQL = 'SELECT coalesce(u.SIGLA,'''') SIGLA1,coalesce(u2.SIGLA,'''') SIGLA2,'+
-        'coalesce(p.PRECO_CUSTO,0) preco0,coalesce(p.CONV_PRECO,0) preco1 '+
+        'coalesce(p.PRECO_CUSTO,0) preco0,coalesce(p.PRECO_CUSTO/p.CONV_QTDE,0) preco1 '+
         'FROM PRODUTO p '+
-        'LEFT OUTER JOIN UNIDADE u ON (u.CODIGO=p.COD_UNIDADE) '+
-        'LEFT OUTER JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
+        'LEFT JOIN UNIDADE u ON (u.CODIGO=p.COD_UNIDADE) '+
+        'LEFT JOIN UNIDADE u2 ON (u2.CODIGO=p.CONV_UNIDADE) '+
         'WHERE p.CODIGO = %s';
 var
   i: Integer;
@@ -1289,6 +1316,31 @@ begin
   dtpEmissao.SetFocus;
 end;
 
+procedure TFrm_NF_Entrada.OrdenaItens;
+var
+  lOrdem: Integer;
+begin
+  if dsItem.IsEmpty then
+    Exit;
+
+  dsItem.DisableControls;
+  try
+    dsItem.Last;
+    lOrdem := 1;
+    while not dsItem.Bof do
+    begin
+      dsItem.Edit;
+      dsItem.FieldByName('ORDEM').AsInteger := lOrdem;
+      dsItem.Post;
+      Inc(lOrdem);
+      dsItem.Prior;
+    end;
+  finally
+    dsItem.EnableControls;
+    dsItem.First;
+  end;
+end;
+
 function TFrm_NF_Entrada.PrCustoAtual(aIDProd: integer): Currency;
 const
   SQL = 'select coalesce(a.PRECO_CUSTO,0) custo from PRODUTO a where a.CODIGO = %s';
@@ -1318,6 +1370,7 @@ const
 begin
 //  Qtde := 1;
   vUnitario := 0;
+  cbbUM.ItemIndex := -1;
 
   DM.dsConsulta.Close;
   DM.dsConsulta.Data := DM.LerDataSet(Format(SQL,[aID]));

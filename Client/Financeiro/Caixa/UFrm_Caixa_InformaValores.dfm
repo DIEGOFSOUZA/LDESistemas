@@ -1,11 +1,11 @@
 inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
   BorderStyle = bsNone
   Caption = 'Frm_Caixa_InformaValores'
-  ClientHeight = 369
+  ClientHeight = 415
   ClientWidth = 369
   Visible = False
   ExplicitWidth = 369
-  ExplicitHeight = 369
+  ExplicitHeight = 415
   PixelsPerInch = 96
   TextHeight = 13
   object lblTitulo: TLabel
@@ -31,14 +31,14 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
   end
   object pnlRodape: TPanel
     Left = 0
-    Top = 333
+    Top = 379
     Width = 369
     Height = 36
     Align = alBottom
     Color = 14803681
     ParentBackground = False
     TabOrder = 1
-    ExplicitTop = 335
+    ExplicitTop = 333
     object lblSalvar: TLabel
       Left = 167
       Top = 2
@@ -166,12 +166,12 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     Left = 0
     Top = 30
     Width = 369
-    Height = 303
+    Height = 349
     Align = alClient
     Color = 14803681
     ParentBackground = False
     TabOrder = 0
-    ExplicitHeight = 305
+    ExplicitHeight = 303
     object Label1: TLabel
       Left = 126
       Top = 19
@@ -226,7 +226,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object lblVlRetirado: TLabel
       Left = 11
-      Top = 143
+      Top = 175
       Width = 174
       Height = 17
       Alignment = taRightJustify
@@ -241,7 +241,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object Label5: TLabel
       Left = 9
-      Top = 199
+      Top = 239
       Width = 80
       Height = 17
       Caption = 'OBSERVA'#199#195'O'
@@ -254,7 +254,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object lblRestante: TLabel
       Left = 178
-      Top = 283
+      Top = 323
       Width = 183
       Height = 13
       Alignment = taRightJustify
@@ -263,7 +263,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object Label6: TLabel
       Left = 22
-      Top = 174
+      Top = 206
       Width = 163
       Height = 17
       Alignment = taRightJustify
@@ -275,6 +275,19 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
       Font.Style = [fsBold]
       ParentFont = False
       Layout = tlCenter
+    end
+    object Label7: TLabel
+      Left = 167
+      Top = 144
+      Width = 18
+      Height = 17
+      Caption = 'PIX'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
     end
     object edtDinheiro: TEdit
       Left = 189
@@ -345,7 +358,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object edtVlRetirado: TEdit
       Left = 189
-      Top = 140
+      Top = 172
       Width = 121
       Height = 25
       Font.Charset = ANSI_CHARSET
@@ -354,7 +367,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 5
       Text = '0,00'
       TextHint = '1.000,00'
       OnExit = edtVlRetiradoExit
@@ -362,7 +375,7 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
     end
     object mmo1: TMemo
       Left = 8
-      Top = 217
+      Top = 257
       Width = 353
       Height = 64
       Font.Charset = ANSI_CHARSET
@@ -372,12 +385,12 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
       Font.Style = []
       MaxLength = 250
       ParentFont = False
-      TabOrder = 5
+      TabOrder = 7
       OnChange = mmo1Change
     end
     object edtVlRetiradoCheque: TEdit
       Left = 189
-      Top = 171
+      Top = 203
       Width = 121
       Height = 25
       Font.Charset = ANSI_CHARSET
@@ -390,6 +403,23 @@ inherited Frm_Caixa_InformaValores: TFrm_Caixa_InformaValores
       Text = '0,00'
       TextHint = '1.000,00'
       OnExit = edtVlRetiradoExit
+      OnKeyPress = edtDinheiroKeyPress
+    end
+    object edtCPix: TEdit
+      Left = 189
+      Top = 141
+      Width = 121
+      Height = 25
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 4
+      Text = '0,00'
+      TextHint = '1.000,00'
+      OnExit = edtCPixExit
       OnKeyPress = edtDinheiroKeyPress
     end
   end

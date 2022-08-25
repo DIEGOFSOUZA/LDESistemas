@@ -580,7 +580,6 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
       'NDPAGTO d on (d.CODIGO = c.ID_CREDIARIO)'#13#10'where 1=2'#13#10'group by 1,' +
       '2'
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 120
     object dsGridFORMA: TStringField
       DisplayLabel = 'Forma de Pagamento'
@@ -608,5 +607,79 @@ inherited Rel_VendaFormaPagto: TRel_VendaFormaPagto
       Precision = 18
       Size = 2
     end
+  end
+  object scExcelExport1: TscExcelExport
+    DataPipe = dpDataSet
+    StyleColumnWidth = cwDefault
+    ColumnWidth = 0
+    FontHeader.Charset = DEFAULT_CHARSET
+    FontHeader.Color = clWindowText
+    FontHeader.Height = 1
+    FontHeader.Name = 'Tahoma'
+    FontHeader.Orientation = 0
+    FontHeader.Style = []
+    FontHeader.Alignment = haGeneral
+    FontHeader.VerticalAlignment = vaCenter
+    FontHeader.WrapText = False
+    BorderHeader.BackAlternateColor = clBlack
+    MergeHeaderCells = True
+    FontTitles.Charset = DEFAULT_CHARSET
+    FontTitles.Color = clWindowText
+    FontTitles.Height = 1
+    FontTitles.Name = 'Tahoma'
+    FontTitles.Orientation = 0
+    FontTitles.Style = []
+    FontTitles.Alignment = haGeneral
+    FontTitles.VerticalAlignment = vaCenter
+    FontTitles.WrapText = False
+    BorderTitles.BackAlternateColor = clBlack
+    AutoFilter = False
+    FontData.Charset = DEFAULT_CHARSET
+    FontData.Color = clWindowText
+    FontData.Height = 1
+    FontData.Name = 'Tahoma'
+    FontData.Orientation = 0
+    FontData.Style = []
+    FontData.Alignment = haGeneral
+    FontData.VerticalAlignment = vaCenter
+    FontData.WrapText = False
+    FontSummary.Charset = DEFAULT_CHARSET
+    FontSummary.Color = clWindowText
+    FontSummary.Height = 1
+    FontSummary.Name = 'Tahoma'
+    FontSummary.Orientation = 0
+    FontSummary.Style = []
+    FontSummary.Alignment = haGeneral
+    FontSummary.VerticalAlignment = vaCenter
+    FontSummary.WrapText = False
+    BorderSummary.BackAlternateColor = clBlack
+    SummarySelection = ssNone
+    SummaryCalculation = scSUM
+    FontFooter.Charset = DEFAULT_CHARSET
+    FontFooter.Color = clWindowText
+    FontFooter.Height = 1
+    FontFooter.Name = 'Tahoma'
+    FontFooter.Orientation = 0
+    FontFooter.Style = []
+    FontFooter.Alignment = haGeneral
+    FontFooter.VerticalAlignment = vaCenter
+    FontFooter.WrapText = False
+    BorderFooter.BackAlternateColor = clBlack
+    MergeFooterCells = True
+    FontGroup.Charset = DEFAULT_CHARSET
+    FontGroup.Color = clWindowText
+    FontGroup.Height = 1
+    FontGroup.Name = 'Tahoma'
+    FontGroup.Orientation = 0
+    FontGroup.Style = []
+    FontGroup.Alignment = haGeneral
+    FontGroup.VerticalAlignment = vaCenter
+    FontGroup.WrapText = False
+    BorderGroup.BackAlternateColor = clBlack
+    GroupOptions.ClearContents = True
+    GroupOptions.BorderRange = bsRow
+    GroupOptions.IntervalFontSize = 2
+    Left = 362
+    Top = 266
   end
 end

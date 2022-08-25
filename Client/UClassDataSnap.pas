@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 26/01/2021 15:05:37
+// 17/01/2022 15:33:41
 //
 
 unit UClassDataSnap;
@@ -15,6 +15,8 @@ type
     FLerDataSetCommand: TDBXCommand;
     FExecutarCommand: TDBXCommand;
     FTestaCominicacaoCommand: TDBXCommand;
+    FBancoInManutencaoCommand: TDBXCommand;
+    FUpdateBaseDadosCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
@@ -22,6 +24,8 @@ type
     function LerDataSet(BD: string; Txt: string): OleVariant;
     function Executar(BD: string; Txt: string): Integer;
     function TestaCominicacao: string;
+    function BancoInManutencao(aBD: string): Boolean;
+    function UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
   end;
 
   TSMCadastroClient = class(TDSAdminClient)
@@ -88,8 +92,6 @@ type
     FsetContaBancariaCommand: TDBXCommand;
     FsetNatOperacaoCommand: TDBXCommand;
     FgetNatOperacaoCommand: TDBXCommand;
-    FsetFechaVendaCommand: TDBXCommand;
-    FsetCancelarVendaCommand: TDBXCommand;
     FgetCondPagtoCommand: TDBXCommand;
     FsetCondPagtoCommand: TDBXCommand;
     FsetCaixaCommand: TDBXCommand;
@@ -163,8 +165,6 @@ type
     function setContaBancaria(BD: string; pCodigo: Integer; Dados: OleVariant): OleVariant;
     function setNatOperacao(BD: string; pCodigo: Integer; Dados: OleVariant): OleVariant;
     function getNatOperacao(BD: string; pCodigo: Integer): OleVariant;
-    function setFechaVenda(BD: string; Dados: OleVariant; pID: string; pTipo: string): Boolean;
-    function setCancelarVenda(BD: string; pID: Integer; pTipo: string; pMotivo: string; pUsuario: string): Boolean;
     function getCondPagto(BD: string; pID: Integer): OleVariant;
     function setCondPagto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function setCaixa(BD: string; setTipo: string; IDCaixa: Integer; usuario: string; FormaPagto: string; Valor: Currency; Obs_AbertFech: string; obsEntSaida: string): Boolean;
@@ -190,48 +190,100 @@ type
   private
     FsetOrcamentoCommand: TDBXCommand;
     FgetOrcamentoCommand: TDBXCommand;
+    FsetFechaVendaCommand: TDBXCommand;
+    FsetCancelarVendaCommand: TDBXCommand;
+    FsetDevolucaoCommand: TDBXCommand;
+    FsetAtualizarTabelasCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setOrcamento(BD: string; pID: Integer; Dados: OleVariant): Boolean;
     function getOrcamento(BD: string; pID: Integer): OleVariant;
+    function setFechaVenda(BD: string; Dados: OleVariant; pID: string; pTipo: string): Boolean;
+    function setCancelarVenda(BD: string; pID: Integer; pTipo: string; pMotivo: string; pUsuario: string): Boolean;
+    function setDevolucao(BD: string; pUsuario: string; pVlCredito: Currency; pIDCliente: Integer; pcds: OleVariant; pIDCaixa: Integer): Boolean;
+    function setAtualizarTabelas(BD: string; aIdOrcamento: Integer; aIdCliente: Integer; aCredUtilizado: Currency): Boolean;
   end;
 
   TSM_FinanceiroClient = class(TDSAdminClient)
   private
     FsetFormaPagtoCommand: TDBXCommand;
     FgetFormaPagtoCommand: TDBXCommand;
+    FsetBaixaRestauraCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setFormaPagto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getFormaPagto(BD: string; pID: Integer): OleVariant;
+    function setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
   end;
 
   TSM_PedidoClient = class(TDSAdminClient)
   private
-    FsetPedVendaCommand: TDBXCommand;
-    FgetPedVendaCommand: TDBXCommand;
+    FPedidoVenda_AdicionarCommand: TDBXCommand;
+    FPedidoVenda_EditarCommand: TDBXCommand;
+    FPedidoVenda_CriaProdutoCommand: TDBXCommand;
+    FPedidoVenda_EditarProdutoCommand: TDBXCommand;
+    FPedidoVenda_CarregarProdutoCommand: TDBXCommand;
+    FPedidoVenda_AvancaStatusCommand: TDBXCommand;
+    FPedidoVenda_ExcluirCommand: TDBXCommand;
+    FPedidoVenda_CarregarCommand: TDBXCommand;
+    FPedidoVenda_RelA3Command: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function setPedVenda(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
-    function getPedVenda(BD: string; pID: Integer): OleVariant;
+    function PedidoVenda_Adicionar(BD: string; aTabelas: OleVariant): Boolean;
+    function PedidoVenda_Editar(BD: string; aTabelas: OleVariant): Boolean;
+    function PedidoVenda_CriaProduto(BD: string; aTabelas: OleVariant): Integer;
+    function PedidoVenda_EditarProduto(BD: string; aTabelas: OleVariant): Boolean;
+    function PedidoVenda_CarregarProduto(BD: string; aIDProduto: Integer): OleVariant;
+    function PedidoVenda_AvancaStatus(BD: string; aPedidos: OleVariant): Integer;
+    function PedidoVenda_Excluir(BD: string; aPedidos: OleVariant): Integer;
+    function PedidoVenda_Carregar(BD: string; aIDPedido: Integer): OleVariant;
+    function PedidoVenda_RelA3(BD: string; aIdPedido: Integer): OleVariant;
   end;
 
   TSMProducaoClient = class(TDSAdminClient)
   private
     FsetProducaoCommand: TDBXCommand;
     FgetProducaoCommand: TDBXCommand;
+    FsetMovimentoCommand: TDBXCommand;
   public
     constructor Create(ADBXConnection: TDBXConnection); overload;
     constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
     function setProducao(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
     function getProducao(BD: string; pID: Integer): OleVariant;
+    function setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+  end;
+
+  TSMProdutoClient = class(TDSAdminClient)
+  private
+    FsetProdutoCommand: TDBXCommand;
+    FgetProdutoCommand: TDBXCommand;
+    FsetServicoCommand: TDBXCommand;
+    FgetServicoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
+    function getProduto(BD: string; pID: Integer): OleVariant;
+    function setServico(BD: string; aDados: OleVariant; aID: Integer): OleVariant;
+    function getServico(BD: string; aID: Integer): OleVariant;
+  end;
+
+  TSM_SaveInCloudClient = class(TDSAdminClient)
+  private
+    FClienteLiberadoCommand: TDBXCommand;
+  public
+    constructor Create(ADBXConnection: TDBXConnection); overload;
+    constructor Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean); overload;
+    destructor Destroy; override;
+    function ClienteLiberado(aCpfCnpj: string): Boolean;
   end;
 
 implementation
@@ -279,6 +331,35 @@ begin
   Result := FTestaCominicacaoCommand.Parameters[0].Value.GetWideString;
 end;
 
+function TSMClient.BancoInManutencao(aBD: string): Boolean;
+begin
+  if FBancoInManutencaoCommand = nil then
+  begin
+    FBancoInManutencaoCommand := FDBXConnection.CreateCommand;
+    FBancoInManutencaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FBancoInManutencaoCommand.Text := 'TSM.BancoInManutencao';
+    FBancoInManutencaoCommand.Prepare;
+  end;
+  FBancoInManutencaoCommand.Parameters[0].Value.SetWideString(aBD);
+  FBancoInManutencaoCommand.ExecuteUpdate;
+  Result := FBancoInManutencaoCommand.Parameters[1].Value.GetBoolean;
+end;
+
+function TSMClient.UpdateBaseDados(aBanco: string; aCPFCNPJ: string): Integer;
+begin
+  if FUpdateBaseDadosCommand = nil then
+  begin
+    FUpdateBaseDadosCommand := FDBXConnection.CreateCommand;
+    FUpdateBaseDadosCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FUpdateBaseDadosCommand.Text := 'TSM.UpdateBaseDados';
+    FUpdateBaseDadosCommand.Prepare;
+  end;
+  FUpdateBaseDadosCommand.Parameters[0].Value.SetWideString(aBanco);
+  FUpdateBaseDadosCommand.Parameters[1].Value.SetWideString(aCPFCNPJ);
+  FUpdateBaseDadosCommand.ExecuteUpdate;
+  Result := FUpdateBaseDadosCommand.Parameters[2].Value.GetInt32;
+end;
+
 constructor TSMClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -294,6 +375,8 @@ begin
   FLerDataSetCommand.DisposeOf;
   FExecutarCommand.DisposeOf;
   FTestaCominicacaoCommand.DisposeOf;
+  FBancoInManutencaoCommand.DisposeOf;
+  FUpdateBaseDadosCommand.DisposeOf;
   inherited;
 end;
 
@@ -1265,41 +1348,6 @@ begin
   Result := FgetNatOperacaoCommand.Parameters[2].Value.AsVariant;
 end;
 
-function TSMCadastroClient.setFechaVenda(BD: string; Dados: OleVariant; pID: string; pTipo: string): Boolean;
-begin
-  if FsetFechaVendaCommand = nil then
-  begin
-    FsetFechaVendaCommand := FDBXConnection.CreateCommand;
-    FsetFechaVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FsetFechaVendaCommand.Text := 'TSMCadastro.setFechaVenda';
-    FsetFechaVendaCommand.Prepare;
-  end;
-  FsetFechaVendaCommand.Parameters[0].Value.SetWideString(BD);
-  FsetFechaVendaCommand.Parameters[1].Value.AsVariant := Dados;
-  FsetFechaVendaCommand.Parameters[2].Value.SetWideString(pID);
-  FsetFechaVendaCommand.Parameters[3].Value.SetWideString(pTipo);
-  FsetFechaVendaCommand.ExecuteUpdate;
-  Result := FsetFechaVendaCommand.Parameters[4].Value.GetBoolean;
-end;
-
-function TSMCadastroClient.setCancelarVenda(BD: string; pID: Integer; pTipo: string; pMotivo: string; pUsuario: string): Boolean;
-begin
-  if FsetCancelarVendaCommand = nil then
-  begin
-    FsetCancelarVendaCommand := FDBXConnection.CreateCommand;
-    FsetCancelarVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FsetCancelarVendaCommand.Text := 'TSMCadastro.setCancelarVenda';
-    FsetCancelarVendaCommand.Prepare;
-  end;
-  FsetCancelarVendaCommand.Parameters[0].Value.SetWideString(BD);
-  FsetCancelarVendaCommand.Parameters[1].Value.SetInt32(pID);
-  FsetCancelarVendaCommand.Parameters[2].Value.SetWideString(pTipo);
-  FsetCancelarVendaCommand.Parameters[3].Value.SetWideString(pMotivo);
-  FsetCancelarVendaCommand.Parameters[4].Value.SetWideString(pUsuario);
-  FsetCancelarVendaCommand.ExecuteUpdate;
-  Result := FsetCancelarVendaCommand.Parameters[5].Value.GetBoolean;
-end;
-
 function TSMCadastroClient.getCondPagto(BD: string; pID: Integer): OleVariant;
 begin
   if FgetCondPagtoCommand = nil then
@@ -1490,8 +1538,6 @@ begin
   FsetContaBancariaCommand.DisposeOf;
   FsetNatOperacaoCommand.DisposeOf;
   FgetNatOperacaoCommand.DisposeOf;
-  FsetFechaVendaCommand.DisposeOf;
-  FsetCancelarVendaCommand.DisposeOf;
   FgetCondPagtoCommand.DisposeOf;
   FsetCondPagtoCommand.DisposeOf;
   FsetCaixaCommand.DisposeOf;
@@ -1581,6 +1627,77 @@ begin
   Result := FgetOrcamentoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TsmPDVClient.setFechaVenda(BD: string; Dados: OleVariant; pID: string; pTipo: string): Boolean;
+begin
+  if FsetFechaVendaCommand = nil then
+  begin
+    FsetFechaVendaCommand := FDBXConnection.CreateCommand;
+    FsetFechaVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetFechaVendaCommand.Text := 'TsmPDV.setFechaVenda';
+    FsetFechaVendaCommand.Prepare;
+  end;
+  FsetFechaVendaCommand.Parameters[0].Value.SetWideString(BD);
+  FsetFechaVendaCommand.Parameters[1].Value.AsVariant := Dados;
+  FsetFechaVendaCommand.Parameters[2].Value.SetWideString(pID);
+  FsetFechaVendaCommand.Parameters[3].Value.SetWideString(pTipo);
+  FsetFechaVendaCommand.ExecuteUpdate;
+  Result := FsetFechaVendaCommand.Parameters[4].Value.GetBoolean;
+end;
+
+function TsmPDVClient.setCancelarVenda(BD: string; pID: Integer; pTipo: string; pMotivo: string; pUsuario: string): Boolean;
+begin
+  if FsetCancelarVendaCommand = nil then
+  begin
+    FsetCancelarVendaCommand := FDBXConnection.CreateCommand;
+    FsetCancelarVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetCancelarVendaCommand.Text := 'TsmPDV.setCancelarVenda';
+    FsetCancelarVendaCommand.Prepare;
+  end;
+  FsetCancelarVendaCommand.Parameters[0].Value.SetWideString(BD);
+  FsetCancelarVendaCommand.Parameters[1].Value.SetInt32(pID);
+  FsetCancelarVendaCommand.Parameters[2].Value.SetWideString(pTipo);
+  FsetCancelarVendaCommand.Parameters[3].Value.SetWideString(pMotivo);
+  FsetCancelarVendaCommand.Parameters[4].Value.SetWideString(pUsuario);
+  FsetCancelarVendaCommand.ExecuteUpdate;
+  Result := FsetCancelarVendaCommand.Parameters[5].Value.GetBoolean;
+end;
+
+function TsmPDVClient.setDevolucao(BD: string; pUsuario: string; pVlCredito: Currency; pIDCliente: Integer; pcds: OleVariant; pIDCaixa: Integer): Boolean;
+begin
+  if FsetDevolucaoCommand = nil then
+  begin
+    FsetDevolucaoCommand := FDBXConnection.CreateCommand;
+    FsetDevolucaoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetDevolucaoCommand.Text := 'TsmPDV.setDevolucao';
+    FsetDevolucaoCommand.Prepare;
+  end;
+  FsetDevolucaoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetDevolucaoCommand.Parameters[1].Value.SetWideString(pUsuario);
+  FsetDevolucaoCommand.Parameters[2].Value.AsCurrency := pVlCredito;
+  FsetDevolucaoCommand.Parameters[3].Value.SetInt32(pIDCliente);
+  FsetDevolucaoCommand.Parameters[4].Value.AsVariant := pcds;
+  FsetDevolucaoCommand.Parameters[5].Value.SetInt32(pIDCaixa);
+  FsetDevolucaoCommand.ExecuteUpdate;
+  Result := FsetDevolucaoCommand.Parameters[6].Value.GetBoolean;
+end;
+
+function TsmPDVClient.setAtualizarTabelas(BD: string; aIdOrcamento: Integer; aIdCliente: Integer; aCredUtilizado: Currency): Boolean;
+begin
+  if FsetAtualizarTabelasCommand = nil then
+  begin
+    FsetAtualizarTabelasCommand := FDBXConnection.CreateCommand;
+    FsetAtualizarTabelasCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetAtualizarTabelasCommand.Text := 'TsmPDV.setAtualizarTabelas';
+    FsetAtualizarTabelasCommand.Prepare;
+  end;
+  FsetAtualizarTabelasCommand.Parameters[0].Value.SetWideString(BD);
+  FsetAtualizarTabelasCommand.Parameters[1].Value.SetInt32(aIdOrcamento);
+  FsetAtualizarTabelasCommand.Parameters[2].Value.SetInt32(aIdCliente);
+  FsetAtualizarTabelasCommand.Parameters[3].Value.AsCurrency := aCredUtilizado;
+  FsetAtualizarTabelasCommand.ExecuteUpdate;
+  Result := FsetAtualizarTabelasCommand.Parameters[4].Value.GetBoolean;
+end;
+
 constructor TsmPDVClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1595,6 +1712,10 @@ destructor TsmPDVClient.Destroy;
 begin
   FsetOrcamentoCommand.DisposeOf;
   FgetOrcamentoCommand.DisposeOf;
+  FsetFechaVendaCommand.DisposeOf;
+  FsetCancelarVendaCommand.DisposeOf;
+  FsetDevolucaoCommand.DisposeOf;
+  FsetAtualizarTabelasCommand.DisposeOf;
   inherited;
 end;
 
@@ -1629,6 +1750,36 @@ begin
   Result := FgetFormaPagtoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSM_FinanceiroClient.setBaixaRestaura(BD: string; pBaixaParcial: Boolean; pVlDiferenca: Currency; pReceberPagar: string; pBaixaRestaura: string; pTipo: string; pID: Integer; pOrdem: string; pData: string; pJuros: Currency; pDesconto: Currency; pValor: Currency; pUsuario: string; pIdHistorico: string; pIdConta: string; pIdCaixa: string; pNumCheque: Integer): Boolean;
+begin
+  if FsetBaixaRestauraCommand = nil then
+  begin
+    FsetBaixaRestauraCommand := FDBXConnection.CreateCommand;
+    FsetBaixaRestauraCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetBaixaRestauraCommand.Text := 'TSM_Financeiro.setBaixaRestaura';
+    FsetBaixaRestauraCommand.Prepare;
+  end;
+  FsetBaixaRestauraCommand.Parameters[0].Value.SetWideString(BD);
+  FsetBaixaRestauraCommand.Parameters[1].Value.SetBoolean(pBaixaParcial);
+  FsetBaixaRestauraCommand.Parameters[2].Value.AsCurrency := pVlDiferenca;
+  FsetBaixaRestauraCommand.Parameters[3].Value.SetWideString(pReceberPagar);
+  FsetBaixaRestauraCommand.Parameters[4].Value.SetWideString(pBaixaRestaura);
+  FsetBaixaRestauraCommand.Parameters[5].Value.SetWideString(pTipo);
+  FsetBaixaRestauraCommand.Parameters[6].Value.SetInt32(pID);
+  FsetBaixaRestauraCommand.Parameters[7].Value.SetWideString(pOrdem);
+  FsetBaixaRestauraCommand.Parameters[8].Value.SetWideString(pData);
+  FsetBaixaRestauraCommand.Parameters[9].Value.AsCurrency := pJuros;
+  FsetBaixaRestauraCommand.Parameters[10].Value.AsCurrency := pDesconto;
+  FsetBaixaRestauraCommand.Parameters[11].Value.AsCurrency := pValor;
+  FsetBaixaRestauraCommand.Parameters[12].Value.SetWideString(pUsuario);
+  FsetBaixaRestauraCommand.Parameters[13].Value.SetWideString(pIdHistorico);
+  FsetBaixaRestauraCommand.Parameters[14].Value.SetWideString(pIdConta);
+  FsetBaixaRestauraCommand.Parameters[15].Value.SetWideString(pIdCaixa);
+  FsetBaixaRestauraCommand.Parameters[16].Value.SetInt32(pNumCheque);
+  FsetBaixaRestauraCommand.ExecuteUpdate;
+  Result := FsetBaixaRestauraCommand.Parameters[17].Value.GetBoolean;
+end;
+
 constructor TSM_FinanceiroClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1643,38 +1794,143 @@ destructor TSM_FinanceiroClient.Destroy;
 begin
   FsetFormaPagtoCommand.DisposeOf;
   FgetFormaPagtoCommand.DisposeOf;
+  FsetBaixaRestauraCommand.DisposeOf;
   inherited;
 end;
 
-function TSM_PedidoClient.setPedVenda(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
+function TSM_PedidoClient.PedidoVenda_Adicionar(BD: string; aTabelas: OleVariant): Boolean;
 begin
-  if FsetPedVendaCommand = nil then
+  if FPedidoVenda_AdicionarCommand = nil then
   begin
-    FsetPedVendaCommand := FDBXConnection.CreateCommand;
-    FsetPedVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FsetPedVendaCommand.Text := 'TSM_Pedido.setPedVenda';
-    FsetPedVendaCommand.Prepare;
+    FPedidoVenda_AdicionarCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_AdicionarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_AdicionarCommand.Text := 'TSM_Pedido.PedidoVenda_Adicionar';
+    FPedidoVenda_AdicionarCommand.Prepare;
   end;
-  FsetPedVendaCommand.Parameters[0].Value.SetWideString(BD);
-  FsetPedVendaCommand.Parameters[1].Value.SetInt32(pID);
-  FsetPedVendaCommand.Parameters[2].Value.AsVariant := Dados;
-  FsetPedVendaCommand.ExecuteUpdate;
-  Result := FsetPedVendaCommand.Parameters[3].Value.AsVariant;
+  FPedidoVenda_AdicionarCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_AdicionarCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FPedidoVenda_AdicionarCommand.ExecuteUpdate;
+  Result := FPedidoVenda_AdicionarCommand.Parameters[2].Value.GetBoolean;
 end;
 
-function TSM_PedidoClient.getPedVenda(BD: string; pID: Integer): OleVariant;
+function TSM_PedidoClient.PedidoVenda_Editar(BD: string; aTabelas: OleVariant): Boolean;
 begin
-  if FgetPedVendaCommand = nil then
+  if FPedidoVenda_EditarCommand = nil then
   begin
-    FgetPedVendaCommand := FDBXConnection.CreateCommand;
-    FgetPedVendaCommand.CommandType := TDBXCommandTypes.DSServerMethod;
-    FgetPedVendaCommand.Text := 'TSM_Pedido.getPedVenda';
-    FgetPedVendaCommand.Prepare;
+    FPedidoVenda_EditarCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_EditarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_EditarCommand.Text := 'TSM_Pedido.PedidoVenda_Editar';
+    FPedidoVenda_EditarCommand.Prepare;
   end;
-  FgetPedVendaCommand.Parameters[0].Value.SetWideString(BD);
-  FgetPedVendaCommand.Parameters[1].Value.SetInt32(pID);
-  FgetPedVendaCommand.ExecuteUpdate;
-  Result := FgetPedVendaCommand.Parameters[2].Value.AsVariant;
+  FPedidoVenda_EditarCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_EditarCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FPedidoVenda_EditarCommand.ExecuteUpdate;
+  Result := FPedidoVenda_EditarCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TSM_PedidoClient.PedidoVenda_CriaProduto(BD: string; aTabelas: OleVariant): Integer;
+begin
+  if FPedidoVenda_CriaProdutoCommand = nil then
+  begin
+    FPedidoVenda_CriaProdutoCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_CriaProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_CriaProdutoCommand.Text := 'TSM_Pedido.PedidoVenda_CriaProduto';
+    FPedidoVenda_CriaProdutoCommand.Prepare;
+  end;
+  FPedidoVenda_CriaProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_CriaProdutoCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FPedidoVenda_CriaProdutoCommand.ExecuteUpdate;
+  Result := FPedidoVenda_CriaProdutoCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TSM_PedidoClient.PedidoVenda_EditarProduto(BD: string; aTabelas: OleVariant): Boolean;
+begin
+  if FPedidoVenda_EditarProdutoCommand = nil then
+  begin
+    FPedidoVenda_EditarProdutoCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_EditarProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_EditarProdutoCommand.Text := 'TSM_Pedido.PedidoVenda_EditarProduto';
+    FPedidoVenda_EditarProdutoCommand.Prepare;
+  end;
+  FPedidoVenda_EditarProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_EditarProdutoCommand.Parameters[1].Value.AsVariant := aTabelas;
+  FPedidoVenda_EditarProdutoCommand.ExecuteUpdate;
+  Result := FPedidoVenda_EditarProdutoCommand.Parameters[2].Value.GetBoolean;
+end;
+
+function TSM_PedidoClient.PedidoVenda_CarregarProduto(BD: string; aIDProduto: Integer): OleVariant;
+begin
+  if FPedidoVenda_CarregarProdutoCommand = nil then
+  begin
+    FPedidoVenda_CarregarProdutoCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_CarregarProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_CarregarProdutoCommand.Text := 'TSM_Pedido.PedidoVenda_CarregarProduto';
+    FPedidoVenda_CarregarProdutoCommand.Prepare;
+  end;
+  FPedidoVenda_CarregarProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_CarregarProdutoCommand.Parameters[1].Value.SetInt32(aIDProduto);
+  FPedidoVenda_CarregarProdutoCommand.ExecuteUpdate;
+  Result := FPedidoVenda_CarregarProdutoCommand.Parameters[2].Value.AsVariant;
+end;
+
+function TSM_PedidoClient.PedidoVenda_AvancaStatus(BD: string; aPedidos: OleVariant): Integer;
+begin
+  if FPedidoVenda_AvancaStatusCommand = nil then
+  begin
+    FPedidoVenda_AvancaStatusCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_AvancaStatusCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_AvancaStatusCommand.Text := 'TSM_Pedido.PedidoVenda_AvancaStatus';
+    FPedidoVenda_AvancaStatusCommand.Prepare;
+  end;
+  FPedidoVenda_AvancaStatusCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_AvancaStatusCommand.Parameters[1].Value.AsVariant := aPedidos;
+  FPedidoVenda_AvancaStatusCommand.ExecuteUpdate;
+  Result := FPedidoVenda_AvancaStatusCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TSM_PedidoClient.PedidoVenda_Excluir(BD: string; aPedidos: OleVariant): Integer;
+begin
+  if FPedidoVenda_ExcluirCommand = nil then
+  begin
+    FPedidoVenda_ExcluirCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_ExcluirCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_ExcluirCommand.Text := 'TSM_Pedido.PedidoVenda_Excluir';
+    FPedidoVenda_ExcluirCommand.Prepare;
+  end;
+  FPedidoVenda_ExcluirCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_ExcluirCommand.Parameters[1].Value.AsVariant := aPedidos;
+  FPedidoVenda_ExcluirCommand.ExecuteUpdate;
+  Result := FPedidoVenda_ExcluirCommand.Parameters[2].Value.GetInt32;
+end;
+
+function TSM_PedidoClient.PedidoVenda_Carregar(BD: string; aIDPedido: Integer): OleVariant;
+begin
+  if FPedidoVenda_CarregarCommand = nil then
+  begin
+    FPedidoVenda_CarregarCommand := FDBXConnection.CreateCommand;
+    FPedidoVenda_CarregarCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_CarregarCommand.Text := 'TSM_Pedido.PedidoVenda_Carregar';
+    FPedidoVenda_CarregarCommand.Prepare;
+  end;
+  FPedidoVenda_CarregarCommand.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_CarregarCommand.Parameters[1].Value.SetInt32(aIDPedido);
+  FPedidoVenda_CarregarCommand.ExecuteUpdate;
+  Result := FPedidoVenda_CarregarCommand.Parameters[2].Value.AsVariant;
+end;
+
+function TSM_PedidoClient.PedidoVenda_RelA3(BD: string; aIdPedido: Integer): OleVariant;
+begin
+  if FPedidoVenda_RelA3Command = nil then
+  begin
+    FPedidoVenda_RelA3Command := FDBXConnection.CreateCommand;
+    FPedidoVenda_RelA3Command.CommandType := TDBXCommandTypes.DSServerMethod;
+    FPedidoVenda_RelA3Command.Text := 'TSM_Pedido.PedidoVenda_RelA3';
+    FPedidoVenda_RelA3Command.Prepare;
+  end;
+  FPedidoVenda_RelA3Command.Parameters[0].Value.SetWideString(BD);
+  FPedidoVenda_RelA3Command.Parameters[1].Value.SetInt32(aIdPedido);
+  FPedidoVenda_RelA3Command.ExecuteUpdate;
+  Result := FPedidoVenda_RelA3Command.Parameters[2].Value.AsVariant;
 end;
 
 constructor TSM_PedidoClient.Create(ADBXConnection: TDBXConnection);
@@ -1689,8 +1945,15 @@ end;
 
 destructor TSM_PedidoClient.Destroy;
 begin
-  FsetPedVendaCommand.DisposeOf;
-  FgetPedVendaCommand.DisposeOf;
+  FPedidoVenda_AdicionarCommand.DisposeOf;
+  FPedidoVenda_EditarCommand.DisposeOf;
+  FPedidoVenda_CriaProdutoCommand.DisposeOf;
+  FPedidoVenda_EditarProdutoCommand.DisposeOf;
+  FPedidoVenda_CarregarProdutoCommand.DisposeOf;
+  FPedidoVenda_AvancaStatusCommand.DisposeOf;
+  FPedidoVenda_ExcluirCommand.DisposeOf;
+  FPedidoVenda_CarregarCommand.DisposeOf;
+  FPedidoVenda_RelA3Command.DisposeOf;
   inherited;
 end;
 
@@ -1725,6 +1988,27 @@ begin
   Result := FgetProducaoCommand.Parameters[2].Value.AsVariant;
 end;
 
+function TSMProducaoClient.setMovimento(BD: string; aUsuario: string; aCodPro: Integer; aQtde: Double; aQtdeFechada: Double; aCodUND: Integer; aEntSai: string; aDescriProd: string): Boolean;
+begin
+  if FsetMovimentoCommand = nil then
+  begin
+    FsetMovimentoCommand := FDBXConnection.CreateCommand;
+    FsetMovimentoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetMovimentoCommand.Text := 'TSMProducao.setMovimento';
+    FsetMovimentoCommand.Prepare;
+  end;
+  FsetMovimentoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetMovimentoCommand.Parameters[1].Value.SetWideString(aUsuario);
+  FsetMovimentoCommand.Parameters[2].Value.SetInt32(aCodPro);
+  FsetMovimentoCommand.Parameters[3].Value.SetDouble(aQtde);
+  FsetMovimentoCommand.Parameters[4].Value.SetDouble(aQtdeFechada);
+  FsetMovimentoCommand.Parameters[5].Value.SetInt32(aCodUND);
+  FsetMovimentoCommand.Parameters[6].Value.SetWideString(aEntSai);
+  FsetMovimentoCommand.Parameters[7].Value.SetWideString(aDescriProd);
+  FsetMovimentoCommand.ExecuteUpdate;
+  Result := FsetMovimentoCommand.Parameters[8].Value.GetBoolean;
+end;
+
 constructor TSMProducaoClient.Create(ADBXConnection: TDBXConnection);
 begin
   inherited Create(ADBXConnection);
@@ -1739,6 +2023,118 @@ destructor TSMProducaoClient.Destroy;
 begin
   FsetProducaoCommand.DisposeOf;
   FgetProducaoCommand.DisposeOf;
+  FsetMovimentoCommand.DisposeOf;
+  inherited;
+end;
+
+function TSMProdutoClient.setProduto(BD: string; pID: Integer; Dados: OleVariant): OleVariant;
+begin
+  if FsetProdutoCommand = nil then
+  begin
+    FsetProdutoCommand := FDBXConnection.CreateCommand;
+    FsetProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetProdutoCommand.Text := 'TSMProduto.setProduto';
+    FsetProdutoCommand.Prepare;
+  end;
+  FsetProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetProdutoCommand.Parameters[1].Value.SetInt32(pID);
+  FsetProdutoCommand.Parameters[2].Value.AsVariant := Dados;
+  FsetProdutoCommand.ExecuteUpdate;
+  Result := FsetProdutoCommand.Parameters[3].Value.AsVariant;
+end;
+
+function TSMProdutoClient.getProduto(BD: string; pID: Integer): OleVariant;
+begin
+  if FgetProdutoCommand = nil then
+  begin
+    FgetProdutoCommand := FDBXConnection.CreateCommand;
+    FgetProdutoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FgetProdutoCommand.Text := 'TSMProduto.getProduto';
+    FgetProdutoCommand.Prepare;
+  end;
+  FgetProdutoCommand.Parameters[0].Value.SetWideString(BD);
+  FgetProdutoCommand.Parameters[1].Value.SetInt32(pID);
+  FgetProdutoCommand.ExecuteUpdate;
+  Result := FgetProdutoCommand.Parameters[2].Value.AsVariant;
+end;
+
+function TSMProdutoClient.setServico(BD: string; aDados: OleVariant; aID: Integer): OleVariant;
+begin
+  if FsetServicoCommand = nil then
+  begin
+    FsetServicoCommand := FDBXConnection.CreateCommand;
+    FsetServicoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FsetServicoCommand.Text := 'TSMProduto.setServico';
+    FsetServicoCommand.Prepare;
+  end;
+  FsetServicoCommand.Parameters[0].Value.SetWideString(BD);
+  FsetServicoCommand.Parameters[1].Value.AsVariant := aDados;
+  FsetServicoCommand.Parameters[2].Value.SetInt32(aID);
+  FsetServicoCommand.ExecuteUpdate;
+  Result := FsetServicoCommand.Parameters[3].Value.AsVariant;
+end;
+
+function TSMProdutoClient.getServico(BD: string; aID: Integer): OleVariant;
+begin
+  if FgetServicoCommand = nil then
+  begin
+    FgetServicoCommand := FDBXConnection.CreateCommand;
+    FgetServicoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FgetServicoCommand.Text := 'TSMProduto.getServico';
+    FgetServicoCommand.Prepare;
+  end;
+  FgetServicoCommand.Parameters[0].Value.SetWideString(BD);
+  FgetServicoCommand.Parameters[1].Value.SetInt32(aID);
+  FgetServicoCommand.ExecuteUpdate;
+  Result := FgetServicoCommand.Parameters[2].Value.AsVariant;
+end;
+
+constructor TSMProdutoClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSMProdutoClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSMProdutoClient.Destroy;
+begin
+  FsetProdutoCommand.DisposeOf;
+  FgetProdutoCommand.DisposeOf;
+  FsetServicoCommand.DisposeOf;
+  FgetServicoCommand.DisposeOf;
+  inherited;
+end;
+
+function TSM_SaveInCloudClient.ClienteLiberado(aCpfCnpj: string): Boolean;
+begin
+  if FClienteLiberadoCommand = nil then
+  begin
+    FClienteLiberadoCommand := FDBXConnection.CreateCommand;
+    FClienteLiberadoCommand.CommandType := TDBXCommandTypes.DSServerMethod;
+    FClienteLiberadoCommand.Text := 'TSM_SaveInCloud.ClienteLiberado';
+    FClienteLiberadoCommand.Prepare;
+  end;
+  FClienteLiberadoCommand.Parameters[0].Value.SetWideString(aCpfCnpj);
+  FClienteLiberadoCommand.ExecuteUpdate;
+  Result := FClienteLiberadoCommand.Parameters[1].Value.GetBoolean;
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection);
+begin
+  inherited Create(ADBXConnection);
+end;
+
+constructor TSM_SaveInCloudClient.Create(ADBXConnection: TDBXConnection; AInstanceOwner: Boolean);
+begin
+  inherited Create(ADBXConnection, AInstanceOwner);
+end;
+
+destructor TSM_SaveInCloudClient.Destroy;
+begin
+  FClienteLiberadoCommand.DisposeOf;
   inherited;
 end;
 

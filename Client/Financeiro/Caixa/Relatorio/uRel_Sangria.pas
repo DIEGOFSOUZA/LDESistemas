@@ -18,7 +18,6 @@ type
     dsGridVALOR: TFMTBCDField;
     dsGridUSUARIO: TStringField;
     dsGridFORMA_PAGTO: TStringField;
-    dsGridINF: TStringField;
     RLLabel16: TRLLabel;
     rlblDT1: TRLLabel;
     RLLabel1: TRLLabel;
@@ -49,6 +48,7 @@ type
     rlblTotBruto: TRLLabel;
     RLMemo6: TRLMemo;
     rlblTotais: TRLLabel;
+    dsGridINF: TStringField;
     procedure actGerarExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure RLBand9BeforePrint(Sender: TObject; var PrintIt: Boolean);
@@ -80,7 +80,7 @@ const
        	'ces.VALOR*-1,'+
        	'ces.VALOR) AS NUMERIC(10,'+
        	'2))valor,'+
-       	'CAST(upper (ces.OBS) AS varchar(100)) inf,'+
+       	'CAST(upper (ces.OBS) AS varchar(500)) inf,'+
        	'ces.USUARIO,'+
        	'ces.FORMA_PAGTO '+
         'FROM '+

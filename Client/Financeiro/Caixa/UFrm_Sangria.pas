@@ -95,7 +95,7 @@ begin
   if (rgOperacao.ItemIndex = 0) then
     fValor := fValor *  - 1;
 
-  if not DM.SMCadastroClient.setCaixa(DM.BancoDados, 'ENT/SAIDA', iCaixa, DM.User, rgFormaPagto.Items[rgFormaPagto.ItemIndex], fValor, EmptyStr, mmo1.Lines.Text) then
+  if not DM.SMCadastroClient.setCaixa(DM.BancoDados, 'ENT/SAIDA', iCaixa, DM.Usuario.login, rgFormaPagto.Items[rgFormaPagto.ItemIndex], fValor, EmptyStr, mmo1.Lines.Text) then
   begin
     MessageDlg('Erro: Gravação não efetuada.', mtError, [mbAbort], 0);
   end

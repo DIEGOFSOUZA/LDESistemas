@@ -3,12 +3,12 @@ object SMProducao: TSMProducao
   Height = 259
   Width = 331
   object FDTranGravar: TFDTransaction
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Left = 32
     Top = 8
   end
   object fdqryLote: TFDQuery
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = FDTranGravar
     SQL.Strings = (
       'SELECT l.*'
@@ -88,7 +88,7 @@ object SMProducao: TSMProducao
     MasterSource = sProducao
     MasterFields = 'LOTE'
     DetailFields = 'ID_LOTE'
-    Connection = DM.Conexao
+    Connection = ServerDM.Conexao
     Transaction = FDTranGravar
     SQL.Strings = (
       'SELECT li.*'

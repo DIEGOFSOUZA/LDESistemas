@@ -7,8 +7,10 @@ uses System.SysUtils, System.Variants, System.Classes ;
 type
   TRetornoProduto = record
     iCodigo: integer;
+    Descricao: string;
     cPreco: Currency;
-    sUM, sUM_Conv: string
+    sUM, sUM_Conv: string;
+    PrecoCusto: Currency;
   end;
 
 type
@@ -75,15 +77,12 @@ type
    class function Produto(pTipo : string = ''; pTituloConsulta : string = '') : TRetornoProduto;
    class function Unidade : TRetornoUnidade;
    class function Fabricante: TRetornoFabricante;
-   class function NCM : string ;
+   class function NCM : integer;
+   class function CEST : integer;
    class function Grupo_Produto : integer;
    class function SubGrupo_Produto : integer;
-    class function Lote(aTipoLote: string = ''): TRetornoLote;
-
-
-   {*****Serviços Prestados*******}
-   class function Grupo_Servico : integer;
-   class function Servico : integer;
+   class function Lote(aTipoLote: string = ''): TRetornoLote;
+   class function Servico: integer;
 
    {*******NF********************}
    class function NfeMsgAdic : integer;
@@ -100,7 +99,7 @@ type
    class function CondicoesPagto : Integer ;
 
    {Financeiro - Contas a Pagar}
-    class function Historico(aIdGrupo: integer = -1; aDescri: string = ''): Integer;
+   class function Historico(aIdGrupo: integer = -1; aDescri: string = ''): Integer;
    class function Historico_Grupo : Integer ;
    class function ContaBancaria : string ;
    class function Cheque : TCheque ;
@@ -679,40 +678,6 @@ begin
   end;
 end;
 
-class function Consulta.Grupo_Servico: integer;
-var Aux : TPdr_Consulta ;
-    InstrucaoSQL : string ;
-    mCampos : TArrayCampoConsulta ;
-begin
-  InstrucaoSQL := 'select codigo,descri from GRUPO_SERVICO' ;
-  SetLength(mCampos,2);
-
-  mCampos[0].Descricao := 'Código' ;
-  mCampos[0].Mascara   := '' ;
-  mCampos[0].Mostrar   := True ;
-  mCampos[0].Nome      := 'codigo' ;
-  mCampos[0].NomeSQL   := 'codigo' ;
-  mCampos[0].Pesquisa  := True ;
-  mCampos[0].Retorno   := True ;
-
-  mCampos[1].Descricao := 'Descrição' ;
-  mCampos[1].Mascara   := '' ;
-  mCampos[1].Mostrar   := True ;
-  mCampos[1].Nome      := 'descri' ;
-  mCampos[1].NomeSQL   := 'descri' ;
-  mCampos[1].Pesquisa  := True ;
-  mCampos[1].Retorno   := False ;
-
-  Aux := TPdr_Consulta.Create(nil,'Consulta de Grupo de Serviços',InstrucaoSQL,'',
-          mCampos,DM.LerDataSet,1);
-  try
-    Aux.ShowModal ;
-    Result := StrToIntDef( Aux.Retorno.Values['codigo'], 0) ;
-  finally
-    FreeAndNil(Aux);
-  end;
-end;
-
 class function Consulta.Lote(aTipoLote: string): TRetornoLote;
 var
   Aux: TPdr_Consulta;
@@ -810,34 +775,85 @@ begin
 
 end;
 
-class function Consulta.NCM: string;
+class function Consulta.NCM: integer;
 var Aux : TPdr_Consulta ;
     InstrucaoSQL : string ;
     Campos : TArrayCampoConsulta ;
 begin
-  InstrucaoSQL := 'select ncm,descricao from NCM' ;
-  SetLength(Campos,2);
-  Campos[0].Descricao := 'NCM' ;
+  InstrucaoSQL := 'select a.id, a.ncm, a.descricao from NCM a' ;
+  SetLength(Campos,3);
+
+  Campos[0].Descricao := 'ID' ;
   Campos[0].Mascara   := '' ;
   Campos[0].Mostrar   := True ;
-  Campos[0].Nome      := 'ncm' ;
-  Campos[0].NomeSQL   := 'ncm' ;
-  Campos[0].Pesquisa  := True ;
+  Campos[0].Nome      := 'ID' ;
+  Campos[0].NomeSQL   := 'ID' ;
+  Campos[0].Pesquisa  := False ;
   Campos[0].Retorno   := True ;
 
-  Campos[1].Descricao := 'Descrição' ;
+  Campos[1].Descricao := 'N.C.M' ;
   Campos[1].Mascara   := '' ;
   Campos[1].Mostrar   := True ;
-  Campos[1].Nome      := 'descricao' ;
-  Campos[1].NomeSQL   := 'descricao' ;
+  Campos[1].Nome      := 'ncm' ;
+  Campos[1].NomeSQL   := 'ncm' ;
   Campos[1].Pesquisa  := True ;
   Campos[1].Retorno   := False ;
 
+  Campos[2].Descricao := 'Descrição' ;
+  Campos[2].Mascara   := '' ;
+  Campos[2].Mostrar   := True ;
+  Campos[2].Nome      := 'descricao' ;
+  Campos[2].NomeSQL   := 'descricao' ;
+  Campos[2].Pesquisa  := True ;
+  Campos[2].Retorno   := False ;
+
   Aux := TPdr_Consulta.Create(nil,'Consulta de NCM',InstrucaoSQL,'',
-          Campos,DM.LerDataSet,1);
+          Campos,DM.LerDataSet,0);
   try
     Aux.ShowModal ;
-    Result := Aux.Retorno.Values['ncm'] ;
+    Result := StrToIntDef( Aux.Retorno.Values['ID'], 0) ;
+  finally
+    FreeAndNil(Aux);
+  end;
+end;
+
+class function Consulta.CEST: integer;
+var Aux : TPdr_Consulta ;
+    InstrucaoSQL : string ;
+    Campos : TArrayCampoConsulta ;
+begin
+  InstrucaoSQL := 'select a.id, a.cest, a.descricao from cest a' ;
+  SetLength(Campos,3);
+
+  Campos[0].Descricao := 'ID' ;
+  Campos[0].Mascara   := '' ;
+  Campos[0].Mostrar   := True ;
+  Campos[0].Nome      := 'ID' ;
+  Campos[0].NomeSQL   := 'ID' ;
+  Campos[0].Pesquisa  := False ;
+  Campos[0].Retorno   := True ;
+
+  Campos[1].Descricao := 'CEST' ;
+  Campos[1].Mascara   := '' ;
+  Campos[1].Mostrar   := True ;
+  Campos[1].Nome      := 'cest' ;
+  Campos[1].NomeSQL   := 'cest' ;
+  Campos[1].Pesquisa  := True ;
+  Campos[1].Retorno   := False ;
+
+  Campos[2].Descricao := 'Descrição' ;
+  Campos[2].Mascara   := '' ;
+  Campos[2].Mostrar   := True ;
+  Campos[2].Nome      := 'descricao' ;
+  Campos[2].NomeSQL   := 'descricao' ;
+  Campos[2].Pesquisa  := True ;
+  Campos[2].Retorno   := False ;
+
+  Aux := TPdr_Consulta.Create(nil,'Consulta de CEST',InstrucaoSQL,'',
+          Campos,DM.LerDataSet,0);
+  try
+    Aux.ShowModal ;
+    Result := StrToIntDef( Aux.Retorno.Values['ID'], 0) ;
   finally
     FreeAndNil(Aux);
   end;
@@ -1111,91 +1127,100 @@ var
   mCampos: TArrayCampoConsulta;
 begin
   InstrucaoSQL := 'select a.CODIGO,a.NOME,a.PRECO_VENDA,a.QTDE_ESTOQUE,'+
-                   'case a.TIPO_PRODUTO '+
-                   '   when ''MP'' then ''Matéria-Prima'' '+
-                   '   when ''PA'' then ''Produto-Acabado'' '+
-                   '   else ''Ambos'' '+
-                   'end tipo,'+
-                   'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA,'''') CONVERSAO '+
-                   'from PRODUTO a ' +
-                   'left outer join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
-                   'left outer join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
-  {PA = Produto acabado, MP = Materia-Prima, A=Ambos}
+                  'case a.TIPO_PRODUTO '+
+                  '   when ''MP'' then ''Matéria-Prima'' '+
+                  '   when ''PA'' then ''Produto-Acabado'' '+
+                  '   when ''S''  then ''Serviço'' '+
+                  '   else ''Ambos'' '+
+                  'end tipo,'+
+                  'coalesce(b.SIGLA,'''') UM,coalesce(c.SIGLA, b.SIGLA, '''') CONVERSAO,'+
+                  'coalesce(a.PRECO_CUSTO,0) PRECO_CUSTO '+
+                  'from PRODUTO a ' +
+                  'left join UNIDADE b on (b.CODIGO = a.COD_UNIDADE) '+
+                  'left join UNIDADE c on (c.CODIGO = a.CONV_UNIDADE) ';
+  {PA = Produto acabado, MP = Materia-Prima, S=Serviço, A=Ambos}
   if pTipo <> EmptyStr then
-    InstrucaoSQL := InstrucaoSQL +
-                    'where a.TIPO_PRODUTO in( '+pTipo+')' ;
+    InstrucaoSQL := InstrucaoSQL + 'where a.TIPO_PRODUTO in( ' + pTipo + ')';
 
-  SetLength(mCampos,7);
+  SetLength(mCampos, 8);
 
-  mCampos[0].Descricao := 'Tipo' ;
-  mCampos[0].Mascara   := '' ;
-  mCampos[0].Mostrar   := True ;
-  mCampos[0].Nome      := 'tipo' ;
-  mCampos[0].NomeSQL   := 'a.tipo' ;
-  mCampos[0].Pesquisa  := True ;
-  mCampos[0].Retorno   := False ;
+  mCampos[0].Descricao := 'Tipo';
+  mCampos[0].Mascara := '';
+  mCampos[0].Mostrar := True;
+  mCampos[0].Nome := 'tipo';
+  mCampos[0].NomeSQL := 'a.tipo';
+  mCampos[0].Pesquisa := True;
+  mCampos[0].Retorno := False;
 
-  mCampos[1].Descricao := 'Código' ;
-  mCampos[1].Mascara   := '' ;
-  mCampos[1].Mostrar   := True ;
-  mCampos[1].Nome      := 'codigo' ;
-  mCampos[1].NomeSQL   := 'a.codigo' ;
-  mCampos[1].Pesquisa  := True ;
-  mCampos[1].Retorno   := True ;
+  mCampos[1].Descricao := 'Código';
+  mCampos[1].Mascara := '';
+  mCampos[1].Mostrar := True;
+  mCampos[1].Nome := 'codigo';
+  mCampos[1].NomeSQL := 'a.codigo';
+  mCampos[1].Pesquisa := True;
+  mCampos[1].Retorno := True;
 
-  mCampos[2].Descricao := 'Nome produto' ;
-  mCampos[2].Mascara   := '' ;
-  mCampos[2].Mostrar   := True ;
-  mCampos[2].Nome      := 'nome' ;
-  mCampos[2].NomeSQL   := 'a.nome' ;
-  mCampos[2].Pesquisa  := True ;
-  mCampos[2].Retorno   := False ;
-  mCampos[2].Width     := 250 ;
+  mCampos[2].Descricao := 'Nome produto';
+  mCampos[2].Mascara := '';
+  mCampos[2].Mostrar := True;
+  mCampos[2].Nome := 'nome';
+  mCampos[2].NomeSQL := 'a.nome';
+  mCampos[2].Pesquisa := True;
+  mCampos[2].Retorno := True;
+  mCampos[2].Width := 250;
 
-  mCampos[3].Descricao := 'Preço' ;
-  mCampos[3].Mascara   := '#,##0.00' ;
-  mCampos[3].Mostrar   := True ;
-  mCampos[3].Nome      := 'preco_venda' ;
-  mCampos[3].NomeSQL   := 'a.preco_venda' ;
-  mCampos[3].Pesquisa  := True ;
-  mCampos[3].Retorno   := True ;
+  mCampos[3].Descricao := 'Preço';
+  mCampos[3].Mascara := '#,##0.00';
+  mCampos[3].Mostrar := True;
+  mCampos[3].Nome := 'preco_venda';
+  mCampos[3].NomeSQL := 'a.preco_venda';
+  mCampos[3].Pesquisa := True;
+  mCampos[3].Retorno := True;
 
-  mCampos[4].Descricao := 'Estoque' ;
-  mCampos[4].Mascara   := '#,##0.000' ;
-  mCampos[4].Mostrar   := True ;
-  mCampos[4].Nome      := 'qtde_estoque' ;
-  mCampos[4].NomeSQL   := 'a.qtde_estoque' ;
-  mCampos[4].Pesquisa  := True ;
-  mCampos[4].Retorno   := False ;
+  mCampos[4].Descricao := 'Estoque';
+  mCampos[4].Mascara := '#,##0.000';
+  mCampos[4].Mostrar := True;
+  mCampos[4].Nome := 'qtde_estoque';
+  mCampos[4].NomeSQL := 'a.qtde_estoque';
+  mCampos[4].Pesquisa := True;
+  mCampos[4].Retorno := False;
 
-  mCampos[5].Descricao := 'UM' ;
-  mCampos[5].Mascara   := '' ;
-  mCampos[5].Mostrar   := False ;
-  mCampos[5].Nome      := 'UM' ;
-  mCampos[5].NomeSQL   := 'UM' ;
-  mCampos[5].Pesquisa  := False ;
-  mCampos[5].Retorno   := True ;
+  mCampos[5].Descricao := 'UM';
+  mCampos[5].Mascara := '';
+  mCampos[5].Mostrar := False;
+  mCampos[5].Nome := 'UM';
+  mCampos[5].NomeSQL := 'UM';
+  mCampos[5].Pesquisa := False;
+  mCampos[5].Retorno := True;
 
-  mCampos[6].Descricao := 'CONVERSAO' ;
-  mCampos[6].Mascara   := '' ;
-  mCampos[6].Mostrar   := False ;
-  mCampos[6].Nome      := 'CONVERSAO' ;
-  mCampos[6].NomeSQL   := 'CONVERSAO' ;
-  mCampos[6].Pesquisa  := False ;
-  mCampos[6].Retorno   := True ;
+  mCampos[6].Descricao := 'CONVERSAO';
+  mCampos[6].Mascara := '';
+  mCampos[6].Mostrar := False;
+  mCampos[6].Nome := 'CONVERSAO';
+  mCampos[6].NomeSQL := 'CONVERSAO';
+  mCampos[6].Pesquisa := False;
+  mCampos[6].Retorno := True;
 
-  Aux := TPdr_Consulta.Create(nil,pTituloConsulta,InstrucaoSQL,'',
-          mCampos,DM.LerDataSet,2);
+  mCampos[7].Descricao := 'Custo (R$)';
+  mCampos[7].Mascara := '#,##0.00';
+  mCampos[7].Mostrar := False;
+  mCampos[7].Nome := 'PRECO_CUSTO';
+  mCampos[7].NomeSQL := 'a.PRECO_CUSTO';
+  mCampos[7].Pesquisa := False;
+  mCampos[7].Retorno := True;
+
+  Aux := TPdr_Consulta.Create(nil, pTituloConsulta, InstrucaoSQL, '', mCampos, DM.LerDataSet, 2);
   try
-    Aux.ShowModal ;
-    Result.iCodigo  := StrToIntDef( Aux.Retorno.Values['codigo'], 0) ;
-    Result.cPreco   := StrToCurrDef(Aux.Retorno.Values['preco_venda'], 0) ;
-    Result.sUM      := Aux.Retorno.Values['UM'] ;
-    Result.sUM_Conv := Aux.Retorno.Values['CONVERSAO'] ;
+    Aux.ShowModal;
+    Result.iCodigo := StrToIntDef(Aux.Retorno.Values['codigo'], 0);
+    Result.cPreco := StrToCurrDef(Aux.Retorno.Values['preco_venda'], 0);
+    Result.sUM := Aux.Retorno.Values['UM'];
+    Result.sUM_Conv := Aux.Retorno.Values['CONVERSAO'];
+    Result.PrecoCusto := StrToCurr(Aux.Retorno.Values['PRECO_CUSTO']);
+    Result.Descricao := Aux.Retorno.Values['nome'];
   finally
     FreeAndNil(Aux);
   end;
-
 end;
 
 class function Consulta.Ramo_Atividade: integer;
@@ -1238,43 +1263,37 @@ var Aux : TPdr_Consulta ;
     InstrucaoSQL : string ;
     mCampos : TArrayCampoConsulta ;
 begin
-  InstrucaoSQL := 'select s.codigo,s.descri,g.descri grupo,s.preco from SERVICO S ' +
-                  'left outer join GRUPO_SERVICO g on (g.codigo = s.codgrupo) ' ;
-  SetLength(mCampos,4);
+  InstrucaoSQL := 'select P.CODIGO, P.NOME, P.PRECO_VENDA '+
+                  'from PRODUTO P '+
+                  'where p.tipo_produto = ''S'' ';
+  SetLength(mCampos,3);
 
   mCampos[0].Descricao := 'Código' ;
   mCampos[0].Mascara   := '' ;
-  mCampos[0].Mostrar   := False ;
+  mCampos[0].Mostrar   := True ;
   mCampos[0].Nome      := 'codigo' ;
-  mCampos[0].NomeSQL   := 'codigo' ;
-  mCampos[0].Pesquisa  := False ;
+  mCampos[0].NomeSQL   := 'p.codigo' ;
+  mCampos[0].Pesquisa  := True ;
   mCampos[0].Retorno   := True ;
 
-  mCampos[1].Descricao := 'Serviço' ;
+  mCampos[1].Descricao := 'Descrição' ;
   mCampos[1].Mascara   := '' ;
   mCampos[1].Mostrar   := True ;
-  mCampos[1].Nome      := 'descri' ;
-  mCampos[1].NomeSQL   := 's.descri' ;
+  mCampos[1].Nome      := 'nome' ;
+  mCampos[1].NomeSQL   := 'p.nome' ;
   mCampos[1].Pesquisa  := True ;
   mCampos[1].Retorno   := False ;
+  mCampos[1].Width     := 200 ;
 
-  mCampos[2].Descricao := 'Grupo' ;
-  mCampos[2].Mascara   := '' ;
+  mCampos[2].Descricao := 'Valor R$' ;
+  mCampos[2].Mascara   := 'R$ #,##0.00' ;
   mCampos[2].Mostrar   := True ;
-  mCampos[2].Nome      := 'grupo' ;
-  mCampos[2].NomeSQL   := 'g.descri' ;
-  mCampos[2].Pesquisa  := True ;
+  mCampos[2].Nome      := 'preco_venda' ;
+  mCampos[2].NomeSQL   := 'p.preco_venda' ;
+  mCampos[2].Pesquisa  := False ;
   mCampos[2].Retorno   := False ;
 
-  mCampos[3].Descricao := 'Preço' ;
-  mCampos[3].Mascara   := '#,##0.00' ;
-  mCampos[3].Mostrar   := True ;
-  mCampos[3].Nome      := 'preco' ;
-  mCampos[3].NomeSQL   := 's.preco' ;
-  mCampos[3].Pesquisa  := True ;
-  mCampos[3].Retorno   := False ;
-
-  Aux := TPdr_Consulta.Create(nil,'Consulta de Serviços Prestados',InstrucaoSQL,'',
+  Aux := TPdr_Consulta.Create(nil,'Consulta de Serviço',InstrucaoSQL,'',
           mCampos,DM.LerDataSet,1);
   try
     Aux.ShowModal ;
@@ -1333,41 +1352,40 @@ begin
 
   SetLength(mCampos,4);
 
-  mCampos[0].Descricao := 'ID' ;
-  mCampos[0].Mascara   := '' ;
-  mCampos[0].Mostrar   := False ;
-  mCampos[0].Nome      := 'id' ;
-  mCampos[0].NomeSQL   := 'id' ;
-  mCampos[0].Pesquisa  := False ;
-  mCampos[0].Retorno   := True ;
+  mCampos[0].Descricao := 'Código';
+  mCampos[0].Mascara := '';
+  mCampos[0].Mostrar := True;
+  mCampos[0].Nome := 'id';
+  mCampos[0].NomeSQL := 'id';
+  mCampos[0].Pesquisa := True;
+  mCampos[0].Retorno := True;
 
-  mCampos[1].Descricao := 'Identificação' ;
-  mCampos[1].Mascara   := '' ;
-  mCampos[1].Mostrar   := True ;
-  mCampos[1].Nome      := 'chave' ;
-  mCampos[1].NomeSQL   := 'chave' ;
-  mCampos[1].Pesquisa  := True ;
-  mCampos[1].Retorno   := False ;
+  mCampos[1].Descricao := 'Identificação';
+  mCampos[1].Mascara := '';
+  mCampos[1].Mostrar := True;
+  mCampos[1].Nome := 'chave';
+  mCampos[1].NomeSQL := 'chave';
+  mCampos[1].Pesquisa := True;
+  mCampos[1].Retorno := False;
 
-  mCampos[2].Descricao := 'Descrição' ;
-  mCampos[2].Mascara   := '' ;
-  mCampos[2].Mostrar   := True ;
-  mCampos[2].Nome      := 'descricao' ;
-  mCampos[2].NomeSQL   := 'descricao' ;
-  mCampos[2].Pesquisa  := True ;
-  mCampos[2].Retorno   := False ;
+  mCampos[2].Descricao := 'Descrição';
+  mCampos[2].Mascara := '';
+  mCampos[2].Mostrar := True;
+  mCampos[2].Nome := 'descricao';
+  mCampos[2].NomeSQL := 'descricao';
+  mCampos[2].Pesquisa := True;
+  mCampos[2].Retorno := False;
 
-  mCampos[3].Descricao := 'Débito/Crédito' ;
-  mCampos[3].Mascara   := '' ;
-  mCampos[3].Mostrar   := True ;
-  mCampos[3].Nome      := 'debito_credito' ;
-  mCampos[3].NomeSQL   := 'debito_credito' ;
-  mCampos[3].Pesquisa  := False ;
-  mCampos[3].Retorno   := False ;
-
+  mCampos[3].Descricao := 'Débito/Crédito';
+  mCampos[3].Mascara := '';
+  mCampos[3].Mostrar := True;
+  mCampos[3].Nome := 'debito_credito';
+  mCampos[3].NomeSQL := 'debito_credito';
+  mCampos[3].Pesquisa := False;
+  mCampos[3].Retorno := False;
 
   Aux := TPdr_Consulta.Create(nil, 'Consulta de Histórico', InstrucaoSQL, 'descricao',
-                                   mCampos, DM.LerDataSet, 1);
+                                 mCampos, DM.LerDataSet, 2);
   try
     Aux.ShowModal;
     Result := StrToIntDef(Aux.Retorno.Values['id'], 0);
@@ -1385,7 +1403,7 @@ begin
   InstrucaoSQL := 'select a.ID,a.N_NF,a.EMISSAO,a.TOTNOTA,'+
                   'b.RAZAO_NOME FORNECEDOR '+
                   'from NOTA_ENTRADA a '+
-                  'left outer join FABRICANTE b on (b.CODIGO=a.CODFOR) ';
+                  'left join FABRICANTE b on (b.CODIGO=a.CODFOR) ';
   SetLength(mCampos,5);
 
   mCampos[0].Descricao := 'ID' ;

@@ -14,10 +14,10 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
     Margins.Top = 0
     Margins.Right = 0
     Margins.Bottom = 0
-    Caption = '         Ordem de Produ'#231#227'o'
+    Caption = '         CADASTRO DE ORDEM DE PRODU'#199#195'O'
     ExplicitLeft = -5
     ExplicitTop = -2
-    ExplicitWidth = 710
+    ExplicitWidth = 740
   end
   inherited pnlFundo0: TPanel
     Width = 740
@@ -26,7 +26,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
     ExplicitHeight = 615
     inherited Panel1: TPanel
       Width = 738
-      TabOrder = 1
       ExplicitWidth = 738
       inherited pnlSair: TPanel
         Left = 639
@@ -60,7 +59,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
     inherited pnlFundo1: TPanel
       Width = 738
       Height = 540
-      TabOrder = 0
       ExplicitWidth = 738
       ExplicitHeight = 540
       object Panel2: TPanel [0]
@@ -186,7 +184,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Height = 48
           Lines.Strings = (
             'Memo1')
-          TabOrder = 5
+          TabOrder = 6
         end
         object dtpEmissao: TDateTimePicker
           Left = 255
@@ -196,7 +194,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Date = 43700.000000000000000000
           Format = 'dd/MM/yyyy'
           Time = 0.526207268521830000
-          TabOrder = 1
+          TabOrder = 0
         end
         object dtpEntrega: TDateTimePicker
           Left = 450
@@ -216,7 +214,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Date = 43700.000000000000000000
           Format = 'dd/MM/yyyy'
           Time = 0.526207268521830000
-          TabOrder = 4
+          TabOrder = 5
         end
         object dtpEstimativa: TDateTimePicker
           Left = 250
@@ -226,7 +224,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Date = 43700.000000000000000000
           Format = 'dd/MM/yyyy HH:mm:ss'
           Time = 0.526207268521830000
-          TabOrder = 3
+          TabOrder = 4
           Visible = False
         end
         object edtLote: TEdit
@@ -235,7 +233,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Width = 121
           Height = 21
           CharCase = ecUpperCase
-          TabOrder = 0
+          TabOrder = 1
           OnChange = edtLoteChange
         end
         object chkGeraMatPrima: TCheckBox
@@ -252,7 +250,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Font.Style = []
           ParentFont = False
           State = cbChecked
-          TabOrder = 6
+          TabOrder = 3
           WordWrap = True
         end
       end
@@ -271,7 +269,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Align = alLeft
           DataSource = dsItens
           ReadOnly = True
-          TabOrder = 0
+          TabOrder = 1
           TitleFont.Charset = DEFAULT_CHARSET
           TitleFont.Color = clWindowText
           TitleFont.Height = -11
@@ -315,7 +313,7 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
           Height = 76
           Align = alTop
           BorderStyle = bsSingle
-          TabOrder = 1
+          TabOrder = 0
           object PngAddProduto: TPngSpeedButton
             Left = 141
             Top = 7
@@ -655,7 +653,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
         Size = 1
       end>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     StoreDefs = True
     AfterInsert = cdsAfterInsert
     Left = 16
@@ -722,7 +719,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
       'OM LOTE_MATPRIMA a'#13#10'where 1 = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     Left = 144
     Top = 16
     object cdsMatPrimaID: TIntegerField
@@ -761,7 +757,6 @@ inherited Frm_OrdemProducao: TFrm_OrdemProducao
       ' = 2'
     Params = <>
     ProviderName = 'DSPLer1'
-    RemoteServer = DM.DSProviderConnection1
     AfterInsert = cdsItensAfterInsert
     BeforeDelete = cdsItensBeforeDelete
     Left = 48

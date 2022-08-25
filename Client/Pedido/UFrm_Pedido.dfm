@@ -2,7 +2,6 @@ inherited Frm_Pedido: TFrm_Pedido
   Caption = 'Frm_Pedido'
   ClientHeight = 638
   ClientWidth = 1200
-  ExplicitTop = -147
   ExplicitWidth = 1200
   ExplicitHeight = 638
   PixelsPerInch = 96
@@ -69,6 +68,7 @@ inherited Frm_Pedido: TFrm_Pedido
       inherited Panel4: TPanel
         Top = 529
         Width = 693
+        TabOrder = 4
         ExplicitTop = 529
         ExplicitWidth = 693
       end
@@ -81,7 +81,7 @@ inherited Frm_Pedido: TFrm_Pedido
         BevelOuter = bvNone
         Caption = 'pnlPedido'
         ShowCaption = False
-        TabOrder = 1
+        TabOrder = 0
         object lbl2: TLabel
           Left = 0
           Top = 0
@@ -181,7 +181,7 @@ inherited Frm_Pedido: TFrm_Pedido
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 3
         end
         object DBPesquisa1: TDBPesquisa
           Left = 16
@@ -224,7 +224,7 @@ inherited Frm_Pedido: TFrm_Pedido
           Campo.Font.Style = []
           Campo.ParentFont = False
           Campo.TabOrder = 0
-          TabOrder = 3
+          TabOrder = 2
           TabStop = True
         end
       end
@@ -236,7 +236,7 @@ inherited Frm_Pedido: TFrm_Pedido
         Align = alTop
         Caption = 'pnlCliente'
         ShowCaption = False
-        TabOrder = 2
+        TabOrder = 1
         object Label3: TLabel
           Left = 1
           Top = 1
@@ -401,7 +401,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 2
+                TabOrder = 3
               end
               object DBEdit7: TDBEdit
                 Left = 521
@@ -414,7 +414,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 3
+                TabOrder = 4
               end
               object DBEdit5: TDBEdit
                 Left = 145
@@ -427,7 +427,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 4
+                TabOrder = 2
               end
             end
           end
@@ -544,7 +544,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 0
+                TabOrder = 1
               end
               object DBEdit9: TDBEdit
                 Left = 145
@@ -557,7 +557,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 2
               end
               object DBEdit10: TDBEdit
                 Left = 287
@@ -570,7 +570,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 2
+                TabOrder = 3
               end
               object DBEdit11: TDBEdit
                 Left = 353
@@ -583,7 +583,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 3
+                TabOrder = 4
               end
               object DBEdit12: TDBEdit
                 Left = 520
@@ -596,7 +596,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 4
+                TabOrder = 5
               end
               object pnlSalvar: TPanel
                 Left = 650
@@ -608,7 +608,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Color = 7024384
                 ParentBackground = False
                 ShowCaption = False
-                TabOrder = 5
+                TabOrder = 0
                 TabStop = True
                 object imgSalvar: TImage
                   Left = 0
@@ -764,7 +764,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 0
+                TabOrder = 1
               end
               object dbedt2: TDBEdit
                 Left = 145
@@ -777,7 +777,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 1
+                TabOrder = 2
               end
               object dbedt3: TDBEdit
                 Left = 287
@@ -790,7 +790,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 2
+                TabOrder = 3
               end
               object dbedt4: TDBEdit
                 Left = 353
@@ -803,7 +803,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 3
+                TabOrder = 4
               end
               object dbedt5: TDBEdit
                 Left = 520
@@ -816,7 +816,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Font.Name = 'Segoe UI'
                 Font.Style = []
                 ParentFont = False
-                TabOrder = 4
+                TabOrder = 5
               end
               object pnlSalvarEntrega: TPanel
                 Left = 650
@@ -828,7 +828,7 @@ inherited Frm_Pedido: TFrm_Pedido
                 Color = 7024384
                 ParentBackground = False
                 ShowCaption = False
-                TabOrder = 5
+                TabOrder = 0
                 TabStop = True
                 object imgSalvarEntrega: TImage
                   Left = 0
@@ -880,7 +880,7 @@ inherited Frm_Pedido: TFrm_Pedido
         Align = alTop
         Caption = 'pnlItens'
         ShowCaption = False
-        TabOrder = 3
+        TabOrder = 2
         object Label15: TLabel
           Left = 1
           Top = 1
@@ -924,7 +924,7 @@ inherited Frm_Pedido: TFrm_Pedido
             Color = 7024384
             ParentBackground = False
             ShowCaption = False
-            TabOrder = 0
+            TabOrder = 4
             object btnAddItem: TSpeedButton
               Left = 0
               Top = 0
@@ -953,7 +953,7 @@ inherited Frm_Pedido: TFrm_Pedido
             Color = 10114859
             ParentBackground = False
             ShowCaption = False
-            TabOrder = 1
+            TabOrder = 3
             object Label16: TLabel
               Left = 12
               Top = 4
@@ -1031,7 +1031,7 @@ inherited Frm_Pedido: TFrm_Pedido
             Color = 10114859
             ParentBackground = False
             ShowCaption = False
-            TabOrder = 3
+            TabOrder = 1
             object btnMais: TSpeedButton
               Left = 69
               Top = 4
@@ -1155,7 +1155,7 @@ inherited Frm_Pedido: TFrm_Pedido
             BevelOuter = bvNone
             Caption = 'pnlItem'
             ShowCaption = False
-            TabOrder = 4
+            TabOrder = 0
             object edpsqsProduto: TEdPesquisa
               Left = -20
               Top = 14
@@ -1207,7 +1207,7 @@ inherited Frm_Pedido: TFrm_Pedido
           BevelOuter = bvNone
           Caption = 'pnlGrid'
           ShowCaption = False
-          TabOrder = 2
+          TabOrder = 1
           object pnlAcaoGrid: TPanel
             Left = 596
             Top = 0
@@ -1217,7 +1217,7 @@ inherited Frm_Pedido: TFrm_Pedido
             BevelOuter = bvNone
             Caption = 'pnlAcaoGrid'
             ShowCaption = False
-            TabOrder = 0
+            TabOrder = 1
           end
           object pnlAlocaGrid: TPanel
             Left = 0
@@ -1226,7 +1226,7 @@ inherited Frm_Pedido: TFrm_Pedido
             Height = 100
             Align = alClient
             BevelOuter = bvNone
-            TabOrder = 1
+            TabOrder = 0
             object dbgrd1: TDBGrid
               Left = 0
               Top = 0
@@ -1257,7 +1257,7 @@ inherited Frm_Pedido: TFrm_Pedido
           Width = 57
           Height = 21
           Color = clBtnFace
-          TabOrder = 1
+          TabOrder = 2
           Text = 'cbbUM'
           Visible = False
         end
@@ -1333,7 +1333,7 @@ inherited Frm_Pedido: TFrm_Pedido
         BevelOuter = bvNone
         Caption = 'pnlFreteOutros'
         ShowCaption = False
-        TabOrder = 4
+        TabOrder = 3
         object Panel2: TPanel
           Left = 342
           Top = 0
@@ -1544,8 +1544,6 @@ inherited Frm_Pedido: TFrm_Pedido
           Caption = 'pnlPag0'
           ShowCaption = False
           TabOrder = 0
-          ExplicitLeft = 2
-          ExplicitTop = 21
           object pnlPagLeft: TPanel
             Left = 0
             Top = 0
@@ -1727,10 +1725,6 @@ inherited Frm_Pedido: TFrm_Pedido
             Caption = 'pnlGridPagamento'
             ShowCaption = False
             TabOrder = 1
-            ExplicitLeft = 304
-            ExplicitTop = 72
-            ExplicitWidth = 185
-            ExplicitHeight = 41
             object pnlTitPagto: TPanel
               Left = 0
               Top = 0
@@ -1743,8 +1737,6 @@ inherited Frm_Pedido: TFrm_Pedido
               ParentBackground = False
               ShowCaption = False
               TabOrder = 0
-              ExplicitLeft = 5
-              ExplicitTop = -6
               object Label27: TLabel
                 Left = 15
                 Top = 24
@@ -1783,8 +1775,7 @@ inherited Frm_Pedido: TFrm_Pedido
               BevelOuter = bvNone
               Caption = 'pnlExcDup'
               ShowCaption = False
-              TabOrder = 1
-              ExplicitTop = 248
+              TabOrder = 2
               object pnlbtnExcDup: TPanel
                 Left = 74
                 Top = 10
@@ -1831,7 +1822,7 @@ inherited Frm_Pedido: TFrm_Pedido
               Font.Style = []
               Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
               ParentFont = False
-              TabOrder = 2
+              TabOrder = 1
               TitleFont.Charset = ANSI_CHARSET
               TitleFont.Color = clWindowText
               TitleFont.Height = -11

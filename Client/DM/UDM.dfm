@@ -21,10 +21,10 @@ object DM: TDM
       'Port=311'
       'Filters={}')
     Left = 69
-    Top = 24
+    Top = 16
     UniqueId = '{0AB9AE97-D7F3-4B8A-951A-B589D0441070}'
   end
-  object DSProviderConnection1: TDSProviderConnection
+  object dspRLer: TDSProviderConnection
     ServerClassName = 'TSM'
     SQLConnection = Conexao
     Left = 57
@@ -2644,5 +2644,97 @@ object DM: TDM
     SQLConnection = Conexao
     Left = 159
     Top = 187
+  end
+  object dspRProduto: TDSProviderConnection
+    ServerClassName = 'TSMProduto'
+    SQLConnection = Conexao
+    Left = 248
+    Top = 80
+  end
+  object dspRSaveInCloud: TDSProviderConnection
+    ServerClassName = 'TSMSaveInCloud'
+    SQLConnection = Conexao
+    Left = 249
+    Top = 140
+  end
+  object dsConsulta4: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 209
+    Top = 272
+  end
+  object scExcelExport1: TscExcelExport
+    DataPipe = dpDataSet
+    StyleColumnWidth = cwDefault
+    ColumnWidth = 0
+    FontHeader.Charset = DEFAULT_CHARSET
+    FontHeader.Color = clWindowText
+    FontHeader.Height = 1
+    FontHeader.Name = 'Tahoma'
+    FontHeader.Orientation = 0
+    FontHeader.Style = []
+    FontHeader.Alignment = haGeneral
+    FontHeader.VerticalAlignment = vaCenter
+    FontHeader.WrapText = False
+    BorderHeader.BackAlternateColor = clBlack
+    MergeHeaderCells = True
+    FontTitles.Charset = DEFAULT_CHARSET
+    FontTitles.Color = clWindowText
+    FontTitles.Height = 1
+    FontTitles.Name = 'Tahoma'
+    FontTitles.Orientation = 0
+    FontTitles.Style = []
+    FontTitles.Alignment = haGeneral
+    FontTitles.VerticalAlignment = vaCenter
+    FontTitles.WrapText = False
+    BorderTitles.BackAlternateColor = clBlack
+    AutoFilter = False
+    FontData.Charset = DEFAULT_CHARSET
+    FontData.Color = clWindowText
+    FontData.Height = 1
+    FontData.Name = 'Tahoma'
+    FontData.Orientation = 0
+    FontData.Style = []
+    FontData.Alignment = haGeneral
+    FontData.VerticalAlignment = vaCenter
+    FontData.WrapText = False
+    FontSummary.Charset = DEFAULT_CHARSET
+    FontSummary.Color = clWindowText
+    FontSummary.Height = 1
+    FontSummary.Name = 'Tahoma'
+    FontSummary.Orientation = 0
+    FontSummary.Style = []
+    FontSummary.Alignment = haGeneral
+    FontSummary.VerticalAlignment = vaCenter
+    FontSummary.WrapText = False
+    BorderSummary.BackAlternateColor = clBlack
+    SummarySelection = ssNone
+    SummaryCalculation = scSUM
+    FontFooter.Charset = DEFAULT_CHARSET
+    FontFooter.Color = clWindowText
+    FontFooter.Height = 1
+    FontFooter.Name = 'Tahoma'
+    FontFooter.Orientation = 0
+    FontFooter.Style = []
+    FontFooter.Alignment = haGeneral
+    FontFooter.VerticalAlignment = vaCenter
+    FontFooter.WrapText = False
+    BorderFooter.BackAlternateColor = clBlack
+    MergeFooterCells = True
+    FontGroup.Charset = DEFAULT_CHARSET
+    FontGroup.Color = clWindowText
+    FontGroup.Height = 1
+    FontGroup.Name = 'Tahoma'
+    FontGroup.Orientation = 0
+    FontGroup.Style = []
+    FontGroup.Alignment = haGeneral
+    FontGroup.VerticalAlignment = vaCenter
+    FontGroup.WrapText = False
+    BorderGroup.BackAlternateColor = clBlack
+    GroupOptions.ClearContents = True
+    GroupOptions.BorderRange = bsRow
+    GroupOptions.IntervalFontSize = 2
+    Left = 408
+    Top = 160
   end
 end

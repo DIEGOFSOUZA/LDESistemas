@@ -5,17 +5,37 @@ inherited Frm_TipoNotaEntrada: TFrm_TipoNotaEntrada
   PixelsPerInch = 96
   TextHeight = 13
   inherited lblTitulo: TLabel
-    Caption = '        Cadastro de hist'#243'rico'
+    Caption = '        CADASTRO DE HIST'#211'RICO'
     ExplicitTop = 2
   end
   inherited pnlFundo0: TPanel
     Height = 239
     ExplicitHeight = 239
+    inherited Panel1: TPanel
+      inherited pnlSair: TPanel
+        TabOrder = 6
+      end
+      inherited pnlGravar: TPanel
+        TabOrder = 5
+      end
+      inherited pnlCancelar: TPanel
+        TabOrder = 4
+      end
+      inherited pnlExcluir: TPanel
+        TabOrder = 2
+      end
+      inherited pnlEditar: TPanel
+        TabOrder = 1
+      end
+      inherited pnlAdicionar: TPanel
+        TabOrder = 0
+      end
+    end
     inherited pnlFundo1: TPanel
       Height = 164
       ExplicitHeight = 164
       object Label1: TLabel [0]
-        Left = 46
+        Left = 230
         Top = 22
         Width = 78
         Height = 17
@@ -53,13 +73,26 @@ inherited Frm_TipoNotaEntrada: TFrm_TipoNotaEntrada
         Font.Style = []
         ParentFont = False
       end
+      object Label4: TLabel [3]
+        Left = 81
+        Top = 22
+        Width = 43
+        Height = 17
+        Caption = 'C'#243'digo'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
       inherited Panel4: TPanel
         Top = 143
-        TabOrder = 2
+        TabOrder = 5
         ExplicitTop = 143
       end
       object DBEdit1: TDBEdit
-        Left = 128
+        Left = 312
         Top = 19
         Width = 77
         Height = 25
@@ -72,7 +105,7 @@ inherited Frm_TipoNotaEntrada: TFrm_TipoNotaEntrada
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 0
+        TabOrder = 1
       end
       object DBEdit2: TDBEdit
         Left = 128
@@ -87,7 +120,7 @@ inherited Frm_TipoNotaEntrada: TFrm_TipoNotaEntrada
         Font.Name = 'Segoe UI Semibold'
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 2
       end
       object DBComboBox1: TDBComboBox
         Left = 128
@@ -161,6 +194,22 @@ inherited Frm_TipoNotaEntrada: TFrm_TipoNotaEntrada
         OnPesquisa = dbpsqsGrupoPesquisa
         TabOrder = 4
         TabStop = True
+      end
+      object DBEdit3: TDBEdit
+        Left = 128
+        Top = 19
+        Width = 77
+        Height = 25
+        DataField = 'ID'
+        DataSource = ds
+        Enabled = False
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI Semibold'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
       end
     end
   end

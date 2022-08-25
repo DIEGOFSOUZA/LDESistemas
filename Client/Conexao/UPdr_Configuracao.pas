@@ -10,7 +10,7 @@ uses
   Vcl.ExtCtrls;
 
 const
-  mSenha = 'Takano2020';
+  mSenha = '99723932';
 
 type
   TConfiguracaoSistema = record
@@ -174,6 +174,12 @@ begin
   Result := TStringList.Create;
   try
     I := FindFirst(pDiretorio, 0, SearchRec);
+    if (I <> 0) then
+    begin
+      Result.Free;
+      Exit;
+    end;
+
     while I = 0 do
     begin
 
@@ -190,6 +196,7 @@ begin
       I := FindNext(SearchRec);
     end;
   except
+
     Result.Free;
     raise;
   end;
