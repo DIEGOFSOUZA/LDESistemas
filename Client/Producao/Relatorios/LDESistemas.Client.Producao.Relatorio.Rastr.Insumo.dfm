@@ -1,11 +1,11 @@
 inherited Rel_Rastr_Insumo: TRel_Rastr_Insumo
-  Width = 1128
   BorderStyle = bsNone
   Caption = 'Rel_Rastr_Insumo'
   Position = poScreenCenter
   Visible = True
   OnCreate = FormCreate
-  ExplicitWidth = 1128
+  ExplicitWidth = 939
+  ExplicitHeight = 590
   PixelsPerInch = 96
   TextHeight = 13
   inherited Relatorio: TRLReport
@@ -431,6 +431,7 @@ inherited Rel_Rastr_Insumo: TRel_Rastr_Insumo
         Top = 61
         Width = 100
         Height = 40
+        Cursor = crHandPoint
         Action = actGerarRelatorio
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -476,6 +477,7 @@ inherited Rel_Rastr_Insumo: TRel_Rastr_Insumo
         Top = 1
         Width = 30
         Height = 20
+        Cursor = crHandPoint
         Align = alRight
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000190000
@@ -509,8 +511,6 @@ inherited Rel_Rastr_Insumo: TRel_Rastr_Insumo
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
-      ExplicitLeft = -4
-      ExplicitTop = 27
       object Label2: TLabel
         Left = 16
         Top = 33
